@@ -1,4 +1,9 @@
 {
-  "name": "SpaceWeb Server",
-  "version": "0.0.1"
+    "name": "SpaceWeb Server",
+    "version": "0.0.1",
+
+    "scripts": {
+        "start": "node server/server.js"
+    },
+    "main": "server/server.js"
 }
