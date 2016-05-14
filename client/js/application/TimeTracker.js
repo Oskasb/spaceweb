@@ -47,7 +47,7 @@ define([], function() {
 
 	TimeTracker.prototype.trackPingRespond = function(frame) {
 		this.pingResponseTime = this.frameTime;
-		this.processPingDuration(this.pingTime - this.pingResponseTime);
+		this.processPingDuration(this.pingResponseTime - this.pingTime);
 	};
 
 
