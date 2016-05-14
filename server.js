@@ -2,6 +2,10 @@
 
 var SetupServer = function() {
 
+	require('./Server/ServerMain');
+
+	var serverMain = new ServerMain();
+
 	var WebSocketServer = require("ws").Server;
 	var http = require("http");
 	var express = require("express");
@@ -18,34 +22,8 @@ var SetupServer = function() {
 	var wss = new WebSocketServer({server: server});
 	console.log("websocket server created");
 
-	wss.on("connection", function(ws) {
-
-		var sends = 0;
-
-		ws.send("Connected:" + JSON.stringify(new Date()), function() {});
-
-		console.log("websocket connection open");
-
-		var respond = function(msg) {
-			ws.send(msg)
-		};
-
-
-		ws.on("message", function(message) {
-
-			if (message == "ping") {
-				respond("ping");
-			}
-
-			sends++;
-		});
-
-
-		ws.on("close", function() {
-			console.log("websocket connection close");
-
-		})
-	});
+	serverMain.initServerMain();
+	serverMain.initServerConnection(wss);
 
 };
 
