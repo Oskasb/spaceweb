@@ -1,9 +1,4 @@
 
-var requirejs = require ('requirejs');
-
-
-
-
 ServerMain = function() {
 	console.log("Construct Server Main")
 };
