@@ -1,64 +1,34 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Spaceweb Online</title>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: "Helvetica Neue", helvetica, arial;
+        padding: 15px;
+      }
 
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
 
-    <link rel="stylesheet" type="text/css" href="repo/client/css/base.css" />
+      ul li {
+        line-height: 1.4;
+      }
+    </style>
 
-    <script data-main="repo/client/js/Main" src="repo/client/js/lib/require.js"></script>
-
-<style>
-
-</style>
-
-</head>
-
-<body id="game_window">
-
-
-
-<h1>Welcome Online</h1>
-
-<div id="count">xx</div>
-<div id="message">MSG</div>
-
-<script>
-
-    var SOCKET_PORT = 8080;
-
-    function suppressBackspace(evt) {
-        evt = evt || window.event;
-        var target = evt.target || evt.srcElement;
-
-        if (evt.keyCode == 8 && !/input|textarea/i.test(target.nodeName)) {
-            return false;
-        }
-    }
-
-    setInterval(function() {
-          document.getElementById("count").innerHTML = "Time: "+new Date().getTime();
-    }, 100)
-
-    /**
-
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-43521007-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-    **/
-
-</script>
-
-
-
-</body>
+    <script>
+      var host = location.origin.replace(/^http/, 'ws')
+      var ws = new WebSocket(host);
+      ws.onmessage = function (event) {
+        var li = document.createElement('li');
+        li.innerHTML = JSON.parse(event.data);
+        document.querySelector('#pings').appendChild(li);
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Pings</h1>
+    <ul id='pings'></ul>
+  </body>
 </html>
