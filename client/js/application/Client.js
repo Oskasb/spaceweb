@@ -12,23 +12,36 @@ define([
 
 	};
 
-	Client.prototype.initiateClient = function(url) {
+	Client.prototype.initiateClient = function() {
+
+		var host = location.origin.replace(/^http/, 'ws');
 
 
+		var pings = 0;
 
-		var socket = new WebSocket('ws://'+url);
-		console.log(url, socket);
+		var socket = new WebSocket(host);
+		console.log(host, socket);
 
 
 		var content = document.getElementById('message');
 
 		socket.onopen = function () {
-			socket.send('hello from the client, url: '+url);
+			socket.send('hello from the client, url: '+host);
 		};
 
 		socket.onmessage = function (message) {
-			content.innerHTML = message.data;
+			pings++
+
+			document.querySelector('#pings').innerHTML = message.data;
+
+			setTimeout(function() {
+				socket.send('ping: '+pings);
+
+			}, 1000)
+
 		};
+
+
 
 		socket.onerror = function (error) {
 			console.log('WebSocket error: ' + error);

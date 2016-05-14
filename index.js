@@ -19,15 +19,27 @@ var SetupServer = function() {
 	console.log("websocket server created");
 
 	wss.on("connection", function(ws) {
-		var id = setInterval(function() {
-			ws.send(JSON.stringify(new Date()), function() {  })
-		}, 1000);
+
+		var sends = 0;
+
+		ws.send("Connected:" + JSON.stringify(new Date()), function() {  })
 
 		console.log("websocket connection open");
 
+		var respond = function(msg) {
+			ws.send(msg)
+		};
+
+
+		ws.on("message", function(message) {
+			respond("Server pingback "+message+" sends: "+sends);
+			sends++;
+		});
+
+
 		ws.on("close", function() {
 			console.log("websocket connection close");
-			clearInterval(id)
+
 		})
 	});
 
