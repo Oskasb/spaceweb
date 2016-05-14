@@ -1,10 +1,11 @@
 
-require('./Server/lib/require');
-require('./Server/io/ServerConnection');
-require('./Shared/io/SocketMessages');
+
 
 
 var SetupServer = function() {
+
+	require('./Server/io/ServerConnection');
+	require('./Shared/io/SocketMessages');
 
 	require('./Server/ServerMain');
 
