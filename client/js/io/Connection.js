@@ -38,7 +38,7 @@ define([
 					socket.responseCallbacks[message.data]();
 				}
 
-				document.querySelector('#pings').innerHTML = message.data +' '+ pings;
+				document.querySelector('#pings').innerHTML = 'Message Data:' +message.data +' '+ pings;
 
 			};
 

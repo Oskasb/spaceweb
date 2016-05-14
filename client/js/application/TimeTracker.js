@@ -10,7 +10,7 @@ define([], function() {
 		this.pingTime = 0;
 		this.pingResponseTime = 0;
 
-		this.pingInterval = 100;
+		this.pingInterval = 400;
 
 	};
 
@@ -46,8 +46,8 @@ define([], function() {
 	};
 
 	TimeTracker.prototype.trackPingRespond = function(frame) {
-		this.processPingDuration(this.pingTime - this.pingResponseTime);
 		this.pingResponseTime = this.frameTime;
+		this.processPingDuration(this.pingTime - this.pingResponseTime);
 	};
 
 

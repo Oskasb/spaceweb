@@ -22,7 +22,7 @@ var SetupServer = function() {
 
 		var sends = 0;
 
-		ws.send("Connected:" + JSON.stringify(new Date()), function() {  })
+		ws.send("Connected:" + JSON.stringify(new Date()), function() {});
 
 		console.log("websocket connection open");
 
