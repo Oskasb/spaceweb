@@ -2,55 +2,40 @@
 
 
 define([
+	"io/Connection"
+],
+	function(
+		Connection
+		) {
 
-],function(
-
-	) {
-
+	var socket;
 
 	var Client = function() {
-
+		this.connection = new Connection();
 	};
+
 
 	Client.prototype.initiateClient = function() {
+		var _this = this;
 
-		var host = location.origin.replace(/^http/, 'ws');
-
-
-		var pings = 0;
-
-		var socket = new WebSocket(host);
-		console.log(host, socket);
-
-
-		var content = document.getElementById('message');
-
-		socket.onopen = function () {
-			socket.send('hello from the client, url: '+host);
+		var connectedCallback = function() {
+			_this.tick(0);
 		};
 
-		socket.onmessage = function (message) {
-			pings++
-
-			document.querySelector('#pings').innerHTML = message.data;
-
-			setTimeout(function() {
-				socket.send('ping: '+pings);
-
-			}, 1000)
-
-		};
-
-
-
-		socket.onerror = function (error) {
-			console.log('WebSocket error: ' + error);
-		};
-
+		this.connection.setupSocket(connectedCallback);
 	};
 
-	Client.prototype.tick = function() {
+	Client.prototype.tick = function(frame) {
 
+		document.querySelector('#frames').innerHTML = frame;
+
+		this.connection.send(frame);
+
+		var _this = this;
+		requestAnimationFrame(function() {
+			frame++;
+			_this.tick(frame);
+		});
 	};
 
 	return Client;
