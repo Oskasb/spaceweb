@@ -1,0 +1,12 @@
+.name
+compiler.xml
+profiles_settings.xml
+encodings.xml
+misc.xml
+modules.xml
+scope_settings.xml
+uiDesigner.xml
+vcs.xml
+workspace.xml
+Spaceweb_openshift.iml
+/node_modules

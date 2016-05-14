@@ -3,31 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Spaceweb Online</title>
-
-
-    <link rel="stylesheet" type="text/css" href="repo/client/css/base.css" />
-
-    <script data-main="repo/client/js/Main" src="repo/client/js/lib/require.js"></script>
-
+  <title>Spaceweb DEV</title>
+    <link rel="stylesheet" type="text/css" href="/spaceweb_openshift/client/css/base.css" />
+    <script data-main="/spaceweb_openshift/client/js/Main" src="/spaceweb_openshift/client/js/lib/require.js"></script>
 <style>
 
 </style>
 
 </head>
 
+
+
+
 <body id="game_window">
 
 
 
-<h1>Welcome Online</h1>
-
-<div id="count">xx</div>
+<h1>Welcome yo xx</h1>
+<div id="tick">tick</div>
 <div id="message">MSG</div>
 
-<script>
 
-    var SOCKET_PORT = 8080;
+<script>
 
     function suppressBackspace(evt) {
         evt = evt || window.event;
@@ -38,9 +35,14 @@
         }
     }
 
+    var SOCKET_PORT = 8080;
+
+    var tick = 0;
+
     setInterval(function() {
-          document.getElementById("count").innerHTML = "Time: "+new Date().getTime();
-    }, 100)
+        document.getElementById("tick").innerHTML = "Tick: "+tick;
+        tick++;
+    }, 1000);
 
     /**
 
