@@ -12,6 +12,8 @@ define([
 
 		var Connection = function() {
 
+
+
 		};
 
 		Connection.prototype.setupSocket = function(connectedCallback) {
@@ -20,7 +22,9 @@ define([
 			var pings = 0;
 
 			socket = new WebSocket(host);
+
 			console.log(host, socket);
+			socket.responseCallbacks = {};
 
 			socket.onopen = function () {
 				socket.send('client connection ping, url: '+host);
@@ -30,7 +34,11 @@ define([
 			socket.onmessage = function (message) {
 				pings++;
 
-				document.querySelector('#pings').innerHTML = message.data;
+				if (socket.responseCallbacks[message.data]) {
+					socket.responseCallbacks[message.data]();
+				}
+
+				document.querySelector('#pings').innerHTML = message.data +' '+ pings;
 
 			};
 
@@ -42,7 +50,12 @@ define([
 
 
 
-		Connection.prototype.send = function(message) {
+		Connection.prototype.send = function(message, responseCallback) {
+
+			if (responseCallback) {
+				socket.responseCallbacks[message] = responseCallback;
+			}
+
 			socket.send(message);
 		};
 

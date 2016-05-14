@@ -32,7 +32,11 @@ var SetupServer = function() {
 
 
 		ws.on("message", function(message) {
-			respond("Server pingback "+message+" sends: "+sends);
+
+			if (message == "ping") {
+				respond("ping");
+			}
+
 			sends++;
 		});
 

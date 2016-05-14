@@ -2,16 +2,18 @@
 
 
 define([
-	"io/Connection"
+	"io/Connection",
+	"application/TimeTracker"
 ],
 	function(
-		Connection
+		Connection,
+		TimeTracker
 		) {
 
-	var socket;
-
 	var Client = function() {
-		this.connection = new Connection();
+
+		this.connection = new Connection(this.timeTracker);
+		this.timeTracker = new TimeTracker(this.connection);
 	};
 
 
@@ -22,14 +24,16 @@ define([
 			_this.tick(0);
 		};
 
-		this.connection.setupSocket(connectedCallback);
+		this.connection.setupSocket(connectedCallback, this.timeTracker);
 	};
 
 	Client.prototype.tick = function(frame) {
 
-		document.querySelector('#frames').innerHTML = frame;
+		document.querySelector('#frames').innerHTML = 'Frame# '+frame;
 
 		this.connection.send(frame);
+
+		this.timeTracker.trackFrameTime(frame);
 
 		var _this = this;
 		requestAnimationFrame(function() {
