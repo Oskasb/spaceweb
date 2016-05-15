@@ -1,11 +1,10 @@
 "use strict";
 
 
-define(['Events'
+define([
 
 ],
 	function(
-		    evt
 		) {
 
 		var ClientWorld = function() {
