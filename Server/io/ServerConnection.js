@@ -1,15 +1,15 @@
 
 ServerConnection = function() {
-
+	this.socketMessages = new SocketMessages();
 };
 
-ServerConnection.prototype.setupSocket = function(wss) {
+ServerConnection.prototype.setupSocket = function(wss, dataHub) {
+
+	var messages = this.socketMessages.messages;
 
 	wss.on("connection", function(ws) {
 
 		var sends = 0;
-
-		ws.send("Connected:" + JSON.stringify(new Date()), function() {});
 
 		console.log("websocket connection open");
 
@@ -20,12 +20,25 @@ ServerConnection.prototype.setupSocket = function(wss) {
 
 		ws.on("message", function(message) {
 
+			if (messages[message]) {
+				messages[message].call(respond, dataHub);
+			} else {
+				console.log("undefined SocketMessage ", message);
+			}
+		 /*
 			if (message == "ping") {
 				setTimeout(function() {
 					respond("ping");
 				}, 100 * Math.random())
 			}
 
+			if (message == "fetchWorld") {
+				console.log("Got fetchWorld")
+				setTimeout(function() {
+					respond("fetchWorld");
+				}, 100 * Math.random())
+			}
+         */
 			sends++;
 		});
 

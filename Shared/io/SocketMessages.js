@@ -1,36 +1,60 @@
-SocketMessages = function() {
 
-	this.messages = {
+	var Message = function(key, config) {
+		this.key = key;
+		this.config = config;
 
-		registerClient:{
-			call:function(data) {
+		for (var key in config) {
+			this[key] = config[key];
+		}
+	};
 
-			}
-		},
+	Message.prototype.call = function(respond, dataHub) {
+		respond(dataHub.readSource(this.source, this.config));
+	};
 
-		fetchWorld:{
-			call:function(data) {
 
-			}
+	Message.prototype.response = function(res, messageCallback) {
+		messageCallback(this.target, res);
+
+	};
+
+	Message.prototype.make = function() {
+		return this.key;
+	};
+
+
+	var Messages = {
+		RegisterClient:{source:'Clients', method:'registerClient', target:'client', args:{}},
+		ServerWorld:{source:'ServerWorld', method:'fetch', target:'clientWorld', args:{}},
+		ping:{source:'ping', method:'ping', target:'timeTracker', args:{}}
+	};
+
+
+	SocketMessages = function() {
+
+		this.messages = {};
+
+		for (var key in Messages) {
+			this.messages[key] = new Message(key, Messages[key])
 		}
 
 	};
 
-};
+
+	SocketMessages.prototype.setMessage = function(id, data) {
+
+		this.message[id] = data;
+
+	};
 
 
-SocketMessages.prototype.setMessage = function(id, data) {
+	SocketMessages.prototype.handleMessage = function(id, data) {
 
-	this.message[id] = data;
+		console.log('handleMessage', id);
 
-};
+		this.message[id] = call(data);
 
-
-SocketMessages.prototype.handleMessage = function(id, data) {
-
-	this.message[id] = call(data);
-
-};
+	};
 
 
 

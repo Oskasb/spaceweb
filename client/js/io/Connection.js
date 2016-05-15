@@ -11,9 +11,12 @@ define([
 		var socket;
 
 		var Connection = function() {
+			this.socketMessages;
+		};
 
-
-
+		Connection.prototype.setSocketMessages = function(socketMessage, messageCallback) {
+			this.messageCallback = messageCallback;
+			this.socketMessages = socketMessage;
 		};
 
 		Connection.prototype.setupSocket = function(connectedCallback) {
@@ -21,21 +24,33 @@ define([
 
 			var pings = 0;
 
+			var _this = this;
+
 			socket = new WebSocket(host);
 
 			console.log(host, socket);
 			socket.responseCallbacks = {};
 
 			socket.onopen = function () {
-				socket.send('client connection ping, url: '+host);
+				socket.send('RegisterClient');
 				connectedCallback();
 			};
 
 			socket.onmessage = function (message) {
 				pings++;
 
-				if (socket.responseCallbacks[message.data]) {
-					socket.responseCallbacks[message.data]();
+				var res = JSON.parse(message.data);
+
+				if (socket.responseCallbacks[res.id]) {
+					socket.responseCallbacks[res.id]();
+				}
+
+				if (_this.socketMessages) {
+
+					_this.socketMessages.messages[res.id].response(res, _this.messageCallback);
+
+				} else {
+					console.log("Socket Messages not yet ready to handle", message)
 				}
 
 				document.querySelector('#pings').innerHTML = 'Message Data:' +message.data +' '+ pings;

@@ -36,16 +36,10 @@ define([], function() {
 	TimeTracker.prototype.pingSend = function(frame) {
 		this.pingTime = this.frameTime;
 
-
-		var _this = this;
-		var responseCallback = function(message) {
-			_this.trackPingRespond();
-		};
-
-		this.connection.send('ping', responseCallback);
+		this.connection.send('ping');
 	};
 
-	TimeTracker.prototype.trackPingRespond = function(frame) {
+	TimeTracker.prototype.ping = function(data) {
 		this.pingResponseTime = this.frameTime;
 		this.processPingDuration(this.pingResponseTime - this.pingTime);
 	};

@@ -6,7 +6,9 @@ var SetupServer = function() {
 
 	require('./Server/io/ServerConnection');
 	require('./Shared/io/SocketMessages');
-
+	require('./Server/io/Clients');
+	require('./Server/DataHub');
+	require('./Server/Game/ServerWorld');
 	require('./Server/ServerMain');
 
 	var serverMain = new ServerMain();
@@ -27,7 +29,7 @@ var SetupServer = function() {
 	var wss = new WebSocketServer({server: server});
 	console.log("websocket server created");
 
-	serverMain.initServerMain();
+	serverMain.initServerMain(new DataHub());
 	serverMain.initServerConnection(wss);
 
 };
