@@ -36,7 +36,7 @@ require([
 		scriptTag.src = url;
 
 		scriptTag.onload = implementationCode;
-		scriptTag.onreadystatechange = implementationCode;
+	//	scriptTag.onreadystatechange = implementationCode;
 
 		location.appendChild(scriptTag);
 	};
