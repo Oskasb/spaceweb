@@ -19,6 +19,11 @@ define([
 			this.domRoot = DomUtils.createDivElement(GameScreen.getElement(), this.id, this.id, 'dom_player');
 		};
 
+
+		DomPlayer.prototype.removeDomPlayer = function() {
+			DomUtils.removeElement(this.domRoot);
+		};
+
 		DomPlayer.prototype.updateDomPlayer = function() {
 
 

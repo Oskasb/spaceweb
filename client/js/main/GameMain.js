@@ -15,10 +15,16 @@ define([
 
 		};
 
+		GameMain.prototype.registerPlayer = function(data) {
+			console.log("Register Player: ", data);
 
-		GameMain.prototype.registerPlayer = function(player) {
-			console.log("Register Player: ", player);
-			this.players[player.playerId] = player;
+			var _this = this;
+
+			var removeCallback = function(playerId) {
+				delete _this.players[playerId];
+			};
+
+			this.players[data.playerId] = new Player(data, removeCallback);
 		};
 
 		GameMain.prototype.playerUpdate = function(data) {
@@ -27,7 +33,9 @@ define([
 			if (this.players[data.playerId]) {
 				this.players[data.playerId].setServerState(data);
 			} else {
-				console.log("No player", data.playerId, this.players)
+				console.log("Register New Player from update", data.playerId, this.players)
+				this.registerPlayer(data);
+				this.players[data.playerId].setServerState(data);
 			}
 		};
 
@@ -38,7 +46,8 @@ define([
 			if (this.players[data.playerId]) {
 				console.log("Player already registered", data.playerId, this.players)
 			} else {
-				this.registerPlayer(new Player(data));
+				this.registerPlayer(data);
+				this.players[data.playerId].setServerState(data);
 			}
 		};
 

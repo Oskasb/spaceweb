@@ -11,7 +11,7 @@ define([
 		DomPlayer
 		) {
 
-		var Player = function(serverState) {
+		var Player = function(serverState, removeCallback) {
 
 
 			for (var key in serverState) {
@@ -27,7 +27,7 @@ define([
 
 			this.timeDelta = 1;
 			this.domPlayer = new DomPlayer(this);
-
+			this.removeCallback = removeCallback;
 		};
 
 		Player.prototype.predictPlayerVelocity = function(spatial, tpf) {
@@ -51,9 +51,29 @@ define([
 			this.domPlayer.updateDomPlayer();
 		};
 
+
+		Player.prototype.playerRemove = function() {
+			this.removeCallback(this.playerId);
+
+			this.domPlayer.removeDomPlayer();
+		};
+
 		Player.prototype.setServerState = function(serverState) {
+
+			if (serverState.state == 'REMOVED') {
+				this.playerRemove();
+				return;
+			}
+
+
 			this.timeDelta = serverState.timeDelta;
 			this.tickCountdown = this.timeDelta;
+
+			if (serverState.state == 'TELEPORT') {
+				this.spatial.pos[0] = serverState.spatial.pos[0];
+				this.spatial.pos[1] = serverState.spatial.pos[1];
+				this.spatial.pos[2] = serverState.spatial.pos[2];
+			}
 
 			this.spatial.target[0] = serverState.spatial.pos[0];
 			this.spatial.target[1] = serverState.spatial.pos[1];

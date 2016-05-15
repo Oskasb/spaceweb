@@ -22,14 +22,12 @@ ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removeP
 		clients.registerConnection(ws);
 
 		ws.on("message", function(message) {
-			console.log("JSON", message);
 			if (typeof(message) != 'string') {
 				console.log("not JSON", message);
 				var msg = message;
 			} else {
 				var msg = JSON.parse(message);
 			}
-
 
 			if (messages[msg.id]) {
 				messages[msg.id].call(respond, msg.data, dataHub);
