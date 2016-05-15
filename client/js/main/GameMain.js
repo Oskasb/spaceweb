@@ -47,6 +47,7 @@ define([
 				console.log("Player already registered", data.playerId, this.players)
 			} else {
 				this.registerPlayer(data);
+				this.players[data.playerId].setIsOwnPlayer(true);
 				this.players[data.playerId].setServerState(data);
 			}
 		};

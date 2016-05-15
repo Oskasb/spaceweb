@@ -13,6 +13,7 @@ define([
 
 		var Player = function(serverState, removeCallback) {
 
+			this.isOwnPlayer = false;
 
 			for (var key in serverState) {
 				this[key] = serverState[key];
@@ -51,6 +52,10 @@ define([
 			this.domPlayer.updateDomPlayer();
 		};
 
+		Player.prototype.setIsOwnPlayer = function(bool) {
+
+			this.domPlayer.setIsOwnPlayer(bool);
+		};
 
 		Player.prototype.playerRemove = function() {
 			this.removeCallback(this.playerId);

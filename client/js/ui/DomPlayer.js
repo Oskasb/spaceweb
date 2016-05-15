@@ -24,6 +24,10 @@ define([
 			DomUtils.removeElement(this.domRoot);
 		};
 
+		DomPlayer.prototype.setIsOwnPlayer = function(bool) {
+			DomUtils.addElementClass(this.domRoot, 'my_color');
+		};
+
 		DomPlayer.prototype.updateDomPlayer = function() {
 
 

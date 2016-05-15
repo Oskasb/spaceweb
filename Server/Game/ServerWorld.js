@@ -15,6 +15,5 @@ ServerWorld.prototype.initWorld = function() {
 };
 
 ServerWorld.prototype.fetch = function(data) {
-	console.log("returning stars")
 	return this.stars;
 };

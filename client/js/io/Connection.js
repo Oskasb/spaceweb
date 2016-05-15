@@ -44,8 +44,6 @@ define(['Events'
 
 				evt.fire(evt.list().SERVER_MESSAGE, res);
 
-				document.querySelector('#pings').innerHTML = 'Message Data:' +message.data +' '+ pings;
-
 			};
 
 			socket.onerror = function (error) {
