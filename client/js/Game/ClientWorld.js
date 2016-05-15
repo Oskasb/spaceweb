@@ -13,9 +13,7 @@ define([
 		};
 
 
-		ClientWorld.prototype.InitiateClientWorld = function(data) {
 
-		};
 
 		ClientWorld.prototype.ServerWorld = function(data) {
 
