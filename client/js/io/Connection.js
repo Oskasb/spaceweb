@@ -1,27 +1,24 @@
 "use strict";
 
 
-define([
+define(['Events'
 
 ],
 	function(
-
+		     evt
 		) {
 
 		var socket;
+		var messages;
 
-		var Connection = function() {
-			this.socketMessages;
-		};
-
-		Connection.prototype.setSocketMessages = function(socketMessage, messageCallback) {
-			this.messageCallback = messageCallback;
+		var Connection = function(socketMessage) {
 			this.socketMessages = socketMessage;
+			messages = this.socketMessages.messages
 		};
+
 
 		Connection.prototype.setupSocket = function(connectedCallback) {
 			var host = location.origin.replace(/^http/, 'ws');
-
 			var pings = 0;
 
 			var _this = this;
@@ -45,13 +42,7 @@ define([
 					socket.responseCallbacks[res.id]();
 				}
 
-				if (_this.socketMessages) {
-
-					_this.socketMessages.messages[res.id].response(res, _this.messageCallback);
-
-				} else {
-					console.log("Socket Messages not yet ready to handle", message)
-				}
+				evt.fire(evt.list().SERVER_MESSAGE, res);
 
 				document.querySelector('#pings').innerHTML = 'Message Data:' +message.data +' '+ pings;
 

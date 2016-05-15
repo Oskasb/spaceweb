@@ -1,5 +1,4 @@
-define([], function() {
-
+define(['Events'], function(evt) {
 
 	var TimeTracker = function(connection) {
 		this.connection = connection;
@@ -12,13 +11,23 @@ define([], function() {
 
 		this.pingInterval = 400;
 
+
+		var _this = this;
+
+		var handleTick = function(args) {
+			_this.trackFrameTime(args)
+		};
+
+		evt.on(evt.list().CLIENT_TICK, handleTick)
 	};
 
 	TimeTracker.prototype.processFrameDuration = function(duration) {
 		document.querySelector('#framesTime').innerHTML = 'Frame (ms):' +duration;
 	};
 
+
 	TimeTracker.prototype.processPingDuration = function(duration) {
+
 		document.querySelector('#pingTime').innerHTML = 'Ping (ms):' +duration;
 	};
 
@@ -43,8 +52,6 @@ define([], function() {
 		this.pingResponseTime = this.frameTime;
 		this.processPingDuration(this.pingResponseTime - this.pingTime);
 	};
-
-
 
 	return TimeTracker;
 

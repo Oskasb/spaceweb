@@ -9,7 +9,7 @@ ServerWorld.prototype.initWorld = function() {
 	};
 
 
-	for (var i = 0; i < 100; i++) {
+	for (var i = 0; i < 10; i++) {
 		this.stars.push(new Star(Math.random() * 100, Math.random() * 100,Math.random() * 100))
 	}
 };

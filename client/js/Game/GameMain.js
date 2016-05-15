@@ -15,9 +15,8 @@ define([
 		};
 
 
-		GameMain.prototype.initiateClientWorld = function(socketMessages, messageCallback) {
-			this.connection.setSocketMessages(socketMessages, messageCallback);
-			this.connection.send(socketMessages.messages.ServerWorld.make())
+		GameMain.prototype.initiateClientWorld = function() {
+
 		};
 
 		GameMain.prototype.tick = function(frame) {

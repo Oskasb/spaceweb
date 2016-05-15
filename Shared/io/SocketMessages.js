@@ -24,7 +24,7 @@
 
 
 	var Messages = {
-		RegisterClient:{source:'Clients', method:'registerClient', target:'client', args:{}},
+		RegisterClient:{source:'Clients', method:'registerClient', target:'clientRegistry', args:{}},
 		ServerWorld:{source:'ServerWorld', method:'fetch', target:'clientWorld', args:{}},
 		ping:{source:'ping', method:'ping', target:'timeTracker', args:{}}
 	};
