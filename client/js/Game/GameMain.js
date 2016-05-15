@@ -15,6 +15,9 @@ define([
 		};
 
 
+		GameMain.prototype.initiateClientWorld = function() {
+
+		};
 
 		GameMain.prototype.tick = function(frame) {
 

@@ -1,10 +1,11 @@
 "use strict";
 
 
-define([
+define(['Events'
 
 ],
 	function(
+		    evt
 		) {
 
 		var ClientWorld = function() {
@@ -13,7 +14,9 @@ define([
 		};
 
 
+		ClientWorld.prototype.InitiateClientWorld = function(data) {
 
+		};
 
 		ClientWorld.prototype.ServerWorld = function(data) {
 
