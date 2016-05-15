@@ -3,7 +3,7 @@ ServerConnection = function() {
 	this.socketMessages = new SocketMessages();
 };
 
-ServerConnection.prototype.setupSocket = function(wss, dataHub) {
+ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removePlayerCallback) {
 
 	var messages = this.socketMessages.messages;
 
@@ -11,39 +11,39 @@ ServerConnection.prototype.setupSocket = function(wss, dataHub) {
 
 		var sends = 0;
 
+
+
 		console.log("websocket connection open");
 
 		var respond = function(msg) {
 			ws.send(msg)
 		};
 
+		clients.registerConnection(ws);
 
 		ws.on("message", function(message) {
+			console.log("JSON", message);
+			if (typeof(message) != 'string') {
+				console.log("not JSON", message);
+				var msg = message;
+			} else {
+				var msg = JSON.parse(message);
+			}
 
-			if (messages[message]) {
-				messages[message].call(respond, dataHub);
+
+			if (messages[msg.id]) {
+				messages[msg.id].call(respond, msg.data, dataHub);
 			} else {
 				console.log("undefined SocketMessage ", message);
 			}
-		 /*
-			if (message == "ping") {
-				setTimeout(function() {
-					respond("ping");
-				}, 100 * Math.random())
-			}
 
-			if (message == "fetchWorld") {
-				console.log("Got fetchWorld")
-				setTimeout(function() {
-					respond("fetchWorld");
-				}, 100 * Math.random())
-			}
-         */
 			sends++;
 		});
 
 
 		ws.on("close", function() {
+			removePlayerCallback(ws.clientId);
+			clients.clientDisconnected(ws.clientId);
 			console.log("websocket connection close");
 
 		})
@@ -52,6 +52,6 @@ ServerConnection.prototype.setupSocket = function(wss, dataHub) {
 	console.log("Init Server Connection")
 };
 
-ServerConnection.prototype.send = function(message, responseCallback) {
+ServerConnection.prototype.broadcast = function(message, responseCallback) {
 
 };

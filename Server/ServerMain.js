@@ -5,6 +5,7 @@ ServerMain = function() {
 	this.serverConnection = new ServerConnection();
 	this.serverWorld = new ServerWorld();
 	this.clients = new Clients();
+	this.serverGameMain = new ServerGameMain(this.clients);
 
 	this.serverWorld.initWorld();
 
@@ -13,9 +14,9 @@ ServerMain = function() {
 		this.system = system
 	};
 
-	DataSource.prototype.fetch = function(method, args) {
+	DataSource.prototype.fetch = function(method, args, data) {
 		if (this.system[method]) {
-			return JSON.stringify({id:this.id, data:this.system[method](args)});
+			return JSON.stringify({id:this.id, data:this.system[method](data)});
 		} else {
 			return JSON.stringify({id:this.id, data:"No Data to fetch for "+this.id});
 		}
@@ -32,14 +33,27 @@ ServerMain = function() {
 	this.game = {
 		'ping':  new DataSource('ping', new Ping()),
 		'ServerWorld' : new DataSource('ServerWorld', this.serverWorld),
+		'ServerGameMain' : new DataSource('RegisterPlayer', this.serverGameMain),
 		'Clients' : new DataSource('RegisterClient', this.clients)
 	};
 
-}
+};
 
 ServerMain.prototype.initServerConnection = function(wss) {
-	this.serverConnection.setupSocket(wss, this.dataHub)
+	var serverGameMain = this.serverGameMain;
 
+	var removePlayerCallback = function(clientId) {
+		serverGameMain.playerDicconected(clientId);
+	};
+
+	this.serverConnection.setupSocket(wss, this.dataHub, this.clients, removePlayerCallback);
+
+
+	var playerUpdateCallback = function(playerPacket) {
+
+	};
+
+	this.serverGameMain.initGame(playerUpdateCallback);
 };
 
 ServerMain.prototype.initServerMain = function(dataHub) {
@@ -48,6 +62,8 @@ ServerMain.prototype.initServerMain = function(dataHub) {
 	for (var key in this.game) {
 		this.dataHub.setSource(key, this.game[key]);
 	}
+
+
 
 };
 

@@ -9,6 +9,7 @@ var SetupServer = function() {
 	require('./Server/io/Clients');
 	require('./Server/DataHub');
 	require('./Server/Game/ServerWorld');
+	require('./Server/Game/ServerGameMain');
 	require('./Server/ServerMain');
 
 	var serverMain = new ServerMain();
@@ -28,6 +29,8 @@ var SetupServer = function() {
 
 	var wss = new WebSocketServer({server: server});
 	console.log("websocket server created");
+
+
 
 	serverMain.initServerMain(new DataHub());
 	serverMain.initServerConnection(wss);

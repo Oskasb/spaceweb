@@ -54,8 +54,9 @@ define([
 		this.gameMain = new GameMain(this.connection);
 
 		var connectedCallback = function() {
-			_this.gameMain.initiateClientWorld(socketMessages);
-			_this.connection.send(socketMessages.messages.ServerWorld.make());
+
+			evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'ServerWorld', data:'init'});
+
 			_this.tick(0);
 		};
 
@@ -65,10 +66,11 @@ define([
 	};
 
 	Client.prototype.tick = function(frame) {
+		evt.fire(evt.list().CLIENT_TICK, {frame:frame});
 
 		this.pointerCursor.tick();
+		this.gameMain.tick(this.timeTracker.tpf);
 
-		evt.fire(evt.list().CLIENT_TICK, evt.list().CLIENT_TICK.args);
 
 		document.querySelector('#frames').innerHTML = 'Frame# '+frame;
 

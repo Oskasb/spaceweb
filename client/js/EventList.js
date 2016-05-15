@@ -4,6 +4,10 @@ define(function() {
     var func = function(){};
     return {
 		INIT_CLIENT:{type:'INIT_CLIENT', args:{data:{}}},
+
+		SEND_SERVER_REQUEST:{type:'SEND_SERVER_REQUEST', args:{data:{}}},
+
+
 		CLIENT_TICK:{type:'CLIENT_TICK', args:{data:{}}},
 		SERVER_MESSAGE:{type:'SERVER_MESSAGE', args:{data:{}}},
 		CURSOR_MOVE:{type:'CURSOR_MOVE', args:{data:{}}},

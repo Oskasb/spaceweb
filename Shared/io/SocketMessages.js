@@ -8,8 +8,8 @@
 		}
 	};
 
-	Message.prototype.call = function(respond, dataHub) {
-		respond(dataHub.readSource(this.source, this.config));
+	Message.prototype.call = function(respond, data, dataHub) {
+		respond(dataHub.readSource(this.source, this.config, data));
 	};
 
 
@@ -18,12 +18,15 @@
 
 	};
 
-	Message.prototype.make = function() {
-		return this.key;
+	Message.prototype.make = function(data) {
+		return JSON.stringify({id:this.key, data:data});
 	};
 
 
 	var Messages = {
+		RegisterPlayer:{source:'ServerGameMain', method:'registerPlayer', target:'gameMain', args:{}},
+		playerUpdate:{source:'', method:'', target:'gameMain', args:{}},
+		clientConnected:{source:'Clients', method:'registerConnection', target:'clientRegistry', args:{}},
 		RegisterClient:{source:'Clients', method:'registerClient', target:'clientRegistry', args:{}},
 		ServerWorld:{source:'ServerWorld', method:'fetch', target:'clientWorld', args:{}},
 		ping:{source:'ping', method:'ping', target:'timeTracker', args:{}}

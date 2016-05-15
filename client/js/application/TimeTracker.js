@@ -9,19 +9,21 @@ define(['Events'], function(evt) {
 		this.pingTime = 0;
 		this.pingResponseTime = 0;
 
-		this.pingInterval = 400;
+		this.pingInterval = 4000;
+		this.tpf = 1;
 
 
 		var _this = this;
 
-		var handleTick = function(args) {
-			_this.trackFrameTime(args)
+		var handleTick = function(e) {
+			_this.trackFrameTime(evt.args(e).frame)
 		};
 
 		evt.on(evt.list().CLIENT_TICK, handleTick)
 	};
 
 	TimeTracker.prototype.processFrameDuration = function(duration) {
+		this.tpf = duration * 0.001;
 		document.querySelector('#framesTime').innerHTML = 'Frame (ms):' +duration;
 	};
 
@@ -34,10 +36,12 @@ define(['Events'], function(evt) {
 	TimeTracker.prototype.trackFrameTime = function(frame) {
 		this.frameTime = new Date().getTime();
 		this.processFrameDuration(this.frameTime - this.lastFrameTime);
+
 		this.lastFrameTime = this.frameTime;
 
+
 		if (this.frameTime - this.pingTime > this.pingInterval) {
-			this.pingSend()
+			this.pingSend(frame)
 		}
 
 	};
@@ -45,7 +49,8 @@ define(['Events'], function(evt) {
 	TimeTracker.prototype.pingSend = function(frame) {
 		this.pingTime = this.frameTime;
 
-		this.connection.send('ping');
+		evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'ping', data:frame});
+
 	};
 
 	TimeTracker.prototype.ping = function(data) {

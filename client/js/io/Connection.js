@@ -29,7 +29,7 @@ define(['Events'
 			socket.responseCallbacks = {};
 
 			socket.onopen = function () {
-				socket.send('RegisterClient');
+
 				connectedCallback();
 			};
 
@@ -52,18 +52,26 @@ define(['Events'
 				console.log('WebSocket error: ' + error);
 			};
 
+
+			var handleSendRequest = function(e) {
+			    var args = evt.args(e);
+
+				var msg = messages[args.id];
+
+				if (!msg) {
+					console.log("SEND REQUEST missing", args.id);
+				}
+
+				socket.send(msg.make(args.data));
+
+
+			};
+
+			evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
+
 		};
 
 
-
-		Connection.prototype.send = function(message, responseCallback) {
-
-			if (responseCallback) {
-				socket.responseCallbacks[message] = responseCallback;
-			}
-
-			socket.send(message);
-		};
 
 		return Connection;
 
