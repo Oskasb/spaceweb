@@ -6,8 +6,8 @@ define([
 	'application/ClientRegistry',
 	'io/Connection',
 	'application/TimeTracker',
-	'game/ClientWorld',
-	'game/GameMain'
+	'main/ClientWorld',
+	'main/GameMain'
 ],
 	function(
 		evt,
