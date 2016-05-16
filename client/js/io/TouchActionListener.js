@@ -4,6 +4,7 @@ define([], function() {
 
 	var touchAction = [0];
 
+	var touchOn = false;
 
 	var events = {
 		touchstart:'touchstart',
@@ -20,11 +21,17 @@ define([], function() {
 	TouchActionListener.prototype.setupElementTouchListener = function(element) {
 
 		var handleTouchStart = function() {
-			touchAction[0] = 1;
+			if (touchOn) {
+				touchAction[0] = 1;
+			} else {
+				touchOn = true;
+			}
+
 		};
 
 		var handleTouchEnd = function() {
 			touchAction[0] = 1;
+			touchOn = false;
 		};
 
 		element.addEventListener(events.touchstart, handleTouchStart);
