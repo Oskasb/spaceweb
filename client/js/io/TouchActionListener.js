@@ -38,11 +38,11 @@ define([], function() {
 
 
 	var handleTouchStart = function() {
-		if (!isFullscreen) enterFullscreen();
+	//	if (!isFullscreen) enterFullscreen();
 
 			touchAction[0] = 1;
 
-		};
+	//	};
 
 		var handleTouchEnd = function() {
 			touchAction[0] = 0;
