@@ -11,7 +11,7 @@ define([
 		DomPlayer
 		) {
 
-		var Player = function(serverState, removeCallback) {
+		var ClientPlayer = function(serverState, removeCallback) {
 
 			this.isOwnPlayer = false;
 
@@ -33,7 +33,7 @@ define([
 
 		};
 
-		Player.prototype.inputCursorVector = function(e) {
+		ClientPlayer.prototype.inputCursorVector = function(e) {
 			var _this=this;
 			var vector = {
 				fromX:evt.args(e).fromX*0.01,
@@ -45,7 +45,7 @@ define([
 			evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:vector, playerId:_this.playerId}});
 		};
 
-		Player.prototype.predictPlayerVelocity = function(spatial, tpf) {
+		ClientPlayer.prototype.predictPlayerVelocity = function(spatial, tpf) {
 			this.tickCountdown -= tpf;
 			var fraction = this.tickCountdown / this.timeDelta;
 
@@ -54,30 +54,30 @@ define([
 
 		};
 
-		Player.prototype.updatePlayerSpatial = function(spatial) {
+		ClientPlayer.prototype.updatePlayerSpatial = function(spatial) {
 			spatial.pos[0] += spatial.vel[0];
 			spatial.pos[1] += spatial.vel[1];
 		};
 
-		Player.prototype.updatePlayer = function(tpf) {
+		ClientPlayer.prototype.updatePlayer = function(tpf) {
 
 			this.predictPlayerVelocity(this.spatial, tpf);
 		//	this.updatePlayerSpatial(this.spatial, tpf);
 			this.domPlayer.updateDomPlayer();
 		};
 
-		Player.prototype.setIsOwnPlayer = function(bool) {
+		ClientPlayer.prototype.setIsOwnPlayer = function(bool) {
 
 			this.domPlayer.setIsOwnPlayer(bool);
 		};
 
-		Player.prototype.playerRemove = function() {
+		ClientPlayer.prototype.playerRemove = function() {
 			this.removeCallback(this.playerId);
 
 			this.domPlayer.removeDomPlayer();
 		};
 
-		Player.prototype.setServerState = function(serverState) {
+		ClientPlayer.prototype.setServerState = function(serverState) {
 
 			if (serverState.state == 'REMOVED') {
 				this.playerRemove();
@@ -114,5 +114,5 @@ define([
 
 
 
-		return Player;
+		return ClientPlayer;
 	});

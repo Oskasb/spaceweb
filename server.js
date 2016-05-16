@@ -11,6 +11,7 @@ var SetupServer = function() {
 	require('./Server/Game/ServerWorld');
 	require('./Server/Game/ServerGameMain');
 	require('./Server/ServerMain');
+	require('./Server/Game/ServerPlayer');
 
 	var serverMain = new ServerMain();
 

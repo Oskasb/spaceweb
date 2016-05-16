@@ -2,11 +2,11 @@
 
 
 define([
-	     'main/Player',
+	     'main/ClientPlayer',
 	'Events'
 ],
 	function(
-			Player,
+		ClientPlayer,
 			evt
 		) {
 
@@ -28,7 +28,7 @@ define([
 
 
 
-			this.players[data.playerId] = new Player(data, removeCallback);
+			this.players[data.playerId] = new ClientPlayer(data, removeCallback);
 			return this.players[data.playerId];
 		};
 

@@ -1,4 +1,4 @@
-
+(function(){Math.clamp=function(a,b,c){return Math.max(b,Math.min(c,a));}})();
 
 ServerMain = function() {
 	console.log("Construct Server Main");
