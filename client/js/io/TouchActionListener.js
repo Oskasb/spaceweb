@@ -21,7 +21,7 @@ define([], function() {
 
 		function enterFullscreen() {
 
-			var elem = document.getElementById("game_window");
+			var elem = document.body;
 			if (elem.requestFullscreen) {
 				elem.requestFullscreen();
 			} else if (elem.msRequestFullscreen) {
