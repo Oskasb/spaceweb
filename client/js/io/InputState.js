@@ -75,6 +75,8 @@ define([
 			this.mouseState.lastAction[0] = this.mouseState.action[0];
 			this.mouseState.lastAction[1] = this.mouseState.action[1];
 
+			document.querySelector('#input').innerHTML = 'input:' +JSON.stringify(this.mouseState);
+
 			this.processDragState(pointerCursor);
 
 			this.elementListeners.sampleMouseState(this.mouseState);
