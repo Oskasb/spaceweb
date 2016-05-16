@@ -20,28 +20,7 @@ define([], function() {
 		var isFullscreen = false;
 
 		function enterFullscreen() {
-			if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-				if (document.requestFullscreen) {
-					document.requestFullscreen();
-				} else if (document.msRequestFullscreen) {
-					document.msRequestFullscreen();
-				} else if (document.mozRequestFullScreen) {
-					document.mozRequestFullScreen();
-				} else if (document.webkitRequestFullscreen) {
-					document.webkitRequestFullscreen();
-				}
-			} else {
-				if (document.exitFullscreen) {
-					document.exitFullscreen();
-				} else if (document.msExitFullscreen) {
-					document.msExitFullscreen();
-				} else if (document.mozCancelFullScreen) {
-					document.mozCancelFullScreen();
-				} else if (document.webkitExitFullscreen) {
-					document.webkitExitFullscreen();
-				}
-			}
-			return false;
+			document.body.requestFullscreen();
 		}
 
 
