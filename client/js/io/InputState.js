@@ -31,6 +31,9 @@ define([
 
 		InputState.prototype.processDragState = function(pointerCursor) {
 			if (this.dragTargets.length) {
+
+
+
 				pointerCursor.inputVector(
 					this.mouseState.startDrag[0],
 					this.mouseState.startDrag[1],
@@ -46,23 +49,26 @@ define([
 						this.mouseState.startDrag[0] = this.mouseState.x;
 						this.mouseState.startDrag[1] = this.mouseState.y;
 						this.mouseState.drag = true;
+					/*
 						for (var i = 0; i < this.buttonDownTargets.length; i++) {
 							if (this.buttonDownTargets[i].onDragCallbacks.length) {
 								this.dragTargets.push(this.buttonDownTargets[i]);
 								this.buttonDownTargets[i].beginValueManipulation();
 							}
 						}
+					*/
 					}
 				}
 			}
 
 			this.mouseState.dragDistance[0] = this.mouseState.startDrag[0] - this.mouseState.x;
 			this.mouseState.dragDistance[1] = this.mouseState.startDrag[1] - this.mouseState.y;
+			/*
 			for (i = 0; i < this.dragTargets.length; i++) {
 				this.dragTargets[i].setDragValue(this.mouseState.dragDistance);
 				this.dragTargets[i].onControlHover();
 			}
-
+                */
 		};
 
 		InputState.prototype.updateInputState = function(pointerCursor) {
@@ -104,6 +110,8 @@ define([
 		InputState.prototype.dragEnded = function() {
 			this.mouseState.drag = false;
 			this.dragTargets.length = 0;
+
+			this.buttonDownTargets.length = 0;
 		};
 
 		InputState.prototype.handleReleaseTargets = function() {
@@ -124,7 +132,11 @@ define([
 		};
 
 		InputState.prototype.showActivatedHovered = function() {
-			this.buttonDownTargets.length = 0;
+			this.buttonDownTargets[0] = 1;
+
+
+			this.dragTargets[0] = 1;
+		//	this.buttonDownTargets.length = 0;
 			if (this.mouseState.pressingButton == true) {
 				for (var i = 0; i < this.mouseState.interactionTargets.length; i++) {
 					this.mouseState.interactionTargets[i].onControlActive(this.buttonDownTargets);
@@ -133,7 +145,14 @@ define([
 		};
 
 		InputState.prototype.handleLeftButtonPress = function() {
+			if (!this.mouseState.pressingButton) {
+				this.mouseState.startDrag[0] = this.mouseState.x;
+				this.mouseState.startDrag[1] = this.mouseState.y;
+			}
+
 			this.mouseState.pressingButton = true;
+
+
 			this.mouseState.lastAction[0] = this.mouseState.action[0];
 			this.showActivatedHovered()
 		};

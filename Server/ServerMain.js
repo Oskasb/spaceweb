@@ -33,6 +33,7 @@ ServerMain = function() {
 	this.game = {
 		'ping':  new DataSource('ping', new Ping()),
 		'ServerWorld' : new DataSource('ServerWorld', this.serverWorld),
+		'InputVector' : new DataSource('InputVector', this.serverGameMain),
 		'ServerGameMain' : new DataSource('RegisterPlayer', this.serverGameMain),
 		'Clients' : new DataSource('RegisterClient', this.clients)
 	};

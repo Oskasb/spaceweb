@@ -24,9 +24,12 @@
 
 
 	var Messages = {
+		InputVector:{source:'InputVector', method:'playerInput', target:'gameMain', args:{}},
+
 		RegisterPlayer:{source:'ServerGameMain', method:'registerPlayer', target:'gameMain', args:{}},
 		playerUpdate:{source:'', method:'', target:'gameMain', args:{}},
 		clientConnected:{source:'Clients', method:'registerConnection', target:'clientRegistry', args:{}},
+
 		RegisterClient:{source:'Clients', method:'registerClient', target:'clientRegistry', args:{}},
 		ServerWorld:{source:'ServerWorld', method:'fetch', target:'clientWorld', args:{}},
 		ping:{source:'ping', method:'ping', target:'timeTracker', args:{}}

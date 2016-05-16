@@ -2,17 +2,19 @@
 
 
 define([
-	     'main/Player'
+	     'main/Player',
+	'Events'
 ],
 	function(
-			Player
+			Player,
+			evt
 		) {
 
 
 
 		var GameMain = function() {
 			this.players = {};
-
+			this.ownPlayer;
 		};
 
 		GameMain.prototype.registerPlayer = function(data) {
@@ -24,7 +26,14 @@ define([
 				delete _this.players[playerId];
 			};
 
+
+
 			this.players[data.playerId] = new Player(data, removeCallback);
+			return this.players[data.playerId];
+		};
+
+		GameMain.prototype.InputVector = function(msg) {
+			this.players[msg.data.playerId].setServerState(msg.data);
 		};
 
 		GameMain.prototype.playerUpdate = function(data) {
@@ -46,9 +55,15 @@ define([
 			if (this.players[data.playerId]) {
 				console.log("Player already registered", data.playerId, this.players)
 			} else {
-				this.registerPlayer(data);
-				this.players[data.playerId].setIsOwnPlayer(true);
-				this.players[data.playerId].setServerState(data);
+				var player = this.registerPlayer(data);
+				player.setIsOwnPlayer(true);
+				player.setServerState(data);
+				this.ownPlayer = player;
+
+				var handleCursorLine = function(e) {
+					player.inputCursorVector(e)
+				};
+				evt.on(evt.list().CURSOR_LINE, handleCursorLine);
 			}
 		};
 

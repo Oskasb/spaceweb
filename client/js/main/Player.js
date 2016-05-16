@@ -26,9 +26,23 @@ define([
 			this.spatial.target = [0.5, 0.5, 1];
 			this.spatial.diff = [0.5, 0.5, 1];
 
+
 			this.timeDelta = 1;
 			this.domPlayer = new DomPlayer(this);
 			this.removeCallback = removeCallback;
+
+		};
+
+		Player.prototype.inputCursorVector = function(e) {
+			var _this=this;
+			var vector = {
+				fromX:evt.args(e).fromX*0.01,
+				fromY:evt.args(e).fromY*0.01,
+				toX:evt.args(e).toX*0.01,
+				toY:evt.args(e).toY*0.01
+			};
+
+			evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:vector, playerId:_this.playerId}});
 		};
 
 		Player.prototype.predictPlayerVelocity = function(spatial, tpf) {
@@ -80,6 +94,11 @@ define([
 				this.spatial.pos[2] = serverState.spatial.pos[2];
 			}
 
+			this.serverState = serverState;
+
+			this.spatial.vel[0] = serverState.spatial.vel[0];
+			this.spatial.vel[1] = serverState.spatial.vel[1];
+
 			this.spatial.target[0] = serverState.spatial.pos[0];
 			this.spatial.target[1] = serverState.spatial.pos[1];
 			this.spatial.target[2] = serverState.spatial.pos[2];
@@ -88,6 +107,10 @@ define([
 			this.spatial.diff[1] =  this.spatial.target[1]-this.spatial.pos[1]
 
 		};
+
+
+
+
 
 
 

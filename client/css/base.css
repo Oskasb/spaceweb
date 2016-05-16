@@ -14,18 +14,44 @@
     src: url('../css/fonts/BRLNSB.TTF');
 }
 
-div.pointer {
+div.connector {
     position: absolute;
     top: 0px;
     left: 0px;
+    width: 3px;
+    height: 3px;
+    background-color: rgba(25, 255, 55, 1);
+}
+
+div.pointer {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(25, 255, 55, 1);
+    border-radius: 50%;
+}
+
+div.pointer_pressed {
     width: 30px;
     height: 30px;
+    background-color: rgba(115, 255, 155, 1);
+}
+
+
+div.point {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 0px;
+    height: 0px;
 }
 
 div.dom_player {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: -15px;
+    left: -60px;
     width: 120px;
     height: 30px;
     text-align: center;

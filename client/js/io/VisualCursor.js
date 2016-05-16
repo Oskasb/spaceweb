@@ -21,7 +21,8 @@ define([
 					x:0,
 					y:0,
 					hidden:false
-				}
+				},
+				action:[0, 0]
 			}
 
 		};
@@ -36,27 +37,25 @@ define([
 
 
 		VisualCursor.prototype.moveTo = function(x, y, hoverCount) {
-			this.renderPointer.pointer.x = this.pxXtoPercentX(x);
-			this.renderPointer.pointer.y = this.pxYtoPercentY(y);
+			this.renderPointer.pointer.x = x;
+			this.renderPointer.pointer.y = y;
 			this.renderPointer.pointer.hidden = hoverCount;
 			evt.fire(evt.list().CURSOR_MOVE, this.renderPointer);
 			return this.renderPointer.pointer;
 		};
 
-		VisualCursor.prototype.transformConnector = function(x1, y1, x2, y2, distance) {
+		VisualCursor.prototype.transformConnector = function(x1, y1, x2, y2, distance, zrot) {
 			var width = GameScreen.getWidth();
 			var height = GameScreen.getHeight();
 			evt.fire(evt.list().CURSOR_LINE, {
-				renderData:{
-					line:{
-						fromX:x1*100/width,
-						fromY:y1*100/height,
-						toX:x2*100/width,
-						toY:y2*100/height,
-						w: 2*1+(distance+0.4),
-						color:this.vectorColor
-					},
-					zIndex:10000}
+
+				fromX:x1,
+				fromY:y1,
+				toX:x2,
+				toY:y2,
+				w: 2*1+(distance+0.4),
+				zrot:zrot
+
 			});
 		};
 
@@ -136,12 +135,28 @@ define([
 		};
 
 		VisualCursor.prototype.visualizeMouseAction = function(action) {
-			//	console.log("mouse:", action, xy);
+			this.renderPointer.action = action;
+		//	evt.fire(evt.list().CURSOR_MOVE, this.renderPointer);
+			/*
 			this.vectorColor[0]=0.5+action[0]*0.5;
 			this.vectorColor[1]=0.5+action[1]*0.5;
 
-			this.showPressPoint(action[0]+action[1]);
+			evt.fire(evt.list().CURSOR_PRESS, {
+				renderData:{
+					arc:{
+						x:this.renderPointer.pointer.x,
+						y:this.renderPointer.pointer.y,
+						radius:5+4*state,
+						start:2*Math.PI,
+						end:0,
+						w: 5+2*state,
+						color:this.vectorColor
+					},
+					zIndex:10000}
+			});
 
+			this.showPressPoint(action[0]+action[1]);
+            */
 		};
 
 
@@ -150,13 +165,13 @@ define([
 		};
 
 		VisualCursor.prototype.visualizeVector = function(fromX, fromY, toX, toY) {
-			var distance = 0.008*this.pxXtoPercentX(this.lineDistance(fromX, fromY, toX, toY));
-			this.vectorColor[0]=0.5+distance*0.5;
-			this.vectorColor[1]=1-distance*0.5;
-			this.vectorColor[2]=1-distance*0.5;
-			this.showStartDragPoint(fromX, fromY, distance, Math.atan2( toX - fromX, fromY - toY));
-			this.transformConnector(fromX, fromY, toX, toY, distance);
-			this.showDragToPoint(toX, toY, distance , Math.atan2(fromX - toX, toY - fromY) );
+			var distance = this.lineDistance(fromX, fromY, toX, toY);
+		//	this.showStartDragPoint(fromX, fromY, distance, Math.atan2( toX - fromX, fromY - toY));
+			this.transformConnector(fromX, fromY, toX, toY, distance, Math.atan2( toX - fromX, fromY - toY));
+
+
+
+		//	this.showDragToPoint(toX, toY, distance , Math.atan2(fromX - toX, toY - fromY) );
 		};
 
 		return VisualCursor;
