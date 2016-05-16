@@ -20,7 +20,19 @@ define([], function() {
 		var isFullscreen = false;
 
 		function enterFullscreen() {
-			document.body.requestFullscreen();
+
+			var elem = document.getElementById("game_window");
+			if (elem.requestFullscreen) {
+				elem.requestFullscreen();
+			} else if (elem.msRequestFullscreen) {
+				elem.msRequestFullscreen();
+			} else if (elem.mozRequestFullScreen) {
+				elem.mozRequestFullScreen();
+			} else if (elem.webkitRequestFullscreen) {
+				elem.webkitRequestFullscreen();
+			}
+
+			isFullscreen = true;
 		}
 
 
