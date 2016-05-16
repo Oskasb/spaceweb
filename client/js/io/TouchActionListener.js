@@ -42,7 +42,7 @@ define([], function() {
 
 			touchAction[0] = 1;
 
-	//	};
+		};
 
 		var handleTouchEnd = function() {
 			touchAction[0] = 0;
