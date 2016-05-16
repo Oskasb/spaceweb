@@ -30,7 +30,7 @@ define([], function() {
 		};
 
 		var handleTouchEnd = function() {
-			touchAction[0] = 1;
+			touchAction[0] = 0;
 			touchOn = false;
 		};
 
