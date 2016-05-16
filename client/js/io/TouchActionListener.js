@@ -19,12 +19,12 @@ define([], function() {
 
 		var handleTouchStart = function() {
 			touchAction[0] = 1;
-			document.querySelector('#input').innerHTML = 'touch: handleTouchStart';
+			document.querySelector('#touch').innerHTML = 'touch: handleTouchStart';
 		};
 
 		var handleTouchEnd = function() {
 			touchAction[0] = 0;
-			document.querySelector('#input').innerHTML = 'touch: handleTouchEnd';
+			document.querySelector('#touch').innerHTML = 'touch: handleTouchEnd';
 		};
 
 		element.addEventListener(events.touchstart, handleTouchStart);
@@ -32,9 +32,9 @@ define([], function() {
 	};
 
 	TouchActionListener.prototype.sampleTouchAction = function(mouseStore) {
-		document.querySelector('#input').innerHTML = 'touch: sample '+ touchAction;
+		document.querySelector('#touch').innerHTML = 'touch: sample '+ touchAction;
 		mouseStore.action[0] += touchAction[0];
-		touchAction[0] = 0;
+	//	touchAction[0] = 0;
 	};
 
 	return TouchActionListener
