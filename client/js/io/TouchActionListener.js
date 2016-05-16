@@ -1,10 +1,7 @@
 
 define([], function() {
 
-
 	var touchAction = [0];
-
-	var touchOn = false;
 
 	var events = {
 		touchstart:'touchstart',
@@ -21,17 +18,13 @@ define([], function() {
 	TouchActionListener.prototype.setupElementTouchListener = function(element) {
 
 		var handleTouchStart = function() {
-			if (touchOn) {
-				touchAction[0] = 1;
-			} else {
-				touchOn = true;
-			}
-
+			touchAction[0] = 1;
+			document.querySelector('#input').innerHTML = 'touch: handleTouchStart';
 		};
 
 		var handleTouchEnd = function() {
 			touchAction[0] = 0;
-			touchOn = false;
+			document.querySelector('#input').innerHTML = 'touch: handleTouchEnd';
 		};
 
 		element.addEventListener(events.touchstart, handleTouchStart);
@@ -39,7 +32,7 @@ define([], function() {
 	};
 
 	TouchActionListener.prototype.sampleTouchAction = function(mouseStore) {
-
+		document.querySelector('#input').innerHTML = 'touch: sample '+ touchAction;
 		mouseStore.action[0] += touchAction[0];
 		touchAction[0] = 0;
 	};
