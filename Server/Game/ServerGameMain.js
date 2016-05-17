@@ -15,7 +15,7 @@ ServerGameMain.prototype.initGame = function(playerUpdateCallback) {
 
 	setInterval(function() {
 		_this.tickGame(playerUpdateCallback);
-	}, 100);
+	}, 200);
 
 
 };
@@ -28,6 +28,7 @@ ServerGameMain.prototype.addPlayer = function(player) {
 
 ServerGameMain.prototype.playerDicconected = function(clientId) {
 	var player = this.players['player_'+clientId];
+	if (!player) return;
 
 	player.state = MODEL.ENUMS.PieceStates.REMOVED;
 	var packet =  player.makePacket();
@@ -47,7 +48,7 @@ ServerGameMain.prototype.playerInput = function(data) {
 
 	if (data.vector) {
 		player.setInputVector(data.vector.fromX, data.vector.fromY, data.vector.toX,data.vector.toY);
-	};
+	}
 
 	return player.makePacket();
 
@@ -57,7 +58,9 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 
 	var player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId));
 
+
 	this.addPlayer(player);
+
 
 	console.log("register player", JSON.stringify(data));
 

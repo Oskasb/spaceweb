@@ -5,9 +5,16 @@ if(typeof(GAME) == "undefined"){
 	GAME = {};
 }
 
-
 (function(GAME){
 
+	GAME.ENUMS = {};
+
+	GAME.ENUMS.ClientStates = {
+		LOADING:'LOADING',
+		READY:'READY',
+		PLAYING:'PLAYING',
+		PLAYER_REQUESTED:'PLAYER_REQUESTED'
+	};
 
 	GAME.Piece = function() {
 		this.spatial = new MODEL.Spatial();
@@ -29,7 +36,5 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.getVel = function() {
 		this.spatial.getVelArray();
 	};
-
-
 
 })(GAME);

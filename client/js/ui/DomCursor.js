@@ -38,7 +38,7 @@ define([
 
 
 			var action = (evt.args(e).action[0]+evt.args(e).action[1])*0.4  + 1;
-		//	cursor = DomUtils.getElementById('cursor');
+
 			var transform = "translate3d("+pos.x+"px, "+pos.y+"px, 0px) scale3d("+action+","+action+", 1)";
 			DomUtils.applyElementTransform(cursor, transform);
 			vector = false;
@@ -58,6 +58,7 @@ define([
 
 		var DomCursor = function(pointerCursor) {
 			this.pointerCursor = pointerCursor;
+
 		};
 
 
@@ -67,7 +68,6 @@ define([
 		var handleClientReady = function() {
 			cursor = DomUtils.createDivElement(GameScreen.getElement(), 'cursor', '', 'pointer');
 			connector = new DomVector(GameScreen.getElement());
-
 			setTimeout(function() {
 				evt.on(evt.list().CURSOR_MOVE, handleCursorMove);
 				evt.on(evt.list().CURSOR_LINE, handleCursorVector);

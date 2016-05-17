@@ -11,7 +11,6 @@ define([
 		) {
 
 
-
 		var GameMain = function() {
 			this.players = {};
 			this.ownPlayer;
@@ -56,7 +55,7 @@ define([
 			} else {
 				var player = this.registerPlayer(data);
 				player.setIsOwnPlayer(true);
-			//	player.setServerState(data);
+				player.setServerState(data);
 				this.ownPlayer = player;
 
 				var handleCursorLine = function(e) {
@@ -71,6 +70,9 @@ define([
 				this.players[key].updatePlayer(tpf);
 			}
 		};
+
+
+
 
 		return GameMain;
 

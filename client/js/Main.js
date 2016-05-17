@@ -26,6 +26,7 @@ require([
 
 
 	var socketMsgUrl = './../../../Shared/io/SocketMessages.js';
+	GameScreen.registerAppContainer(document.body);
 
 	var loadUrls = [
 		'./../../../Shared/io/SocketMessages.js',
@@ -52,15 +53,15 @@ require([
 	var filesLoaded = function() {
 		count++;
 		if (count == loadUrls.length) {
+			var client = new Client(new PointerCursor(new InputState()));
 			client.initiateClient(new SocketMessages());
 			evt.fire(evt.list().CLIENT_READY, client);
 		}
 
 	};
 
-	GameScreen.registerAppContainer(document.body);
 
-	var client = new Client(new PointerCursor(new InputState()));
+
 
 
 	for (var i = 0; i < loadUrls.length; i++) {

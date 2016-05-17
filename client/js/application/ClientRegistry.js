@@ -28,7 +28,7 @@ define(['Events'
 
 			this.clientId = data.clientId;
 
-			evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:data});
+
 
 		};
 
