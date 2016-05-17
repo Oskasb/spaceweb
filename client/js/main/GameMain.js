@@ -17,6 +17,7 @@ define([
 			this.ownPlayer;
 		};
 
+
 		GameMain.prototype.registerPlayer = function(data) {
 			console.log("Register Player: ", data);
 
@@ -25,8 +26,6 @@ define([
 			var removeCallback = function(playerId) {
 				delete _this.players[playerId];
 			};
-
-
 
 			this.players[data.playerId] = new ClientPlayer(data, removeCallback);
 			return this.players[data.playerId];
@@ -42,7 +41,7 @@ define([
 			if (this.players[data.playerId]) {
 				this.players[data.playerId].setServerState(data);
 			} else {
-				console.log("Register New Player from update", data.playerId, this.players)
+				console.log("Register New Player from update", data.playerId, this.players);
 				this.registerPlayer(data);
 				this.players[data.playerId].setServerState(data);
 			}
@@ -57,7 +56,7 @@ define([
 			} else {
 				var player = this.registerPlayer(data);
 				player.setIsOwnPlayer(true);
-				player.setServerState(data);
+			//	player.setServerState(data);
 				this.ownPlayer = player;
 
 				var handleCursorLine = function(e) {

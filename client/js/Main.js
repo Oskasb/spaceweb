@@ -27,6 +27,13 @@ require([
 
 	var socketMsgUrl = './../../../Shared/io/SocketMessages.js';
 
+	var loadUrls = [
+		'./../../../Shared/io/SocketMessages.js',
+		'./../../../Shared/MATH.js',
+		'./../../../Shared/MODEL.js',
+		'./../../../Shared/GAME.js'
+	];
+
 	var loadJS = function(url, implementationCode, location){
 		//url is URL of external file, implementationCode is the code
 		//to be called from the file, location is the location to
@@ -36,14 +43,19 @@ require([
 		scriptTag.src = url;
 
 		scriptTag.onload = implementationCode;
-	//	scriptTag.onreadystatechange = implementationCode;
+		//	scriptTag.onreadystatechange = implementationCode;
 
 		location.appendChild(scriptTag);
 	};
 
+	var count = 0;
 	var filesLoaded = function() {
-		client.initiateClient(new SocketMessages());
-		evt.fire(evt.list().CLIENT_READY, client);
+		count++;
+		if (count == loadUrls.length) {
+			client.initiateClient(new SocketMessages());
+			evt.fire(evt.list().CLIENT_READY, client);
+		}
+
 	};
 
 	GameScreen.registerAppContainer(document.body);
@@ -51,8 +63,9 @@ require([
 	var client = new Client(new PointerCursor(new InputState()));
 
 
-	loadJS(socketMsgUrl, filesLoaded, document.body);
-
+	for (var i = 0; i < loadUrls.length; i++) {
+		loadJS(loadUrls[i], filesLoaded, document.body);
+	}
 
 
 });

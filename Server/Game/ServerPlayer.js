@@ -1,23 +1,17 @@
 ServerPlayer = function(clientId, client) {
+
+	this.calcVec = new MATH.Vec3(0, 0, 0);
+
 	this.id = 'player_'+clientId;
 	this.client = client;
 	this.clientId = clientId;
 
-	this.inputVector = [0, 0, 0];
+	this.inputVector = new MATH.Vec3(0, 0, 0);
 
-	this.spatial = {
-		pos : [1000, 9999, 100],
-		vel : [Math.random()*0.1, Math.random()*0.1, 0]
-	};
+	this.spatial = new MODEL.Spatial();
 
-	this.states = {
-		MOVING:'MOVING',
-		TELEPORT:'TELEPORT',
-		KILLED:'KILLED',
-		REMOVED:'REMOVED'
-	};
 
-	this.state = this.states.TELEPORT;
+	this.state = MODEL.ENUMS.PieceStates.TELEPORT;
 
 	this.inputCountdown = 5;
 
@@ -25,12 +19,22 @@ ServerPlayer = function(clientId, client) {
 	this.serverTime = this.creationTime;
 	this.timeDelta = 0;
 	this.timeSinceInput = 1;
+	var _this = this;
+	setTimeout(function() {
+		_this.teleportRandom();
+	}, 50)
+
+};
+
+ServerPlayer.prototype.teleportRandom = function() {
+	this.state = MODEL.ENUMS.PieceStates.TELEPORT;
+	this.spatial.vel.scale(0);
+	this.spatial.pos.setXYZ(Math.random()*100, Math.random()*100, 0);
 };
 
 
-
 ServerPlayer.prototype.makePacket = function() {
-	return {id:"playerUpdate", data:{playerId:this.id, spatial:this.spatial, timeDelta:this.timeDelta, state:this.state}};
+	return {id:"playerUpdate", data:{playerId:this.id, spatial:this.spatial.getSendSpatial(), timeDelta:this.timeDelta, state:this.state}};
 };
 
 ServerPlayer.prototype.updatePlayerSpatial = function(dt) {
@@ -38,21 +42,19 @@ ServerPlayer.prototype.updatePlayerSpatial = function(dt) {
 
 	var timeFactor = Math.min(1, (1 / this.timeSinceInput*0.93));
 
-	this.spatial.vel[0] *= timeFactor;
-	this.spatial.vel[1] *= timeFactor;
+	this.spatial.vel.scale(timeFactor);
+	this.calcVec.setVec(this.spatial.vel);
+	this.calcVec.scale(15 * dt);
+	this.spatial.pos.addVec(this.calcVec);
 
-	this.spatial.pos[0] += this.spatial.vel[0] * 15 * dt;
-	this.spatial.pos[1] += this.spatial.vel[1] * 15 * dt;
 };
 
 
 ServerPlayer.prototype.setInputVector = function(fromX, fromY, toX, toY) {
 	this.timeSinceInput = 0;
-	this.inputVector[0] = toX - fromX;
-	this.inputVector[1] = toY - fromY;
-
-	this.spatial.vel[0] = Math.clamp(this.inputVector[0], -1, 1);
-	this.spatial.vel[1] = Math.clamp(this.inputVector[1], -1, 1);
+	this.inputVector.setX(Math.clamp((toX - fromX), -1, 1));
+	this.inputVector.setY(Math.clamp((toY - fromY), -1, 1));
+	this.spatial.vel.setVec(this.inputVector);
 };
 
 
@@ -62,16 +64,9 @@ ServerPlayer.prototype.updatePlayer = function(dt, serverTime) {
 	this.serverTime = serverTime;
 	this.updatePlayerSpatial(dt);
 
-	this.state = this.states.MOVING;
-	if (this.spatial.pos[0] < 0 || this.spatial.pos[0] > 100 || this.spatial.pos[1] < 0 || this.spatial.pos[1] > 100) {
-
-		this.state = this.states.TELEPORT;
-
-		this.spatial.vel[0] = 0;
-		this.spatial.vel[1] = 0;
-
-		this.spatial.pos[0] = Math.random()*100;
-		this.spatial.pos[1] = Math.random()*100;
+	this.state = MODEL.ENUMS.PieceStates.MOVING;
+	if (this.spatial.pos.getX() < 0 || this.spatial.pos.getX() > 100 || this.spatial.pos.getY() < 0 || this.spatial.pos.getY() > 100) {
+		 this.teleportRandom();
 	}
 
 	this.client.sendToClient(this.makePacket());

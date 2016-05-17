@@ -29,8 +29,8 @@ ServerGameMain.prototype.addPlayer = function(player) {
 ServerGameMain.prototype.playerDicconected = function(clientId) {
 	var player = this.players['player_'+clientId];
 
-	player.state = player.states.REMOVED;
-	var packet =  player.makePacket()
+	player.state = MODEL.ENUMS.PieceStates.REMOVED;
+	var packet =  player.makePacket();
 
 	delete this.players['player_'+clientId];
 

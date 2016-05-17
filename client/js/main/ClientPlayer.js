@@ -79,6 +79,8 @@ define([
 
 		ClientPlayer.prototype.setServerState = function(serverState) {
 
+			document.querySelector('#monitor').innerHTML = 'Server State: '+JSON.stringify(serverState);
+
 			if (serverState.state == 'REMOVED') {
 				this.playerRemove();
 				return;
