@@ -36,7 +36,6 @@ define([
 				pos.y = pointer.y;
 			}
 
-
 			var action = (evt.args(e).action[0]+evt.args(e).action[1])*0.4  + 1;
 
 			var transform = "translate3d("+pos.x+"px, "+pos.y+"px, 0px) scale3d("+action+","+action+", 1)";
@@ -52,18 +51,12 @@ define([
 			pos.y = args.fromY;
 
 			connector.renderVector(args.fromX, args.fromY, args.toX, args.toY, args.w, args.zrot)
-
 		};
-
 
 		var DomCursor = function(pointerCursor) {
 			this.pointerCursor = pointerCursor;
 
 		};
-
-
-
-
 
 		var handleClientReady = function() {
 			cursor = DomUtils.createDivElement(GameScreen.getElement(), 'cursor', '', 'pointer');

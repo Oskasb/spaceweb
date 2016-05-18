@@ -7,15 +7,6 @@ if(typeof(MODEL) == "undefined"){
 
 (function(MODEL){
 
-	MODEL.ENUMS = {};
-
-	MODEL.ENUMS.PieceStates = {
-		MOVING:'MOVING',
-		TELEPORT:'TELEPORT',
-		KILLED:'KILLED',
-		REMOVED:'REMOVED'
-	};
-
 	MODEL.Spatial = function() {
 		this.sendData = {
 			pos:[0, 0, 0],
@@ -30,7 +21,7 @@ if(typeof(MODEL) == "undefined"){
 	MODEL.Spatial.prototype.interpolateTowards = function(start, target, fraction) {
 		this.pos.interpolateFromTo(start.pos, target.pos, fraction);
 		this.vel.interpolateFromTo(start.vel, target.vel, fraction);
-		this.rot.interpolateFromTo(start.rot, target.rot, fraction);
+		this.rot.radialLerp(start.rot, target.rot, fraction);
 	};
 
 	MODEL.Spatial.prototype.setSendData = function(sendData) {
@@ -58,6 +49,10 @@ if(typeof(MODEL) == "undefined"){
 
 	MODEL.Spatial.prototype.accelerate = function(factor) {
 		this.vel.scale(factor);
+	};
+
+	MODEL.Spatial.prototype.setRotVec = function(vec) {
+		this.rot.setVec(vec);
 	};
 
 	MODEL.Spatial.prototype.setRotZ = function(z) {
@@ -120,7 +115,9 @@ if(typeof(MODEL) == "undefined"){
 		return this.pos.getX() < xMin || this.pos.getX() > xMax || this.pos.getY() < yMin || this.pos.getY() > yMax;
 	};
 
-	MODEL.Temporal = function() {
+	MODEL.Temporal = function(creationTime) {
+		this.creationTime = creationTime;
+		this.simulationTime = this.creationTime;
 		this.timeDelta = 1;
 		this.tickCountUp = 1;
 		this.fraction = 1;
@@ -133,10 +130,45 @@ if(typeof(MODEL) == "undefined"){
 	};
 
 	MODEL.Temporal.prototype.predictUpdate = function(time) {
+		this.simulationTime += time;
 		this.timeDelta = time;
 		this.tickCountUp = 0;
 	};
 
+
+	MODEL.InputState = function() {
+		this.steering = new MATH.Vec3(0, 0, 0);
+		this.throttle = 0;
+		this.turnTarget = 0;
+	};
+
+	MODEL.InputState.prototype.setThrottle = function(throttle) {
+		this.throttle = throttle;
+	};
+
+	MODEL.InputState.prototype.getThrottle = function() {
+		return this.throttle;
+	};
+
+	MODEL.InputState.prototype.setSteeringX = function(x) {
+		this.steering.setX(x);
+	};
+
+	MODEL.InputState.prototype.setSteeringY = function(y) {
+		this.steering.setY(y);
+	};
+
+	MODEL.InputState.prototype.setSteeringZ = function(z) {
+		this.steering.setZ(z);
+	};
+
+	MODEL.InputState.prototype.getSteeringAmplitude = function() {
+		return this.steering.getLength();
+	};
+
+	MODEL.InputState.prototype.getSteering = function(vec) {
+		vec.setVec(this.steering);
+	};
 
 
 })(MODEL);

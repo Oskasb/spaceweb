@@ -13,7 +13,7 @@ define([
 		) {
 
 		var DomVector = function(parentElem) {
-			this.vector = DomUtils.createDivElement(parentElem, 'vector', '', 'connector');
+			this.vector = DomUtils.createDivElement(parentElem, parentElem.id+'_vector', '', 'connector');
 		};
 
 		DomVector.prototype.lineDistance = function(fromX, fromY, toX, toY) {
@@ -43,8 +43,3 @@ define([
 		return DomVector;
 
 	});
-
-
-
-
-

@@ -3,7 +3,7 @@
 
 
 ServerGameMain = function(clients) {
-	this.serverTime = new Date().getTime();
+	this.simulationTime = new Date().getTime();
 	this.timeDelta = 0;
 	this.players = {};
 	this.clients = clients;
@@ -26,11 +26,11 @@ ServerGameMain.prototype.addPlayer = function(player) {
 	this.players[player.id] = player;
 };
 
-ServerGameMain.prototype.playerDicconected = function(clientId) {
+ServerGameMain.prototype.playerDiconected = function(clientId) {
 	var player = this.players['player_'+clientId];
 	if (!player) return;
 
-	player.state = MODEL.ENUMS.PieceStates.REMOVED;
+	player.piece.setState(GAME.ENUMS.PieceStates.REMOVED);
 	var packet =  player.makePacket();
 
 	delete this.players['player_'+clientId];
@@ -71,16 +71,16 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 ServerGameMain.prototype.tickGame = function(playerUpdateCallback) {
 	this.currentTime = new Date().getTime();
 
-	this.timeDelta = (this.currentTime - this.serverTime) * 0.001;
+	this.timeDelta = (this.currentTime - this.simulationTime) * 0.001;
 
 	for (var key in this.players) {
-		this.players[key].updatePlayer(this.timeDelta, this.serverTime, playerUpdateCallback);
+		this.players[key].updatePlayer(this.timeDelta, this.simulationTime, playerUpdateCallback);
 
 		for (var index in this.players) {
 			this.players[index].client.sendToClient(this.players[key].makePacket());
 		}
 	}
 
-	this.serverTime = this.currentTime;
+	this.simulationTime = this.currentTime;
 };
 

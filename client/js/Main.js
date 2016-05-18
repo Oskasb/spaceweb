@@ -3,12 +3,14 @@
 var gameUtil;
 
 require.config({
-    paths: {
+	paths: {
 		shared:'./../../../Shared'
-    }
+	}
 });
 
-
+var DEBUG_MONITOR = function(text) {
+	document.querySelector('#monitor').innerHTML = text;
+};
 
 require([
 	'application/Client',
@@ -24,8 +26,6 @@ require([
 	evt
 	) {
 
-
-	var socketMsgUrl = './../../../Shared/io/SocketMessages.js';
 	GameScreen.registerAppContainer(document.body);
 
 	var loadUrls = [

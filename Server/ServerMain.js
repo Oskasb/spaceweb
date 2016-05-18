@@ -44,7 +44,7 @@ ServerMain.prototype.initServerConnection = function(wss) {
 	var serverGameMain = this.serverGameMain;
 
 	var removePlayerCallback = function(clientId) {
-		serverGameMain.playerDicconected(clientId);
+		serverGameMain.playerDiconected(clientId);
 	};
 
 	this.serverConnection.setupSocket(wss, this.dataHub, this.clients, removePlayerCallback);

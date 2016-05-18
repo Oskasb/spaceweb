@@ -141,6 +141,20 @@ if(typeof(MATH) == "undefined"){
 		return this;
 	};
 
+
+	MATH.radialLerp = function(a, b, w) {
+		var cs = (1-w)*Math.cos(a) + w*Math.cos(b);
+		var sn = (1-w)*Math.sin(a) + w*Math.sin(b);
+		return Math.atan2(sn,cs);
+	};
+
+	MATH.Vec3.prototype.radialLerp = function(start, end, frac) {
+		this.data[0] = MATH.radialLerp(start.data[0], end.data[0], frac);
+		this.data[1] = MATH.radialLerp(start.data[1], end.data[1], frac);
+		this.data[2] = MATH.radialLerp(start.data[2], end.data[2], frac);
+	};
+
+
 	MATH.Vec3.prototype.scale = function(scale) {
 		this.data[0] *= scale;
 		this.data[1] *= scale;

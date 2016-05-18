@@ -5,32 +5,36 @@ define([
 	'Events',
 	'ui/GameScreen',
 	'ui/DomUtils',
-	'ui/DomVector'
+	'ui/DomVector',
+	'ui/DomProgress'
 ],
 	function(
 		evt,
 		GameScreen,
 		DomUtils,
-		DomVector
+		DomVector,
+		DomProgress
 		) {
 
 		var parent = document.getElementById('game_window');
 
-		var DomPlayer = function(player) {
-			this.id = player.playerId;
-			this.player = player;
+		var DomPlayer = function(piece) {
+			this.id = piece.id;
+			this.piece = piece;
 			this.vel = [];
 			this.pos = [];
+			this.rot = [];
 			this.domRoot = DomUtils.createDivElement(parent, this.id, '', 'point');
 			this.domHull = DomUtils.createDivElement(this.domRoot, 'hull_'+this.id, this.id, 'dom_player');
 			this.inputVector = new DomVector(GameScreen.getElement());
-			this.trafficPredictor = DomUtils.createDivElement(GameScreen.getElement(), this.id+'_prg', '', 'progress');
+
+			this.trafficPredictor = new DomProgress(this.domRoot);
 
 			var _this = this;
 			setTimeout(function() {
 				_this.domRoot.appendChild(_this.domHull);
 				_this.domRoot.appendChild(_this.inputVector.vector);
-				_this.domHull.appendChild(_this.trafficPredictor);
+				_this.domRoot.appendChild(_this.trafficPredictor.root);
 			},1)
 
 		};
@@ -46,16 +50,28 @@ define([
 
 		DomPlayer.prototype.updateDomPlayer = function() {
 
-			this.player.spatial.getVelArray(this.vel);
-			this.player.spatial.getPosArray(this.pos);
+			this.piece.spatial.getVelArray(this.vel);
+			this.piece.spatial.getPosArray(this.pos);
+			this.piece.spatial.getRotArray(this.rot);
+
+			DEBUG_MONITOR(this.rot)
 
 			this.inputVector.renderBetween(0, 0, this.vel[0]*30, this.vel[1]*30);
-			this.trafficPredictor.style.width = 100 * this.player.temporal.fraction + '%';
+
+			this.trafficPredictor.setProgress(this.piece.temporal.fraction);
+
+
 
 
 			var transform = "translate3d("+this.pos[0]*0.01*GameScreen.getWidth()+"px, "+this.pos[1]*0.01*GameScreen.getHeight()+"px, 0px)";
 
-			DomUtils.applyElementTransform(this.domRoot, transform)
+			DomUtils.applyElementTransform(this.domRoot, transform);
+
+
+			var rot = "rotate3d(0, 0, 1, "+this.rot[2]+"rad)";
+
+			DomUtils.applyElementTransform(this.domHull, rot)
+
 
 		};
 
