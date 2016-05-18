@@ -54,7 +54,7 @@ define([
 			this.piece.spatial.getPosArray(this.pos);
 			this.piece.spatial.getRotArray(this.rot);
 
-			DEBUG_MONITOR(this.rot)
+		//	DEBUG_MONITOR(this.rot)
 
 			this.inputVector.renderBetween(0, 0, this.vel[0]*30, this.vel[1]*30);
 
