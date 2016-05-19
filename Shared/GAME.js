@@ -10,6 +10,7 @@ if(typeof(GAME) == "undefined"){
 	GAME.ENUMS = {};
 
 	GAME.ENUMS.ClientStates = {
+		DISCONNECTED:'DISCONNECTED',
 		LOADING:'LOADING',
 		READY:'READY',
 		PLAYING:'PLAYING',
@@ -32,6 +33,10 @@ if(typeof(GAME) == "undefined"){
 		this.targetSpatial = new MODEL.Spatial();
 		this.startSpatial = new MODEL.Spatial();
 		this.temporal = new MODEL.Temporal(creationTime);
+
+		this.deceleration = 0.95;
+		this.radialVelocityClamp = 0.5;
+		this.radialLerpFactor = 0.3;
 	};
 
 	GAME.Piece.prototype.setPos = function(x, y, z) {
@@ -62,18 +67,26 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.Piece.prototype.makePacket = function() {
-		return {id:"playerUpdate", data:{playerId:this.id, spatial:this.spatial.getSendSpatial(), timeDelta:this.temporal.timeDelta, state:this.state}};
+		return {id:"playerUpdate", data:{playerId:this.id, spatial:this.spatial.getSendSpatial(), trigger:this.inputState.getTrigger(), timeDelta:this.temporal.timeDelta, state:this.state}};
 	};
 
 	GAME.Piece.prototype.updatePieceFrame = function(tpf) {
 		this.spatial.interpolateTowards(this.startSpatial, this.targetSpatial, this.temporal.getFraction(tpf));
 	};
 
+	GAME.Piece.prototype.setInputTrigger = function(bool) {
+		this.inputState.setTrigger(bool);
+	};
+
 	GAME.Piece.prototype.setInputVector = function(fromX, fromY, toX, toY) {
 		this.timeSinceInput = 0;
 		this.inputState.setSteeringX(Math.clamp((toX - fromX), -1, 1));
 		this.inputState.setSteeringY(Math.clamp((toY - fromY), -1, 1));
-		if (this.inputState.getSteeringAmplitude() > 0.1) {
+		this.inputState.setThrottle(Math.ceil(MATH.lineDistance(fromX, fromY, toX, toY), 1));
+
+		//		this.inputState.setThrottle(MATH.lineDistance(fromX, fromY, toX, toY));
+
+		if (this.inputState.getThrottle() > 0.1) {
 			this.inputState.setSteeringZ(Math.atan2(toX - fromX, fromY - toY));
 		}
 
@@ -89,13 +102,22 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.updatePlayerSpatial = function(dt) {
 		this.timeDelta = dt;
 
-		var timeFactor = Math.min(1, (1 / this.timeSinceInput*0.93));
+		var timeFactor = Math.min(1, (1 / this.timeSinceInput*this.deceleration));
 
 		this.inputState.getSteering(this.calcVec);
-		this.spatial.setRotVec(this.calcVec);
 
-		this.calcVec.scale(timeFactor);
-		this.calcVec.scale(15 * dt);
+		this.spatial.setRotVelVec(this.calcVec);
+		this.spatial.getRotVelVec().subVec(this.spatial.getRotVec());
+
+		this.spatial.getRotVelVec().setZ(MATH.radialClamp(this.spatial.getRotVelVec().getZ(), -this.radialVelocityClamp, this.radialVelocityClamp));
+
+		this.spatial.getRotVelVec().radialLerp(this.spatial.getRotVelVec(), this.calcVec, dt*this.radialLerpFactor);
+
+		this.calcVec.setXYZ(Math.cos(this.spatial.getRotVec().getZ() -Math.PI*0.5), Math.sin(this.spatial.getRotVec().getZ() -Math.PI*0.5), 0);
+
+	//	this.calcVec.scale(timeFactor);
+		this.calcVec.scale(this.inputState.getThrottle() * 2 * dt * timeFactor);
+
 		this.spatial.setVelVec(this.calcVec);
 
 		this.spatial.update();

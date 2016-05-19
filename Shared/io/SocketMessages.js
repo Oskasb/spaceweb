@@ -27,11 +27,10 @@
 
 	var Messages = {
 		InputVector:{source:'InputVector', method:'playerInput', target:'gameMain', reflect:false},
-
+		InputFire:{source:'InputFire', method:'playerInput', target:'gameMain', reflect:false},
 		RegisterPlayer:{source:'ServerGameMain', method:'registerPlayer', target:'gameMain', reflect:true},
 		playerUpdate:{source:'', method:'', target:'gameMain', reflect:true},
 		clientConnected:{source:'Clients', method:'registerConnection', target:'clientRegistry', reflect:true},
-
 		RegisterClient:{source:'Clients', method:'registerClient', target:'clientRegistry', reflect:true},
 		ServerWorld:{source:'ServerWorld', method:'fetch', target:'clientWorld', reflect:true},
 		ping:{source:'ping', method:'ping', target:'timeTracker', reflect:true}
@@ -39,29 +38,21 @@
 
 
 	SocketMessages = function() {
-
 		this.messages = {};
-
 		for (var key in Messages) {
 			this.messages[key] = new Message(key, Messages[key])
 		}
-
 	};
 
 
 	SocketMessages.prototype.setMessage = function(id, data) {
-
 		this.message[id] = data;
-
 	};
 
 
 	SocketMessages.prototype.handleMessage = function(id, data) {
-
 		console.log('handleMessage', id);
-
 		this.message[id] = call(data);
-
 	};
 
 

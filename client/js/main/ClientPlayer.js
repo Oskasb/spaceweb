@@ -55,6 +55,11 @@ define([
 
 		ClientPlayer.prototype.setServerState = function(serverState) {
 
+			if (serverState.trigger) {
+			//	this.piece.notifyTrigger(true);
+				this.domPlayer.renderStateText("Pew!");
+			}
+
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
 				this.playerRemove();
 				return;

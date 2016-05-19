@@ -46,15 +46,36 @@ ServerGameMain.prototype.playerInput = function(data) {
 
 	var player =  this.players[data.playerId];
 
+
+
 	if (data.vector) {
 		player.setInputVector(data.vector.fromX, data.vector.fromY, data.vector.toX,data.vector.toY);
 	}
 
-	return player.makePacket();
+	if (data.fire) {
+		player.setInputTrigger(true);
+
+	//	var timeDelta = (new Date().getTime() - this.simulationTime) * 0.001;
+	//	player.updatePlayer(this.timeDelta, this.simulationTime);
+		var packet = player.makePacket();
+		for (var index in this.players) {
+			this.players[index].client.sendToClient(packet);
+		}
+
+		player.setInputTrigger(false);
+
+	}
+
+//	return player.makePacket();
 
 };
 
 ServerGameMain.prototype.registerPlayer = function(data) {
+
+	if (this.players['player_'+data.clientId]) {
+		console.log("Player Already Exists", data.clientId);
+		return this.players['player_'+data.clientId].makePacket();
+	};
 
 	var player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId));
 
@@ -68,13 +89,13 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 
 };
 
-ServerGameMain.prototype.tickGame = function(playerUpdateCallback) {
+ServerGameMain.prototype.tickGame = function() {
 	this.currentTime = new Date().getTime();
 
 	this.timeDelta = (this.currentTime - this.simulationTime) * 0.001;
 
 	for (var key in this.players) {
-		this.players[key].updatePlayer(this.timeDelta, this.simulationTime, playerUpdateCallback);
+		this.players[key].updatePlayer(this.timeDelta, this.simulationTime);
 
 		for (var index in this.players) {
 			this.players[index].client.sendToClient(this.players[key].makePacket());

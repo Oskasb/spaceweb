@@ -54,6 +54,18 @@ div.pointer {
 }
 
 
+div.piece_state_hint {
+    position: absolute;
+    top: -0px;
+    left: -0px;
+    width: 0px;
+    height: 0px;
+    z-index: 10;
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
+    transition:color 1s ease-out;
+}
+
 div.point {
     position: absolute;
     top: 0px;

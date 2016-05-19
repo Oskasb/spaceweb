@@ -49,8 +49,7 @@ define([
 			var args = evt.args(e);
 			pos.x = args.fromX;
 			pos.y = args.fromY;
-
-			connector.renderVector(args.fromX, args.fromY, args.toX, args.toY, args.w, args.zrot)
+			connector.renderBetween(args.fromX, args.fromY, args.toX, args.toY);
 		};
 
 		var DomCursor = function(pointerCursor) {

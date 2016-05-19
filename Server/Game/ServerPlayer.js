@@ -13,6 +13,10 @@ ServerPlayer.prototype.makePacket = function() {
 	return this.piece.makePacket();
 };
 
+ServerPlayer.prototype.setInputTrigger = function(bool) {
+	this.piece.setInputTrigger(bool)
+};
+
 ServerPlayer.prototype.setInputVector = function(fromX, fromY, toX, toY) {
 	this.piece.setInputVector(fromX, fromY, toX, toY)
 };

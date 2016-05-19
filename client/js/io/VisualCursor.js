@@ -47,16 +47,19 @@ define([
 		VisualCursor.prototype.transformConnector = function(x1, y1, x2, y2, distance, zrot) {
 			var width = GameScreen.getWidth();
 			var height = GameScreen.getHeight();
-			evt.fire(evt.list().CURSOR_LINE, {
+			if (distance > 5) {
+				evt.fire(evt.list().CURSOR_LINE, {
 
-				fromX:x1,
-				fromY:y1,
-				toX:x2,
-				toY:y2,
-				w: 2*1+(distance+0.4),
-				zrot:zrot
+					fromX:x1,
+					fromY:y1,
+					toX:x2,
+					toY:y2,
+					w: 2*1+(distance+0.4),
+					zrot:zrot
 
-			});
+				});
+			}
+
 		};
 
 		VisualCursor.prototype.showDragToPoint = function(x, y, distance, angle) {
@@ -134,9 +137,32 @@ define([
 			});
 		};
 
+		var timeoutTrigger;
+		var fireOnRelease
 		VisualCursor.prototype.visualizeMouseAction = function(action) {
 			this.renderPointer.action = action;
-		//	evt.fire(evt.list().CURSOR_MOVE, this.renderPointer);
+
+			if (action[0] == 1) {
+				fireOnRelease = true;
+
+				timeoutTrigger = setTimeout(function() {
+					fireOnRelease = false;
+				}, 100);
+
+			}
+
+			if (action[0] == 0) {
+
+				if (fireOnRelease) {
+					evt.fire(evt.list().CURSOR_RELEASE_FAST, this.renderPointer);
+					clearTimeout(timeoutTrigger);
+				}
+				fireOnRelease = false
+			}
+
+
+		//	DEBUG_MONITOR(JSON.stringify(this.renderPointer))
+			evt.fire(evt.list().CURSOR_PRESS, this.renderPointer);
 			/*
 			this.vectorColor[0]=0.5+action[0]*0.5;
 			this.vectorColor[1]=0.5+action[1]*0.5;

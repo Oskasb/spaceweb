@@ -7,6 +7,32 @@ if(typeof(MATH) == "undefined"){
 
 (function(MATH){
 
+	MATH.TWO_PI = 2.0 * Math.PI;
+
+	MATH.moduloPositive = function (value, size) {
+		var wrappedValue = value % size;
+		wrappedValue += wrappedValue < 0 ? size : 0;
+		return wrappedValue;
+	};
+
+	MATH.lineDistance = function(fromX, fromY, toX, toY) {
+		return Math.sqrt((fromX - toX)*(fromX - toX) + (fromY - toY)*(fromY - toY));
+	};
+
+	MATH.radialClamp = function(value, min, max) {
+
+		var zero = (min + max)/2 + ((max > min) ? Math.PI : 0);
+		var _value = MATH.moduloPositive(value - zero, MATH.TWO_PI);
+		var _min = MATH.moduloPositive(min - zero, MATH.TWO_PI);
+		var _max = MATH.moduloPositive(max - zero, MATH.TWO_PI);
+
+		if (value < 0 && min > 0) { min -= MATH.TWO_PI; }
+		else if (value > 0 && min < 0) { min += MATH.TWO_PI; }
+		if (value > MATH.TWO_PI && max < MATH.TWO_PI) { max += MATH.TWO_PI; }
+
+		return _value < _min ? min : _value > _max ? max : value;
+	};
+
 
 	MATH.Vec2 = function(x, y) {
 		this.data = new Float32Array([x, y]);

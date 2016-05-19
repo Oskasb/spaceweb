@@ -1,7 +1,7 @@
 define(["EventList"], function(eventList) {
 
     var element = document.createElement('div');
-    var events = {};
+    var events = [];
 
     var eventException = function(message) {
         this.name = "EventArgumentException";
@@ -45,14 +45,14 @@ define(["EventList"], function(eventList) {
         element.dispatchEvent(generateEvent(event, arguments));
     };
 
-    var registerListener = function(event, onFireEvent) {
-        events[event.type] = onFireEvent;
-        element.addEventListener(event.type, onFireEvent);
+    var registerListener = function(event, callback) {
+    //    events.push(callback);
+        element.addEventListener(event.type, callback);
     };
 
-    var removeListener = function(event) {
-        element.removeEventListener(event.type, events[event.type], null);
-        delete events[event.type]
+    var removeListener = function(event, callback) {
+	//	var evt = events.splice(events.indexOf(callback), 1)[0];
+		element.removeEventListener(event.type, callback, null)
     };
 
 

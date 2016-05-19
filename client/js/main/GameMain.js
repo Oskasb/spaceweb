@@ -2,18 +2,28 @@
 
 
 define([
-	     'main/ClientPlayer',
+	'main/ClientPlayer',
 	'Events'
 ],
 	function(
 		ClientPlayer,
-			evt
+		evt
 		) {
 
 
 		var GameMain = function() {
 			this.players = {};
 			this.ownPlayer;
+
+			var players = this.players;
+			var removeAllPlayers = function() {
+				for (var key in players) {
+					players[key].playerRemove();
+				}
+			};
+
+			evt.on(evt.list().CONNECTION_CLOSED, removeAllPlayers);
+
 		};
 
 
@@ -35,9 +45,8 @@ define([
 		};
 
 		GameMain.prototype.playerUpdate = function(data) {
-			var data = data;
-
 			if (this.players[data.playerId]) {
+
 				this.players[data.playerId].setServerState(data);
 			} else {
 				console.log("Register New Player from update", data.playerId, this.players);
@@ -49,6 +58,7 @@ define([
 		GameMain.prototype.RegisterPlayer = function(msg) {
 			var data = msg.data;
 			console.log("Server Player: ", data);
+			var _this = this;
 
 			if (this.players[data.playerId]) {
 				console.log("Player already registered", data.playerId, this.players)
@@ -68,9 +78,25 @@ define([
 					};
 
 					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:vector, playerId:player.getPieceId()}});
-
 				};
+
+
+				var handleFastClick = function(e) {
+
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{fire:true, playerId:player.getPieceId()}});
+				};
+
+				evt.on(evt.list().CURSOR_RELEASE_FAST, handleFastClick);
+
+
 				evt.on(evt.list().CURSOR_LINE, handleCursorLine);
+
+				var disconnect = function(e) {
+					evt.removeListener(evt.list().CURSOR_LINE, handleCursorLine);
+					evt.removeListener(evt.list().CURSOR_RELEASE_FAST, handleFastClick);
+				};
+
+				evt.on(evt.list().CONNECTION_CLOSED, disconnect);
 			}
 		};
 
@@ -80,9 +106,5 @@ define([
 			}
 		};
 
-
-
-
 		return GameMain;
-
 	});

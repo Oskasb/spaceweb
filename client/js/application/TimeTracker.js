@@ -1,7 +1,6 @@
 define(['Events'], function(evt) {
 
-	var TimeTracker = function(connection) {
-		this.connection = connection;
+	var TimeTracker = function() {
 		this.startTime = new Date().getTime();
 		this.lastFrameTime = 0;
 		this.frameTime = 0;

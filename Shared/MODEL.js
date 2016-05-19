@@ -11,29 +11,34 @@ if(typeof(MODEL) == "undefined"){
 		this.sendData = {
 			pos:[0, 0, 0],
 			vel:[0, 0, 0],
-			rot:[0, 0, 0]
+			rot:[0, 0, 0],
+			rotVel:[0, 0, 0]
 		};
 		this.pos = new MATH.Vec3(0, 0, 0);
 		this.vel = new MATH.Vec3(0, 0, 0);
 		this.rot = new MATH.Vec3(0, 0, 0);
+		this.rotVel = new MATH.Vec3(0, 0, 0);
 	};
 
 	MODEL.Spatial.prototype.interpolateTowards = function(start, target, fraction) {
 		this.pos.interpolateFromTo(start.pos, target.pos, fraction);
 		this.vel.interpolateFromTo(start.vel, target.vel, fraction);
 		this.rot.radialLerp(start.rot, target.rot, fraction);
+		this.rotVel.radialLerp(start.rotVel, target.rotVel, fraction);
 	};
 
 	MODEL.Spatial.prototype.setSendData = function(sendData) {
 		this.pos.setXYZ(sendData.pos[0] , sendData.pos[1], sendData.pos[2]);
 		this.vel.setXYZ(sendData.vel[0] , sendData.vel[1], sendData.vel[2]);
 		this.rot.setXYZ(sendData.rot[0] , sendData.rot[1], sendData.rot[2]);
+		this.rotVel.setXYZ(sendData.rotVel[0] , sendData.rotVel[1], sendData.rotVel[2]);
 	};
 
 	MODEL.Spatial.prototype.getSendSpatial = function() {
 		this.pos.getArray(this.sendData.pos);
 		this.vel.getArray(this.sendData.vel);
 		this.rot.getArray(this.sendData.rot);
+		this.rotVel.getArray(this.sendData.rotVel);
 		return this.sendData;
 	};
 
@@ -41,14 +46,28 @@ if(typeof(MODEL) == "undefined"){
 		this.pos.setVec(spatial.pos);
 		this.vel.setVec(spatial.vel);
 		this.rot.setVec(spatial.rot);
+		this.rotVel.setVec(spatial.rotVel);
 	};
 
 	MODEL.Spatial.prototype.stop = function() {
 		this.vel.scale(0);
+		this.rotVel.scale(0);
 	};
 
 	MODEL.Spatial.prototype.accelerate = function(factor) {
 		this.vel.scale(factor);
+	};
+
+	MODEL.Spatial.prototype.setRotVelVec = function(vec) {
+		this.rotVel.setVec(vec);
+	};
+
+	MODEL.Spatial.prototype.getRotVelVec = function() {
+		return this.rotVel;
+	};
+
+	MODEL.Spatial.prototype.getRotVec = function() {
+		return this.rot;
 	};
 
 	MODEL.Spatial.prototype.setRotVec = function(vec) {
@@ -91,6 +110,10 @@ if(typeof(MODEL) == "undefined"){
 		this.rot.getArray(array);
 	};
 
+	MODEL.Spatial.prototype.getRotVelArray = function(array) {
+		this.rotVel.getArray(array);
+	};
+
 	MODEL.Spatial.prototype.setVelXYZ = function(x, y, z) {
 		this.vel.setXYZ(x, y, z);
 	};
@@ -98,6 +121,11 @@ if(typeof(MODEL) == "undefined"){
 	MODEL.Spatial.prototype.getVelArray = function(array) {
 		this.vel.getArray(array);
 	};
+
+	MODEL.Spatial.prototype.getVelVec = function() {
+		return this.vel;
+	};
+
 
 	MODEL.Spatial.prototype.setVelVec = function(velVec) {
 		this.vel.setVec(velVec);
@@ -109,6 +137,7 @@ if(typeof(MODEL) == "undefined"){
 
 	MODEL.Spatial.prototype.update = function() {
 		this.pos.addVec(this.vel);
+		this.rot.addVec(this.rotVel);
 	};
 
 	MODEL.Spatial.prototype.isWithin = function(xMin, xMax, yMin, yMax) {
@@ -139,7 +168,15 @@ if(typeof(MODEL) == "undefined"){
 	MODEL.InputState = function() {
 		this.steering = new MATH.Vec3(0, 0, 0);
 		this.throttle = 0;
-		this.turnTarget = 0;
+		this.trigger = false;
+	};
+
+	MODEL.InputState.prototype.setTrigger = function(trigger) {
+		this.trigger = trigger;
+	};
+
+	MODEL.InputState.prototype.getTrigger = function() {
+		return this.trigger;
 	};
 
 	MODEL.InputState.prototype.setThrottle = function(throttle) {

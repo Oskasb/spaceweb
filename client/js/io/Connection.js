@@ -17,7 +17,7 @@ define(['Events'
 		};
 
 
-		Connection.prototype.setupSocket = function(connectedCallback) {
+		Connection.prototype.setupSocket = function(connectedCallback, errorCallback,  disconnectedCallback) {
 			var host = location.origin.replace(/^http/, 'ws');
 			var pings = 0;
 
@@ -29,8 +29,12 @@ define(['Events'
 			socket.responseCallbacks = {};
 
 			socket.onopen = function () {
-
 				connectedCallback();
+			};
+
+			socket.onclose = function () {
+				disconnectedCallback();
+				evt.removeListener(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
 			};
 
 			socket.onmessage = function (message) {
@@ -48,6 +52,7 @@ define(['Events'
 
 			socket.onerror = function (error) {
 				console.log('WebSocket error: ' + error);
+				errorCallback(error);
 			};
 
 
@@ -61,8 +66,6 @@ define(['Events'
 				}
 
 				socket.send(msg.make(args.data));
-
-
 			};
 
 			evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
