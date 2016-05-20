@@ -310,6 +310,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
     return {
         quickHideElement:quickHideElement,
         quickShowElement:quickShowElement,
+        applyElementStyleParams:applyElementStyleParams,
         performifyAllElements:performifyAllElements,
         setElementTransition:setElementTransition,
         applyElementTransform:applyElementTransform,

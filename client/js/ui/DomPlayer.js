@@ -2,19 +2,21 @@
 
 
 define([
-	'Events',
-	'ui/GameScreen',
-	'ui/DomUtils',
-	'ui/DomVector',
-	'ui/DomProgress'
-],
+		'Events',
+		'ui/GameScreen',
+		'ui/DomUtils',
+		'ui/DomVector',
+		'ui/DomProgress',
+		'ui/DomElement'
+	],
 	function(
 		evt,
 		GameScreen,
 		DomUtils,
 		DomVector,
-		DomProgress
-		) {
+		DomProgress,
+		DomElement
+	) {
 
 		var parent = document.getElementById('game_window');
 
@@ -26,22 +28,16 @@ define([
 			this.pos = [];
 			this.rot = [];
 			this.rotVel = [];
-			this.domRoot = DomUtils.createDivElement(parent, this.id, '', 'point');
+			this.domRoot = new DomElement(parent, 'point');
 
-			this.domHull = DomUtils.createDivElement(this.domRoot, 'hull_'+this.id, this.id, 'dom_player');
 
-			this.inputVector = new DomVector(GameScreen.getElement());
-			this.rotVelVector = new DomVector(GameScreen.getElement());
+			this.domHull = new DomElement(this.domRoot.element, 'ship_hull');
+			this.domHull.setText(this.id);
 
-			this.trafficPredictor = new DomProgress(this.domRoot);
+			this.inputVector = new DomVector(this.domRoot.element);
+			this.rotVelVector = new DomVector(this.domHull.element);
 
-			var _this = this;
-			setTimeout(function() {
-				_this.domRoot.appendChild(_this.domHull);
-				_this.domRoot.appendChild(_this.inputVector.vector);
-				_this.domHull.appendChild(_this.rotVelVector.vector);
-				_this.domRoot.appendChild(_this.trafficPredictor.root);
-			},1)
+			this.trafficPredictor = new DomProgress(this.domRoot.element);
 
 		};
 
@@ -51,28 +47,38 @@ define([
 		};
 
 		DomPlayer.prototype.setIsOwnPlayer = function(bool) {
-			DomUtils.addElementClass(this.domHull, 'my_color');
+			this.domHull.addStyleJsonId('ship_hull_friendly');
 		};
 
 
 		DomPlayer.prototype.renderStateText = function(text) {
 			this.dtcount++;
-			var domText = DomUtils.createDivElement(parent, this.id+'_txt'+this.dtcount, text, 'piece_state_hint');
-			      var posX = this.pos[0]*0.01*GameScreen.getWidth()-10 + Math.random()*20
-			      var posY = this.pos[1]*0.01*GameScreen.getHeight()-20 + Math.random()*40
 
+			var domText = new DomElement(parent, 'piece_state_hint');
+		//	domText.element.style.fontSize = "100px";
+			domText.setText(text);
+		//	var domText = DomUtils.createDivElement(parent, this.id+'_txt'+this.dtcount, text, 'piece_state_hint');
+			var posX = this.pos[0]*0.01*GameScreen.getWidth()-10 + Math.random()*20
+			var posY = this.pos[1]*0.01*GameScreen.getHeight()-20 + Math.random()*40
 
 			var transform = "translate3d("+posX+"px, "+posY+"px, 0px)";
-			DomUtils.applyElementTransform(domText, transform);
+
+			domText.applyTransform(transform);
+
+			domText.applyTransition("all 1s ease-out");
+			
 			setTimeout(function() {
 
-				domText.style.color = "#0ff";
+				var transform = "translate3d("+posX+100+"px, "+posY+"px, 0px)";
+
+				domText.applyTransform(transform);
+		//		domText.style.color = "#0ff";
 			}, 1);
 
 			domText.innerHTML = text;
 
 			setTimeout(function() {
-				DomUtils.removeElement(domText);
+				domText.removeElement();
 			}, 500);
 		};
 
@@ -97,12 +103,12 @@ define([
 
 			var transform = "translate3d("+this.pos[0]*0.01*GameScreen.getWidth()+"px, "+this.pos[1]*0.01*GameScreen.getHeight()+"px, 0px)";
 
-			DomUtils.applyElementTransform(this.domRoot, transform);
+			this.domRoot.applyTransform(transform);
 
 
 			var rot = "rotate3d(0, 0, 1, "+this.rot[2]+"rad)";
 
-			DomUtils.applyElementTransform(this.domHull, rot)
+			this.domHull.applyTransform(rot);
 
 
 		};

@@ -4,21 +4,23 @@
 define([
 	'Events',
 	'ui/GameScreen',
-	'ui/DomUtils'
+	'ui/DomUtils',
+	'ui/DomElement'
 ],
 	function(
 		evt,
 		GameScreen,
-		DomUtils
+		DomUtils,
+		DomElement
 		) {
 
 		var DomProgress = function(parentElem) {
-			this.root = DomUtils.createDivElement(parentElem, parentElem.id+'_progress_box', '', 'progress_box');
-			this.progress = DomUtils.createDivElement(this.root, this.root.id+'_bar', '', 'progress');
+			this.root = new DomElement(parentElem, 'progress_box');
+			this.progress = new DomElement(this.root.element, 'progress');
 		};
 
 		DomProgress.prototype.setProgress = function(fraction) {
-			this.progress.style.width = 100 * fraction + '%';
+			this.progress.element.style.width = 100 * fraction + '%';
 		};
 
 

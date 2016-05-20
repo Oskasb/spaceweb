@@ -4,7 +4,9 @@ var gameUtil;
 
 require.config({
 	paths: {
-		shared:'./../../../Shared'
+		shared:'./../../../Shared',
+		PipelineAPI:'./lib/data_pipeline/src/PipelineAPI',
+		data_pipeline:'./lib/data_pipeline/src/'
 	}
 });
 
@@ -17,13 +19,16 @@ require([
 	'ui/GameScreen',
 	'io/InputState',
 	'io/PointerCursor',
-	'Events'
+	'Events',
+	'PipelineAPI'
 ], function(
 	Client,
 	GameScreen,
 	InputState,
 	PointerCursor,
-	evt
+	evt,
+	PipelineAPI
+
 	) {
 
 	GameScreen.registerAppContainer(document.body);
@@ -35,6 +40,10 @@ require([
 		'./../../../Shared/GAME.js'
 	];
 
+	var jsonRegUrl = './client/json/config_urls.json';
+	window.jsonConfigUrls = 'client/json/';
+	
+	
 	var loadJS = function(url, implementationCode, location){
 		//url is URL of external file, implementationCode is the code
 		//to be called from the file, location is the location to
@@ -52,6 +61,9 @@ require([
 	var count = 0;
 	var filesLoaded = function() {
 		count++;
+
+		console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
+
 		if (count == loadUrls.length) {
 			var client = new Client(new PointerCursor(new InputState()));
 			client.initiateClient(new SocketMessages());
@@ -60,8 +72,34 @@ require([
 
 	};
 
+	var pipelineOn = true;
+
+	var dataPipelineSetup = {
+		"jsonPipe":{
+			"polling":{
+				"enabled":pipelineOn,
+				"frequency":30
+			}
+		},
+		"svgPipe":{
+			"polling":{
+				"enabled":false,
+				"frequency":2
+			}
+		},
+		"imagePipe":{
+			"polling":{
+				"enabled":false,
+				"frequency":2
+			}
+		}
+	};
 
 
+	PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup);
+
+
+	console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
 
 
 	for (var i = 0; i < loadUrls.length; i++) {

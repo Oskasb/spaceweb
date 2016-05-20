@@ -5,13 +5,15 @@ define([
 	'Events',
 	'ui/GameScreen',
 	'ui/DomUtils',
-	'ui/DomVector'
+	'ui/DomVector',
+	'ui/DomElement'
 ],
 	function(
 		evt,
 		GameScreen,
 		DomUtils,
-		DomVector
+		DomVector,
+		DomElement
 		) {
 
 		var cursor;
@@ -39,7 +41,10 @@ define([
 			var action = (evt.args(e).action[0]+evt.args(e).action[1])*0.4  + 1;
 
 			var transform = "translate3d("+pos.x+"px, "+pos.y+"px, 0px) scale3d("+action+","+action+", 1)";
-			DomUtils.applyElementTransform(cursor, transform);
+
+
+
+			cursor.applyTransform(transform);
 			vector = false;
 		};
 
@@ -58,7 +63,7 @@ define([
 		};
 
 		var handleClientReady = function() {
-			cursor = DomUtils.createDivElement(GameScreen.getElement(), 'cursor', '', 'pointer');
+			cursor = new DomElement(GameScreen.getElement(), 'pointer'); //   DomUtils.createDivElement(GameScreen.getElement(), 'cursor', '', 'pointer');
 			connector = new DomVector(GameScreen.getElement());
 			setTimeout(function() {
 				evt.on(evt.list().CURSOR_MOVE, handleCursorMove);

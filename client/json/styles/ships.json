@@ -1,0 +1,17 @@
+[{
+  "styles": {
+    "ship_hull":{
+      "top": "-15px",
+      "left": "-60px",
+      "width": "120px",
+      "height": "30px",
+      "textAlign": "center",
+      "fontSize": "14px",
+      "color":"rgba(255, 255, 190, 1)",
+      "backgroundColor":"rgb(185, 55, 55)"
+    },
+    "ship_hull_friendly":{
+      "backgroundColor":"rgb(4, 165, 85)"
+    }
+  }
+}]
