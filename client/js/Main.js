@@ -3,108 +3,144 @@
 var gameUtil;
 
 require.config({
-	paths: {
-		shared:'./../../../Shared',
-		PipelineAPI:'./lib/data_pipeline/src/PipelineAPI',
-		data_pipeline:'./lib/data_pipeline/src/'
-	}
+    paths: {
+        shared:'./../../../Shared',
+        PipelineAPI:'./lib/data_pipeline/src/PipelineAPI',
+        data_pipeline:'./lib/data_pipeline/src/'
+    }
 });
 
 var DEBUG_MONITOR = function(text) {
-	document.querySelector('#monitor').innerHTML = text;
+    document.querySelector('#monitor').innerHTML = text;
 };
 
 require([
-	'application/Client',
-	'ui/GameScreen',
-	'io/InputState',
-	'io/PointerCursor',
-	'Events',
-	'PipelineAPI'
+    'application/Client',
+    'ui/GameScreen',
+    'io/InputState',
+    'io/PointerCursor',
+    'Events',
+    'PipelineAPI',
+    'ui/DomMessage',
+    'ui/DomProgress'
 ], function(
-	Client,
-	GameScreen,
-	InputState,
-	PointerCursor,
-	evt,
-	PipelineAPI
+    Client,
+    GameScreen,
+    InputState,
+    PointerCursor,
+    evt,
+    PipelineAPI,
+    DomMessage,
+    DomProgress
 
-	) {
+) {
 
-	GameScreen.registerAppContainer(document.body);
+    GameScreen.registerAppContainer(document.body);
 
-	var loadUrls = [
-		'./../../../Shared/io/SocketMessages.js',
-		'./../../../Shared/MATH.js',
-		'./../../../Shared/MODEL.js',
-		'./../../../Shared/GAME.js'
-	];
+    var loadUrls = [
+        './../../../Shared/io/SocketMessages.js',
+        './../../../Shared/MATH.js',
+        './../../../Shared/MODEL.js',
+        './../../../Shared/GAME.js'
+    ];
 
-	var jsonRegUrl = './client/json/config_urls.json';
-	window.jsonConfigUrls = 'client/json/';
-	
-	
-	var loadJS = function(url, implementationCode, location){
-		//url is URL of external file, implementationCode is the code
-		//to be called from the file, location is the location to
-		//insert the <script> element
-
-		var scriptTag = document.createElement('script');
-		scriptTag.src = url;
-
-		scriptTag.onload = implementationCode;
-		//	scriptTag.onreadystatechange = implementationCode;
-
-		location.appendChild(scriptTag);
-	};
-
-	var count = 0;
-	var filesLoaded = function() {
-		count++;
-
-		console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
-
-		if (count == loadUrls.length) {
-			var client = new Client(new PointerCursor(new InputState()));
-			client.initiateClient(new SocketMessages());
-			evt.fire(evt.list().CLIENT_READY, client);
-		}
-
-	};
-
-	var pipelineOn = true;
-
-	var dataPipelineSetup = {
-		"jsonPipe":{
-			"polling":{
-				"enabled":pipelineOn,
-				"frequency":30
-			}
-		},
-		"svgPipe":{
-			"polling":{
-				"enabled":false,
-				"frequency":2
-			}
-		},
-		"imagePipe":{
-			"polling":{
-				"enabled":false,
-				"frequency":2
-			}
-		}
-	};
+    var jsonRegUrl = './client/json/config_urls.json';
+    window.jsonConfigUrls = 'client/json/';
 
 
-	PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup);
+    var pipelineOn = true;
+
+    var dataPipelineSetup = {
+        "jsonPipe":{
+            "polling":{
+                "enabled":pipelineOn,
+                "frequency":30
+            }
+        },
+        "svgPipe":{
+            "polling":{
+                "enabled":false,
+                "frequency":2
+            }
+        },
+        "imagePipe":{
+            "polling":{
+                "enabled":false,
+                "frequency":2
+            }
+        }
+    };
+
+    var clientInitiated = false;
+
+    var initClient = function() {
+        if (clientInitiated) {
+  //          console.log("Multi Inits requested, bailing");
+            return;
+        }
+        var client = new Client(new PointerCursor(new InputState()));
+        client.initiateClient(new SocketMessages());
+        
+    };
 
 
-	console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
+    var sharedFilesLoaded = function() {
+
+        PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup);
+
+        var loadProgress = new DomProgress(GameScreen.getElement(), 'load_progress');
+
+        function pipelineCallback(started, remaining, loaded) {
+            var spread = 150;
+
+            var x = 50*0.01*GameScreen.getWidth()-spread*0.5 + Math.random()*spread;
+            var y = 50*0.01*GameScreen.getHeight()-spread*0.5 + Math.random()*spread;
+            var message = new DomMessage(GameScreen.getElement(), loaded, 'piece_state_hint', x, y, 0.8);
+            message.animateToXYZ(x, y-100, 0);
+
+            DEBUG_MONITOR("Load: "+started+"/"+loaded);
+
+            loadProgress.setProgress(loaded / started);
 
 
-	for (var i = 0; i < loadUrls.length; i++) {
-		loadJS(loadUrls[i], filesLoaded, document.body);
-	}
+            if (remaining == 0) {
+        //        console.log("client ready: ", clientInitiated, remaining, loaded, started);
+                initClient();
+                clientInitiated = true;
+            }
 
+        }
+
+        PipelineAPI.addProgressCallback(pipelineCallback);
+
+    };
+
+
+
+
+    var loadJS = function(url, implementationCode, location){
+
+        var scriptTag = document.createElement('script');
+        scriptTag.src = url;
+        scriptTag.onload = implementationCode;
+
+        location.appendChild(scriptTag);
+    };
+
+    var count = 0;
+
+    var filesLoaded = function() {
+        count++;
+  //      console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
+
+        if (count == loadUrls.length) {
+            PipelineAPI.addReadyCallback(sharedFilesLoaded);
+        }
+    };
+
+
+    for (var i = 0; i < loadUrls.length; i++) {
+        loadJS(loadUrls[i], filesLoaded, document.body);
+    }
 
 });

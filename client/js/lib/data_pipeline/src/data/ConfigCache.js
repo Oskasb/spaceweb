@@ -53,12 +53,12 @@ define([
 			};
 
 			var indexLoaded = function(url, json) {
-				console.log("JSON Pipe: ", url, json);
+	//			console.log("JSON Pipe: ", url, json);
 
 				GameDataPipeline.applyPipelineOptions(opts);
 
 				var indexFiledAdded = function(iurl, jsn) {
-					console.log("JSON File Indexed: ", iurl, jsn);
+		//			console.log("JSON File Indexed: ", iurl, jsn);
 				};
 
 

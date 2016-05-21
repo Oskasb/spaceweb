@@ -29,9 +29,16 @@
 		InputVector:{source:'InputVector', method:'playerInput', target:'gameMain', reflect:false},
 		InputFire:{source:'InputFire', method:'playerInput', target:'gameMain', reflect:false},
 		RegisterPlayer:{source:'ServerGameMain', method:'registerPlayer', target:'gameMain', reflect:true},
+		
+		
 		playerUpdate:{source:'', method:'', target:'gameMain', reflect:true},
+		
 		clientConnected:{source:'Clients', method:'registerConnection', target:'clientRegistry', reflect:true},
+		
 		RegisterClient:{source:'Clients', method:'registerClient', target:'clientRegistry', reflect:true},
+		RequestPlayer:{source:'Clients', method:'requestPlayer', target:'clientRegistry', reflect:true},
+
+		
 		ServerWorld:{source:'ServerWorld', method:'fetch', target:'clientWorld', reflect:true},
 		ping:{source:'ping', method:'ping', target:'timeTracker', reflect:true}
 	};

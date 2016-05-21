@@ -1,11 +1,11 @@
-ServerPlayer = function(clientId, client) {
+ServerPlayer = function(clientId, client, simTime) {
 
 	this.id = 'player_'+clientId;
 	this.client = client;
 	this.clientId = clientId;
 
-	this.piece = new GAME.Piece(this.id, new Date().getTime());
-	this.piece.spatial.setPosXYZ(-100, 0, 0);
+	this.piece = new GAME.Piece(this.id, simTime);
+	 this.piece.teleportRandom();
 };
 
 
@@ -23,6 +23,6 @@ ServerPlayer.prototype.setInputVector = function(fromX, fromY, toX, toY) {
 
 ServerPlayer.prototype.updatePlayer = function(dt, serverTime) {
 	this.piece.processTimeUpdated(dt, serverTime);
-	this.client.sendToClient(this.makePacket());
+//	this.client.sendToClient(this.makePacket());
 
 };

@@ -40,9 +40,10 @@ ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removeP
 
 
 		ws.on("close", function() {
-			removePlayerCallback(ws.clientId);
-			clients.clientDisconnected(ws.clientId);
-			console.log("websocket connection close");
+			
+			var packet = removePlayerCallback(ws.clientId);
+			clients.clientDisconnected(ws.clientId, packet);
+			console.log("connection closed "+ws.clientId);
 
 		})
 	});
@@ -50,6 +51,3 @@ ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removeP
 	console.log("Init Server Connection")
 };
 
-ServerConnection.prototype.broadcast = function(message, responseCallback) {
-
-};

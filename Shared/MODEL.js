@@ -14,10 +14,10 @@ if(typeof(MODEL) == "undefined"){
 			rot:[0, 0, 0],
 			rotVel:[0, 0, 0]
 		};
-		this.pos = new MATH.Vec3(0, 0, 0);
+		this.pos = new MATH.Vec3(0, 0, 0.1);
 		this.vel = new MATH.Vec3(0, 0, 0);
-		this.rot = new MATH.Vec3(0, 0, 0);
-		this.rotVel = new MATH.Vec3(0, 0, 0);
+		this.rot = new MATH.Vec3(0, 0.1, 0);
+		this.rotVel = new MATH.Vec3(0, 0.1, 0);
 	};
 
 	MODEL.Spatial.prototype.interpolateTowards = function(start, target, fraction) {
@@ -54,8 +54,15 @@ if(typeof(MODEL) == "undefined"){
 		this.rotVel.scale(0);
 	};
 
-	MODEL.Spatial.prototype.accelerate = function(factor) {
-		this.vel.scale(factor);
+	MODEL.Spatial.prototype.applySteeringVector = function(steerVec, dt, rotVelClamp, radialLerp) {
+		this.setRotVelVec(steerVec);
+		this.getRotVelVec().subVec(this.getRotVec());
+		this.getRotVelVec().setZ(MATH.radialClamp(this.getRotVelVec().getZ(), -rotVelClamp, rotVelClamp));
+		this.getRotVelVec().radialLerp(this.getRotVelVec(), steerVec, dt*radialLerp);
+	};
+
+	MODEL.Spatial.prototype.getForwardVector = function(vec3) {
+		vec3.setXYZ(Math.cos(this.getRotVec().getZ() -Math.PI*0.5), Math.sin(this.getRotVec().getZ() -Math.PI*0.5), 0);
 	};
 
 	MODEL.Spatial.prototype.setRotVelVec = function(vec) {

@@ -24,6 +24,15 @@
       "backgroundColor":"rgba(125, 255, 155, 0.5)"
     },
 
+    "load_progress":{
+      "top": "25px",
+      "left": "50px",
+      "width": "300px",
+      "height": "25px",
+      "backgroundColor":"rgb(52, 55, 76)",
+      "border": "1px solid #609cff"
+    },
+
     "progress_box":{
       "top": "-25px",
       "left": "-50px",

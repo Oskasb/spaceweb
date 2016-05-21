@@ -7,6 +7,7 @@ define(function() {
 		CONNECTION_CLOSED:{type:'CONNECTION_CLOSED', args:{data:{}}},
 
 		SEND_SERVER_REQUEST:{type:'SEND_SERVER_REQUEST', args:{data:{}}},
+		MESSAGE_UI:{type:'MESSAGE_UI', args:{}},
 
 		CLIENT_TICK:{type:'CLIENT_TICK', args:{data:{}}},
 		SERVER_MESSAGE:{type:'SERVER_MESSAGE', args:{data:{}}},

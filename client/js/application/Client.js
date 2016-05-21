@@ -52,7 +52,7 @@ define([
 
 			var connectedCallback = function() {
 				console.log("Reconnected?")
-				clientReady();
+				evt.fire(evt.list().CLIENT_READY, {});
 				evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'ServerWorld', data:'init'});
 				_this.tick(0);
 			};
@@ -68,7 +68,7 @@ define([
 
 				setTimeout(function() {
 					connect();
-				}, 1000)
+				}, 100)
 
 			};
 
@@ -83,16 +83,31 @@ define([
 			var ClientReg;
 
 			var count = 0;
-			var requestPlayer = function() {
-				console.log("reqCOunt: ", count);
 
-				if (ClientState == GAME.ENUMS.ClientStates.READY) {
-					count++
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:ClientReg.clientId}});
+			var requestPlayer = function() {
+				console.log("Request Player");
+
+				if (ClientState == GAME.ENUMS.ClientStates.CLIENT_REQUESTED) {
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:ClientReg.clientId}});
 					setClientState(GAME.ENUMS.ClientStates.PLAYER_REQUESTED);
 					evt.removeListener(evt.list().CURSOR_PRESS, requestPlayer);
 				}
 			};
+
+			var requestClient = function() {
+				console.log("Request Client");
+
+				if (ClientState == GAME.ENUMS.ClientStates.READY) {
+					count++;
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:ClientReg.clientId}});
+					setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
+                    setTimeout(function() {
+                        evt.on(evt.list().CURSOR_PRESS, requestPlayer);
+                    }, 1000);
+
+				}
+			};
+
 
 			var setClientState = function(state) {
 				ClientState = state;
@@ -100,8 +115,8 @@ define([
 			};
 
 			var clientReady = function() {
-				evt.on(evt.list().CURSOR_PRESS, requestPlayer);
 				setClientState(GAME.ENUMS.ClientStates.READY);
+				requestClient();
 			};
 
 			DEBUG_MONITOR(ClientState);

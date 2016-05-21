@@ -2,19 +2,19 @@
 
 
 define([
-	'Events',
-	'ui/GameScreen',
-	'ui/DomUtils',
-	'ui/DomElement'
-],
+		'Events',
+		'ui/GameScreen',
+		'ui/DomUtils',
+		'ui/DomElement'
+	],
 	function(
 		evt,
 		GameScreen,
 		DomUtils,
 		DomElement
-		) {
+	) {
 
-		var DomProgress = function(parentElem) {
+		var DomProgress = function(parentElem, style) {
 			this.root = new DomElement(parentElem, 'progress_box');
 			this.progress = new DomElement(this.root.element, 'progress');
 		};

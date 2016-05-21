@@ -17,7 +17,8 @@ var SetupServer = function() {
 	require('./Server/Game/ServerGameMain');
 	require('./Server/ServerMain');
 	require('./Server/Game/ServerPlayer');
-
+	require('./Server/io/ConfigLoader');
+	
 	var serverMain = new ServerMain();
 
 	var WebSocketServer = require("ws").Server;
@@ -40,7 +41,7 @@ var SetupServer = function() {
 
 	serverMain.initServerMain(new DataHub());
 	serverMain.initServerConnection(wss);
-
+	serverMain.initConfigs(new ConfigLoader('./Server/json/'), 'server_setup');
 };
 
 SetupServer();

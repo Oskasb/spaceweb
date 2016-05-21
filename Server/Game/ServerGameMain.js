@@ -10,11 +10,11 @@ ServerGameMain = function(clients) {
 
 };
 
-ServerGameMain.prototype.initGame = function(playerUpdateCallback) {
+ServerGameMain.prototype.initGame = function() {
 	var _this=this;
 
 	setInterval(function() {
-		_this.tickGame(playerUpdateCallback);
+		_this.tickGame();
 	}, 200);
 
 
@@ -30,15 +30,15 @@ ServerGameMain.prototype.playerDiconected = function(clientId) {
 	var player = this.players['player_'+clientId];
 	if (!player) return;
 
+	
+	
 	player.piece.setState(GAME.ENUMS.PieceStates.REMOVED);
-	var packet =  player.makePacket();
+	var packet = player.makePacket();
+
+//	player.client.broadcastToAll(packet);
 
 	delete this.players['player_'+clientId];
-
-	for (var index in this.players) {
-		this.players[index].client.sendToClient(packet);
-	}
-
+	return packet;
 };
 
 
@@ -55,12 +55,8 @@ ServerGameMain.prototype.playerInput = function(data) {
 	if (data.fire) {
 		player.setInputTrigger(true);
 
-	//	var timeDelta = (new Date().getTime() - this.simulationTime) * 0.001;
-	//	player.updatePlayer(this.timeDelta, this.simulationTime);
-		var packet = player.makePacket();
-		for (var index in this.players) {
-			this.players[index].client.sendToClient(packet);
-		}
+
+		player.client.broadcastToAll(player.makePacket());
 
 		player.setInputTrigger(false);
 
@@ -75,18 +71,14 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 	if (this.players['player_'+data.clientId]) {
 		console.log("Player Already Exists", data.clientId);
 		return this.players['player_'+data.clientId].makePacket();
-	};
+	}
 
-	var player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId));
-
-
+	var player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
 	this.addPlayer(player);
-
-
+	
 	console.log("register player", JSON.stringify(data));
 
-	return player.makePacket();
-
+	return JSON.parse(player.makePacket());
 };
 
 ServerGameMain.prototype.tickGame = function() {
@@ -96,10 +88,7 @@ ServerGameMain.prototype.tickGame = function() {
 
 	for (var key in this.players) {
 		this.players[key].updatePlayer(this.timeDelta, this.simulationTime);
-
-		for (var index in this.players) {
-			this.players[index].client.sendToClient(this.players[key].makePacket());
-		}
+		this.players[key].client.broadcastToAll(this.players[key].makePacket());
 	}
 
 	this.simulationTime = this.currentTime;

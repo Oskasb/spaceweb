@@ -21,7 +21,6 @@ define([
             
             var element = DomUtils.createDivElement(parentElem, 'element_'+count, '', 'point');
             this.element = element;
-        //    element.style.fontSize = "16px";
             var styleCallback = function(key, data) {
                 DomUtils.applyElementStyleParams(element, data)
             };

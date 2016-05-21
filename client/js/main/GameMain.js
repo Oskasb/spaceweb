@@ -37,6 +37,7 @@ define([
 			};
 
 			this.players[data.playerId] = new ClientPlayer(data, removeCallback);
+		//	this.players[data.playerId].startSpatial.setSendData(data.spatial);
 			return this.players[data.playerId];
 		};
 
@@ -51,7 +52,9 @@ define([
 			} else {
 				console.log("Register New Player from update", data.playerId, this.players);
 				this.registerPlayer(data);
-				this.players[data.playerId].setServerState(data);
+			//	this.players[data.playerId].setServerState(data);
+
+
 			}
 		};
 
@@ -65,7 +68,7 @@ define([
 			} else {
 				var player = this.registerPlayer(data);
 				player.setIsOwnPlayer(true);
-				player.setServerState(data);
+			//	player.setServerState(data);
 				this.ownPlayer = player;
 
 				var handleCursorLine = function(e) {

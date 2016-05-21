@@ -41,7 +41,7 @@ define([
 		WorkerJsonValidator.prototype.handleUpdatedSchemaData = function(url, schemaData, json) {
 			this.schemaUrlIndex[url] = json;
 			for (var index in schemaData) {
-				console.log("Schema updated: ", index, schemaData[index], this.schemas, this.schemaUrlIndex);
+	//			console.log("Schema updated: ", index, schemaData[index], this.schemas, this.schemaUrlIndex);
 				this.schemas[index] = schemaData[index];
 			}
 

@@ -16,7 +16,8 @@ define(['Events'
 			console.log("Client Registered", data);
 			document.querySelector('#user').innerHTML = 'User Data: '+JSON.stringify(data);
 			data.clientId = this.clientId;
-			evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:data});
+			
+		//	evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:data});
 		};
 
 

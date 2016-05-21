@@ -1,0 +1,9 @@
+[{
+  "setup": {
+    "system":{
+      "simulation":{
+        "tickTime":100
+      }
+    }
+  }
+}]

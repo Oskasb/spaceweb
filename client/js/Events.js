@@ -57,21 +57,13 @@ define(["EventList"], function(eventList) {
 
     var registerListener = function(event, callback) {
         setupEvent(event);
-
         element.addEventListener(event.type, callback);
     };
 
     var removeListener = function(event, callback) {
-	//
 		element.removeEventListener(event.type, callback, null)
     };
 
-
-    var test = function(e) {
-        alert("test msg:"+eventArgs(e).msg)
-    };
-
- //   registerListener(list().TEST_EVENT, test);
 
     return {
         removeListener:removeListener,

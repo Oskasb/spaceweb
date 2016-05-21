@@ -25,7 +25,10 @@ define([
 			this.domPlayer = new DomPlayer(this.piece);
 			this.removeCallback = removeCallback;
 
+			serverState.state = GAME.ENUMS.PieceStates.TELEPORT;
+			this.piece.applyNetworkState(serverState);
 		};
+
 
 		ClientPlayer.prototype.getPieceId = function() {
 			return this.piece.id;
@@ -58,15 +61,25 @@ define([
 			if (serverState.trigger) {
 			//	this.piece.notifyTrigger(true);
 				this.domPlayer.renderStateText("Pew!");
+				return;
 			}
 
+
+
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
+				this.domPlayer.renderStateText("Poof");
 				this.playerRemove();
 				return;
 			}
 
 			this.piece.applyNetworkState(serverState);
 
+			if (serverState.state == GAME.ENUMS.PieceStates.TELEPORT) {
+				//	this.piece.notifyTrigger(true);
+				this.domPlayer.renderStateText("Jump");
+				this.domPlayer.updateDomPlayer();
+				this.domPlayer.renderStateText("Teleport");
+			}
 		};
 
 

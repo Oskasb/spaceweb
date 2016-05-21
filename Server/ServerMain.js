@@ -1,7 +1,11 @@
 (function(){Math.clamp=function(a,b,c){return Math.max(b,Math.min(c,a));}})();
 
 ServerMain = function() {
+
 	console.log("Construct Server Main");
+
+
+	this.configLoader;
 	this.serverConnection = new ServerConnection();
 	this.serverWorld = new ServerWorld();
 	this.clients = new Clients();
@@ -45,17 +49,11 @@ ServerMain.prototype.initServerConnection = function(wss) {
 	var serverGameMain = this.serverGameMain;
 
 	var removePlayerCallback = function(clientId) {
-		serverGameMain.playerDiconected(clientId);
+		return serverGameMain.playerDiconected(clientId);
 	};
 
 	this.serverConnection.setupSocket(wss, this.dataHub, this.clients, removePlayerCallback);
-
-
-	var playerUpdateCallback = function(playerPacket) {
-
-	};
-
-	this.serverGameMain.initGame(playerUpdateCallback);
+	this.serverGameMain.initGame();
 };
 
 ServerMain.prototype.initServerMain = function(dataHub) {
@@ -64,10 +62,12 @@ ServerMain.prototype.initServerMain = function(dataHub) {
 	for (var key in this.game) {
 		this.dataHub.setSource(key, this.game[key]);
 	}
-
-
-
 };
 
 
+
+ServerMain.prototype.initConfigs = function(configLoader, sourceUrl) {
+	this.configLoader = configLoader;
+	this.configLoader.registerConfigUrl(sourceUrl);
+};
 
