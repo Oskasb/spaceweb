@@ -1,0 +1,29 @@
+[{
+  "messages":{
+    "channels": {
+      "receive":{
+        "style":"connection_message",
+        "anim":[0, -50, 0],
+        "time":0.4
+      },
+
+      "receive_error":{
+        "style":"receive_error_message",
+        "anim":[0, -80, 0],
+        "time":1.5
+      },
+
+      "connection_status":{
+        "style":"connection_ok_message",
+        "anim":[0, -120, 0],
+        "time":2.5
+      },
+
+      "connection_error":{
+        "style":"connection_error_message",
+        "anim":[0, -120, 0],
+        "time":2.5
+      }
+    }
+  }
+}]

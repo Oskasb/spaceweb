@@ -5,9 +5,12 @@ ServerPlayer = function(clientId, client, simTime) {
 	this.clientId = clientId;
 
 	this.piece = new GAME.Piece(this.id, simTime);
-	 this.piece.teleportRandom();
+	this.piece.teleportRandom();
 };
 
+ServerPlayer.prototype.applyPieceConfig = function(configs) {
+	this.piece.applyConfig(configs);
+};
 
 ServerPlayer.prototype.makePacket = function() {
 	return this.piece.makePacket();

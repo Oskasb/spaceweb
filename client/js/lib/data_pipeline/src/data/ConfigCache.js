@@ -44,10 +44,11 @@ define([
 		ConfigCache.addReadyCallback = function(cb) {
 			readyCallbacks.push(cb);
 		};
-
-		ConfigCache.applyDataPipelineOptions = function(jsonIndexUrl, opts) {
-
-
+		
+		
+		ConfigCache.applyDataPipelineOptions = function(jsonIndexUrl, opts, pipelineErrorCb) {
+			
+			
 			var loadFail = function(url, error) {
 				console.log("JSON Pipe Fail! ", url, error);
 			};
@@ -55,7 +56,7 @@ define([
 			var indexLoaded = function(url, json) {
 	//			console.log("JSON Pipe: ", url, json);
 
-				GameDataPipeline.applyPipelineOptions(opts);
+				GameDataPipeline.applyPipelineOptions(opts, pipelineErrorCb);
 
 				var indexFiledAdded = function(iurl, jsn) {
 		//			console.log("JSON File Indexed: ", iurl, jsn);

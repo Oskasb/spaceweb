@@ -1,14 +1,14 @@
 [{
-    "config_url_index":{
-        "files":[
-			"validation/schemas/base_schema.json",
-			"validation/type_validation.json",
-			"validation/shapes_validation.json",
-            "styles/messaging.json",
-            "styles/ships.json",
-			"system_setup.json"
+  "config_url_index":{
+    "files":[
+      "validation/schemas/base_schema.json",
+      "validation/type_validation.json",
+      "validation/shapes_validation.json",
+      "messages/ui_messages.json",
+      "styles/messaging.json",
+      "styles/ships.json",
+      "system_setup.json"
 
-
-        ]
-    }
+    ]
+  }
 }]

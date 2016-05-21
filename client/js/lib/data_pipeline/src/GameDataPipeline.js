@@ -35,10 +35,10 @@ define([
 			ImagePipe.tickImagePipe(tpf);
 		};
 
-		GameDataPipeline.applyPipelineOptions = function(opts) {
-			JsonPipe.setJsonPipeOpts(opts.jsonPipe);
-			SvgPipe.setSvgPipeOpts(opts.svgPipe);
-			ImagePipe.setImagePipeOpts(opts.imagePipe);
+		GameDataPipeline.applyPipelineOptions = function(opts, pipelineErrorCb) {
+			JsonPipe.setJsonPipeOpts(opts.jsonPipe, pipelineErrorCb);
+			SvgPipe.setSvgPipeOpts(opts.svgPipe, pipelineErrorCb);
+			ImagePipe.setImagePipeOpts(opts.imagePipe, pipelineErrorCb);
 		};
 
 		setInterval(function() {

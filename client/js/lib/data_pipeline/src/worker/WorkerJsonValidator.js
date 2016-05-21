@@ -120,7 +120,7 @@ define([
 
 
 			} catch (e) {
-				console.error("json parse error", e);
+			//	console.error("json parse error", e);
 				fail(e.message);
 			}
 

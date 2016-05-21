@@ -26,22 +26,71 @@ if(typeof(GAME) == "undefined"){
 		REMOVED:'REMOVED'
 	};
 
+	GAME.PieceControls = function() {
+		this.inputState = new MODEL.InputState();
+		this.calcVec = new MATH.Vec3(0, 0, 0);
+
+		this.constants = {
+			deceleration:0.6,
+			radialVelocityClamp:0.2,
+			radialLerpFactor:0.1,
+			throttleLimit: 1,
+			throttleAmplitude: 3
+		};
+
+	};
+
+	GAME.PieceControls.prototype.applyInputVector = function(fromX, fromY, toX, toY) {
+
+		this.inputState.setSteeringX(Math.clamp((toX - fromX), -1, 1));
+		this.inputState.setSteeringY(Math.clamp((toY - fromY), -1, 1));
+		this.inputState.setThrottle(Math.min(MATH.lineDistance(fromX, fromY, toX, toY), this.constants.throttleLimit) * this.constants.throttleAmplitude);
+
+		if (this.inputState.getThrottle() > 0.1) {
+			this.inputState.setSteeringZ(Math.atan2(toX - fromX, fromY - toY));
+		}
+
+	};
+
+	GAME.PieceControls.prototype.getTimeFactor = function(timeSinceInput) {
+		return Math.min(1, (1 / timeSinceInput*this.constants.deceleration));
+	};
+
+	GAME.PieceControls.prototype.getSteering = function(store) {
+		this.inputState.getSteering(store, this.constants.radialVelocityClamp);
+	};
+
+	GAME.PieceControls.prototype.getTriggerState = function() {
+		return this.inputState.getTrigger();
+	};
+
+	GAME.PieceControls.prototype.setTriggerState = function(bool) {
+		this.inputState.setTrigger(bool);
+	};
+
 	GAME.Piece = function(id, creationTime) {
 		this.id = id;
-		this.inputState = new MODEL.InputState();
+		this.pieceControls = new GAME.PieceControls();
 		this.calcVec = new MATH.Vec3(0, 0, 0);
 		this.spatial = new MODEL.Spatial();
 		this.targetSpatial = new MODEL.Spatial();
 		this.startSpatial = new MODEL.Spatial();
-		this.temporal = new MODEL.Temporal(creationTime-1000);
+		this.temporal = new MODEL.Temporal(creationTime);
 
-		this.deceleration = 0.90;
-		this.radialVelocityClamp = 0.5;
-		this.radialLerpFactor = 0.3;
-		this.timeSinceInput = 0.016;
+		this.timeSinceInput = 0;
+
+
 	};
 
-
+	GAME.Piece.prototype.applyConfig = function(pieceConfigs) {
+		console.log("apply Config: ", JSON.stringify(pieceConfigs));
+		for (var key in pieceConfigs.controls.constants) {
+			this.pieceControls.constants[key] = pieceConfigs.controls.constants[key];
+		}
+		
+		
+	};
+	
 	GAME.Piece.prototype.setState = function(state) {
 		if (!GAME.ENUMS.PieceStates[state]) {
 			console.log("No such PieceState: "+state);
@@ -59,7 +108,7 @@ if(typeof(GAME) == "undefined"){
 			data:{
 				playerId:this.id,
 				spatial:this.spatial.getSendSpatial(),
-				trigger:this.inputState.getTrigger(),
+				trigger:this.pieceControls.getTriggerState(),
 				timeDelta:this.temporal.timeDelta,
 				state:this.getState()
 			}
@@ -71,20 +120,13 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.Piece.prototype.setInputTrigger = function(bool) {
-		this.inputState.setTrigger(bool);
+		this.pieceControls.setTriggerState(bool);
 	};
 
 	GAME.Piece.prototype.setInputVector = function(fromX, fromY, toX, toY) {
 		this.timeSinceInput = 0;
-		this.inputState.setSteeringX(Math.clamp((toX - fromX), -1, 1));
-		this.inputState.setSteeringY(Math.clamp((toY - fromY), -1, 1));
-		this.inputState.setThrottle(Math.min(MATH.lineDistance(fromX, fromY, toX, toY), 2) * 3);
 
-		//		this.inputState.setThrottle(MATH.lineDistance(fromX, fromY, toX, toY));
-
-		if (this.inputState.getThrottle() > 0.1) {
-			this.inputState.setSteeringZ(Math.atan2(toX - fromX, fromY - toY));
-		}
+		this.pieceControls.applyInputVector(fromX, fromY, toX, toY);
 
 	};
 
@@ -99,19 +141,16 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.updatePlayerSpatial = function(dt) {
 		this.timeDelta = dt;
 		this.timeSinceInput += dt;
-		var timeFactor = Math.min(1, (1 / this.timeSinceInput*this.deceleration));
 
-		if (isNaN(timeFactor)) {
-			timeFactor = 0.001;
-			console.log("Time Factor is NAN", this.timeSinceInput, this.deceleration);
-		}
+		var timeFactor = this.pieceControls.getTimeFactor(this.timeSinceInput)
 
-		this.inputState.getSteering(this.calcVec, this.radialVelocityClamp);
+		this.pieceControls.getSteering(this.calcVec);
 
-		this.spatial.applySteeringVector(this.calcVec, dt, this.radialVelocityClamp, this.radialLerpFactor);
+		this.spatial.applySteeringVector(this.calcVec, dt, this.pieceControls.constants.radialVelocityClamp, this.pieceControls.constants.radialLerpFactor);
+
 		this.spatial.getForwardVector(this.calcVec);
 		
-		this.calcVec.scale(this.inputState.getThrottle() * 2 * dt * timeFactor);
+		this.calcVec.scale(this.pieceControls.inputState.getThrottle() * 2 * dt * timeFactor);
 
 		this.spatial.setVelVec(this.calcVec);
 		this.spatial.update();

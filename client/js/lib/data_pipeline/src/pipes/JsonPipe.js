@@ -13,6 +13,7 @@ define([
 		var lastPolledIndex = 0;
 		var pollIndex = [];
 		var pollCallbacks = {};
+		var errorCallback = function() {};
 
 		var options = {
 			"polling":{
@@ -63,15 +64,16 @@ define([
 					lastPolledIndex = 0;
 				}
 				var pollFail = function(err) {
-					console.error("Json Polling failed", err);
+					errorCallback("Json: ", err);
 				};
-				JsonPipe.loadJsonFromUrl(pollIndex[lastPolledIndex], pollCallbacks[pollIndex[lastPolledIndex]], pollFail, false)
+				JsonPipe.loadJsonFromUrl(pollIndex[lastPolledIndex], pollCallbacks[pollIndex[lastPolledIndex]], pollFail, false);
 				pollCountdown = pollDelay;
 			}
 		};
 
-		JsonPipe.setJsonPipeOpts = function(opts) {
+		JsonPipe.setJsonPipeOpts = function(opts, pipelineErrorCb) {
 			options = opts;
+			errorCallback = pipelineErrorCb;
 		};
 
 		return JsonPipe

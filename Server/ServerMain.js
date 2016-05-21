@@ -13,6 +13,26 @@ ServerMain = function() {
 
 	this.serverWorld.initWorld();
 
+	var _this = this;
+	function serverSetup(config) {
+		_this.serverGameMain.applySetupConfig(config);
+	}
+
+	function configFiles(config) {
+		_this.configLoader.applyFileConfigs(config);
+	}
+
+	function pieceData(config) {
+		_this.serverGameMain.applyPieceConfigs(config);
+	}
+	
+	this.dataHandlers = {
+		server_setup:serverSetup,
+		config_files:configFiles,
+		piece_data:pieceData
+	};
+
+
 	var DataSource = function(id, system) {
 		this.id = id;
 		this.system = system
@@ -31,7 +51,7 @@ ServerMain = function() {
 	};
 
 	Ping.prototype.ping = function() {
-		 return 'ping';
+		return 'ping';
 	};
 
 	this.game = {
@@ -53,7 +73,7 @@ ServerMain.prototype.initServerConnection = function(wss) {
 	};
 
 	this.serverConnection.setupSocket(wss, this.dataHub, this.clients, removePlayerCallback);
-	this.serverGameMain.initGame();
+	this.serverGameMain.initGame(200);
 };
 
 ServerMain.prototype.initServerMain = function(dataHub) {
@@ -65,9 +85,18 @@ ServerMain.prototype.initServerMain = function(dataHub) {
 };
 
 
+ServerMain.prototype.applyConfigData = function(updatedData) {
 
-ServerMain.prototype.initConfigs = function(configLoader, sourceUrl) {
+	if (this.dataHandlers[updatedData.id]) {
+		this.dataHandlers[updatedData.id](updatedData)
+	} else {
+		console.log("No handler fo config key: ", updatedData.id)
+	}
+};
+
+
+ServerMain.prototype.initConfigs = function(configLoader, sourceUrl, dataUpdated) {
 	this.configLoader = configLoader;
-	this.configLoader.registerConfigUrl(sourceUrl);
+	this.configLoader.registerConfigUrl(sourceUrl, dataUpdated);
 };
 

@@ -1,9 +1,14 @@
 [{
+  "id":"server_setup",
   "setup": {
     "system":{
-      "simulation":{
-        "tickTime":100
-      }
+      "tickTime":250
     }
   }
+},{
+  "id":"config_files",
+  "watchFiles":true,
+  "loadFiles":[
+    "piece_data"
+  ]
 }]

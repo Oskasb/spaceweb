@@ -48,13 +48,19 @@ require([
     window.jsonConfigUrls = 'client/json/';
 
 
-    var pipelineOn = true;
+    console.log(window.location.href);
+
+    var pipelineOn = false;
+
+    if (window.location.href == 'http://127.0.0.1:5000/') {
+        pipelineOn = true;
+    }
 
     var dataPipelineSetup = {
         "jsonPipe":{
             "polling":{
                 "enabled":pipelineOn,
-                "frequency":30
+                "frequency":10
             }
         },
         "svgPipe":{
@@ -86,7 +92,12 @@ require([
 
     var sharedFilesLoaded = function() {
 
-        PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup);
+        function pipelineError(src, e) {
+            evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Pipeline Error '+src+' '+e});
+        }
+        
+        
+        PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup, pipelineError);
 
         var loadProgress = new DomProgress(GameScreen.getElement(), 'load_progress');
 

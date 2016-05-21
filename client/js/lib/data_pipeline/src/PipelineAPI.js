@@ -70,9 +70,8 @@ define(['data_pipeline/data/ConfigCache'],
 			return ConfigCache.getCachedConfigs();
 		};
 
-		PipelineAPI.dataPipelineSetup = function(jsonIndexUrl, options) {
-			ConfigCache.applyDataPipelineOptions(jsonIndexUrl, options);
-			
+		PipelineAPI.dataPipelineSetup = function(jsonIndexUrl, options, pipelineError) {
+			ConfigCache.applyDataPipelineOptions(jsonIndexUrl, options, pipelineError);
 		};
 		
 		return PipelineAPI;

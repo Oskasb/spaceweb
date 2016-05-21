@@ -37,11 +37,17 @@ var SetupServer = function() {
 	var wss = new WebSocketServer({server: server});
 	console.log("websocket server created");
 
-
-
+	var configLoader = new ConfigLoader('./Server/json/');
+	
+	dataUpdated = function(configData) {
+		serverMain.applyConfigData(configData);			
+	};
+	configLoader.setUpdateCallback(dataUpdated);
+	
 	serverMain.initServerMain(new DataHub());
 	serverMain.initServerConnection(wss);
-	serverMain.initConfigs(new ConfigLoader('./Server/json/'), 'server_setup');
+
+	serverMain.initConfigs(configLoader, 'server_setup', dataUpdated);
 };
 
 SetupServer();

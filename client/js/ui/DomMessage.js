@@ -19,7 +19,7 @@ define([
             this.domText = domText;
             setTimeout(function() {
                 domText.removeElement();
-            }, duration*1000);
+            }, duration*1000 + 100);
         };
 
         DomMessage.prototype.animateToXYZ = function(x, y, z) {

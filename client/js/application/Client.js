@@ -7,7 +7,8 @@ define([
 	'io/Connection',
 	'application/TimeTracker',
 	'main/ClientWorld',
-	'main/GameMain'
+	'main/GameMain',
+        'ui/UiMessenger'
 ],
 	function(
 		evt,
@@ -15,7 +16,8 @@ define([
 		Connection,
 		TimeTracker,
 		ClientWorld,
-		GameMain
+		GameMain,
+        UiMessenger
 		) {
 
 
@@ -27,6 +29,7 @@ define([
 
 
 		Client.prototype.initiateClient = function(socketMessages) {
+            new UiMessenger();
 			var _this = this;
 			var messages = socketMessages.messages;
 			var ClientState = GAME.ENUMS.ClientStates.LOADING;
@@ -36,9 +39,14 @@ define([
 				if (messages[res.id]) {
 					//	console.log("Message Recieved: ", messages[res.id], res)
 					_this[messages[res.id].target][res.id](res.data);
+                    evt.fire(evt.list().MESSAGE_UI, {channel:'receive', message:res.id});
 				} else {
 					console.log("unhandled message response:", res);
+                    evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
 				}
+
+
+
 			};
 
 			this.clientRegistry = new ClientRegistry();
@@ -51,7 +59,7 @@ define([
 			this.gameMain = new GameMain();
 
 			var connectedCallback = function() {
-				console.log("Reconnected?")
+                evt.fire(evt.list().MESSAGE_UI, {channel:'connection_status', message:'Connection Open'});
 				evt.fire(evt.list().CLIENT_READY, {});
 				evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'ServerWorld', data:'init'});
 				_this.tick(0);
@@ -64,6 +72,7 @@ define([
 			var disconnectedCallback = function() {
 				console.log("Socket Disconnected");
 				ClientState = GAME.ENUMS.ClientStates.DISCONNECTED;
+                evt.fire(evt.list().MESSAGE_UI, {channel:'connection_error', message:'Connection Lost'});
 				evt.fire(evt.list().CONNECTION_CLOSED, {data:'closed'});
 
 				setTimeout(function() {

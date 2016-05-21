@@ -1,0 +1,16 @@
+[{
+  "id":"piece_data",
+  "pieces":{
+    "player_ship":{
+      "controls":{
+        "constants":{
+          "deceleration":0.9,
+          "radialVelocityClamp":0.5,
+          "radialLerpFactor":0.3,
+          "throttleLimit": 2,
+          "throttleAmplitude": 3
+        }
+      }
+    }
+  }
+}]
