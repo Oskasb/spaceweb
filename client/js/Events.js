@@ -1,7 +1,7 @@
 define(["EventList"], function(eventList) {
 
     var element = document.createElement('div');
-    var events = [];
+    var events = {};
 
     var eventException = function(message) {
         this.name = "EventArgumentException";
@@ -24,21 +24,31 @@ define(["EventList"], function(eventList) {
         }
     };
 
+    var setupEvent = function(event) {
+
+        if (!events[event.type]) {
+            events[event.type] = new CustomEvent(event.type, {
+                    detail: {arguments:{}},
+                    bubbles: false,
+                    cancelable: false
+                }
+            )
+        }
+    }
+
     var generateEvent = function(event, arguments) {
     //    validateEventArguments(event, arguments);
+        setupEvent(event);
+        setEventArgs(event, arguments);
+        return events[event.type];
+    };
 
-        return new CustomEvent(
-            event.type,
-            {
-                detail: {arguments:arguments},
-                bubbles: false,
-                cancelable: false
-            }
-        )
+    var setEventArgs = function(e, args) {
+        events[e.type].detail.arguments = args;
     };
 
     var eventArgs = function(e) {
-        return e.detail.arguments;
+        return events[e.type].detail.arguments;
     };
 
     var fireEvent = function(event, arguments) {
@@ -46,12 +56,13 @@ define(["EventList"], function(eventList) {
     };
 
     var registerListener = function(event, callback) {
-    //    events.push(callback);
+        setupEvent(event);
+
         element.addEventListener(event.type, callback);
     };
 
     var removeListener = function(event, callback) {
-	//	var evt = events.splice(events.indexOf(callback), 1)[0];
+	//
 		element.removeEventListener(event.type, callback, null)
     };
 

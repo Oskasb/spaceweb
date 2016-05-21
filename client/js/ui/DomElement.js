@@ -57,6 +57,14 @@ define([
             DomUtils.applyElementTransform(this.element, transform);
         };
 
+        DomElement.prototype.translateXYZ = function(x, y, z) {
+            this.applyTransform("translate3d("+x+"px,"+y+"px,"+z+"px)");
+        };
+
+        DomElement.prototype.rotateXYZ = function(x, y, z, w) {
+            this.applyTransform("rotate3d("+x+","+y+","+z+", "+w+"rad)");
+        };
+
         DomElement.prototype.applyTransition = function(transition) {
             DomUtils.setElementTransition(this.element, transition);
         };

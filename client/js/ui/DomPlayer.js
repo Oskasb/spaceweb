@@ -101,14 +101,9 @@ define([
 
 			this.trafficPredictor.setProgress(this.piece.temporal.fraction);
 
-			var transform = "translate3d("+this.pos[0]*0.01*GameScreen.getWidth()+"px, "+this.pos[1]*0.01*GameScreen.getHeight()+"px, 0px)";
+			this.domRoot.translateXYZ(this.pos[0]*0.01*GameScreen.getWidth(), this.pos[1]*0.01*GameScreen.getHeight(), 0);
 
-			this.domRoot.applyTransform(transform);
-
-
-			var rot = "rotate3d(0, 0, 1, "+this.rot[2]+"rad)";
-
-			this.domHull.applyTransform(rot);
+			this.domHull.rotateXYZ(0, 0, 1, this.rot[2]);
 
 
 		};
