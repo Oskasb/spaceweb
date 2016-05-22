@@ -178,6 +178,7 @@ if(typeof(MODEL) == "undefined"){
 		this.steering = new MATH.Vec3(0, 0, 0);
 		this.throttle = 0;
 		this.trigger = false;
+		this.initiate = true;
 	};
 
 	MODEL.InputState.prototype.setTrigger = function(trigger) {

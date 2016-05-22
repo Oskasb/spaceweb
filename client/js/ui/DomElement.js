@@ -19,7 +19,7 @@ define([
         var DomElement = function(parentElem, styleId) {
             count++;
             
-            var element = DomUtils.createDivElement(parentElem, 'element_'+count, '', 'point');
+            var element = DomUtils.createDivElement(parentElem, count+'_'+Math.random(), '', 'point');
             this.element = element;
             var styleCallback = function(key, data) {
                 DomUtils.applyElementStyleParams(element, data)
@@ -36,7 +36,11 @@ define([
         DomElement.prototype.setText = function(text) {
             this.element.innerHTML = text;
         };
-
+        
+        DomElement.prototype.setStyleParam = function(param, value) {
+            this.element.style[param] = value;
+        };
+        
         DomElement.prototype.addStyleJsonId = function(styleId) {
 
             var element = this.element;
@@ -56,6 +60,11 @@ define([
             DomUtils.applyElementTransform(this.element, transform);
         };
 
+
+        DomElement.prototype.scaleXYZ = function(x, y, z) {
+            this.applyTransform("scale3d("+x+","+y+","+z+")");
+        };
+        
         DomElement.prototype.translateXYZ = function(x, y, z) {
             this.applyTransform("translate3d("+x+"px,"+y+"px,"+z+"px)");
         };
@@ -70,7 +79,7 @@ define([
 
 
         DomElement.prototype.removeElement = function() {
-            DomUtils.removeElement(this.element);
+            this.element.remove();
         };
 
 

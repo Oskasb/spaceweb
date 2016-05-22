@@ -1,17 +1,41 @@
 [{
   "styles": {
+    "ship_engine":{
+      "top": "20px",
+      "left": "-10px",
+      "width": "20px",
+      "height": "80px",
+      "backgroundImage":"url('./client/assets/images/medium_engine_red.png')",
+      "backgroundSize":"800% 100%",
+      "zIndex":1
+    },
+
+    "ship_root":{
+      "zIndex":51
+    },
+
     "ship_hull":{
-      "top": "-15px",
-      "left": "-60px",
-      "width": "120px",
-      "height": "30px",
+      "top": "-26px",
+      "left": "-25px",
+      "width": "50px",
+      "height": "80px",
       "textAlign": "center",
       "fontSize": "14px",
       "color":"rgba(255, 255, 190, 1)",
-      "backgroundColor":"rgb(185, 55, 55)"
+      "backgroundColor":"rgba(185, 55, 0, 0)",
+      "backgroundImage":"url('./client/assets/s-11.png')",
+      "backgroundSize":"100% 100%"
     },
     "ship_hull_friendly":{
       "backgroundColor":"rgb(4, 165, 85)"
+    },
+    "cannon_bullet":{
+      "top": "-5px",
+      "left": "-6px",
+      "width": "12px",
+      "height": "30px",
+      "backgroundImage":"url('./client/assets/images/bullet_round.png')",
+      "backgroundSize":"100% 100%"
     }
   }
 }]

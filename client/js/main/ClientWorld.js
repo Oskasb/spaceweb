@@ -1,15 +1,19 @@
 "use strict";
 
 
-define(['Events'
+define(['Events',
+		'ui/DomElement',
+	'ui/GameScreen'
 
 ],
 	function(
-		    evt
+		    evt,
+			DomElement,
+			GameScreen
 		) {
 
 		var ClientWorld = function() {
-
+			this.stars = [];
 
 		};
 
@@ -19,24 +23,30 @@ define(['Events'
 		};
 
 		ClientWorld.prototype.ServerWorld = function(data) {
+			
+			this.addStars(data);
 
-			var append = function(pos) {
+		};
 
-					var top = Math.floor(pos[0]);
-					var left = Math.floor(pos[1]);
-					var distance = Math.floor(pos[2])*0.01;
+		ClientWorld.prototype.addStars = function(starData) {
+			for (var i = 0; i < starData.length; i++) {
+				var pos = starData[i].pos;
+				var element = new DomElement(GameScreen.getElement(), 'background_star');
 
-					var w = distance * 1.5;
+				var distance = Math.floor(pos[2])*0.006;
 
-					document.getElementById('game_window').innerHTML += '<div style="top:'+top+'%;left:'+left+'%;position:absolute;width:'+w+'%;height:'+w+'%;opacity:'+distance+';z-index:100;background:#fff;"></div>';
-			};
+				var params = {
+					top : Math.floor(pos[0])+'%',
+					left : Math.floor(pos[1])+'%',
+					opacity:distance
 
-			for (var i = 0; i < data.length; i++) {
+				};
 
-				append(data[i].pos);
+				element.applyStyleParams(params);
+				element.scaleXYZ(distance*distance, distance*distance, 1);
 
+				this.stars.push(element);
 			}
-
 		};
 
 		ClientWorld.prototype.tick = function(frame) {

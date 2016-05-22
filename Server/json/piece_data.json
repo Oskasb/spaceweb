@@ -2,11 +2,18 @@
   "id":"piece_data",
   "pieces":{
     "player_ship":{
+      "style":"ship_hull",
+      "shape":{
+        "hull": {
+          "size":[60, 90]
+        }
+      },
       "controls":{
-        "ations": {
+        "actions": {
           "applySteering":0,
           "applyThrottle":0,
           "applyForward":0,
+          "applyAppearance":"ship_hull",
           "fireCannon":false
         },
         "constants":{
@@ -19,6 +26,18 @@
       },
       "modules":[
         {
+          "id":"hull",
+          "data":{
+            "source":"initiate",
+            "initState": true,
+            "applies":{
+              "style":"ship_hull",
+              "type":"string",
+              "state":true,
+              "action":"applyAppearance"
+            }
+          }
+        },{
           "id":"cannon",
           "data":{
             "source":"trigger",
@@ -27,8 +46,8 @@
               "type":"boolean",
               "state":true,
               "action":"fireCannon",
-              "exitVelocity":6,
-              "lifeTime":3
+              "exitVelocity":8,
+              "lifeTime":1.2
             }
           }
         },{
@@ -44,8 +63,31 @@
           }
         }
       ]
-
-
+    },
+    "cannon_bullet":{
+      "shape":{
+        "hull": {
+          "size":[20, 20]
+        }
+      },
+      "controls":{
+        "actions": {
+        }
+      },
+      "modules":[
+        {
+          "id":"bullet_shell",
+          "data":{
+            "source":"initiate",
+            "initState": true,
+            "applies":{
+              "type":"string",
+              "state":true,
+              "action":"applyAppearance"
+            }
+          }
+        }
+      ]
     }
   }
 }]

@@ -1,20 +1,51 @@
 [{
   "piece_data":{
     "modules":[
-      {"id":"cannon",
-        "data":
-        {"source":"trigger",
+      {
+        "id":"hull",
+        "data":{
+          "source":"initiate",
+          "applies":{
+            "state":true,
+            "type":"string",
+            "style":"ship_hull",
+            "message":"Load Hull"
+          }
+        }
+      },{
+        "id":"bullet_shell",
+        "data":{
+          "source":"initiate",
+          "applies":{
+            "state":true,
+            "type":"string",
+            "style":"cannon_bullet",
+            "message":"Load Bullet"
+          }
+        }
+      },{
+
+        "id":"cannon",
+        "data":{
+          "source":"trigger",
           "applies":{
             "state":true,
             "type":"boolean",
             "message":"pew!"
           }
         }
-      },{"id":"engine",
-        "data":
-        {"source":"throttle",
+      },{
+        "id":"engine",
+        "data": {
+          "source":"throttle",
           "applies":{
             "state":true,
+            "style":"ship_engine",
+            "animate":{
+              "height":10,
+              "opacity":0.2
+            },
+            "flicker":"0.6",
             "threshold":0.2,
             "type":"float",
             "message":"wroom"
@@ -23,4 +54,25 @@
       }
     ]
   }
+},
+  {
+    "bullet_data": {
+      "modules": [
+        {
+          "id": "shape",
+          "data": {
+            "source": "trigger",
+            "applies": {
+              "state": true,
+              "style":"ship_engine",
+              "type": "boolean",
+              "message": "pew!"
+            }
+          }
+        }
+      ]
+    }
 }]
+
+
+

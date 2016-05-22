@@ -4,6 +4,7 @@ ServerWorld = function() {
 	this.stars = [];
 	this.actionHandlers
 	this.pieceCount = 0;
+	this.pieceConfigs;
 };
 
 ServerWorld.prototype.initWorld = function(actionHandlers) {
@@ -12,6 +13,7 @@ ServerWorld.prototype.initWorld = function(actionHandlers) {
 };
 
 ServerWorld.prototype.pieceConfigsUpdated = function(config) {
+	this.pieceConfigs = config;
 	for (var key in this.players) {
 		this.players[key].applyPieceConfig(config.player_ship);
 	}
@@ -23,15 +25,18 @@ ServerWorld.prototype.spawnStars = function() {
 		this.pos = [x, y, z];
 	};
 
-	for (var i = 0; i < 10; i++) {
+	for (var i = 0; i < 30; i++) {
 		this.stars.push(new Star(Math.random() * 100, Math.random() * 100,Math.random() * 100))
 	}
 };
 
 ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData) {
-	var apply = cannonModuleData.applies
+	var apply = cannonModuleData.applies;
 	this.pieceCount++;
 	var bullet = new GAME.Piece('bullet_'+this.pieceCount, new Date().getTime() * 0.001, apply.lifeTime);
+
+	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
+	
 	bullet.spatial.setSpatial(sourcePiece.spatial);
 	bullet.pieceControls.actions.applyForward = apply.exitVelocity;
 	bullet.applyForwardControl(1);
@@ -40,21 +45,7 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData) {
 	// bullet.processTemporalState(bullet.temporal.timeDelta, bullet.temporal.creationTime);
 
 	bullet.spatial.getRotVelVec().scale(0);
-
-	return;
-	this.updateWorldPiece(bullet, bullet.temporal.minTickTime);
-
-	var _this = this;
-
-	var futureTick = function(delay) {
-		_this.updateWorldPiece(bullet, delay);
-
-	};
-
-	setTimeout(function() {
-		futureTick(apply.lifeTime)
-	}, bullet.temporal.maxTickTime * 1000);
-
+	
 };
 
 ServerWorld.prototype.getPlayer = function(playerId) {
