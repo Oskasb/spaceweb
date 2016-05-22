@@ -12,7 +12,7 @@ ConfigLoader.prototype.setUpdateCallback = function(dataUpdated) {
     this.updateCallback = dataUpdated;
 };
 
-ConfigLoader.prototype.applyFileConfigs = function(configs) {
+ConfigLoader.prototype.applyFileConfigs = function(configs, devMode) {
   //  return;
     for (var i = 0; i < configs.loadFiles.length; i++) {
         this.registerConfigUrl(configs.loadFiles[i], this.devMode)
@@ -23,8 +23,9 @@ ConfigLoader.prototype.applyFileConfigs = function(configs) {
 
 
 ConfigLoader.prototype.registerConfigUrl = function(configUrl, devMode) {
+
     this.devMode = devMode;
-    console.log("Reg Config Url: ", configUrl, devMode);
+    console.log("Reg Config Url: "+ configUrl+' ' +devMode);
     var dataUpdated = this.updateCallback;
     var path = this.path;
     var data;
@@ -64,7 +65,7 @@ ConfigLoader.prototype.registerConfigUrl = function(configUrl, devMode) {
         this.watchConfig(configUrl, watchCallback);
     } else {
 
-        data = JSON.parse(require(path+configUrl));
+        data = JSON.parse(fs.readFileSync(path+configUrl+'.json', 'utf8'));
         for (var i = 0; i < data.length; i++) {
             _this.configs[data[i].id] = data[i];
             console.log("Config Updated:", data);

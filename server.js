@@ -26,7 +26,7 @@ var SetupServer = function() {
 	var app = express();
 	var port = process.env.PORT || 5000;
 
-	var devMode = false // true;
+	var devMode = true;
 	if (process.env.PORT) {
 		devMode = false;
 		console.log(process.env.PORT)
@@ -52,7 +52,7 @@ var SetupServer = function() {
 	serverMain.initServerMain(new DataHub());
 	serverMain.initServerConnection(wss);
 
-	serverMain.initConfigs(configLoader, 'server_setup', dataUpdated, devMode);
+	serverMain.initConfigs(configLoader, 'server_setup', devMode);
 };
 
 SetupServer();
