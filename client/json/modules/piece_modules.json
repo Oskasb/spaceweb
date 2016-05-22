@@ -49,10 +49,17 @@
             "state":true,
             "style":"ship_engine",
             "animate":{
-              "height":6,
+              "height":4,
               "opacity":0.2
             },
             "flicker":"0.6",
+            "random":{
+              "source":"random",
+              "frames":11,
+              "width":50,
+              "clamp":5,
+              "gain":-54
+            },
             "threshold":0.2,
             "type":"float",
             "message":"wroom"

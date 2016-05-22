@@ -43,6 +43,16 @@ define([
                     this.element.translateXYZ(Math.clamp(Math.round(Math.abs(rotVel)*rotVel*roll.gain), -roll.clamp, roll.clamp)*roll.width, 0, 0);
                 }
 
+
+            /*
+                if (this.applies.random) {
+                    var random = this.applies.random;
+                    var value = Math.random();
+                    //         console.log(rotVel);
+                    this.element.translateXYZ(Math.clamp(Math.round(value*random.gain), -random.clamp, random.clamp)*random.width, 0, 0);
+                }
+            */
+
             }
         };
 
