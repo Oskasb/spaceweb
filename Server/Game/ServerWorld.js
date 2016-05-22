@@ -7,9 +7,9 @@ ServerWorld = function() {
 	this.pieceConfigs;
 };
 
-ServerWorld.prototype.initWorld = function(actionHandlers) {
+ServerWorld.prototype.initWorld = function(clients) {
+	this.clients = clients;
 	this.spawnStars();
-	this.actionHandlers = actionHandlers;
 };
 
 ServerWorld.prototype.pieceConfigsUpdated = function(config) {
@@ -71,10 +71,7 @@ ServerWorld.prototype.fetch = function(data) {
 
 ServerWorld.prototype.broadcastPieceState = function(piece) {
 	var packet = piece.makePacket();
-
-	for (var key in this.players) {
-		this.players[key].client.broadcastToAll(packet);
-	}
+	this.clients.broadcastToAllClients(packet);
 };
 
 ServerWorld.prototype.updateWorldPiece = function(piece, timeDelta) {
@@ -89,30 +86,40 @@ ServerWorld.prototype.updateWorldPiece = function(piece, timeDelta) {
 
 };
 
-ServerWorld.prototype.tickWorld = function(timeDelta) {
 
-		var timeouts = [];
+ServerWorld.prototype.updatePieces = function(timeDelta) {
+	var timeouts = [];
 
 	for (var i = 0; i < this.pieces.length; i++) {
 		this.pieces[i].processTemporalState(timeDelta);
-		
+
 		if (this.pieces[i].getState() == GAME.ENUMS.PieceStates.TIME_OUT) {
 			timeouts.push(this.pieces[i]);
 		} else {
 			this.pieces[i].spatial.update();
 			this.broadcastPieceState(this.pieces[i]);
 		}
-		
+
 	}
 
 	for (var i = 0; i < timeouts.length; i++) {
 		this.removePiece(timeouts[i]);
 	}
+};
 
+ServerWorld.prototype.updatePlayers = function(timeDelta) {
 	for (var key in this.players) {
 		this.players[key].piece.processTemporalState(timeDelta);
 		this.players[key].piece.processModuleStates();
 		this.players[key].piece.processSpatialState(timeDelta);
 		this.broadcastPieceState(this.players[key].piece);
 	}
+};
+
+
+ServerWorld.prototype.tickWorld = function(timeDelta) {
+
+	this.updatePieces(timeDelta);
+	this.updatePlayers(timeDelta);
+
 };

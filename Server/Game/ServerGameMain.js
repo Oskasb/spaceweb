@@ -12,7 +12,6 @@ ServerGameMain = function(clients, serverWorld) {
 
 
 ServerGameMain.prototype.applyPieceConfigs = function(config) {
-	console.log("Piece Configs: ", JSON.stringify(config));
 	this.pieceConfigs = config.pieces;
 	this.serverWorld.pieceConfigsUpdated(this.pieceConfigs);
 };
@@ -26,7 +25,6 @@ ServerGameMain.prototype.applySetupConfig = function(config) {
 
 ServerGameMain.prototype.setupLoop = function(tickDuration) {
 	var _this=this;
-	this.serverWorld.initWorld();
 	console.log("Setup Loop: ", tickDuration);
 	SERVER_LOOP = setInterval(function() {
 		_this.tickGame();
@@ -34,7 +32,6 @@ ServerGameMain.prototype.setupLoop = function(tickDuration) {
 };
 
 ServerGameMain.prototype.initGame = function() {
-
 	var _this = this;
 
 	function fireCannon(piece, action, value, moduleData) {
@@ -45,7 +42,7 @@ ServerGameMain.prototype.initGame = function() {
 		fireCannon:fireCannon
 	};
 	
-	this.serverWorld.initWorld();
+	this.serverWorld.initWorld(this.clients);
 };
 
 

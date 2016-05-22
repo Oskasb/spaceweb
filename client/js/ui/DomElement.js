@@ -84,14 +84,7 @@ define([
 
 
         DomElement.prototype.removeElement = function() {
-            var element = this;
-            element.scaleXYZ(0, 0, 0);
-            element.element.style.opacity = 0;
-            setTimeout(function() {
-            //
-                element.element.remove();
-            }, 10);
-
+            DomUtils.removeElement(this.element);
         };
 
 

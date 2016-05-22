@@ -10,8 +10,8 @@ define([
         DomElement
     ) {
 
-        var DomModule = function(module, parentElem) {
-
+        var DomModule = function(module, parentElem, piece) {
+            this.piece = piece;
             this.module = module;
             this.applies = module.data.applies;
             this.flicker = 0;
@@ -34,6 +34,15 @@ define([
             if (this.applies) {
                 this.populateAnimationState(this.module.state.value);
                 this.element.applyStyleParams(this.animationState);
+
+
+                if (this.applies.roll) {
+                    var roll = this.applies.roll;
+                    var rotVel = this.piece.spatial.rotVel.data[2];
+           //         console.log(rotVel);
+                    this.element.translateXYZ(Math.clamp(Math.round(Math.abs(rotVel)*rotVel*roll.gain), -roll.clamp, roll.clamp)*roll.width, 0, 0);
+                }
+
             }
         };
 

@@ -48,7 +48,6 @@ define([
 		};
 
 		GameMain.prototype.registerPlayer = function(data) {
-			console.log("Register Player: ", data);
 
 			var _this = this;
 

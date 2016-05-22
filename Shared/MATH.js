@@ -2,6 +2,8 @@ if(typeof(MATH) == "undefined"){
 	MATH = {};
 }
 
+(function(){Math.clamp=function(a,b,c){return Math.max(b,Math.min(c,a));}})();
+
 (function(MATH){
 
 	MATH.TWO_PI = 2.0 * Math.PI;

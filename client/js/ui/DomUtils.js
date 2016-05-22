@@ -8,7 +8,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
 
 
     var removeDivElement = function(div) {
-        div.parentNode.removeChild(div);
+        if (div.parentNode) div.parentNode.removeChild(div);
     };
 
     var checkForStylePrefix = function(prefix) {

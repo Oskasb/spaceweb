@@ -1,4 +1,3 @@
-(function(){Math.clamp=function(a,b,c){return Math.max(b,Math.min(c,a));}})();
 
 ServerMain = function() {
 
@@ -73,7 +72,7 @@ ServerMain.prototype.initServerConnection = function(wss) {
 	};
 
 	this.serverConnection.setupSocket(wss, this.dataHub, this.clients, removePlayerCallback);
-	this.serverGameMain.initGame(200);
+	this.serverGameMain.initGame();
 };
 
 ServerMain.prototype.initServerMain = function(dataHub) {

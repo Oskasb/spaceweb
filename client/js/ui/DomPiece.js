@@ -43,8 +43,7 @@ define([
 		};
 
 		DomPiece.prototype.attachModule = function(module) {
-			console.log("Attach Module", module);
-			this.modules.push(new DomModule(module, this.domHull.element));
+			this.modules.push(new DomModule(module, this.domHull.element, this.piece));
 		};
 
 		DomPiece.prototype.attachNameplate = function() {
@@ -61,9 +60,7 @@ define([
 
 
 		DomPiece.prototype.removeDomPiece = function() {
-			this.removeModules();
-		//	this.domHull.removeElement();
-		//	this.domRoot.removeElement();
+			this.domRoot.removeElement();
 		};
 
 		DomPiece.prototype.setIsOwnPlayer = function() {

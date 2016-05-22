@@ -8,6 +8,13 @@
           "applies":{
             "state":true,
             "type":"string",
+            "roll":{
+              "source":"spatialRotVel",
+              "frames":11,
+              "width":50,
+              "clamp":5,
+              "gain":-54
+            },
             "style":"ship_hull",
             "message":"Load Hull"
           }
@@ -42,7 +49,7 @@
             "state":true,
             "style":"ship_engine",
             "animate":{
-              "height":10,
+              "height":6,
               "opacity":0.2
             },
             "flicker":"0.6",

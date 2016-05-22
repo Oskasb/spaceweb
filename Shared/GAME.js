@@ -29,7 +29,6 @@ if(typeof(GAME) == "undefined"){
 
 
 	GAME.PieceModule = function(moduleId, data, piece) {
-		console.log("Module: ", moduleId, JSON.stringify(data));
 		this.id = moduleId;
 		this.data = data;
 		this.piece = piece;
@@ -159,11 +158,9 @@ if(typeof(GAME) == "undefined"){
 
 	GAME.Piece.prototype.registerModuleFromServerState = function(module) {
 		this.modules.push(module);
-		console.log("Add Module", module);
 	};
 	
 	GAME.Piece.prototype.applyConfig = function(pieceConfigs) {
-		console.log("apply Config: ", JSON.stringify(pieceConfigs));
 		this.pieceControls.applyControlConfig(pieceConfigs.controls);
 		if (pieceConfigs.modules) this.attachModules(pieceConfigs.modules);
 	};
