@@ -95,8 +95,8 @@ ServerMain.prototype.applyConfigData = function(updatedData) {
 };
 
 
-ServerMain.prototype.initConfigs = function(configLoader, sourceUrl, dataUpdated) {
+ServerMain.prototype.initConfigs = function(configLoader, sourceUrl, dataUpdated, devMode) {
 	this.configLoader = configLoader;
-	this.configLoader.registerConfigUrl(sourceUrl, dataUpdated);
+	this.configLoader.registerConfigUrl(sourceUrl, dataUpdated, devMode);
 };
 
