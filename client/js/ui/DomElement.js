@@ -64,7 +64,12 @@ define([
         DomElement.prototype.scaleXYZ = function(x, y, z) {
             this.applyTransform("scale3d("+x+","+y+","+z+")");
         };
-        
+
+        DomElement.prototype.translateRotateXYZxyzw = function(tx, ty, tz, rx, ry, rz, w) {
+            this.applyTransform("translate3d("+tx+"px,"+ty+"px,"+tz+"px) rotate3d("+rx+","+ry+","+rz+", "+w+"rad)");
+        };
+
+
         DomElement.prototype.translateXYZ = function(x, y, z) {
             this.applyTransform("translate3d("+x+"px,"+y+"px,"+z+"px)");
         };
@@ -79,7 +84,14 @@ define([
 
 
         DomElement.prototype.removeElement = function() {
-            this.element.remove();
+            var element = this;
+            element.scaleXYZ(0, 0, 0);
+            element.element.style.opacity = 0;
+            setTimeout(function() {
+            //
+                element.element.remove();
+            }, 10);
+
         };
 
 

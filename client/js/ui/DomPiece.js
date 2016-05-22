@@ -33,7 +33,8 @@ define([
 			this.rot = [];
 			this.rotVel = [];
 			this.domRoot = new DomElement(parent, 'point');
-			
+
+
 			this.domHull = new DomElement(this.domRoot.element, 'ship_root');
 		//	this.inputVector = new DomVector(this.domRoot.element);
 		//	this.rotVelVector = new DomVector(this.domHull.element);
@@ -51,8 +52,18 @@ define([
 			this.nameplate.setText(this.id);
 		};
 
+
+		DomPiece.prototype.removeModules = function() {
+			for (var i = 0; i < this.modules.length; i++) {
+				this.modules[i].element.removeElement();
+			}
+		};
+
+
 		DomPiece.prototype.removeDomPiece = function() {
-			this.domRoot.removeElement();
+			this.removeModules();
+		//	this.domHull.removeElement();
+		//	this.domRoot.removeElement();
 		};
 
 		DomPiece.prototype.setIsOwnPlayer = function() {

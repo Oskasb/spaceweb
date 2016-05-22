@@ -53,8 +53,11 @@ define([
 			var _this = this;
 
 			var removeCallback = function(playerId) {
-				delete _this.pieces[playerId];
-			};
+                setTimeout(function() {
+                    delete _this.pieces[playerId];
+                }, 20)
+
+        };
 
 			this.pieces[data.playerId] = new ClientPiece(data, this.pieceData, removeCallback);
 		//	this.pieces[data.playerId].startSpatial.setSendData(data.spatial);

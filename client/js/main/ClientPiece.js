@@ -80,8 +80,8 @@ define([
 		};
 
 		ClientPiece.prototype.playerRemove = function() {
-			this.removeCallback(this.piece.id);
 			this.domPlayer.removeDomPiece();
+			this.removeCallback(this.piece.id);
 		};
 
 		ClientPiece.prototype.setServerState = function(serverState) {
