@@ -151,12 +151,14 @@ if(typeof(MODEL) == "undefined"){
 		return this.pos.getX() < xMin || this.pos.getX() > xMax || this.pos.getY() < yMin || this.pos.getY() > yMax;
 	};
 
-	MODEL.Temporal = function(creationTime) {
+	MODEL.Temporal = function(creationTime, lifeTime) {
+		this.lifeTime = lifeTime || Number.MAX_VALUE;
 		this.creationTime = creationTime;
-		this.simulationTime = this.creationTime;
-		this.timeDelta = 1;
-		this.tickCountUp = 1;
-		this.fraction = 1;
+		this.maxTickTime = 1;
+		this.minTickTime = 0.001;
+		this.timeDelta = 0.0001;
+		this.tickCountUp = 0;
+		this.fraction = 0.0001;
 	};
 
 	MODEL.Temporal.prototype.getFraction = function(tpf) {
@@ -166,7 +168,7 @@ if(typeof(MODEL) == "undefined"){
 	};
 
 	MODEL.Temporal.prototype.predictUpdate = function(time) {
-		this.simulationTime += time;
+		this.lifeTime -= time;
 		this.timeDelta = time;
 		this.tickCountUp = 0;
 	};

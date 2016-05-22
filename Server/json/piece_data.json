@@ -3,17 +3,45 @@
   "pieces":{
     "player_ship":{
       "controls":{
+        "ations": {
+          "applySteering":0,
+          "applyThrottle":0,
+          "applyForward":0,
+          "fireCannon":false
+        },
         "constants":{
           "deceleration":0.9,
-          "radialVelocityClamp":0.3,
+          "radialVelocityClamp":0.5,
           "radialLerpFactor":0.3,
           "throttleLimit": 2,
           "throttleAmplitude": 3
         }
       },
       "modules":[
-        {"id":"cannon",
-          "data":{"source":"trigger", "initState": false}
+        {
+          "id":"cannon",
+          "data":{
+            "source":"trigger",
+            "initState": false,
+            "applies":{
+              "type":"boolean",
+              "state":true,
+              "action":"fireCannon",
+              "exitVelocity":6,
+              "lifeTime":3
+            }
+          }
+        },{
+          "id":"engine",
+          "data":{
+            "source":"throttle",
+            "initState": 0,
+            "applies":{
+              "tyoe":"float",
+              "state":true,
+              "action":"applyForward"
+            }
+          }
         }
       ]
 

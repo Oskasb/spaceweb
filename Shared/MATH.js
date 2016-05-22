@@ -1,7 +1,4 @@
 if(typeof(MATH) == "undefined"){
-	/**
-	 * @namespace Holds the functionality of the library
-	 */
 	MATH = {};
 }
 

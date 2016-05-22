@@ -100,6 +100,12 @@ define([
 				return;
 			}
 
+			if (serverState.state == GAME.ENUMS.PieceStates.TIME_OUT) {
+				this.domPlayer.renderStateText("Time Out");
+				this.playerRemove();
+				return;
+			}
+			
 			this.piece.applyNetworkState(serverState);
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TELEPORT) {

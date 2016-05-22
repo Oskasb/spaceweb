@@ -9,9 +9,9 @@ ServerMain = function() {
 	this.serverConnection = new ServerConnection();
 	this.serverWorld = new ServerWorld();
 	this.clients = new Clients();
-	this.serverGameMain = new ServerGameMain(this.clients);
+	this.serverGameMain = new ServerGameMain(this.clients, this.serverWorld);
 
-	this.serverWorld.initWorld();
+	
 
 	var _this = this;
 	function serverSetup(config) {

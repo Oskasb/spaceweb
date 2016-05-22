@@ -2,7 +2,24 @@
   "piece_data":{
     "modules":[
       {"id":"cannon",
-        "data":{"source":"trigger", "applies":{"state":true,"message":"pew!"}}
+        "data":
+        {"source":"trigger",
+          "applies":{
+            "state":true,
+            "type":"boolean",
+            "message":"pew!"
+          }
+        }
+      },{"id":"engine",
+        "data":
+        {"source":"throttle",
+          "applies":{
+            "state":true,
+            "threshold":0.2,
+            "type":"float",
+            "message":"wroom"
+          }
+        }
       }
     ]
   }

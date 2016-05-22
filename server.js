@@ -7,6 +7,7 @@ var SetupServer = function() {
 	require('./Shared/MATH');
 	require('./Shared/GAME');
 	require('./Shared/MODEL');
+	require('./Shared/ACTIONS');
 	require('./Shared/io/SocketMessages');
 
 	require('./Server/io/ServerConnection');
