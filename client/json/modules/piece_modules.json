@@ -1,0 +1,9 @@
+[{
+  "piece_data":{
+    "modules":[
+      {"id":"cannon",
+        "data":{"source":"trigger", "applies":{"state":true,"message":"pew!"}}
+      }
+    ]
+  }
+}]

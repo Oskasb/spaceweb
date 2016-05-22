@@ -1,10 +1,12 @@
 "use strict";
 
 define([
-	'data_pipeline/DataWorker'
+	'data_pipeline/DataWorker',
+	'Events'
 ],
 	function(
-		DataWorker
+		DataWorker,
+		evt
 		) {
 
 		var pollDelay = 0.2;
@@ -44,10 +46,12 @@ define([
 
 			var onWorkerOk = function(resUrl, res) {
 			//	onLoaded(JSON.parse(res), resUrl);
+				evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:'JSON Loaded: '+resUrl});
 				onLoaded(res, resUrl);
 
 			};
 			var onWorkerFail = function(res) {
+				evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Worker Error: '+res});
 				fail("Worker fail: "+ res)
 			};
 
@@ -64,6 +68,7 @@ define([
 					lastPolledIndex = 0;
 				}
 				var pollFail = function(err) {
+					evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Poll Error: '+err});
 					errorCallback("Json: ", err);
 				};
 				JsonPipe.loadJsonFromUrl(pollIndex[lastPolledIndex], pollCallbacks[pollIndex[lastPolledIndex]], pollFail, false);

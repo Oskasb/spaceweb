@@ -3,11 +3,13 @@
 
 define([
 	'main/ClientPlayer',
-	'Events'
+	'Events',
+	'PipelineAPI'
 ],
 	function(
 		ClientPlayer,
-		evt
+		evt,
+		PipelineAPI
 		) {
 
 
@@ -24,8 +26,26 @@ define([
 
 			evt.on(evt.list().CONNECTION_CLOSED, removeAllPlayers);
 
+			this.pieceData = {}; 
+			var _this = this;
+			
+			
+			
+			var pieceModuleDataLoaded = function(src, data) {
+				_this.pieceData[src]=data;
+				_this.pieceDataUpdated(_this.pieceData);
+			};
+
+			PipelineAPI.subscribeToCategoryKey('piece_data', 'modules', pieceModuleDataLoaded);
+			
 		};
 
+		GameMain.prototype.pieceDataUpdated = function(pieceData) {
+			for (var index in this.players) {
+				this.players[index].attachModules(pieceData.modules);
+			}
+			
+		};
 
 		GameMain.prototype.registerPlayer = function(data) {
 			console.log("Register Player: ", data);
@@ -36,7 +56,7 @@ define([
 				delete _this.players[playerId];
 			};
 
-			this.players[data.playerId] = new ClientPlayer(data, removeCallback);
+			this.players[data.playerId] = new ClientPlayer(data, this.pieceData, removeCallback);
 		//	this.players[data.playerId].startSpatial.setSendData(data.spatial);
 			return this.players[data.playerId];
 		};

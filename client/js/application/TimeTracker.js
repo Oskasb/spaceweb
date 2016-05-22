@@ -8,7 +8,7 @@ define(['Events'], function(evt) {
 		this.pingTime = 0;
 		this.pingResponseTime = 0;
 
-		this.pingInterval = 4000;
+		this.pingInterval = 2000;
 		this.tpf = 1;
 
 
@@ -23,13 +23,15 @@ define(['Events'], function(evt) {
 
 	TimeTracker.prototype.processFrameDuration = function(duration) {
 		this.tpf = duration * 0.001;
-		document.querySelector('#framesTime').innerHTML = 'Frame (ms):' +duration;
+
 	};
 
 
-	TimeTracker.prototype.processPingDuration = function(duration) {
+	var pings = 0;
 
-		document.querySelector('#pingTime').innerHTML = 'Ping (ms):' +duration;
+	TimeTracker.prototype.processPingDuration = function(duration) {
+		pings++;
+		evt.fire(evt.list().MESSAGE_UI, {channel: 'ping_tracker', message: 'Ping: ' + duration+' ms'});
 	};
 
 	TimeTracker.prototype.trackFrameTime = function(frame) {

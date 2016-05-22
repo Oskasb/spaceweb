@@ -102,13 +102,18 @@ define([
 		};
 
 		ConfigCache.fireCategoryCallbacks = function(key) {
-			for (var i = 0; i < categories[key].callbacks.length; i++) {
-				categories[key].callbacks[i](key, configs[key]);
-			}
+
+			var fireCallbacks = function(callbacks, id, data) {
+				for (var i = 0; i < callbacks.length; i++) {
+					callbacks[i](id, data);
+				}
+			};
+
+			fireCallbacks(categories[key].callbacks, key, configs[key]);
 
 			for (var index in categories[key].subscription) {
 				if (configs[key][index]) {
-					categories[key].subscription[index](index, configs[key][index]);
+					fireCallbacks(categories[key].subscription[index], index, configs[key][index]);
 				}
 			}
 			masterReset();
@@ -144,7 +149,12 @@ define([
 			if (!categories[category]) {
 				ConfigCache.addCategory(category);
 			}
-			categories[category].subscription[key] = callback;
+
+			if (!categories[category].subscription[key]) {
+				categories[category].subscription[key] = [];
+			}
+
+			categories[category].subscription[key].push(callback);
 
 		};
 

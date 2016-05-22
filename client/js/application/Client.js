@@ -35,11 +35,12 @@ define([
 			var ClientState = GAME.ENUMS.ClientStates.LOADING;
 
 			var handleServerMessage = function(e) {
+
 				var res = evt.args(e);
 				if (messages[res.id]) {
 					//	console.log("Message Recieved: ", messages[res.id], res)
 					_this[messages[res.id].target][res.id](res.data);
-                    evt.fire(evt.list().MESSAGE_UI, {channel:'receive', message:res.id});
+                    evt.fire(evt.list().MESSAGE_UI, {channel:'receive', message:'.'});
 				} else {
 					console.log("unhandled message response:", res);
                     evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
@@ -120,16 +121,14 @@ define([
 
 			var setClientState = function(state) {
 				ClientState = state;
-				DEBUG_MONITOR("CLIENT STATE: "+state)
+                evt.fire(evt.list().MESSAGE_UI, {channel:'client_state', message:'MAIN: '+state});
 			};
 
 			var clientReady = function() {
 				setClientState(GAME.ENUMS.ClientStates.READY);
 				requestClient();
 			};
-
-			DEBUG_MONITOR(ClientState);
-
+            
 			evt.on(evt.list().CLIENT_READY, clientReady);
 
 		};
@@ -139,24 +138,14 @@ define([
 
 			this.pointerCursor.tick();
 			this.gameMain.tick(this.timeTracker.tpf);
-
-
-			document.querySelector('#frames').innerHTML = 'Frame# '+frame;
-
-			//	this.timeTracker.trackFrameTime(frame);
-
+            
 			var _this = this;
 			requestAnimationFrame(function() {
 				frame++;
 				_this.tick(frame);
 			});
 		};
-
-
-
-
-
-
+        
 		return Client;
 
 	});

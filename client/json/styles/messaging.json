@@ -4,13 +4,21 @@
       "position":"absolute"
     },
 
+    "ping_tracker_message":{
+      "top":"5%",
+      "left":"2%",
+      "fontSize": "14px",
+      "textAlign":"left",
+      "color":"rgba(85, 185, 255, 1)"
+    },
+
 
     "connection_message":{
       "top":"95%",
       "left":"2%",
       "fontSize": "12px",
       "textAlign":"left",
-      "color":"rgba(55, 255, 90, 0.5)"
+      "color":"rgba(85, 255, 120, 0.9)"
     },
 
     "receive_error_message":{
@@ -38,12 +46,20 @@
     },
 
 
+    "pipeline_error":{
+      "top":"3%",
+      "right":"2%",
+      "fontSize": "32px",
+      "textAlign":"right",
+      "color":"rgba(255, 35, 40, 1)"
+    },
+
     "pipeline_message":{
       "top":"95%",
-      "right":"25%",
-      "fontSize": "12px",
-      "textAlign":"left",
-      "color":"rgba(55, 255, 90, 0.5)"
+      "right":"2%",
+      "fontSize": "15px",
+      "textAlign":"right",
+      "color":"rgba(15, 255, 90, 1)"
     },
 
     "piece_state_hint":{

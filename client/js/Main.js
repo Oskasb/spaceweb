@@ -10,10 +10,6 @@ require.config({
     }
 });
 
-var DEBUG_MONITOR = function(text) {
-    document.querySelector('#monitor').innerHTML = text;
-};
-
 require([
     'application/Client',
     'ui/GameScreen',
@@ -108,9 +104,7 @@ require([
             var y = 50*0.01*GameScreen.getHeight()-spread*0.5 + Math.random()*spread;
             var message = new DomMessage(GameScreen.getElement(), loaded, 'piece_state_hint', x, y, 0.8);
             message.animateToXYZ(x, y-100, 0);
-
-            DEBUG_MONITOR("Load: "+started+"/"+loaded);
-
+            
             loadProgress.setProgress(loaded / started);
 
 

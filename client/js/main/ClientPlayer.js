@@ -3,18 +3,21 @@
 
 define([
 	'Events',
-	'ui/DomPlayer'
+	'ui/DomPlayer',
+	'PipelineAPI'
 
 ],
 	function(
 		evt,
-		DomPlayer
+		DomPlayer,
+		PipelineAPI
 		) {
 
-		var ClientPlayer = function(serverState, removeCallback) {
+		var ClientPlayer = function(serverState, pieceData, removeCallback) {
 
 			this.isOwnPlayer = false;
-			this.piece = new GAME.Piece(serverState.playerId);
+			var piece = new GAME.Piece(serverState.playerId);
+			this.piece = piece;
 			this.playerId = serverState.playerId;
 
 			this.spatial = new MODEL.Spatial();
@@ -26,21 +29,54 @@ define([
 			this.removeCallback = removeCallback;
 
 			serverState.state = GAME.ENUMS.PieceStates.TELEPORT;
-			this.piece.applyNetworkState(serverState);
+			piece.applyNetworkState(serverState);
+
+
+			this.attachModules(pieceData.modules);
+
+
 		};
 
+		ClientPlayer.prototype.attachModules = function(modules) {
+
+			var serverState = this.piece.serverState;
+			var _this = this;
+			this.piece.modules = [];
+			this.piece.moduleStates = {};
+
+			for (var i = 0; i < modules.length; i++) {
+
+				if (serverState.modules[modules[i].id]) {
+
+					for (var j = 0; j < serverState.modules[modules[i].id].length; j++) {
+
+						var moduleAppliedCallback = function(message) {
+							_this.domPlayer.renderStateText(message);
+						};
+
+						var moduleState = serverState.modules[modules[i].id][j];
+
+						var module = new GAME.PieceModule(modules[i].id, modules[i].data, this);
+
+						module.setModuleState(moduleState.value);
+						module.setAppliyCallback(moduleAppliedCallback);
+
+						this.piece.registerModuleFromServerState(module);
+					}
+
+				}
+			}
+		};
 
 		ClientPlayer.prototype.getPieceId = function() {
 			return this.piece.id;
 		};
 
-		ClientPlayer.prototype.predictPlayerVelocity = function(tpf) {
-			this.piece.updatePieceFrame(tpf);
-		};
+
 
 		ClientPlayer.prototype.updatePlayer = function(tpf) {
 
-			this.predictPlayerVelocity(tpf);
+			this.piece.updatePieceFrame(tpf);
 			this.domPlayer.updateDomPlayer();
 		};
 
@@ -50,22 +86,14 @@ define([
 		};
 
 		ClientPlayer.prototype.playerRemove = function() {
-			DEBUG_MONITOR("Remove:"+this.piece.id )
 			this.removeCallback(this.piece.id);
-
 			this.domPlayer.removeDomPlayer();
 		};
 
 		ClientPlayer.prototype.setServerState = function(serverState) {
 
-			if (serverState.trigger) {
-			//	this.piece.notifyTrigger(true);
-				this.domPlayer.renderStateText("Pew!");
-				return;
-			}
-
-
-
+			this.piece.processModules(serverState.modules);
+			
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
 				this.domPlayer.renderStateText("Poof");
 				this.playerRemove();

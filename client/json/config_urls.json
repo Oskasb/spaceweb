@@ -6,6 +6,7 @@
       "validation/shapes_validation.json",
       "messages/ui_messages.json",
       "styles/messaging.json",
+      "modules/piece_modules.json",
       "styles/ships.json",
       "system_setup.json"
 

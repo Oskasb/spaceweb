@@ -10,7 +10,14 @@
           "throttleLimit": 2,
           "throttleAmplitude": 3
         }
-      }
+      },
+      "modules":[
+        {"id":"cannon",
+          "data":{"source":"trigger", "initState": false}
+        }
+      ]
+
+
     }
   }
 }]

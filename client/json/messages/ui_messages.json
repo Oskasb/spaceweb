@@ -1,6 +1,30 @@
 [{
   "messages":{
     "channels": {
+      "ping_tracker":{
+        "style":"ping_tracker_message",
+        "anim":[0, 14, 0],
+        "time":0.6
+      },
+
+      "client_state":{
+        "style":"connection_ok_message",
+        "anim":[0, -50, 0],
+        "time":0.4
+      },
+
+      "pipeline_message":{
+        "style":"pipeline_message",
+        "anim":[0, -20, 0],
+        "time":0.4
+      },
+
+      "pipeline_error":{
+        "style":"pipeline_error",
+        "anim":[0, 45, 0],
+        "time":2.7
+      },
+
       "receive":{
         "style":"connection_message",
         "anim":[0, -50, 0],
