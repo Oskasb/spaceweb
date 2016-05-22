@@ -23,7 +23,7 @@ define(['Events',
 		};
 
 		ClientWorld.prototype.ServerWorld = function(data) {
-			
+
 			this.addStars(data);
 
 		};
@@ -38,12 +38,12 @@ define(['Events',
 				var params = {
 					top : Math.floor(pos[0])+'%',
 					left : Math.floor(pos[1])+'%',
-					opacity:distance
+					opacity:distance*(Math.random()+0.3)+0.1+distance*Math.random()
 
 				};
 
 				element.applyStyleParams(params);
-				element.scaleXYZ(distance*distance, distance*distance, 1);
+				element.scaleXYZ(distance*distance+0.1, distance*distance+0.1, 1);
 
 				this.stars.push(element);
 			}

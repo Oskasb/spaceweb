@@ -95,7 +95,7 @@ define([
 			}
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TIME_OUT) {
-				this.domPlayer.renderStateText("Time Out");
+				this.domPlayer.renderStateText("Pew!");
 				this.playerRemove();
 				return;
 			}
