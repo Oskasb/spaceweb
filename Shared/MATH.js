@@ -18,6 +18,12 @@ if(typeof(MATH) == "undefined"){
 		return Math.sqrt((fromX - toX)*(fromX - toX) + (fromY - toY)*(fromY - toY));
 	};
 
+	MATH.radialLerp = function(a, b, w) {
+		var cs = (1-w)*Math.cos(a) + w*Math.cos(b);
+		var sn = (1-w)*Math.sin(a) + w*Math.sin(b);
+		return Math.atan2(sn,cs);
+	};
+
 	MATH.radialClamp = function(value, min, max) {
 
 		var zero = (min + max)/2 + ((max > min) ? Math.PI : 0);
@@ -32,67 +38,7 @@ if(typeof(MATH) == "undefined"){
 		return _value < _min ? min : _value > _max ? max : value;
 	};
 
-
-	MATH.Vec2 = function(x, y) {
-		this.data = new Float32Array([x, y]);
-	};
-
-	MATH.Vec2.prototype.setXY = function(x, y) {
-		this.data[0] = x;
-		this.data[1] = y;
-		return this;
-	};
-
-	MATH.Vec2.prototype.setX = function(x) {
-		this.data[0] = x;
-		return this;
-	};
-
-	MATH.Vec2.prototype.setY = function(y) {
-		this.data[1] = y;
-		return this;
-	};
-
-	MATH.Vec2.prototype.setVec = function(vec2) {
-		this.data[0] = vec2.data[0];
-		this.data[1] = vec2.data[1];
-		return this;
-	};
-
-	MATH.Vec2.prototype.getArray = function(array) {
-		array[0] = this.data[0];
-		array[1] = this.data[1];
-		return this;
-	};
-
-	MATH.Vec2.prototype.addVec = function(vec2) {
-		this.data[0] += vec2.data[0];
-		this.data[1] += vec2.data[1];
-		return this;
-	};
-
-	MATH.Vec2.prototype.subVec = function(vec2) {
-		this.data[0] -= vec2.data[0];
-		this.data[1] -= vec2.data[1];
-		return this;
-	};
-
-	MATH.Vec2.prototype.scale = function(scale) {
-		this.data[0] *= scale;
-		this.data[1] *= scale;
-		return this;
-	};
-
-	MATH.Vec2.prototype.getLength = function() {
-		return Math.sqrt((this.data[0] * this.data[0]) + (this.data[1] * this.data[1]));
-	};
-
-	MATH.Vec2.prototype.normalize = function() {
-		var iLen = 1 / this.getLength();
-		this.data[0] *=  iLen;
-		this.data[1] *=  iLen;
-		return this;
-	};
+	
 
 	MATH.Vec3 = function(x,y,z){
 		this.data = new Float32Array([x,y,z]);
@@ -167,11 +113,7 @@ if(typeof(MATH) == "undefined"){
 	};
 
 
-	MATH.radialLerp = function(a, b, w) {
-		var cs = (1-w)*Math.cos(a) + w*Math.cos(b);
-		var sn = (1-w)*Math.sin(a) + w*Math.sin(b);
-		return Math.atan2(sn,cs);
-	};
+
 
 	MATH.Vec3.prototype.radialLerp = function(start, end, frac) {
 		this.data[0] = MATH.radialLerp(start.data[0], end.data[0], frac);

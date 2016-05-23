@@ -30,21 +30,34 @@ ServerWorld.prototype.spawnStars = function() {
 	}
 };
 
-ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData) {
+ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, dt, tpf) {
+	console.log(tpf)
 	var apply = cannonModuleData.applies;
 	this.pieceCount++;
-	var bullet = new GAME.Piece('bullet_'+this.pieceCount, new Date().getTime() * 0.001, apply.lifeTime);
+	var bullet = new GAME.Piece('bullet_'+this.pieceCount, now, apply.lifeTime);
 
 	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
+	bullet.temporal.timeDelta = dt;
+
+	bullet.spatial.interpolateTowards(sourcePiece.startSpatial, sourcePiece.targetSpatial, sourcePiece.temporal.getFraction(dt));
 	
-	bullet.spatial.setSpatial(sourcePiece.spatial);
+	bullet.spatial.rotVel[0] =  0;
 	bullet.pieceControls.actions.applyForward = apply.exitVelocity;
 	bullet.applyForwardControl(1);
-	this.pieces.push(bullet);
+
 	this.broadcastPieceState(bullet);
+
+	this.pieces.push(bullet);
+return
+	if (this.pieces[i].getState() == GAME.ENUMS.PieceStates.TIME_OUT) {
+		timeouts.push(this.pieces[i]);
+	} else {
+		this.pieces[i].spatial.update();
+		this.broadcastPieceState(this.pieces[i]);
+	}
 	// bullet.processTemporalState(bullet.temporal.timeDelta, bullet.temporal.creationTime);
 
-	bullet.spatial.getRotVelVec().scale(0);
+
 	
 };
 
@@ -76,14 +89,7 @@ ServerWorld.prototype.broadcastPieceState = function(piece) {
 
 ServerWorld.prototype.updateWorldPiece = function(piece, timeDelta) {
 	piece.processTemporalState(timeDelta);
-
-	if (piece.getState() == GAME.ENUMS.PieceStates.TIME_OUT) {
-		this.removePiece(piece);
-	} else {
-		piece.spatial.update();
-		this.broadcastPieceState(piece);
-	}
-
+	piece.spatial.update();
 };
 
 
@@ -91,15 +97,12 @@ ServerWorld.prototype.updatePieces = function(timeDelta) {
 	var timeouts = [];
 
 	for (var i = 0; i < this.pieces.length; i++) {
-		this.pieces[i].processTemporalState(timeDelta);
-
+		this.updateWorldPiece(this.pieces[i], timeDelta);
 		if (this.pieces[i].getState() == GAME.ENUMS.PieceStates.TIME_OUT) {
 			timeouts.push(this.pieces[i]);
 		} else {
-			this.pieces[i].spatial.update();
 			this.broadcastPieceState(this.pieces[i]);
 		}
-
 	}
 
 	for (var i = 0; i < timeouts.length; i++) {

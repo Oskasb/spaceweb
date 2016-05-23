@@ -1,7 +1,7 @@
 define(['Events'], function(evt) {
 
 	var TimeTracker = function() {
-		this.startTime = new Date().getTime();
+		this.startTime = performance.now();
 		this.lastFrameTime = 0;
 		this.frameTime = 0;
 
@@ -34,8 +34,9 @@ define(['Events'], function(evt) {
 		evt.fire(evt.list().MESSAGE_UI, {channel: 'ping_tracker', message: 'Ping: ' + duration+' ms'});
 	};
 
-	TimeTracker.prototype.trackFrameTime = function(frame) {
-		this.frameTime = new Date().getTime();
+	TimeTracker.prototype.trackFrameTime = function(frame, time) {
+		this.frameTime = performance.now(); // new Date().getTime();
+		if (!this.frameTime) this.frameTime = new Date().getTime();
 		this.processFrameDuration(this.frameTime - this.lastFrameTime);
 
 		this.lastFrameTime = this.frameTime;

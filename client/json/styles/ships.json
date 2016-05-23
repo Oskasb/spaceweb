@@ -14,7 +14,7 @@
     "ship_root":{
       "zIndex":51,
       "top": "-50px",
-      "left": "50px",
+      "left": "-25px",
       "width": "50px",
       "height": "80px",
       "overflow": "hidden"

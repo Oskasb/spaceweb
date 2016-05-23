@@ -4,7 +4,10 @@ var SERVER_LOOP;
 
 ServerGameMain = function(clients, serverWorld) {
 	this.serverWorld = serverWorld;
-	this.simulationTime = new Date().getTime();
+	this.startTime = process.hrtime();
+	this.processTime = process.hrtime();
+	this.currentTime = 0;
+	this.simulationTime = 0;
 	this.timeDelta = 0;
 	this.clients = clients;
 	this.pieceConfigs = {};
@@ -35,7 +38,11 @@ ServerGameMain.prototype.initGame = function() {
 	var _this = this;
 
 	function fireCannon(piece, action, value, moduleData) {
-		_this.serverWorld.addBullet(piece, moduleData);
+
+		var now = _this.getNow();
+		var timeDelta = _this.timeDelta - (now - _this.simulationTime);
+		
+		_this.serverWorld.addBullet(piece, moduleData, now, timeDelta, _this.timeDelta);
 	}
 
 	this.actionHandlers = {
@@ -75,9 +82,13 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 	return JSON.parse(player.makePacket());
 };
 
-ServerGameMain.prototype.tickGame = function() {
-	this.currentTime = new Date().getTime() * 0.001;
+ServerGameMain.prototype.getNow = function() {
+	this.processTime = process.hrtime(this.startTime);
+	return ((this.processTime[0]*1000) + (this.processTime[1]/1000000))*0.001;
+};
 
+ServerGameMain.prototype.tickGame = function() {
+	this.currentTime = this.getNow();
 	this.timeDelta = (this.currentTime - this.simulationTime);
 	this.serverWorld.tickWorld(this.timeDelta);
 	this.simulationTime = this.currentTime;

@@ -38,7 +38,7 @@ define([
 
                 if (this.applies.roll) {
                     var roll = this.applies.roll;
-                    var rotVel = this.piece.spatial.rotVel.data[2];
+                    var rotVel = this.piece.spatial.rotVel[0];
            //         console.log(rotVel);
                     this.element.translateXYZ(Math.clamp(Math.round(Math.abs(rotVel)*rotVel*roll.gain), -roll.clamp, roll.clamp)*roll.width, 0, 0);
                 }

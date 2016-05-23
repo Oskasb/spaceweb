@@ -97,7 +97,7 @@ define([
 		//	this.trafficPredictor.setProgress(this.piece.temporal.fraction);
 
 			this.domRoot.translateXYZ(this.pos[0]*0.01*GameScreen.getWidth(), this.pos[1]*0.01*GameScreen.getHeight(), 0);
-			this.domHull.rotateXYZ(0, 0, 1, this.rot[2]);
+			this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);
 			this.updateModules();
 		};
 

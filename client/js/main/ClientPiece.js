@@ -71,6 +71,7 @@ define([
 		ClientPiece.prototype.updatePlayer = function(tpf) {
 
 			this.piece.updatePieceFrame(tpf);
+			console.log(this.piece.spatial.rot[0]);
 			this.domPlayer.updateDomPiece();
 		};
 
@@ -87,6 +88,8 @@ define([
 		ClientPiece.prototype.setServerState = function(serverState) {
 
 			this.piece.processModules(serverState.modules);
+
+			this.piece.applyNetworkState(serverState);
 			
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
 				this.domPlayer.renderStateText("Poof");
@@ -100,7 +103,7 @@ define([
 				return;
 			}
 			
-			this.piece.applyNetworkState(serverState);
+
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TELEPORT) {
 				//	this.piece.notifyTrigger(true);

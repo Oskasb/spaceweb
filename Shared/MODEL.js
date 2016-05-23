@@ -6,88 +6,71 @@ if(typeof(MODEL) == "undefined"){
 }
 
 (function(MODEL){
-
+	
+	var calcVec = new MATH.Vec3(0, 0, 0);
+	
 	MODEL.Spatial = function() {
 		this.sendData = {
 			pos:[0, 0, 0],
 			vel:[0, 0, 0],
-			rot:[0, 0, 0],
-			rotVel:[0, 0, 0]
+			rot:[0],
+			rotVel:[0]
 		};
 		this.pos = new MATH.Vec3(0, 0, 0.1);
 		this.vel = new MATH.Vec3(0, 0, 0);
-		this.rot = new MATH.Vec3(0, 0.1, 0);
-		this.rotVel = new MATH.Vec3(0, 0.1, 0);
+		this.rot = [0];
+		this.rotVel = [0];
 	};
 
 	MODEL.Spatial.prototype.interpolateTowards = function(start, target, fraction) {
 		this.pos.interpolateFromTo(start.pos, target.pos, fraction);
 		this.vel.interpolateFromTo(start.vel, target.vel, fraction);
-		this.rot.radialLerp(start.rot, target.rot, fraction);
-		this.rotVel.radialLerp(start.rotVel, target.rotVel, fraction);
+		this.rot[0] = MATH.radialLerp(start.rot[0], target.rot[0], fraction);
+		this.rotVel[0] = MATH.radialLerp(start.rotVel[0], target.rotVel[0], fraction);
 	};
-
+	
+	
 	MODEL.Spatial.prototype.setSendData = function(sendData) {
 		this.pos.setXYZ(sendData.pos[0] , sendData.pos[1], sendData.pos[2]);
 		this.vel.setXYZ(sendData.vel[0] , sendData.vel[1], sendData.vel[2]);
-		this.rot.setXYZ(sendData.rot[0] , sendData.rot[1], sendData.rot[2]);
-		this.rotVel.setXYZ(sendData.rotVel[0] , sendData.rotVel[1], sendData.rotVel[2]);
+		this.rot[0] = sendData.rot[0];
+		this.rotVel[0] = sendData.rotVel[0];
 	};
 
 	MODEL.Spatial.prototype.getSendSpatial = function() {
 		this.pos.getArray(this.sendData.pos);
 		this.vel.getArray(this.sendData.vel);
-		this.rot.getArray(this.sendData.rot);
-		this.rotVel.getArray(this.sendData.rotVel);
+		this.sendData.rot[0] = this.rot[0];
+		this.sendData.rotVel[0] = this.rotVel[0];
 		return this.sendData;
 	};
 
 	MODEL.Spatial.prototype.setSpatial = function(spatial) {
 		this.pos.setVec(spatial.pos);
 		this.vel.setVec(spatial.vel);
-		this.rot.setVec(spatial.rot);
-		this.rotVel.setVec(spatial.rotVel);
+		this.rot[0] = spatial.rot[0];
+		this.rotVel[0] = spatial.rotVel[0];
 	};
 
 	MODEL.Spatial.prototype.stop = function() {
-		this.vel.scale(0);
-		this.rotVel.scale(0);
+		this.vel[0] = 0;
+		this.rotVel[0] = 0;
 	};
 
 	MODEL.Spatial.prototype.applySteeringVector = function(steerVec, dt, rotVelClamp, radialLerp) {
-		this.setRotVelVec(steerVec);
-		this.getRotVelVec().subVec(this.getRotVec());
-		this.getRotVelVec().setZ(MATH.radialClamp(this.getRotVelVec().getZ(), -rotVelClamp, rotVelClamp));
-		this.getRotVelVec().radialLerp(this.getRotVelVec(), steerVec, dt*radialLerp);
+		this.rotVel[0] = steerVec.data[2];
+		this.rotVel[0]-= this.rot[0];
+
+		this.rotVel[0] = MATH.radialClamp(this.rotVel[0], -rotVelClamp, rotVelClamp);
+
+		this.rotVel[0] = MATH.radialLerp(this.rotVel[0], steerVec.data[2], dt*radialLerp);
+
 	};
 
 	MODEL.Spatial.prototype.getForwardVector = function(vec3) {
-		vec3.setXYZ(Math.cos(this.getRotVec().getZ() -Math.PI*0.5), Math.sin(this.getRotVec().getZ() -Math.PI*0.5), 0);
+		vec3.setXYZ(Math.cos(this.rot[0] -Math.PI*0.5), Math.sin(this.rot[0] -Math.PI*0.5), 0);
 	};
 
-	MODEL.Spatial.prototype.setRotVelVec = function(vec) {
-		this.rotVel.setVec(vec);
-	};
-
-	MODEL.Spatial.prototype.getRotVelVec = function() {
-		return this.rotVel;
-	};
-
-	MODEL.Spatial.prototype.getRotVec = function() {
-		return this.rot;
-	};
-
-	MODEL.Spatial.prototype.setRotVec = function(vec) {
-		this.rot.setVec(vec);
-	};
-
-	MODEL.Spatial.prototype.setRotZ = function(z) {
-		this.rot[2] = z;
-	};
-
-	MODEL.Spatial.prototype.getRotZ = function() {
-		return this.rot[2];
-	};
 
 	MODEL.Spatial.prototype.setPosXYZ = function(x, y, z) {
 		this.pos.setXYZ(x, y, z);
@@ -104,27 +87,15 @@ if(typeof(MODEL) == "undefined"){
 	MODEL.Spatial.prototype.posY = function() {
 		return this.pos.getY();
 	};
-
-	MODEL.Spatial.prototype.posZ = function() {
-		return this.pos.getZ();
-	};
-
-	MODEL.Spatial.prototype.setRotXYZ = function(x, y, z) {
-		this.rot.setXYZ(x, y, z);
-	};
-
+	
 	MODEL.Spatial.prototype.getRotArray = function(array) {
-		this.rot.getArray(array);
+		array[0] = this.rot[0];
 	};
 
 	MODEL.Spatial.prototype.getRotVelArray = function(array) {
-		this.rotVel.getArray(array);
+		array[0] = this.rotVel[0];
 	};
-
-	MODEL.Spatial.prototype.setVelXYZ = function(x, y, z) {
-		this.vel.setXYZ(x, y, z);
-	};
-
+	
 	MODEL.Spatial.prototype.getVelArray = function(array) {
 		this.vel.getArray(array);
 	};
@@ -134,17 +105,13 @@ if(typeof(MODEL) == "undefined"){
 	};
 
 
-	MODEL.Spatial.prototype.setVelVec = function(velVec) {
-		this.vel.setVec(velVec);
-	};
-
 	MODEL.Spatial.prototype.addVelVec = function(velVec) {
 		this.vel.addVec(velVec);
 	};
 
 	MODEL.Spatial.prototype.update = function() {
 		this.pos.addVec(this.vel);
-		this.rot.addVec(this.rotVel);
+		this.rot[0] += this.rotVel[0];
 	};
 
 	MODEL.Spatial.prototype.isWithin = function(xMin, xMax, yMin, yMax) {

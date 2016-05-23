@@ -8,8 +8,11 @@ var SetupServer = function() {
 	require('./Shared/GAME');
 	require('./Shared/MODEL');
 	require('./Shared/ACTIONS');
+
+
 	require('./Shared/io/SocketMessages');
 
+	
 	require('./Server/io/ServerConnection');
 	require('./Shared/io/SocketMessages');
 	require('./Server/io/Clients');

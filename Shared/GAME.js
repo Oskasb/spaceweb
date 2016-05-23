@@ -131,11 +131,11 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece = function(id, creationTime, lifeTime) {
 		this.id = id;
 		this.pieceControls = new GAME.PieceControls();
+		this.temporal = new MODEL.Temporal(creationTime, lifeTime);
 		this.calcVec = new MATH.Vec3(0, 0, 0);
 		this.spatial = new MODEL.Spatial();
 		this.targetSpatial = new MODEL.Spatial();
 		this.startSpatial = new MODEL.Spatial();
-		this.temporal = new MODEL.Temporal(creationTime, lifeTime);
 		this.timeSinceInput = 0;
 		this.modules = [];
 		this.moduleStates = {};
@@ -250,7 +250,7 @@ if(typeof(GAME) == "undefined"){
 			this.applyForwardControl(dt * timeFactor);
 		}
 
-		this.spatial.getVelVec().scale(1-dt*timeFactor);
+		this.spatial.getVelVec().scale(dt * timeFactor);
 		this.spatial.update();
 	};
 
@@ -273,12 +273,15 @@ if(typeof(GAME) == "undefined"){
 	
 	GAME.Piece.prototype.processSpatialState = function(dt) {
 
-		this.updatePlayerSpatial(dt);
-
+		this.startSpatial.setSpatial(this.targetSpatial);
+		this.targetSpatial.setSpatial(this.spatial);
+		
+		this.updatePlayerSpatial(this.temporal.getFraction(dt));
 		this.setState(GAME.ENUMS.PieceStates.MOVING);
 		if (this.checkBounds()) {
 			this.teleportRandom();
 		}
+		
 	};
 	
 	
@@ -286,13 +289,19 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.applyNetworkState = function(networkState) {
 		this.serverState = networkState;
 		this.temporal.predictUpdate(networkState.timeDelta);
-
 		if (networkState.state == GAME.ENUMS.PieceStates.TELEPORT) {
 			this.spatial.setSendData(networkState.spatial);
+			this.targetSpatial.setSendData(networkState.spatial);
+			this.targetSpatial.getVelVec().scale(networkState.timeDelta);
+			this.targetSpatial.update();
+		} else {
+			this.targetSpatial.setSendData(networkState.spatial);
 		}
 
+
 		this.startSpatial.setSpatial(this.spatial);
-		this.targetSpatial.setSendData(networkState.spatial);
+
+
 	};
 
 

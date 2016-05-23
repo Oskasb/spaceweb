@@ -19,9 +19,9 @@
         "constants":{
           "deceleration":0.9,
           "radialVelocityClamp":0.5,
-          "radialLerpFactor":0.3,
+          "radialLerpFactor":0.2,
           "throttleLimit": 2,
-          "throttleAmplitude": 3
+          "throttleAmplitude": 1
         }
       },
       "modules":[

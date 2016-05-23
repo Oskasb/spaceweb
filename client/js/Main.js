@@ -44,6 +44,8 @@ require([
 
     GameScreen.registerAppContainer(document.body);
 
+    var path = './../../..';
+
     var loadUrls = [
         './../../../Shared/io/SocketMessages.js',
         './../../../Shared/MATH.js',
