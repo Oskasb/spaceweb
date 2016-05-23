@@ -31,7 +31,7 @@ ServerWorld.prototype.spawnStars = function() {
 };
 
 ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, dt, tpf) {
-	console.log(tpf)
+
 	var apply = cannonModuleData.applies;
 	this.pieceCount++;
 	var bullet = new GAME.Piece('bullet_'+this.pieceCount, now, apply.lifeTime);
