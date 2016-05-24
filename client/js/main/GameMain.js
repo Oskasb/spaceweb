@@ -122,7 +122,7 @@ define([
 			}
 		};
 
-		GameMain.prototype.tick = function(tpf) {
+		GameMain.prototype.tickClientGame = function(tpf) {
 			for (var key in this.pieces) {
 				this.pieces[key].updatePlayer(tpf);
 			}

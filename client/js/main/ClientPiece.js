@@ -45,7 +45,7 @@ define([
 					for (var j = 0; j < serverState.modules[modules[i].id].length; j++) {
 
 						var moduleAppliedCallback = function(message) {
-					//		_this.domPlayer.renderStateText(message);
+				//			_this.domPlayer.renderStateText(message);
 						};
 
 						var moduleState = serverState.modules[modules[i].id][j];
@@ -69,10 +69,17 @@ define([
 
 
 		ClientPiece.prototype.updatePlayer = function(tpf) {
-
 			this.piece.updatePieceFrame(tpf);
-			console.log(this.piece.spatial.rot[0]);
-			this.domPlayer.updateDomPiece();
+
+			if (this.piece.state == GAME.ENUMS.PieceStates.TIME_OUT) {
+				this.domPlayer.renderStateText("Client Timeout Pew!");
+				this.playerRemove();
+				return;
+			} else {
+				this.domPlayer.updateDomPiece();
+			}
+
+
 		};
 
 		ClientPiece.prototype.setIsOwnPlayer = function(bool) {
@@ -98,7 +105,7 @@ define([
 			}
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TIME_OUT) {
-				this.domPlayer.renderStateText("Pew!");
+				this.domPlayer.renderStateText("BOOM");
 				this.playerRemove();
 				return;
 			}
@@ -111,6 +118,13 @@ define([
 				this.domPlayer.updateDomPiece();
 				this.domPlayer.renderStateText("Teleport");
 			}
+
+			if (serverState.state == GAME.ENUMS.PieceStates.SPAWN) {
+				//	this.piece.notifyTrigger(true);
+				this.domPlayer.updateDomPiece();
+				this.domPlayer.renderStateText("pew");
+			}
+
 		};
 
 

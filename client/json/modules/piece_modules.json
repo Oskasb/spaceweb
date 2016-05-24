@@ -49,8 +49,8 @@
             "state":true,
             "style":"ship_engine",
             "animate":{
-              "height":22,
-              "opacity":2.2
+              "height":0.2,
+              "opacity":2
             },
             "flicker":"0.6",
             "random":{
@@ -58,7 +58,7 @@
               "frames":11,
               "width":50,
               "clamp":5,
-              "gain":-254
+              "gain":-5
             },
             "threshold":0.2,
             "type":"float",

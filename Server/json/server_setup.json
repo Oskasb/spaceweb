@@ -2,7 +2,8 @@
   "id":"server_setup",
   "setup": {
     "system":{
-      "tickTime":250
+      "tickNetworkTime":300,
+      "tickSimulationTime":50
     }
   }
 },{

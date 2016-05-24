@@ -4,7 +4,7 @@ define(['Events'], function(evt) {
 		this.startTime = performance.now();
 		this.lastFrameTime = 0;
 		this.frameTime = 0;
-
+		this.currentTime = this.startTime;
 		this.pingTime = 0;
 		this.pingResponseTime = 0;
 
@@ -23,7 +23,7 @@ define(['Events'], function(evt) {
 
 	TimeTracker.prototype.processFrameDuration = function(duration) {
 		this.tpf = duration * 0.001;
-
+		this.currentTime += this.tpf;
 	};
 
 

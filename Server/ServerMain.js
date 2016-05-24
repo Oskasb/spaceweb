@@ -83,6 +83,10 @@ ServerMain.prototype.initServerMain = function(dataHub) {
 	}
 };
 
+ServerMain.prototype.shutdownServerMain = function() {
+	this.serverConnection.shutdownSocket();
+	this.serverGameMain.endServerGame();
+};
 
 ServerMain.prototype.applyConfigData = function(updatedData) {
 

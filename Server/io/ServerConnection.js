@@ -3,8 +3,12 @@ ServerConnection = function() {
 	this.socketMessages = new SocketMessages();
 };
 
-ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removePlayerCallback) {
+ServerConnection.prototype.shutdownSocket = function() {
+	this.wss.close();
+};
 
+ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removePlayerCallback) {
+	this.wss = wss;
 	var messages = this.socketMessages.messages;
 
 	wss.on("connection", function(ws) {

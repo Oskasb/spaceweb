@@ -24,6 +24,7 @@ define(['Events',
 
 		ClientWorld.prototype.ServerWorld = function(data) {
 
+			this.removeStars();
 			this.addStars(data);
 
 		};
@@ -47,6 +48,16 @@ define(['Events',
 
 				this.stars.push(element);
 			}
+		};
+
+		ClientWorld.prototype.removeStars = function() {
+
+			for (var i = 0; i < this.stars.length; i++) {
+				this.stars[i].removeElement();
+			}
+
+			this.stars = [];
+
 		};
 
 		ClientWorld.prototype.tick = function(frame) {

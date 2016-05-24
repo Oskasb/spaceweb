@@ -1,11 +1,12 @@
 "use strict";
 
 define([
-	'io/ElementListeners'
+	'io/ElementListeners',
+	'Events'
 ],
 	function(
-		ElementListeners
-
+		ElementListeners,
+		evt
 		) {
 
 	    var InputState = function() {
@@ -89,16 +90,18 @@ define([
 
 				if (this.mouseState.action[0] + this.mouseState.action[1]) {
 					this.mouseButtonEmployed();
+					evt.fire(evt.list().CURSOR_PRESS, this.mouseState);
 				} else {
 					if (this.mouseState.pressingButton == true) {
 						this.handleReleaseTargets();
+						evt.fire(evt.list().CURSOR_RELEASE, this.mouseState);
 					}
 				}
 			}
 
 			if (this.mouseState.action[0] + this.mouseState.action[1]) {
 
-					this.showActivatedHovered();
+				this.showActivatedHovered();
 
 			}
 

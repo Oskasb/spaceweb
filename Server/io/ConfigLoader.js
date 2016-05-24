@@ -1,4 +1,3 @@
-
 var fs = require('fs');
 
 ConfigLoader = function(path) {
@@ -18,9 +17,8 @@ ConfigLoader.prototype.applyFileConfigs = function(configs, devMode) {
         this.registerConfigUrl(configs.loadFiles[i], this.devMode)
     }
 
-    this.fileWatch = configs.watchFiles;
+      // this.fileWatch = configs.watchFiles;
 };
-
 
 ConfigLoader.prototype.registerConfigUrl = function(configUrl, devMode) {
 

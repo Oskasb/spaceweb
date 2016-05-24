@@ -61,8 +61,9 @@
     "piece_state_hint":{
       "zIndex":"10",
       "textAlign":"center",
-      "fontSize": "28px",
-      "color":"rgba(255, 255, 190, 1)"
+      "fontSize": "16px",
+      "color":"rgba(255, 255, 190, 1)",
+      "transform":"scale3d(0.3,0.3,1)"
     }
 
   }

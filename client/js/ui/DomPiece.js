@@ -33,14 +33,12 @@ define([
 			this.rot = [];
 			this.rotVel = [];
 			this.domRoot = new DomElement(parent, 'point');
-
-
 			this.domHull = new DomElement(this.domRoot.element, 'ship_root');
-		//	this.inputVector = new DomVector(this.domRoot.element);
-		//	this.rotVelVector = new DomVector(this.domHull.element);
-		//	this.trafficPredictor = new DomProgress(this.domRoot.element, 'progress_box');
 
+	//		this.attachDebugElements();
 		};
+
+
 
 		DomPiece.prototype.attachModule = function(module) {
 			this.modules.push(new DomModule(module, this.domHull.element, this.piece));
@@ -71,8 +69,8 @@ define([
 		DomPiece.prototype.renderStateText = function(text) {
 			var x = this.pos[0]*0.01*GameScreen.getWidth()-10 + Math.random()*20;
 			var y = this.pos[1]*0.01*GameScreen.getHeight()-20 + Math.random()*40;
-			var message = new DomMessage(parent, text, 'piece_state_hint', x, y, 0.8);
-			message.animateToXYZ(x, y-100, 0);
+			var message = new DomMessage(parent, text, 'piece_state_hint', x, y, 0.3);
+			message.animateToXYZscale(x, y-10, 0, 1.5);
 		};
 
 		DomPiece.prototype.sampleSpatial = function(spatial) {
@@ -92,13 +90,28 @@ define([
 
 			this.sampleSpatial(this.piece.spatial);
 
-		//	this.inputVector.renderBetween(0, 0, this.vel[0]*30, this.vel[1]*30);
-		//	this.rotVelVector.renderRadial(90, this.rotVel[2]);
-		//	this.trafficPredictor.setProgress(this.piece.temporal.fraction);
+		//	this.renderDebugElements();
 
 			this.domRoot.translateXYZ(this.pos[0]*0.01*GameScreen.getWidth(), this.pos[1]*0.01*GameScreen.getHeight(), 0);
 			this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);
 			this.updateModules();
+		};
+
+
+		DomPiece.prototype.attachDebugElements = function() {
+			this.inputVector = new DomVector(this.domRoot.element);
+			this.rotVelVector = new DomVector(this.domHull.element);
+			this.rotVelVector.vector.element.style.left = '22px';
+			this.rotVelVector.vector.element.style.zIndex = '150';
+			this.trafficPredictor = new DomProgress(this.domRoot.element, 'progress_box');
+			this.attachNameplate();
+		};
+
+
+		DomPiece.prototype.renderDebugElements = function() {
+			this.inputVector.renderBetween(0, 0, this.vel[0]*5, this.vel[1]*5);
+			this.rotVelVector.renderRadial(50, this.rotVel[0]);
+			this.trafficPredictor.setProgress(this.piece.temporal.getFraction());
 		};
 
 		return DomPiece;

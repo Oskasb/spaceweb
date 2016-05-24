@@ -25,6 +25,7 @@
       "left": "-500%",
       "width": "1100%",
       "height": "100%",
+      "zIndex":10,
       "backgroundImage":"url('./client/assets/images/s-11_sprite.png')",
       "backgroundSize":"100% 100%"
     },
@@ -34,10 +35,11 @@
     },
 
     "cannon_bullet":{
-      "top": "0%",
+      "top": "20%",
       "left": "40%",
       "width": "20%",
       "height": "30px",
+      "zIndex":-1,
       "backgroundImage":"url('./client/assets/images/bullet_round.png')",
       "backgroundSize":"100% 100%"
     }

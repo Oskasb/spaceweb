@@ -30,6 +30,23 @@ define([
             }, 60);
         };
 
+        DomMessage.prototype.animateToXYZxyzw = function(x, y, z, xs, ys, zs, w) {
+            var domText = this.domText;
+            setTimeout(function() {
+                domText.translateRotateXYZxyzw(x, y, z, xs, ys, zs, w);
+                domText.applyStyleParams({color : "rgba(255, 255, 255, 0)"});
+            }, 60);
+        };
+
+
+        DomMessage.prototype.animateToXYZscale = function(x, y, z, scale) {
+            var domText = this.domText;
+            setTimeout(function() {
+                domText.translateScaleXYZSize(x, y, z, scale);
+                domText.applyStyleParams({color : "rgba(255, 255, 255, 0)"});
+            }, 60);
+        };
+        
         return DomMessage;
 
     });

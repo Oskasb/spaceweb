@@ -8,7 +8,10 @@ if(typeof(MODEL) == "undefined"){
 (function(MODEL){
 	
 	var calcVec = new MATH.Vec3(0, 0, 0);
-	
+
+    MODEL.NetworkTime = 1;
+    MODEL.SimulationTime = 1;
+
 	MODEL.Spatial = function() {
 		this.sendData = {
 			pos:[0, 0, 0],
@@ -22,28 +25,31 @@ if(typeof(MODEL) == "undefined"){
 		this.rotVel = [0];
 	};
 
+    MODEL.Spatial.prototype.interpolatePositions = function(start, target, fraction) {
+        this.pos.interpolateFromTo(start.pos, target.pos, fraction);
+        this.vel.interpolateFromTo(start.vel, target.vel, fraction);
+    };
+
 	MODEL.Spatial.prototype.interpolateTowards = function(start, target, fraction) {
-		this.pos.interpolateFromTo(start.pos, target.pos, fraction);
-		this.vel.interpolateFromTo(start.vel, target.vel, fraction);
 		this.rot[0] = MATH.radialLerp(start.rot[0], target.rot[0], fraction);
 		this.rotVel[0] = MATH.radialLerp(start.rotVel[0], target.rotVel[0], fraction);
 	};
 	
 	
 	MODEL.Spatial.prototype.setSendData = function(sendData) {
-		this.pos.setXYZ(sendData.pos[0] , sendData.pos[1], sendData.pos[2]);
-		this.vel.setXYZ(sendData.vel[0] , sendData.vel[1], sendData.vel[2]);
-		this.rot[0] = sendData.rot[0];
-		this.rotVel[0] = sendData.rotVel[0];
-	};
+        this.pos.setXYZ(sendData.pos[0] , sendData.pos[1], sendData.pos[2]);
+        this.vel.setXYZ(sendData.vel[0] , sendData.vel[1], sendData.vel[2]);
+        this.rot[0] = sendData.rot[0];
+        this.rotVel[0] = sendData.rotVel[0];
+    };
 
-	MODEL.Spatial.prototype.getSendSpatial = function() {
-		this.pos.getArray(this.sendData.pos);
-		this.vel.getArray(this.sendData.vel);
-		this.sendData.rot[0] = this.rot[0];
-		this.sendData.rotVel[0] = this.rotVel[0];
-		return this.sendData;
-	};
+    MODEL.Spatial.prototype.getSendSpatial = function() {
+        this.pos.getArray(this.sendData.pos);
+        this.vel.getArray(this.sendData.vel);
+        this.sendData.rot[0] = this.rot[0];
+        this.sendData.rotVel[0] = this.rotVel[0];
+        return this.sendData;
+    };
 
 	MODEL.Spatial.prototype.setSpatial = function(spatial) {
 		this.pos.setVec(spatial.pos);
@@ -57,14 +63,13 @@ if(typeof(MODEL) == "undefined"){
 		this.rotVel[0] = 0;
 	};
 
-	MODEL.Spatial.prototype.applySteeringVector = function(steerVec, dt, rotVelClamp, radialLerp) {
+	MODEL.Spatial.prototype.applySteeringVector = function(steerVec, dt,  rotVelClamp, radialLerp) {
 		this.rotVel[0] = steerVec.data[2];
 		this.rotVel[0]-= this.rot[0];
 
 		this.rotVel[0] = MATH.radialClamp(this.rotVel[0], -rotVelClamp, rotVelClamp);
 
 		this.rotVel[0] = MATH.radialLerp(this.rotVel[0], steerVec.data[2], dt*radialLerp);
-
 	};
 
 	MODEL.Spatial.prototype.getForwardVector = function(vec3) {
@@ -104,14 +109,15 @@ if(typeof(MODEL) == "undefined"){
 		return this.vel;
 	};
 
-
 	MODEL.Spatial.prototype.addVelVec = function(velVec) {
 		this.vel.addVec(velVec);
 	};
 
-	MODEL.Spatial.prototype.update = function() {
-		this.pos.addVec(this.vel);
-		this.rot[0] += this.rotVel[0];
+	MODEL.Spatial.prototype.update = function(tpf) {
+        calcVec.setVec(this.vel);
+        calcVec.scale(tpf);
+		this.pos.addVec(calcVec);
+		this.rot[0] += this.rotVel[0] * tpf * Math.PI;
 	};
 
 	MODEL.Spatial.prototype.isWithin = function(xMin, xMax, yMin, yMax) {
@@ -119,25 +125,67 @@ if(typeof(MODEL) == "undefined"){
 	};
 
 	MODEL.Temporal = function(creationTime, lifeTime) {
+
+        this.sendData = {
+            lifeTime:0,
+            creationTime:0,
+            currentTime:0,
+            lastUpdate:0,
+            stepTime:MODEL.SimulationTime,
+            networkTime:MODEL.NetworkTime
+        };
+        
+        this.stepTime = MODEL.SimulationTime;
+        this.networkTime = MODEL.NetworkTime;
 		this.lifeTime = lifeTime || Number.MAX_VALUE;
+        this.currentTime = creationTime;
 		this.creationTime = creationTime;
-		this.maxTickTime = 1;
-		this.minTickTime = 0.001;
-		this.timeDelta = 0.0001;
-		this.tickCountUp = 0;
-		this.fraction = 0.0001;
+        this.lastUpdate = creationTime;
+		this.timeDelta = 1;
+		this.fraction = 1;
+        this.tickDelta = 0;
 	};
 
-	MODEL.Temporal.prototype.getFraction = function(tpf) {
-		this.tickCountUp += tpf;
-		this.fraction = (this.timeDelta / ( this.timeDelta / this.tickCountUp)) / this.timeDelta;
-		return this.fraction;
+    MODEL.Temporal.prototype.setSendTemporal = function(sendData) {
+        this.lifeTime =       sendData.lifeTime;
+        this.creationTime =   sendData.creationTime;
+        this.currentTime =    0;
+        this.lastUpdate =     sendData.lastUpdate;
+        this.stepTime =       sendData.stepTime;
+        this.networkTime =    sendData.networkTime;
+    };
+
+    MODEL.Temporal.prototype.getSendTemporal = function() {
+        
+        this.sendData.lifeTime = this.lifeTime;
+        this.sendData.creationTime = this.creationTime;
+        this.sendData.currentTime = this.currentTime;
+        this.sendData.lastUpdate = this.lastUpdate;
+        this.sendData.stepTime = this.stepTime;
+        this.sendData.networkTime = this.networkTime;
+        
+        return this.sendData;
+    };
+
+    
+    MODEL.Temporal.prototype.incrementTpf = function(tpf) {
+        this.tickDelta = tpf;
+        this.currentTime += tpf;
+    };
+    
+	MODEL.Temporal.prototype.getAge = function() {
+        return this.currentTime - this.creationTime;
 	};
+
+    MODEL.Temporal.prototype.getFraction = function() {
+        return this.currentTime / this.networkTime
+    };
 
 	MODEL.Temporal.prototype.predictUpdate = function(time) {
-		this.lifeTime -= time;
-		this.timeDelta = time;
-		this.tickCountUp = 0;
+		this.timeDelta = time - this.lastUpdate;
+        this.lastUpdate = this.currentTime;
+		this.currentTime = time;
+
 	};
 
 

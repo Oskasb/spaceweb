@@ -162,7 +162,7 @@ define([
 
 
 		//	DEBUG_MONITOR(JSON.stringify(this.renderPointer))
-			evt.fire(evt.list().CURSOR_PRESS, this.renderPointer);
+
 			/*
 			this.vectorColor[0]=0.5+action[0]*0.5;
 			this.vectorColor[1]=0.5+action[1]*0.5;

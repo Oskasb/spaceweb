@@ -49,6 +49,7 @@
 		for (var key in Messages) {
 			this.messages[key] = new Message(key, Messages[key])
 		}
+
 	};
 
 

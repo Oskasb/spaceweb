@@ -17,11 +17,12 @@
           "fireCannon":false
         },
         "constants":{
-          "deceleration":0.9,
-          "radialVelocityClamp":0.5,
-          "radialLerpFactor":0.2,
-          "throttleLimit": 2,
-          "throttleAmplitude": 1
+          "velocityDrag":1.8,
+          "radialDrag":2.45,
+          "radialVelocityClamp":2.2,
+          "radialLerpFactor":9,
+          "throttleLimit": 1,
+          "throttleAmplitude": 300
         }
       },
       "modules":[
@@ -46,8 +47,8 @@
               "type":"boolean",
               "state":true,
               "action":"fireCannon",
-              "exitVelocity":8,
-              "lifeTime":1.2
+              "exitVelocity":42,
+              "lifeTime":0.9
             }
           }
         },{
@@ -72,6 +73,11 @@
       },
       "controls":{
         "actions": {
+          "applyForward":1
+        },
+        "constants":{
+          "velocityDrag":0,
+          "radialDrag":1
         }
       },
       "modules":[

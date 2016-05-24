@@ -1,6 +1,6 @@
 
-
-var SERVER_LOOP;
+var SIMULATION_LOOP;
+var NETWORK_LOOP;
 
 ServerGameMain = function(clients, serverWorld) {
 	this.serverWorld = serverWorld;
@@ -22,16 +22,37 @@ ServerGameMain.prototype.applyPieceConfigs = function(config) {
 
 ServerGameMain.prototype.applySetupConfig = function(config) {
 	console.log("Setup Loop: ", JSON.stringify(config));
-	clearInterval(SERVER_LOOP);
-	this.setupLoop(config.setup.system.tickTime);
+	clearInterval(SIMULATION_LOOP);
+    clearInterval(NETWORK_LOOP);
+	this.setupLoop(config.setup.system.tickSimulationTime, config.setup.system.tickNetworkTime);
 };
 
-ServerGameMain.prototype.setupLoop = function(tickDuration) {
-	var _this=this;
-	console.log("Setup Loop: ", tickDuration);
-	SERVER_LOOP = setInterval(function() {
-		_this.tickGame();
-	}, tickDuration);
+ServerGameMain.prototype.setupLoop = function(tickSim, tickNet) {
+	var _this = this;
+    MODEL.SimulationTime = tickSim * 0.001;
+    MODEL.NetworkTime = tickNet * 0.001;
+	console.log("Setup Loop: ", tickSim, tickNet);
+    
+    SIMULATION_LOOP = setInterval(function() {
+		_this.tickGameSimulation();
+	}, tickSim);
+
+    NETWORK_LOOP = setInterval(function() {
+        _this.tickGameNetwork();
+    }, tickNet);
+};
+
+ServerGameMain.prototype.endServerGame = function() {
+	console.log("End Server Game:");
+	clearInterval(SERVER_LOOP);
+    this.removeAllPlayers()
+};
+
+ServerGameMain.prototype.removeAllPlayers = function() {
+    for (var key in this.clients.clients) {
+       this.playerDiconected(key);
+    }
+
 };
 
 ServerGameMain.prototype.initGame = function() {
@@ -87,10 +108,12 @@ ServerGameMain.prototype.getNow = function() {
 	return ((this.processTime[0]*1000) + (this.processTime[1]/1000000))*0.001;
 };
 
-ServerGameMain.prototype.tickGame = function() {
+ServerGameMain.prototype.tickGameSimulation = function() {
 	this.currentTime = this.getNow();
-	this.timeDelta = (this.currentTime - this.simulationTime);
-	this.serverWorld.tickWorld(this.timeDelta);
-	this.simulationTime = this.currentTime;
+    this.serverWorld.tickSimulationWorld(this.currentTime);
 };
 
+ServerGameMain.prototype.tickGameNetwork = function() {
+    this.currentTime = this.getNow();
+    this.serverWorld.tickNetworkWorld(this.currentTime);
+};

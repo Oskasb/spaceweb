@@ -15,6 +15,7 @@ define(function() {
 		CURSOR_MOVE:{type:'CURSOR_MOVE', args:{data:{}}},
 		CURSOR_LINE:{type:'CURSOR_LINE', args:{data:{}}},
 		CURSOR_PRESS:{type:'CURSOR_PRESS', args:{data:{}}},
+		CURSOR_RELEASE:{type:'CURSOR_RELEASE', args:{data:{}}},
 		CURSOR_START_DRAG:{type:'CURSOR_START_DRAG', args:{data:{}}},
 		CURSOR_DRAG_TO:{type:'CURSOR_DRAG_TO', args:{data:{}}},
 		CURSOR_RELEASE_FAST:{type:'CURSOR_RELEASE_FAST', args:{data:{}}},

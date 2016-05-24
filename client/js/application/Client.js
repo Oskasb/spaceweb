@@ -113,7 +113,7 @@ define([
 					setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
                     setTimeout(function() {
                         evt.on(evt.list().CURSOR_PRESS, requestPlayer);
-                    }, 1000);
+                    }, 10);
 
 				}
 			};
@@ -137,7 +137,7 @@ define([
 			evt.fire(evt.list().CLIENT_TICK, {frame:frame});
 
 			this.pointerCursor.tick();
-			this.gameMain.tick(this.timeTracker.tpf);
+			this.gameMain.tickClientGame(this.timeTracker.tpf);
             
 			var _this = this;
 			requestAnimationFrame(function() {
