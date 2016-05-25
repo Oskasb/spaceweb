@@ -22,6 +22,8 @@ define([
 		DomModule
 	) {
 
+		var debug = false;
+
 		var parent = document.getElementById('game_window');
 
 		var DomPiece = function(piece) {
@@ -35,7 +37,7 @@ define([
 			this.domRoot = new DomElement(parent, 'point');
 			this.domHull = new DomElement(this.domRoot.element, 'ship_root');
 
-	//		this.attachDebugElements();
+			if (debug) this.attachDebugElements();
 		};
 
 
@@ -90,11 +92,13 @@ define([
 
 			this.sampleSpatial(this.piece.spatial);
 
-		//	this.renderDebugElements();
+
 
 			this.domRoot.translateXYZ(this.pos[0]*0.01*GameScreen.getWidth(), this.pos[1]*0.01*GameScreen.getHeight(), 0);
 			this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);
 			this.updateModules();
+
+			if (debug) this.renderDebugElements();
 		};
 
 
@@ -109,8 +113,9 @@ define([
 
 
 		DomPiece.prototype.renderDebugElements = function() {
+			this.sampleSpatial(this.piece.targetSpatial);
 			this.inputVector.renderBetween(0, 0, this.vel[0]*5, this.vel[1]*5);
-			this.rotVelVector.renderRadial(50, this.rotVel[0]);
+			this.rotVelVector.renderRadial(50, this.rot[0]);
 			this.trafficPredictor.setProgress(this.piece.temporal.getFraction());
 		};
 

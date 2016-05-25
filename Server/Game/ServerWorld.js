@@ -2,7 +2,7 @@ ServerWorld = function() {
 	this.players = {};
 	this.pieces = [];
 	this.stars = [];
-	this.actionHandlers
+	this.actionHandlers;
 	this.pieceCount = 0;
 	this.pieceConfigs;
 };
@@ -30,6 +30,14 @@ ServerWorld.prototype.spawnStars = function() {
 	}
 };
 
+
+ServerWorld.prototype.applyControlModule = function(sourcePiece, moduleData, action, value) {
+    sourcePiece.pieceControls.setControlState(moduleData, action, value);
+    sourcePiece.networkDirty = true;
+
+};
+
+
 ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, dt, tpf) {
     var _this = this;
 
@@ -39,29 +47,22 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, d
 
 	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
 //	bullet.temporal.timeDelta = dt;
-
-	bullet.spatial.setSpatial(sourcePiece.spatial); // , sourcePiece.targetSpatial, sourcePiece.temporal.getFraction(dt));
-
-
-
-    bullet.spatial.rotVel[0] = 0;
-  //  bullet.processServerState(now);
-
-//
+  //  bullet.spatial.setSpatial(sourcePiece.spatial);
+    bullet.spatial.pos.setVec(sourcePiece.spatial.pos);
 
     bullet.setState(GAME.ENUMS.PieceStates.SPAWN);
-    this.broadcastPieceState(bullet);
+
+    bullet.spatial.rotVel[0] = 0;
+    bullet.spatial.rot[0] = sourcePiece.spatial.rot[0];
 
     bullet.pieceControls.actions.applyForward = apply.exitVelocity;
-    bullet.applyForwardControl(1);
+    bullet.applyForwardControl(MODEL.ReferenceTime);
+    this.broadcastPieceState(bullet);
+
+    bullet.setState(GAME.ENUMS.PieceStates.MOVING);
+    bullet.spatial.vel.addVec(sourcePiece.spatial.vel);
 
 	this.pieces.push(bullet);
-    bullet.networkDirty = true;
-    this.broadcastPieceState(bullet);
-    bullet.setState(GAME.ENUMS.PieceStates.MOVING);
- //   bullet.processTemporalState(now);
- //   bullet.spatial.update(bullet.temporal.stepTime);
-  //
 };
 
 ServerWorld.prototype.getPlayer = function(playerId) {

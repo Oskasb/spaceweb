@@ -93,6 +93,10 @@ if(typeof(GAME) == "undefined"){
 		};
 	};
 
+	GAME.PieceControls.prototype.setControlState = function(moduleData, action, value) {
+		console.log("Set Control: ", moduleData.source, action, value)
+	};
+
 	GAME.PieceControls.prototype.applyControlConfig = function(configs) {
 		for (var key in configs.constants) {
 			this.constants[key] = configs.constants[key];
@@ -143,7 +147,11 @@ if(typeof(GAME) == "undefined"){
 		this.timeSinceInput = 0;
 		this.modules = [];
 		this.moduleStates = {};
-		this.serverState;
+		this.serverState = {};
+
+		this.posDiff = 0;
+		this.rotDiff = 0;
+
 	};
 
 	GAME.Piece.prototype.attachModules = function(moduleConfigs) {
@@ -219,9 +227,14 @@ if(typeof(GAME) == "undefined"){
 		this.calcVec.scale(tpf * this.pieceControls.constants.velocityDrag);
 		this.spatial.setVelVec(this.calcVec);
 		this.spatial.update();
-*/	//	console.log(this.temporal.lastUpdate - this.temporal.currentTime)
-		this.spatial.interpolateTowards(this.startSpatial, this.targetSpatial, this.temporal.getFraction());
-		this.spatial.interpolatePositions(this.startSpatial, this.targetSpatial, this.temporal.getFraction());
+*/	//
+	//	console.log(this.rotDiff, this.posDiff);
+
+		if (this.posDiff*this.temporal.currentTime > this.temporal.stepTime) {
+			this.spatial.interpolatePositions(this.spatial, this.targetSpatial, tpf);
+		}
+
+		this.spatial.interpolateRotational(this.spatial, this.targetSpatial, tpf);
 
 		this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tpf));
 		this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tpf));
@@ -271,16 +284,13 @@ if(typeof(GAME) == "undefined"){
 		}
 
 		if (typeof(this.pieceControls.actions.applyForward) != undefined) {
-			this.applyForwardControl(tickDelta * this.pieceControls.constants.velocityDrag);
+			this.applyForwardControl(tickDelta);
 		}
 	};
 
 	GAME.Piece.prototype.updateServerSpatial = function(tickDelta) {
 		this.timeSinceInput += tickDelta;
 		var timeFactor = this.pieceControls.getTimeFactor(this.timeSinceInput);
-
-
-
 		this.applyControlStates(tickDelta, timeFactor);
 		this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tickDelta));
 		this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tickDelta));
@@ -305,9 +315,9 @@ if(typeof(GAME) == "undefined"){
 		return this.spatial.isWithin(0, 100, 0, 100);
 	};
 	
-	GAME.Piece.prototype.processSpatialState = function(referenceTime) {
+	GAME.Piece.prototype.processSpatialState = function(tickDelta) {
 
-		this.updateServerSpatial(referenceTime);
+		this.updateServerSpatial(tickDelta);
 		this.setState(GAME.ENUMS.PieceStates.MOVING);
 		if (this.checkBounds()) {
 			this.teleportRandom();
@@ -333,16 +343,17 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.applyNetworkState = function(networkState) {
 		this.serverState = networkState;
 
-
 		this.startSpatial.setSpatial(this.spatial);
 		this.targetSpatial.setSendData(networkState.spatial);
-
 
 		this.temporal.setSendTemporal(networkState.temporal);
 
 		if (networkState.state == GAME.ENUMS.PieceStates.TELEPORT || networkState.state == GAME.ENUMS.PieceStates.SPAWN) {
 			this.spatial.setSendData(networkState.spatial);
 			this.startSpatial.setSendData(networkState.spatial);
+		} else {
+			this.posDiff = this.spatial.comparePositional(this.targetSpatial);
+			this.rotDiff = this.spatial.compareRotational(this.targetSpatial);
 		}
 
 	};

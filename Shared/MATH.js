@@ -18,6 +18,12 @@ if(typeof(MATH) == "undefined"){
 		return Math.sqrt((fromX - toX)*(fromX - toX) + (fromY - toY)*(fromY - toY));
 	};
 
+	MATH.angleInsideCircle = function(angle) {
+		if (angle < 0) angle+= MATH.TWO_PI;
+		if (angle > MATH.TWO_PI) angle-= MATH.TWO_PI;
+		return angle;
+	};
+	
 	MATH.radialLerp = function(a, b, w) {
 		var cs = (1-w)*Math.cos(a) + w*Math.cos(b);
 		var sn = (1-w)*Math.sin(a) + w*Math.sin(b);

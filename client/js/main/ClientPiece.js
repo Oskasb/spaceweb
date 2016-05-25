@@ -3,17 +3,24 @@
 
 define([
 	'Events',
-	'ui/DomPiece'
+	'ui/DomPiece',
+	'io/InputSegmentRadial',
+	'PipelineAPI'
 ],
 	function(
 		evt,
-		DomPiece
+		DomPiece,
+		InputSegmentRadial,
+		PipelineAPI
 		) {
+
+
 
 		var ClientPiece = function(serverState, pieceData, removeCallback) {
 
 			this.isOwnPlayer = false;
 			var piece = new GAME.Piece(serverState.playerId);
+			piece.serverState = serverState;
 			this.piece = piece;
 			this.playerId = serverState.playerId;
 
@@ -24,11 +31,8 @@ define([
 
 			this.domPlayer = new DomPiece(this.piece);
 			this.removeCallback = removeCallback;
-
-			serverState.state = GAME.ENUMS.PieceStates.TELEPORT;
-			piece.applyNetworkState(serverState);
-
 			this.attachModules(pieceData.modules);
+			this.setServerState(serverState);
 		};
 
 		ClientPiece.prototype.attachModules = function(modules) {
@@ -83,10 +87,23 @@ define([
 		};
 
 		ClientPiece.prototype.setIsOwnPlayer = function(bool) {
-
+			this.isOwnPlayer = bool;
 			this.domPlayer.setIsOwnPlayer(bool);
+			this.attachRadialControl();
 		};
 
+		ClientPiece.prototype.attachRadialControl = function() {
+			var inputSegmentRadial = new InputSegmentRadial();
+			inputSegmentRadial.registerControlledPiece(this.piece);
+
+			var pieceModuleDataLoaded = function(src, data) {
+				inputSegmentRadial.applyConfigs(data);
+			};
+
+			PipelineAPI.subscribeToCategoryKey('piece_data', 'controls', pieceModuleDataLoaded);
+			
+		};
+		
 		ClientPiece.prototype.playerRemove = function() {
 			this.domPlayer.removeDomPiece();
 			this.removeCallback(this.piece.id);
@@ -122,7 +139,15 @@ define([
 			if (serverState.state == GAME.ENUMS.PieceStates.SPAWN) {
 				//	this.piece.notifyTrigger(true);
 				this.domPlayer.updateDomPiece();
-				this.domPlayer.renderStateText("pew");
+				var _this = this;
+
+				var appear = function() {
+					_this.domPlayer.renderStateText("pew");
+				};
+				console.log("Appear!")
+				setTimeout(function() {
+					appear()
+				}, 50);
 			}
 
 		};

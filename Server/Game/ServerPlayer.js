@@ -34,7 +34,7 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 
 	if (data.vector) {
 		this.setInputVector(data.vector.fromX, data.vector.fromY, data.vector.toX,data.vector.toY);
-		this.piece.networkDirty = true;
+	//	this.piece.networkDirty = true;
 	}
 
 

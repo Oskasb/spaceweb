@@ -1,7 +1,15 @@
 [{
   "piece_data":{
-    "modules":[
-      {
+    "controls":
+    {
+      "id":"radialSegments",
+      "data":{
+        "radialSegments":12,
+        "distanceSegments":3,
+        "radius":150
+      }
+    },
+    "modules":[{
         "id":"hull",
         "data":{
           "source":"initiate",
@@ -19,6 +27,8 @@
             "message":"Load Hull"
           }
         }
+
+
       },{
         "id":"bullet_shell",
         "data":{
@@ -41,6 +51,7 @@
             "message":"pew!"
           }
         }
+
       },{
         "id":"engine",
         "data": {

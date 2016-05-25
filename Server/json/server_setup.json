@@ -3,7 +3,7 @@
   "setup": {
     "system":{
       "tickNetworkTime":300,
-      "tickSimulationTime":50
+      "tickSimulationTime":60
     }
   }
 },{

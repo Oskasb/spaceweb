@@ -281,7 +281,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
 
     var quickHideElement = function(element) {
         element.style.display = "none"
-    //    element.style.visibility = "hidden"
+        element.style.visibility = "hidden"
         return;
         var device = "ios"
         //    var device = ""
@@ -303,7 +303,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
     var quickShowElement = function(element) {
         element.style.display = "";
         //    var transform = "";
-    //    element.style.visibility = "visible"
+        element.style.visibility = "visible"
     //    applyElementTransform(element, transform);
     };
 

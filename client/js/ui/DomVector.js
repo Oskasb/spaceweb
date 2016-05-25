@@ -39,11 +39,24 @@ define([
 
 		DomVector.prototype.renderRadial = function(distance, angle) {
 			this.vecStyle.height = distance+"px";
+			this.vecStyle.transformOrigin = "50% 0%";
 			this.vector.applyStyleParams(this.vecStyle);
 			var transform = "rotate3d(0,0,1, "+angle+"rad)";
 			this.vector.applyTransform(transform);
 		};
 
+		DomVector.prototype.renderPosRadial = function(x, y, distance, angle) {
+			this.vecStyle.height = distance+"px";
+			this.vecStyle.transformOrigin = "50% 0%";
+			this.vector.applyStyleParams(this.vecStyle);
+			this.vector.translateRotateXYZxyzw(x, y, 0, 0, 0, 1, angle);
+		};
+
+
+		DomVector.prototype.setColorRGBA = function(r, g, b, a) {
+			this.vecStyle.backgroundColor = "rgba("+r * 255+","+ g * 255+","+ b * 255+","+ a+")";
+			this.vector.applyStyleParams(this.vecStyle);
+		};
 
 		DomVector.prototype.hideVector = function() {
 			this.vecStyle.height = "0px";
@@ -51,6 +64,10 @@ define([
 			this.vector.applyStyleParams(this.vecStyle);
 		};
 
+		DomVector.prototype.removeVector = function() {
+			this.vector.removeElement();
+		};
+		
 		return DomVector;
 
 	});

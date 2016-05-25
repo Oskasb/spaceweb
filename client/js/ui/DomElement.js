@@ -86,12 +86,21 @@ define([
             DomUtils.setElementTransition(this.element, transition);
         };
 
+        DomElement.prototype.hideElement = function() {
+            DomUtils.quickHideElement(this.element);
+        };
+
+        DomElement.prototype.showElement = function() {
+            DomUtils.quickShowElement(this.element);
+        };
+
 
         DomElement.prototype.removeElement = function() {
             DomUtils.removeElement(this.element);
         };
 
 
+        
 
         return DomElement;
 

@@ -20,6 +20,9 @@ define(function() {
 		CURSOR_DRAG_TO:{type:'CURSOR_DRAG_TO', args:{data:{}}},
 		CURSOR_RELEASE_FAST:{type:'CURSOR_RELEASE_FAST', args:{data:{}}},
 
+		
+		INPUT_PLAYER_CONTROL:{type:'INPUT_PLAYER_CONTROL', args:{data:{}}},
+		
         CLIENT_READY:{type:'CLIENT_READY', args:{data:{}}}
     }
 });

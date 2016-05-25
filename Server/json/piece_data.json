@@ -9,6 +9,9 @@
         }
       },
       "controls":{
+        "input": {
+          "pointer":"InputSegmentRadial"
+        },
         "actions": {
           "applySteering":0,
           "applyThrottle":0,
@@ -19,10 +22,10 @@
         "constants":{
           "velocityDrag":1.8,
           "radialDrag":2.45,
-          "radialVelocityClamp":2.2,
-          "radialLerpFactor":9,
-          "throttleLimit": 1,
-          "throttleAmplitude": 300
+          "radialVelocityClamp":0.8,
+          "radialLerpFactor":2,
+          "throttleLimit": 0.2,
+          "throttleAmplitude": 200
         }
       },
       "modules":[
@@ -47,7 +50,7 @@
               "type":"boolean",
               "state":true,
               "action":"fireCannon",
-              "exitVelocity":42,
+              "exitVelocity":50,
               "lifeTime":0.9
             }
           }
@@ -57,9 +60,20 @@
             "source":"throttle",
             "initState": 0,
             "applies":{
-              "tyoe":"float",
+              "type":"float",
               "state":true,
               "action":"applyForward"
+            }
+          }
+        },{
+          "id":"controls",
+          "data":{
+            "source":"inputVector",
+            "initState": 0,
+            "applies":{
+              "type":"array",
+              "state":true,
+              "action":"applyControl"
             }
           }
         }

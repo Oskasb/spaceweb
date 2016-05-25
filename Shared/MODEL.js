@@ -9,9 +9,13 @@ if(typeof(MODEL) == "undefined"){
 	
 	var calcVec = new MATH.Vec3(0, 0, 0);
 
+    MODEL.ReferenceTime = 1;
     MODEL.NetworkTime = 1;
     MODEL.SimulationTime = 1;
-
+    MODEL.NetworkFPS = 1;
+    MODEL.SimulationFPS = 1;
+    
+    
 	MODEL.Spatial = function() {
 		this.sendData = {
 			pos:[0, 0, 0],
@@ -25,12 +29,26 @@ if(typeof(MODEL) == "undefined"){
 		this.rotVel = [0];
 	};
 
+    MODEL.Spatial.prototype.comparePositional = function(spatial) {
+        return Math.abs(this.pos.data[0] - spatial.pos.data[0]) +
+            Math.abs(this.pos.data[1] - spatial.pos.data[1]) +
+            Math.abs(this.pos.data[2] - spatial.pos.data[2]) +
+            Math.abs(this.vel.data[0] - spatial.vel.data[0]) +
+            Math.abs(this.vel.data[1] - spatial.vel.data[1]) +
+            Math.abs(this.vel.data[2] - spatial.vel.data[2]) 
+    };
+
+    MODEL.Spatial.prototype.compareRotational = function(spatial) {
+        return Math.abs(this.rot[0] - spatial.rot[0]) +
+            Math.abs(this.rotVel[0] - spatial.rotVel[0])
+    };
+    
     MODEL.Spatial.prototype.interpolatePositions = function(start, target, fraction) {
         this.pos.interpolateFromTo(start.pos, target.pos, fraction);
         this.vel.interpolateFromTo(start.vel, target.vel, fraction);
     };
 
-	MODEL.Spatial.prototype.interpolateTowards = function(start, target, fraction) {
+	MODEL.Spatial.prototype.interpolateRotational = function(start, target, fraction) {
 		this.rot[0] = MATH.radialLerp(start.rot[0], target.rot[0], fraction);
 		this.rotVel[0] = MATH.radialLerp(start.rotVel[0], target.rotVel[0], fraction);
 	};
@@ -191,6 +209,7 @@ if(typeof(MODEL) == "undefined"){
 
 	MODEL.InputState = function() {
 		this.steering = new MATH.Vec3(0, 0, 0);
+        this.yaw = 0;
 		this.throttle = 0;
 		this.trigger = false;
 		this.initiate = true;

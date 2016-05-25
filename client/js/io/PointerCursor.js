@@ -1,11 +1,13 @@
 "use strict";
 
 define([
-	'io/VisualCursor'
-],
+		'io/VisualCursor',
+		'Events'
+	],
 	function(
-	    VisualCursor
-		) {
+		VisualCursor,
+		evt
+	) {
 
 		var PointerCursor = function(inputState) {
 

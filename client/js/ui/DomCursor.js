@@ -62,7 +62,12 @@ define([
 
 		};
 
+		DomCursor.prototype.getCursorElement = function() {
+			return cursor;	
+		};
+
 		var handleClientReady = function() {
+			if (cursor) return;
 			cursor = new DomElement(GameScreen.getElement(), 'pointer'); //   DomUtils.createDivElement(GameScreen.getElement(), 'cursor', '', 'pointer');
 			connector = new DomVector(GameScreen.getElement());
 			setTimeout(function() {
@@ -72,6 +77,8 @@ define([
 
 		};
 
+		
+		
 		evt.on(evt.list().CLIENT_READY, handleClientReady);
 
 		return DomCursor;

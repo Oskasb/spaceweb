@@ -31,6 +31,9 @@ ServerGameMain.prototype.setupLoop = function(tickSim, tickNet) {
 	var _this = this;
     MODEL.SimulationTime = tickSim * 0.001;
     MODEL.NetworkTime = tickNet * 0.001;
+    MODEL.NetworkFPS = 1 / MODEL.NetworkTime;
+    MODEL.SimulationFPS = 1 / MODEL.SimulationTime;
+    
 	console.log("Setup Loop: ", tickSim, tickNet);
     
     SIMULATION_LOOP = setInterval(function() {
@@ -59,15 +62,17 @@ ServerGameMain.prototype.initGame = function() {
 	var _this = this;
 
 	function fireCannon(piece, action, value, moduleData) {
-
-		var now = _this.getNow();
-		var timeDelta = _this.timeDelta - (now - _this.simulationTime);
-		
-		_this.serverWorld.addBullet(piece, moduleData, now, timeDelta, _this.timeDelta);
+        _this.serverWorld.addBullet(piece, moduleData, _this.getNow());
 	}
 
+    function applyControl(piece, action, value, moduleData) {
+        _this.serverWorld.applyControlModule(piece, moduleData, action, value);
+    }
+
 	this.actionHandlers = {
-		fireCannon:fireCannon
+		fireCannon:fireCannon,
+        applyControl:applyControl,
+        applyForward:applyControl
 	};
 	
 	this.serverWorld.initWorld(this.clients);
