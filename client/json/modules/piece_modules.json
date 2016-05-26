@@ -4,79 +4,94 @@
     {
       "id":"radialSegments",
       "data":{
-        "radialSegments":12,
-        "distanceSegments":3,
-        "radius":150
+        "radialSegments":16,
+        "distanceSegments":4,
+        "radius":150,
+        "width":20
       }
     },
     "modules":[{
-        "id":"hull",
-        "data":{
-          "source":"initiate",
-          "applies":{
-            "state":true,
-            "type":"string",
-            "roll":{
-              "source":"spatialRotVel",
-              "frames":11,
-              "width":50,
-              "clamp":5,
-              "gain":-54
-            },
-            "style":"ship_hull",
-            "message":"Load Hull"
-          }
-        }
-
-
-      },{
-        "id":"bullet_shell",
-        "data":{
-          "source":"initiate",
-          "applies":{
-            "state":true,
-            "type":"string",
-            "style":"cannon_bullet",
-            "message":"Load Bullet"
-          }
-        }
-      },{
-
-        "id":"cannon",
-        "data":{
-          "source":"trigger",
-          "applies":{
-            "state":true,
-            "type":"boolean",
-            "message":"pew!"
-          }
-        }
-
-      },{
-        "id":"engine",
-        "data": {
-          "source":"throttle",
-          "applies":{
-            "state":true,
-            "style":"ship_engine",
-            "animate":{
-              "height":0.2,
-              "opacity":2
-            },
-            "flicker":"0.6",
-            "random":{
-              "source":"random",
-              "frames":11,
-              "width":50,
-              "clamp":5,
-              "gain":-5
-            },
-            "threshold":0.2,
-            "type":"float",
-            "message":"wroom"
-          }
+      "id":"hull",
+      "data":{
+        "source":"initiate",
+        "applies":{
+          "state":true,
+          "type":"string",
+          "roll":{
+            "source":"spatialRotVel",
+            "frames":11,
+            "width":50,
+            "clamp":5,
+            "gain":-54
+          },
+          "style":"ship_hull",
+          "message":"Load Hull"
         }
       }
+
+
+    },{
+      "id":"bullet_shell",
+      "data":{
+        "source":"initiate",
+        "applies":{
+          "state":true,
+          "type":"string",
+          "style":"cannon_bullet",
+          "message":"Load Bullet"
+        }
+      }
+    },{
+
+      "id":"cannon",
+      "data":{
+        "source":"trigger",
+        "applies":{
+          "state":true,
+          "type":"boolean",
+          "message":"pew!"
+        }
+      }
+
+    },{
+      "id":"controls",
+      "data":{
+        "source":"currentState",
+        "applies":{
+          "type":"array",
+          "state":true,
+          "action":"applyControl",
+          "message":"Appl Ctr,"
+        }
+      }
+    },{
+      "id":"engine",
+      "data": {
+        "source":"throttle",
+        "applies":{
+          "state":true,
+          "style":"ship_engine",
+          "animate":{
+            "height":0.2,
+            "opacity":2
+          },
+          "flicker":"0.6",
+          "random":{
+            "source":"random",
+            "frames":11,
+            "width":50,
+            "clamp":5,
+            "gain":-5
+          },
+          "threshold":0.2,
+          "type":"float",
+          "message":"wroom"
+        }
+      }
+
+    }
+
+
     ]
   }
 },
@@ -97,7 +112,7 @@
         }
       ]
     }
-}]
+  }]
 
 
 

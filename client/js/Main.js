@@ -10,16 +10,22 @@ require.config({
     }
 });
 
+var meta = document.createElement('meta');
+meta.name = "viewport";
+meta.content = "initial-scale=1, maximum-scale=1";
+document.getElementsByTagName('head')[0].appendChild(meta);
+
+
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
-}
+};
 NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     for(var i = this.length - 1; i >= 0; i--) {
         if(this[i] && this[i].parentElement) {
             this[i].parentElement.removeChild(this[i]);
         }
     }
-}
+};
 
 require([
     'application/Client',

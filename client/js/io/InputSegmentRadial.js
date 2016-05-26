@@ -17,13 +17,15 @@ define([
 
         var InputSegmentRadial = function() {
 
-            this.root = new DomElement(GameScreen.getElement(), 'pointer');
+            this.root = new DomElement(GameScreen.getElement(), 'segment_pointer');
 
+            this.currentState = [0, 0];
+            this.dirty = true;
+            
             this.pointer = {
                 x:0,
                 y:0
             };
-
 
             this.configs = {
                 radialSegments:8,
@@ -32,6 +34,12 @@ define([
             };
 
             this.vectors = [];
+            this.distance = [
+                new DomVector(GameScreen.getElement()),
+                new DomVector(GameScreen.getElement()),
+                new DomVector(GameScreen.getElement()),
+                new DomVector(GameScreen.getElement())
+            ];
             this.selectionIndex = 0;
         };
 
@@ -46,9 +54,8 @@ define([
 
             for (var i = 0; i < this.configs.radialSegments; i++) {
                 this.vectors.push(new DomVector(GameScreen.getElement()));
-
-            }
-            this.currentVector = this.vectors[0];
+            };
+            
 
         };
 
@@ -91,12 +98,20 @@ define([
         };
 
         InputSegmentRadial.prototype.disableSegments = function() {
-            console.log("hide", this.pointer.x, this.pointer.y)
+
+            for (var i = 0; i < this.vectors.length; i++) {
+                this.setDisabled(this.vectors[i]);
+            }
+
+            for (var i = 0; i < this.distance.length; i++) {
+                this.setDisabled(this.distance[i]);
+            }
+
+
             this.root.hideElement();
         };
 
         InputSegmentRadial.prototype.enableSegments = function(mouse) {
-            console.log("enable", mouse, this.pointer.x, this.pointer.y)
             this.pointer = {
                 x:mouse.x,
                 y:mouse.y
@@ -107,34 +122,77 @@ define([
             this.renderSegments(this.configs.radialSegments, this.configs.radius);
         };
 
+        InputSegmentRadial.prototype.setActiveSectorColor = function(vectors) {
+            vectors.setColorRGBA(0.2, 0.4, 0.4, 0.7);
+        };
+
+        InputSegmentRadial.prototype.setNeutralSectorColor = function(vectors) {
+            vectors.setColorRGBA(0.2, 0.4, 0.4, 0.2);
+        };
+
+        InputSegmentRadial.prototype.setDisabled = function(vector) {
+            vector.vector.translateScaleXYZSize(-100, -100, 0, 0);
+        };
 
         InputSegmentRadial.prototype.determineSelectedSegment = function(line) {
 
             var distanceSegment = Math.min(this.configs.distanceSegments, Math.floor(this.configs.distanceSegments * line.w / this.configs.radius));
 
-            var halfSegment = (Math.PI / this.configs.radialSegments);
+            if (this.currentState[1]!=distanceSegment) this.dirty = true;
+            
+            var segmentAngle = (MATH.TWO_PI / this.configs.radialSegments);
 
-            var radians = MATH.TWO_PI + ((line.zrot ) * (this.configs.radialSegments) / MATH.TWO_PI);
+            var radians = ((line.zrot + Math.PI) * (this.configs.radialSegments) / MATH.TWO_PI);
+        //    if (radians > Math.PI) radians -= 2;
 
-
-            var selection = Math.clamp(Math.floor(radians), 0 ,this.configs.radialSegments-1) ;
-            console.log(selection, distanceSegment);
+            var selection = MATH.moduloPositive(Math.clamp(Math.round(radians), 0 ,this.configs.radialSegments), this.configs.radialSegments) ;
             if (selection != this.selectionIndex) {
-                this.vectors[this.selectionIndex].setColorRGBA(0.2, 0.4, 0.4, 0.2);
-                this.vectors[selection].setColorRGBA(.2, 0.4, 0.4, 0.7);
+                this.dirty = true;
+                this.currentState[0] = selection;
+                this.currentState[1] = distanceSegment;
+                
+                this.setNeutralSectorColor(this.vectors[this.selectionIndex]);
+                this.setActiveSectorColor(this.vectors[selection]);
                 this.selectionIndex = selection;
             }
 
+            var width = segmentAngle * (1+distanceSegment) * this.configs.radius *0.25;
+            var width2 = segmentAngle * distanceSegment * this.configs.radius * 0.25;
 
+            var addx = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
+            var addy = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
+
+            this.distance[0].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection + Math.PI * 0.5);
+            this.distance[1].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection - Math.PI * 0.5);
+
+
+            var addx2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
+            var addy2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
+
+            this.distance[2].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection + Math.PI * 0.5);
+            this.distance[3].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection - Math.PI * 0.5);
+
+            this.root.setStyleParam('width',  ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
+            this.root.setStyleParam('height', ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
+            this.root.setStyleParam('top',   -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
+            this.root.setStyleParam('left',  -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
+
+            for (var i = 0; i < this.distance.length; i++) {
+                this.setActiveSectorColor(this.distance[i]);
+            }
 
         };
-        
+
         
         InputSegmentRadial.prototype.renderSegments = function(count, radius) {
             var angle = MATH.TWO_PI / count;
 
             for (var i = 0; i < this.vectors.length; i++) {
-                this.vectors[i].renderPosRadial(this.pointer.x, this.pointer.y, radius, angle*i)
+                var addx = (radius / this.configs.distanceSegments) * Math.cos(angle*i + Math.PI * 0.5);
+                var addy = (radius / this.configs.distanceSegments) * Math.sin(angle*i + Math.PI * 0.5);
+                this.vectors[i].renderPosRadial(this.pointer.x + addx, this.pointer.y + addy, radius, angle*i);
+           //    this.vectors[i].vecStyle.width = '1px';
+                this.setNeutralSectorColor(this.vectors[i]);
             }
 
         };

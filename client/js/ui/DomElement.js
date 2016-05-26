@@ -60,9 +60,12 @@ define([
             DomUtils.applyElementTransform(this.element, transform);
         };
 
-
         DomElement.prototype.scaleXYZ = function(x, y, z) {
             this.applyTransform("scale3d("+x+","+y+","+z+")");
+        };
+
+        DomElement.prototype.setBackgroundColorRGBA = function(r, g, b, a) {
+            this.setStyleParam('backgroundColor', "rgba("+Math.floor(r * 255)+","+ Math.floor(g * 255)+","+ Math.floor(b * 255)+","+ a+")");
         };
 
         DomElement.prototype.translateRotateXYZxyzw = function(tx, ty, tz, rx, ry, rz, w) {

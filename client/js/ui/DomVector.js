@@ -45,17 +45,22 @@ define([
 			this.vector.applyTransform(transform);
 		};
 
+
+
+		DomVector.prototype.setTransformOrigin = function(x, y) {
+			this.vecStyle.transformOrigin = x*100+'% '+y*100+'%';
+		};
+		
 		DomVector.prototype.renderPosRadial = function(x, y, distance, angle) {
 			this.vecStyle.height = distance+"px";
-			this.vecStyle.transformOrigin = "50% 0%";
+			this.setTransformOrigin(0.5, 0);
 			this.vector.applyStyleParams(this.vecStyle);
 			this.vector.translateRotateXYZxyzw(x, y, 0, 0, 0, 1, angle);
 		};
 
 
 		DomVector.prototype.setColorRGBA = function(r, g, b, a) {
-			this.vecStyle.backgroundColor = "rgba("+r * 255+","+ g * 255+","+ b * 255+","+ a+")";
-			this.vector.applyStyleParams(this.vecStyle);
+			this.vector.setBackgroundColorRGBA(r, g, b, a)
 		};
 
 		DomVector.prototype.hideVector = function() {

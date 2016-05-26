@@ -40,7 +40,7 @@ define([
 			var serverState = this.piece.serverState;
 			var _this = this;
 			this.piece.modules = [];
-			this.piece.moduleStates = {};
+			this.piece.moduleIndex = {};
 
 			for (var i = 0; i < modules.length; i++) {
 
@@ -49,7 +49,7 @@ define([
 					for (var j = 0; j < serverState.modules[modules[i].id].length; j++) {
 
 						var moduleAppliedCallback = function(message) {
-				//			_this.domPlayer.renderStateText(message);
+					//		_this.domPlayer.renderStateText(message);
 						};
 
 						var moduleState = serverState.modules[modules[i].id][j];
@@ -144,10 +144,10 @@ define([
 				var appear = function() {
 					_this.domPlayer.renderStateText("pew");
 				};
-				console.log("Appear!")
+
 				setTimeout(function() {
 					appear()
-				}, 50);
+				}, 0);
 			}
 
 		};

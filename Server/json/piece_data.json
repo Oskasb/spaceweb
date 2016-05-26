@@ -68,8 +68,8 @@
         },{
           "id":"controls",
           "data":{
-            "source":"inputVector",
-            "initState": 0,
+            "source":"currentState",
+            "initState": [0, 0],
             "applies":{
               "type":"array",
               "state":true,
