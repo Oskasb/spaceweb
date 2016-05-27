@@ -3,11 +3,13 @@
 
 define([
         'Events',
-        'ui/DomElement'
+        'ui/DomElement',
+    'ui/GameScreen'
     ],
     function(
         evt,
-        DomElement
+        DomElement,
+        GameScreen
     ) {
 
         var DomModule = function(module, parentElem, piece) {
@@ -40,7 +42,7 @@ define([
                     var roll = this.applies.roll;
                     var rotVel = this.piece.spatial.rotVel[0];
            //         console.log(rotVel);
-                    this.element.translateXYZ(Math.clamp(Math.round(Math.abs(rotVel)*rotVel*roll.gain), -roll.clamp, roll.clamp)*roll.width, 0, 0);
+                    this.element.translateXYZ(GameScreen.percentX(Math.clamp(Math.round(Math.abs(rotVel)*rotVel*roll.gain), -roll.clamp, roll.clamp)*roll.width), 0, 0);
                 }
 
 

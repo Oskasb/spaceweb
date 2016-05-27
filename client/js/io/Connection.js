@@ -61,6 +61,8 @@ define(['Events'
 
 				var msg = messages[args.id];
 
+				evt.fire(evt.list().MESSAGE_UI, {channel:'connection_send', message:'_'});
+				
 				if (!msg) {
 					console.log("SEND REQUEST missing", args.id);
 				}

@@ -40,7 +40,7 @@ define([
 				if (messages[res.id]) {
 					//	console.log("Message Recieved: ", messages[res.id], res)
 					_this[messages[res.id].target][res.id](res.data);
-                    evt.fire(evt.list().MESSAGE_UI, {channel:'receive', message:'.'});
+                    evt.fire(evt.list().MESSAGE_UI, {channel:'connection_receive', message:'_'});
 				} else {
 					console.log("unhandled message response:", res);
                     evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});

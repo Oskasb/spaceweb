@@ -1,10 +1,10 @@
 [{
   "styles": {
     "ship_engine":{
-      "top": "70%",
+      "top": "65%",
       "left": "35%",
       "width": "30%",
-      "height": "50px",
+      "height": "50em",
       "backgroundImage":"url('./client/assets/images/medium_engine_red.png')",
       "backgroundSize":"800% 100%",
       "overflow":"visible",
@@ -13,10 +13,10 @@
 
     "ship_root":{
       "zIndex":51,
-      "top": "-50px",
-      "left": "-25px",
-      "width": "50px",
-      "height": "80px",
+      "top": "-40em",
+      "left": "-25em",
+      "width": "50em",
+      "height": "80em",
       "overflow": "hidden"
     },
 
@@ -35,10 +35,10 @@
     },
 
     "cannon_bullet":{
-      "top": "20%",
-      "left": "40%",
-      "width": "20%",
-      "height": "30px",
+      "top": "50%",
+      "left": "50%",
+      "width": "8em",
+      "height": "20em",
       "zIndex":-1,
       "backgroundImage":"url('./client/assets/images/bullet_round.png')",
       "backgroundSize":"100% 100%"

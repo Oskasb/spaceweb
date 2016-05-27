@@ -40,11 +40,11 @@ define([
 
 			var action = (evt.args(e).action[0]+evt.args(e).action[1])*0.4  + 1;
 
-			var transform = "translate3d("+pos.x+"px, "+pos.y+"px, 0px) scale3d("+action+","+action+", 1)";
+	//		var transform = "translate3d("+pos.x+"px, "+pos.y+"px, 0px) scale3d("+action+","+action+", 1)";
 
+			cursor.translateScaleXYZSize(pos.x, pos.y, 0, action, action, 0);
 
-
-			cursor.applyTransform(transform);
+		//	cursor.applyTransform(transform);
 			vector = false;
 		};
 

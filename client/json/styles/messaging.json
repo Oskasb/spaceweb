@@ -9,12 +9,21 @@
     },
 
 
-    "connection_message":{
-      "top":"95%",
-      "left":"2%",
-      "fontSize": "12px",
+
+    "connection_send_message":{
+      "bottom":"0.7em",
+      "left":"1.4em",
+      "fontSize": "12em",
       "textAlign":"left",
-      "color":"rgba(85, 255, 120, 0.9)"
+      "color":"rgba(255, 85, 255, 1)"
+    },
+
+    "connection_message":{
+      "bottom":"0.7em",
+      "left":"0.7em",
+      "fontSize": "12em",
+      "textAlign":"left",
+      "color":"rgba(55, 255, 120, 1)"
     },
 
     "receive_error_message":{
