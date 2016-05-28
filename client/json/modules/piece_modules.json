@@ -4,11 +4,11 @@
     {
       "id":"radialSegments",
       "data":{
-        "radialSegments":12,
+        "radialSegments":16,
         "distanceSegments":3,
         "radius":150,
         "width":20,
-        "streamTimeout":400
+        "streamTimeout":0.2
       }
     },
     "modules":[{

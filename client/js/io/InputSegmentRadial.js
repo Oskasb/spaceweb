@@ -22,8 +22,12 @@ define([
             this.root = new DomElement(GameScreen.getElement(), 'segment_pointer');
 
             this.currentState = [0, 0];
+            this.lastSensState = [0, 0];
             this.dirty = true;
-            
+            this.lastSendTime = 0;
+
+            this.active = false;
+
             this.pointer = {
                 x:0,
                 y:0
@@ -43,6 +47,15 @@ define([
                 new DomVector(GameScreen.getElement())
             ];
             this.selectionIndex = 0;
+
+            var _this = this;
+
+            function tickInput(e) {
+                _this.tickInputFrame(evt.args(e).tpf);
+            }
+
+            evt.on(evt.list().CLIENT_TICK, tickInput);
+
         };
 
 
@@ -114,14 +127,17 @@ define([
 
             this.root.hideElement();
 
-            this.line.toX = this.line.fromX;
-            this.line.toY = this.line.fromY;
+            if (this.line != undefined) {
+                this.line.toX = this.line.fromX;
+                this.line.toY = this.line.fromY;
+            }
 
             this.sendState();
 
         };
 
         InputSegmentRadial.prototype.enableSegments = function(mouse) {
+            this.active = true;
             this.pointer = {
                 x:mouse.x,
                 y:mouse.y
@@ -136,14 +152,15 @@ define([
         };
 
         InputSegmentRadial.prototype.setActiveSectorColor = function(vectors) {
-            vectors.setColorRGBA(0.2, 0.4, 0.4, 0.7);
+            vectors.setColorRGBA(0.2, 0.4, 0.5, 0.9);
         };
 
         InputSegmentRadial.prototype.setNeutralSectorColor = function(vectors) {
-            vectors.setColorRGBA(0.2, 0.4, 0.4, 0.2);
+            vectors.setColorRGBA(0.2, 0.4, 0.7, 0.2);
         };
 
         InputSegmentRadial.prototype.setDisabled = function(vector) {
+            this.active = false;
             vector.vector.translateScaleXYZSize(-100, -100, 0, 0);
         };
 
@@ -155,7 +172,8 @@ define([
 
             if (this.currentState[1]!=distanceSegment) {
                 this.currentState[1] = distanceSegment;
-                new DomMessage(GameScreen.getElement(), "Distance "+distanceSegment, 'ui_state_hint_on', this.pointer.x+50, this.pointer.y-30, 0.3);
+                var message = new DomMessage(GameScreen.getElement(), "Length "+distanceSegment, 'ui_state_hint_on', this.pointer.x+50, this.pointer.y-30, 0.4);
+                message.animateToXYZscale(this.pointer.x+50, this.pointer.y-51, 0, 1.1);
                 this.dirty = true;
             }
             
@@ -166,7 +184,8 @@ define([
 
             var selection = MATH.moduloPositive(Math.clamp(Math.round(radians), 0 ,this.configs.radialSegments), this.configs.radialSegments) ;
             if (selection != this.selectionIndex) {
-                new DomMessage(GameScreen.getElement(), "Radial "+selection, 'ui_state_hint_on', this.pointer.x-50, this.pointer.y+30, 0.3);
+                var message = new DomMessage(GameScreen.getElement(), "Sector "+selection, 'ui_state_hint_on', this.pointer.x-50, this.pointer.y+30, 0.4);
+                message.animateToXYZscale(this.pointer.x-50, this.pointer.y+51, 0, 1.1);
                 this.dirty = true;
                 this.currentState[0] = selection;
                 
@@ -210,38 +229,28 @@ define([
 
         InputSegmentRadial.prototype.segmentSelected = function() {
 
-            
             var message = new DomMessage(GameScreen.getElement(), this.currentState, 'ui_state_hint_on', this.pointer.x, this.pointer.y, 0.3);
             message.animateToXYZscale(this.pointer.x, this.pointer.y - 30, 0, 1.5);
-
-            this.sendState();
 
         };
 
 
-        var streamTimeout;
-        var blocked = false;
-        var releaseTimeout;
-        var release = false;
-
         InputSegmentRadial.prototype.sendState = function() {
-            release = true;
+
+            if (this.lastSensState[0] == this.currentState[0] && this.lastSensState[1] == this.currentState[1]) {
+                return;
+            }
+
             var vector = {
-                fromX:this.line.fromX*0.01,
-                fromY:this.line.fromY*0.01,
-                toX:this.line.toX*0.01,
-                toY:this.line.toY*0.01
+                state:this.currentState
             };
 
-            var send = function(vec) {
-                evt.fire(evt.list().INPUT_PLAYER_CONTROL, {id:'InputVector', data:vec});
-                blocked = true;
-            };
+            evt.fire(evt.list().INPUT_PLAYER_CONTROL, {id:'InputVector', data:vector});
+            var message = new DomMessage(GameScreen.getElement(), "Send Input", 'ui_state_hint_on', 50, 45, 0.3);
+            message.animateToXYZscale(50, 40, 0, 1.5);
 
-            send(vector);
-        //    var message = new DomMessage(GameScreen.getElement(), "Instant", 'ui_state_hint_on', 50, 50, 0.3);
-         //   message.animateToXYZscale(50, 40, 0, 1.5);
-
+            this.lastSensState[0] = this.currentState[0];
+            this.lastSensState[1] = this.currentState[1];
         };
 
         InputSegmentRadial.prototype.renderSegments = function(count, radius) {
@@ -253,6 +262,17 @@ define([
                 this.vectors[i].renderPosRadial(this.pointer.x + addx, this.pointer.y + addy, radius, angle*i);
            //    this.vectors[i].vecStyle.width = '1px';
                 this.setNeutralSectorColor(this.vectors[i]);
+            }
+        };
+
+
+        InputSegmentRadial.prototype.tickInputFrame = function(tpf) {
+
+            if (this.active && this.lastSendTime > this.configs.streamTimeout) {
+                this.sendState();
+                this.lastSendTime = 0;
+            } else {
+                this.lastSendTime += tpf;
             }
 
         };

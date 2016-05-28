@@ -7,6 +7,8 @@ ServerGameMain = function(clients, serverWorld) {
 	this.startTime = process.hrtime();
 	this.processTime = process.hrtime();
 	this.currentTime = 0;
+    this.tickComputeTime = 0;
+    this.headroom = 0;
 	this.simulationTime = 0;
 	this.timeDelta = 0;
 	this.clients = clients;
@@ -114,8 +116,13 @@ ServerGameMain.prototype.getNow = function() {
 };
 
 ServerGameMain.prototype.tickGameSimulation = function() {
+    this.headroom = this.getNow() - this.currentTime;
 	this.currentTime = this.getNow();
+
     this.serverWorld.tickSimulationWorld(this.currentTime);
+    this.tickComputeTime = this.getNow() - this.currentTime;
+    if (Math.random() < 0.01) console.log("Load: ", this.headroom / this.tickComputeTime)
+
 };
 
 ServerGameMain.prototype.tickGameNetwork = function() {

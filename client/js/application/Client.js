@@ -134,7 +134,7 @@ define([
 		};
 
 		Client.prototype.tick = function(frame) {
-			evt.fire(evt.list().CLIENT_TICK, {frame:frame});
+			evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:this.timeTracker.tpf});
 
 			this.pointerCursor.tick();
 			this.gameMain.tickClientGame(this.timeTracker.tpf);

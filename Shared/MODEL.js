@@ -243,10 +243,7 @@ if(typeof(MODEL) == "undefined"){
 	MODEL.InputState.prototype.setSteeringZ = function(z) {
 		this.steering.setZ(z);
 	};
-
-	MODEL.InputState.prototype.getSteeringAmplitude = function() {
-		return this.steering.getLength();
-	};
+    
 
 	MODEL.InputState.prototype.getSteering = function(vec) {
 		vec.setVec(this.steering);

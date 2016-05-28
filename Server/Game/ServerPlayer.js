@@ -33,8 +33,8 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 
 
 	if (data.vector) {
-		this.setInputVector(data.vector.fromX, data.vector.fromY, data.vector.toX,data.vector.toY);
-	//	this.piece.networkDirty = true;
+		this.setInputVector(data.vector.state);
+		this.piece.networkDirty = true;
 	}
 
 
@@ -59,8 +59,8 @@ ServerPlayer.prototype.setInputTrigger = function(bool, actionCallback) {
 	this.piece.setInputTrigger(bool, actionCallback)
 };
 
-ServerPlayer.prototype.setInputVector = function(fromX, fromY, toX, toY) {
-	this.piece.setInputVector(fromX*0.1, fromY*0.1, toX*0.1, toY*0.1)
+ServerPlayer.prototype.setInputVector = function(state) {
+	this.piece.setInputVector(state)
 };
 
 ServerPlayer.prototype.updatePlayer = function(currentTime) {

@@ -39,8 +39,9 @@ if(typeof(GAME) == "undefined"){
 
 	GAME.PieceModule.prototype.setModuleState = function(state) {
 		this.state.value = state;
-		
 	};
+
+
 
 	GAME.PieceModule.prototype.setAppliyCallback = function(callback) {
 		this.appliedCallback = callback;
@@ -91,6 +92,9 @@ if(typeof(GAME) == "undefined"){
 			throttleLimit: 1,
 			throttleAmplitude: 3
 		};
+
+		this.currentDrag = 1;
+		this.currentRadialDrag = 1;
 	};
 
 	GAME.PieceControls.prototype.setControlState = function(moduleData, action, value) {
@@ -106,14 +110,22 @@ if(typeof(GAME) == "undefined"){
 		}
 	};
 
-	GAME.PieceControls.prototype.applyInputVector = function(fromX, fromY, toX, toY) {
-		this.inputState.setSteeringX(Math.clamp((toX - fromX), -1, 1));
-		this.inputState.setSteeringY(Math.clamp((toY - fromY), -1, 1));
+	GAME.PieceControls.prototype.applyInputVector = function(state) {
+	//	this.inputState.setSteeringX(Math.clamp((toX - fromX), -1, 1));
+	//	this.inputState.setSteeringY(Math.clamp((toY - fromY), -1, 1));
 
-		this.inputState.setThrottle(Math.min(MATH.lineDistance(fromX, fromY, toX, toY), this.constants.throttleLimit) * this.constants.throttleAmplitude);
+	//	this.inputState.setThrottle(Math.min(MATH.lineDistance(fromX, fromY, toX, toY), this.constants.throttleLimit) * this.constants.throttleAmplitude);
+
+		this.inputState.setThrottle((state[1] / this.constants.throttleSegments) * this.constants.throttleAmplitude);
+
 		if (this.inputState.getThrottle() != 0) {
-			this.inputState.setSteeringZ(Math.atan2(toX - fromX, fromY - toY));
+			this.currentDrag = 1;
+		} else {
+			this.currentDrag = this.constants.velocityDrag;
 		}
+
+		this.inputState.setSteeringZ(Math.PI + MATH.TWO_PI * state[0] / this.constants.radialSegments);
+
 	};
 
 	GAME.PieceControls.prototype.getTimeFactor = function(timeSinceInput) {
@@ -144,7 +156,6 @@ if(typeof(GAME) == "undefined"){
 		this.spatial = new MODEL.Spatial();
 		this.targetSpatial = new MODEL.Spatial();
 		this.startSpatial = new MODEL.Spatial();
-		this.timeSinceInput = 0;
 		this.modules = [];
 		this.moduleStates = {};
 		this.serverState = {};
@@ -217,7 +228,7 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.updatePieceFrame = function(tpf) {
 		this.temporal.incrementTpf(tpf);
 		if (this.temporal.lifeTime < this.temporal.getAge()) {
-			console.log("Clinet Timeout", this.temporal.lifeTime , this.temporal.getAge())
+			console.log("Client Timeout", this.temporal.lifeTime , this.temporal.getAge())
 			this.setState(GAME.ENUMS.PieceStates.TIME_OUT);
 		}
 
@@ -230,14 +241,16 @@ if(typeof(GAME) == "undefined"){
 */	//
 	//	console.log(this.rotDiff, this.posDiff);
 
-		if (this.posDiff*this.temporal.currentTime > this.temporal.stepTime) {
+		if (this.posDiff*this.temporal.currentTime > this.temporal.stepTime*0.1) {
 			this.spatial.interpolatePositions(this.spatial, this.targetSpatial, tpf);
 		}
 
 		this.spatial.interpolateRotational(this.spatial, this.targetSpatial, tpf);
 
-		this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tpf));
-		this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tpf));
+	//	if (this.pieceControls.inputState.throttle != 0) {
+			this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tpf*0.5));
+	//		this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tpf*0.5));
+	//	}
 
 		this.spatial.getVelVec().setVec(this.targetSpatial.getVelVec());
 		this.spatial.update(tpf);
@@ -252,9 +265,8 @@ if(typeof(GAME) == "undefined"){
 		}
 	};
 
-	GAME.Piece.prototype.setInputVector = function(fromX, fromY, toX, toY) {
-		this.timeSinceInput = 0;
-		this.pieceControls.applyInputVector(fromX, fromY, toX, toY);
+	GAME.Piece.prototype.setInputVector = function(state) {
+		this.pieceControls.applyInputVector(state);
 	};
 
 	GAME.Piece.prototype.teleportRandom = function() {
@@ -269,12 +281,12 @@ if(typeof(GAME) == "undefined"){
 		this.spatial.addVelVec(this.calcVec);
 	};
 
-	GAME.Piece.prototype.applyControlStates = function(tickDelta, timeFactor) {
+	GAME.Piece.prototype.applyControlStates = function(tickDelta) {
 		if (typeof(this.pieceControls.actions.applyThrottle) != undefined) {
 		//	if ((Math.round((this.pieceControls.inputState.getThrottle() - this.pieceControls.inputState.getThrottle() * timeFactor)*0.3) != 0)) {
 		//		this.networkDirty = true;
 		//	}
-			this.pieceControls.inputState.setThrottle(this.pieceControls.inputState.getThrottle()); //  * timeFactor);
+	//		this.pieceControls.inputState.setThrottle(this.pieceControls.inputState.getThrottle()); //  * timeFactor);
 
 		}
 
@@ -289,11 +301,14 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.Piece.prototype.updateServerSpatial = function(tickDelta) {
-		this.timeSinceInput += tickDelta;
 	//	var timeFactor = this.pieceControls.getTimeFactor(this.timeSinceInput);
 		this.applyControlStates(tickDelta);
-		this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tickDelta));
-		this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tickDelta));
+
+	//	if (this.pieceControls.inputState.throttle == 0) {
+			this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tickDelta));
+			this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tickDelta));
+	//	}
+
 		this.spatial.update(tickDelta);
 	};
 

@@ -20,12 +20,14 @@
           "fireCannon":false
         },
         "constants":{
-          "velocityDrag":1.8,
+          "radialSegments":16,
+          "throttleSegments": 3,
+          "velocityDrag":1.5,
           "radialDrag":2.45,
           "radialVelocityClamp":0.8,
           "radialLerpFactor":2,
           "throttleLimit": 0.2,
-          "throttleAmplitude": 200
+          "throttleAmplitude": 30
         }
       },
       "modules":[

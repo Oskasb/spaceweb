@@ -31,7 +31,7 @@ define(['Events'], function(evt) {
 
 	TimeTracker.prototype.processPingDuration = function(duration) {
 		pings++;
-		evt.fire(evt.list().MESSAGE_UI, {channel: 'ping_tracker', message: 'Ping: ' + duration+' ms'});
+		evt.fire(evt.list().MESSAGE_UI, {channel: 'ping_tracker', message: 'Ping: ' + Math.round(duration)+' ms'});
 	};
 
 	TimeTracker.prototype.trackFrameTime = function(frame, time) {

@@ -136,11 +136,16 @@ ServerWorld.prototype.tickSimulationWorld = function(currentTime) {
 ServerWorld.prototype.tickNetworkWorld = function() {
 
     for (var key in this.players) {
-        this.broadcastPieceState(this.players[key].piece);
+        if (this.players[key].piece.spatial.vel.getLength() + Math.abs(this.players[key].piece.spatial.rotVel) > 0.1) {
+            this.broadcastPieceState(this.players[key].piece);
+        }
+
     }
 
     for (var i = 0; i < this.pieces.length; i++) {
-        this.broadcastPieceState(this.pieces[i]);
+        if (this.pieces[i].spatial.vel.getLength() + Math.abs(this.pieces[i].spatial.rotVel) > 0.1) {
+            this.broadcastPieceState(this.pieces[i]);
+        }
     }
 
 };
