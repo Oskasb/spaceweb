@@ -271,10 +271,10 @@ if(typeof(GAME) == "undefined"){
 
 	GAME.Piece.prototype.applyControlStates = function(tickDelta, timeFactor) {
 		if (typeof(this.pieceControls.actions.applyThrottle) != undefined) {
-			if ((Math.round((this.pieceControls.inputState.getThrottle() - this.pieceControls.inputState.getThrottle() * timeFactor)*0.3) != 0)) {
-				this.networkDirty = true;
-			}
-			this.pieceControls.inputState.setThrottle(this.pieceControls.inputState.getThrottle() * timeFactor);
+		//	if ((Math.round((this.pieceControls.inputState.getThrottle() - this.pieceControls.inputState.getThrottle() * timeFactor)*0.3) != 0)) {
+		//		this.networkDirty = true;
+		//	}
+			this.pieceControls.inputState.setThrottle(this.pieceControls.inputState.getThrottle()); //  * timeFactor);
 
 		}
 
@@ -290,8 +290,8 @@ if(typeof(GAME) == "undefined"){
 
 	GAME.Piece.prototype.updateServerSpatial = function(tickDelta) {
 		this.timeSinceInput += tickDelta;
-		var timeFactor = this.pieceControls.getTimeFactor(this.timeSinceInput);
-		this.applyControlStates(tickDelta, timeFactor);
+	//	var timeFactor = this.pieceControls.getTimeFactor(this.timeSinceInput);
+		this.applyControlStates(tickDelta);
 		this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tickDelta));
 		this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tickDelta));
 		this.spatial.update(tickDelta);

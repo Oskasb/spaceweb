@@ -54,7 +54,7 @@ define([
 
 		DomPiece.prototype.removeModules = function() {
 			for (var i = 0; i < this.modules.length; i++) {
-				this.modules[i].element.removeElement();
+				t// his.modules[i].element.removeElement();
 			}
 		};
 
@@ -69,10 +69,10 @@ define([
 
 
 		DomPiece.prototype.renderStateText = function(text) {
-			var x = this.pos[0] -1 + Math.random()*2;
-			var y = this.pos[1] -2 + Math.random()*4;
+			var x = 0.01*GameScreen.getWidth() * this.pos[0] // -1 + Math.random()*2;
+			var y = 0.01*GameScreen.getHeight() * this.pos[1] // -2 + Math.random()*4;
 			var message = new DomMessage(parent, text, 'piece_state_hint', x, y, 0.3);
-			message.animateToXYZscale(x, y-2, 0, 1.5);
+			message.animateToXYZscale(x, y-15, 0, 1.5);
 		};
 
 		DomPiece.prototype.sampleSpatial = function(spatial) {
@@ -92,7 +92,7 @@ define([
 
 			this.sampleSpatial(this.piece.spatial);
 
-			this.domRoot.translateXYZ(GameScreen.percentToX(this.pos[0]), GameScreen.percentToY(this.pos[1]), 0);
+			this.domRoot.translateCnvXYZ(GameScreen.percentToX(this.pos[0]), GameScreen.percentToY(this.pos[1]), 0);
 			this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);
 			this.updateModules();
 

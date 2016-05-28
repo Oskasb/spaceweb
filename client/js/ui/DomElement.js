@@ -70,17 +70,32 @@ define([
         };
 
         DomElement.prototype.translateRotateXYZxyzw = function(tx, ty, tz, rx, ry, rz, w) {
-            this.applyTransform("translate3d("+GameScreen.pxToPercentX(tx)+"em,"+GameScreen.pxToPercentY(ty)+"em,"+tz+"em) rotate3d("+rx+","+ry+","+rz+", "+w+"rad)");
+            this.applyTransform("translate3d("+tx+"px,"+ty+"px,"+tz+"px) rotate3d("+rx+","+ry+","+rz+", "+w+"rad)");
         };
 
         DomElement.prototype.translateScaleXYZSize = function(tx, ty, tz, scale) {
-            this.applyTransform("translate3d("+GameScreen.pxToPercentX(tx)+"em,"+GameScreen.pxToPercentY(ty)+"em,"+tz+"em) scale3d("+scale+","+scale+","+scale+")");
+            this.applyTransform("translate3d("+tx+"px,"+ty+"px,"+tz+"px) scale3d("+scale+","+scale+","+scale+")");
         };
 
         
         DomElement.prototype.translateXYZ = function(x, y, z) {
+            this.applyTransform("translate3d("+x+"px,"+y+"px,"+z+"px)");
+        };
+
+
+        DomElement.prototype.translateCnvRotateXYZxyzw = function(tx, ty, tz, rx, ry, rz, w) {
+            this.applyTransform("translate3d("+GameScreen.pxToPercentX(tx)+"em,"+GameScreen.pxToPercentY(ty)+"em,"+tz+"em) rotate3d("+rx+","+ry+","+rz+", "+w+"rad)");
+        };
+
+        DomElement.prototype.translateCnvScaleXYZSize = function(tx, ty, tz, scale) {
+            this.applyTransform("translate3d("+GameScreen.pxToPercentX(tx)+"em,"+GameScreen.pxToPercentY(ty)+"em,"+tz+"em) scale3d("+scale+","+scale+","+scale+")");
+        };
+
+
+        DomElement.prototype.translateCnvXYZ = function(x, y, z) {
             this.applyTransform("translate3d("+GameScreen.pxToPercentX(x)+"em,"+GameScreen.pxToPercentY(y)+"em,"+z+"em)");
         };
+
 
         DomElement.prototype.rotateXYZ = function(x, y, z, w) {
             this.applyTransform("rotate3d("+x+","+y+","+z+", "+w+"rad)");

@@ -92,14 +92,7 @@ define([
 
 				var handleCursorLine = function(e) {
 
-					var vector = {
-						fromX:evt.args(e).fromX*0.01,
-						fromY:evt.args(e).fromY*0.01,
-						toX:evt.args(e).toX*0.01,
-						toY:evt.args(e).toY*0.01
-					};
-
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:vector, playerId:player.getPieceId()}});
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:evt.args(e).data, playerId:player.getPieceId()}});
 				};
 
 
@@ -111,10 +104,10 @@ define([
 				evt.on(evt.list().CURSOR_RELEASE_FAST, handleFastClick);
 
 
-				evt.on(evt.list().CURSOR_LINE, handleCursorLine);
+				evt.on(evt.list().INPUT_PLAYER_CONTROL, handleCursorLine);
 
 				var disconnect = function(e) {
-					evt.removeListener(evt.list().CURSOR_LINE, handleCursorLine);
+					evt.removeListener(evt.list().INPUT_PLAYER_CONTROL, handleCursorLine);
 					evt.removeListener(evt.list().CURSOR_RELEASE_FAST, handleFastClick);
 				};
 

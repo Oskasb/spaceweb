@@ -5,6 +5,7 @@ define([
         'ui/DomCursor',
         'ui/DomElement',
         'ui/DomVector',
+        'ui/DomMessage',
         'Events'
     ],
     function(
@@ -12,6 +13,7 @@ define([
         DomCursor,
         DomElement,
         DomVector,
+        DomMessage,
         evt
     ) {
 
@@ -107,8 +109,16 @@ define([
                 this.setDisabled(this.distance[i]);
             }
 
+            var message = new DomMessage(GameScreen.getElement(), 'Release', 'ui_state_hint_off', this.pointer.x, this.pointer.y, 0.3);
+            message.animateToXYZscale(this.pointer.x, this.pointer.y + 30, 0, 1.5);
 
             this.root.hideElement();
+
+            this.line.toX = this.line.fromX;
+            this.line.toY = this.line.fromY;
+
+            this.sendState();
+
         };
 
         InputSegmentRadial.prototype.enableSegments = function(mouse) {
@@ -116,6 +126,9 @@ define([
                 x:mouse.x,
                 y:mouse.y
             };
+
+            var message = new DomMessage(GameScreen.getElement(), 'Control', 'ui_state_hint_on', this.pointer.x, this.pointer.y, 0.3);
+            message.animateToXYZscale(this.pointer.x, this.pointer.y - 30, 0, 1.5);
 
             this.root.showElement();
             this.root.translateXYZ(this.pointer.x, this.pointer.y, 0);
@@ -136,9 +149,15 @@ define([
 
         InputSegmentRadial.prototype.determineSelectedSegment = function(line) {
 
+            this.line = line;
+            
             var distanceSegment = Math.min(this.configs.distanceSegments, Math.floor(this.configs.distanceSegments * line.w / this.configs.radius));
 
-            if (this.currentState[1]!=distanceSegment) this.dirty = true;
+            if (this.currentState[1]!=distanceSegment) {
+                this.currentState[1] = distanceSegment;
+                new DomMessage(GameScreen.getElement(), "Distance "+distanceSegment, 'ui_state_hint_on', this.pointer.x+50, this.pointer.y-30, 0.3);
+                this.dirty = true;
+            }
             
             var segmentAngle = (MATH.TWO_PI / this.configs.radialSegments);
 
@@ -147,9 +166,9 @@ define([
 
             var selection = MATH.moduloPositive(Math.clamp(Math.round(radians), 0 ,this.configs.radialSegments), this.configs.radialSegments) ;
             if (selection != this.selectionIndex) {
+                new DomMessage(GameScreen.getElement(), "Radial "+selection, 'ui_state_hint_on', this.pointer.x-50, this.pointer.y+30, 0.3);
                 this.dirty = true;
                 this.currentState[0] = selection;
-                this.currentState[1] = distanceSegment;
                 
                 this.setNeutralSectorColor(this.vectors[this.selectionIndex]);
                 this.setActiveSectorColor(this.vectors[selection]);
@@ -181,9 +200,50 @@ define([
                 this.setActiveSectorColor(this.distance[i]);
             }
 
+            if (this.dirty) {
+                this.segmentSelected();
+                this.dirty = false;
+            }
+
         };
 
-        
+
+        InputSegmentRadial.prototype.segmentSelected = function() {
+
+            
+            var message = new DomMessage(GameScreen.getElement(), this.currentState, 'ui_state_hint_on', this.pointer.x, this.pointer.y, 0.3);
+            message.animateToXYZscale(this.pointer.x, this.pointer.y - 30, 0, 1.5);
+
+            this.sendState();
+
+        };
+
+
+        var streamTimeout;
+        var blocked = false;
+        var releaseTimeout;
+        var release = false;
+
+        InputSegmentRadial.prototype.sendState = function() {
+            release = true;
+            var vector = {
+                fromX:this.line.fromX*0.01,
+                fromY:this.line.fromY*0.01,
+                toX:this.line.toX*0.01,
+                toY:this.line.toY*0.01
+            };
+
+            var send = function(vec) {
+                evt.fire(evt.list().INPUT_PLAYER_CONTROL, {id:'InputVector', data:vec});
+                blocked = true;
+            };
+
+            send(vector);
+        //    var message = new DomMessage(GameScreen.getElement(), "Instant", 'ui_state_hint_on', 50, 50, 0.3);
+         //   message.animateToXYZscale(50, 40, 0, 1.5);
+
+        };
+
         InputSegmentRadial.prototype.renderSegments = function(count, radius) {
             var angle = MATH.TWO_PI / count;
 

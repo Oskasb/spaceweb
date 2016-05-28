@@ -30,7 +30,7 @@ define([
 		};
 
 		var getResolution = function(width, height) {
-			if (width < height) return height;
+		//	if (width < height) return height;
 			return width;
 		};
 
@@ -76,12 +76,12 @@ define([
 			return (height / resolution) *percent*scalePercentToY;
 		};
 
-		var widthRatio = function(percent) {
-			return percent * width / resolution;
+		var widthRatio = function(percentx) {
+			return percentx * width / percentZoom;
 		};
 
-		var heightRatio = function(percent) {
-			return percent * height / resolution;
+		var heightRatio = function(percenty) {
+			return percenty * height / percentZoom;
 		};
 
 
