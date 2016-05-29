@@ -17,7 +17,7 @@ define(['Events'
 		};
 
 
-		Connection.prototype.setupSocket = function(connectedCallback, errorCallback,  disconnectedCallback) {
+		Connection.prototype.setupSocket = function(connectedCallback, errorCallback, disconnectedCallback) {
 			var host = location.origin.replace(/^http/, 'ws');
 			var pings = 0;
 
@@ -56,21 +56,20 @@ define(['Events'
 			};
 
 
-			var handleSendRequest = function(e) {
-			    var args = evt.args(e);
-
-				var msg = _this.socketMessages.getMessageById(args.id);
-
+			var sendMessage = function(msg, args) {
+                
+                
 				evt.fire(evt.list().MESSAGE_UI, {channel:'connection_send', message:'_'});
-				
+
 				if (!msg) {
-					console.log("SEND REQUEST missing", args.id);
+					console.log("SEND REQUEST missing", msg, args);
+				//	return;
 				}
 
 				socket.send(msg.make(args.data));
 			};
 
-			evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
+			return sendMessage;
 
 		};
 

@@ -37,9 +37,10 @@ define([
 			var handleServerMessage = function(e) {
 
 				var res = evt.args(e);
-				if (messages[res.id]) {
+				var message = socketMessages.getMessageById(res.id)
+				if (message) {
 					//	console.log("Message Recieved: ", messages[res.id], res)
-					_this[messages[res.id].target][res.id](res.data);
+					_this[message.target][res.id](res.data);
                     evt.fire(evt.list().MESSAGE_UI, {channel:'connection_receive', message:'_'});
 				} else {
 					console.log("unhandled message response:", res);
@@ -50,8 +51,8 @@ define([
 
 			};
 
-			this.clientRegistry = new ClientRegistry();
-			var ClientReg = this.clientRegistry;
+			var clientRegistry = new ClientRegistry();
+			this.clientRegistry = clientRegistry;
 			var connection = new Connection(socketMessages);
 			this.timeTracker = new TimeTracker();
 			this.clientWorld = new ClientWorld();
@@ -82,15 +83,26 @@ define([
 
 			};
 
+			var sendMessage = function() {};
+			
+			
 			var connect = function() {
-				connection.setupSocket(connectedCallback, errorCallback, disconnectedCallback);
+				sendMessage = connection.setupSocket(connectedCallback, errorCallback, disconnectedCallback);
 			};
 
 			connect();
 
+			var handleSendRequest = function(e) {
+				var msg = socketMessages.getMessageById(evt.args(e).id);
+				var args = evt.args(e);
+				sendMessage(msg, args);
+			};
+
+			evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
+			
+			
 			evt.on(evt.list().SERVER_MESSAGE, handleServerMessage);
 
-			var ClientReg;
 
 			var count = 0;
 
@@ -98,7 +110,7 @@ define([
 				console.log("Request Player");
 
 				if (ClientState == GAME.ENUMS.ClientStates.CLIENT_REQUESTED) {
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:ClientReg.clientId}});
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:clientRegistry.clientId}});
 					setClientState(GAME.ENUMS.ClientStates.PLAYER_REQUESTED);
 					evt.removeListener(evt.list().CURSOR_PRESS, requestPlayer);
 				}
@@ -109,7 +121,7 @@ define([
 
 				if (ClientState == GAME.ENUMS.ClientStates.READY) {
 					count++;
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:ClientReg.clientId}});
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientRegistry.clientId}});
 					setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
                     setTimeout(function() {
                         evt.on(evt.list().CURSOR_PRESS, requestPlayer);
