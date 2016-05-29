@@ -4,12 +4,32 @@
       "position":"absolute"
     },
 
+    "name_plate":{
+      "top": "-3em",
+      "left": "-2em",
+      "width": "auto",
+      "height": "auto",
+      "fontSize": "14em",
+      "textAlign": "center",
+      "position": "relative",
+      "display": "inline-block",
+      "padding":"0.05em",
+      "paddingLeft": "0.2em",
+      "paddingRight": "0.2em",
+      "color":"rgba(175, 225, 255, 0.7)",
+      "border": "0.12em solid rgba(75, 225, 255, 0)",
+      "borderRadius":"15%",
+      "backgroundColor":"rgba(15, 45, 45, 0.4)",
+      "textShadow":"0.03em 0.03em rgba(5, 225, 225, 0.3)",
+      "zIndex":"100"
+    },
+
     "connector":{
       "top": "0px",
       "left": "0px",
       "width": "2em",
       "height": "0px",
-      "backgroundColor":"rgba(115, 215, 225, 0.6)"
+      "backgroundColor":"rgba(15, 25, 55, 0.6)"
     },
 
     "load_progress":{

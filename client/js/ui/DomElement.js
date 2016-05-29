@@ -37,7 +37,11 @@ define([
         DomElement.prototype.setText = function(text) {
             this.element.innerHTML = text;
         };
-        
+
+        DomElement.prototype.getText = function() {
+            return this.element.innerHTML;
+        };
+
         DomElement.prototype.setStyleParam = function(param, value) {
             this.element.style[param] = value;
         };

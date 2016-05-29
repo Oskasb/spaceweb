@@ -15,6 +15,7 @@ ServerPlayer = function(clientId, client, simTime) {
 	this.piece.teleportRandom();
 
 	this.piece.networkDirty = true;
+	this.piece.setName(clientId);
 };
 
 

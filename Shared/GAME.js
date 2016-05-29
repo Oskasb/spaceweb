@@ -41,8 +41,6 @@ if(typeof(GAME) == "undefined"){
 		this.state.value = state;
 	};
 
-
-
 	GAME.PieceModule.prototype.setAppliyCallback = function(callback) {
 		this.appliedCallback = callback;
 	};
@@ -50,17 +48,28 @@ if(typeof(GAME) == "undefined"){
 	GAME.PieceModule.prototype.processModuleState = function(serverState) {
 		this.setModuleState(serverState.value);
 
-		if (this.data.applies.type == "boolean") {
-			if (this.state.value == this.data.applies.state) {
-				this.appliedCallback(this.data.applies.message)
-			}
-		} else {
-			if (this.state.value > Math.abs(this.data.applies.threshold)) {
-				this.appliedCallback(this.data.applies.message+' _ '+this.id+' _ '+this.state.value)
-			}
+
+		switch (this.data.applies.type) {
+			case "boolean":
+				if (this.state.value == this.data.applies.state) {
+					this.appliedCallback(this.data.applies.message)
+				}
+				break;
+			case "array":
+				this.appliedCallback(this.data.applies.message+' _ '+this.id+' _ '+this.state.value);
+				break;
+			case "string":
+				this.appliedCallback(this.data.applies.message+' _ '+this.id+' _ '+this.state.value);
+				break;
+			case "float":
+				this.appliedCallback(this.data.applies.message+' _ '+this.id+' _ '+this.state.value);
+				break;
+			default:
+				if (this.state.value > Math.abs(this.data.applies.threshold)) {
+					this.appliedCallback(this.data.applies.message+' _ '+this.id+' _ '+this.state.value)
+				}
 		}
 
-		
 	};
 	
 	GAME.PieceModule.prototype.processInputState = function(controls, actionCallback) {
@@ -192,6 +201,10 @@ if(typeof(GAME) == "undefined"){
 		this.state = state;
 	};
 
+	GAME.Piece.prototype.setName = function(name) {
+		this.pieceControls.inputState.playerName = name;
+	};
+	
 	GAME.Piece.prototype.getModuleStates = function() {
 	//	return [];
 		return this.moduleStates;

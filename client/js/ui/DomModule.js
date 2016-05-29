@@ -45,7 +45,13 @@ define([
                     this.element.translateXYZ(GameScreen.percentX(Math.clamp(Math.round(Math.abs(rotVel)*rotVel*roll.gain), -roll.clamp, roll.clamp)*roll.width), 0, 0);
                 }
 
-
+                if (this.applies.render) {
+                    if (this.applies.render.text) {
+                        if (this.element.getText() != this.module.state.value) {
+                            this.element.setText(this.module.state.value);
+                        }
+                    }
+                }
             /*
                 if (this.applies.random) {
                     var random = this.applies.random;

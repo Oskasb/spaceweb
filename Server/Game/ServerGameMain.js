@@ -71,10 +71,10 @@ ServerGameMain.prototype.initGame = function() {
         _this.serverWorld.applyControlModule(piece, moduleData, action, value);
     }
 
+
 	this.actionHandlers = {
 		fireCannon:fireCannon,
-        applyControl:applyControl,
-        applyForward:applyControl
+        applyControl:applyControl
 	};
 	
 	this.serverWorld.initWorld(this.clients);

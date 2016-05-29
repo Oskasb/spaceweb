@@ -213,7 +213,7 @@ if(typeof(MODEL) == "undefined"){
         this.yaw = 0;
 		this.throttle = 0;
 		this.trigger = false;
-		this.initiate = true;
+		this.playerName = "init";
 	};
 
 	MODEL.InputState.prototype.setTrigger = function(trigger) {

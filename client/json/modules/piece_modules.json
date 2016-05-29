@@ -55,6 +55,22 @@
       }
 
     },{
+      "id":"nameplate",
+      "data":{
+        "source":"playerName",
+        "parent":"domRoot",
+        "applies":{
+          "type":"string",
+          "state":true,
+          "action":"applyControl",
+          "message":"Set Name,",
+          "style":"name_plate",
+          "render":{
+            "text":"playerName"
+          }
+        }
+      }
+    },{
       "id":"controls",
       "data":{
         "source":"currentState",

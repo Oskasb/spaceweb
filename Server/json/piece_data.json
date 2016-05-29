@@ -40,7 +40,8 @@
               "style":"ship_hull",
               "type":"string",
               "state":true,
-              "action":"applyAppearance"
+              "action":"applyAppearance",
+              "message":"Hull On"
             }
           }
         },{
@@ -76,6 +77,18 @@
               "type":"array",
               "state":true,
               "action":"applyControl"
+            }
+          }
+        },{
+          "id":"nameplate",
+          "data":{
+            "source":"playerName",
+            "initState":"noName",
+            "applies":{
+              "type":"string",
+              "state":true,
+              "action":"applyControl",
+              "message":"Name On"
             }
           }
         }

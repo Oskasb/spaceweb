@@ -40,10 +40,15 @@ define([
 			if (debug) this.attachDebugElements();
 		};
 
-
+		
 
 		DomPiece.prototype.attachModule = function(module) {
-			this.modules.push(new DomModule(module, this.domHull.element, this.piece));
+			var parent = this.domHull.element;
+			if (module.data.parent) {
+				parent = this[module.data.parent].element;
+			}
+			var domModule = new DomModule(module, parent, this.piece);
+			this.modules.push(domModule);
 		};
 
 		DomPiece.prototype.attachNameplate = function() {
