@@ -1,6 +1,8 @@
 "use strict";
 
-var gameUtil;
+var SYSTEM_SETUP = {
+    DEBUG:false
+};
 
 require.config({
     paths: {
@@ -53,6 +55,7 @@ require([
     var path = './../../..';
 
     var loadUrls = [
+        './../../../Shared/io/Message.js',
         './../../../Shared/io/SocketMessages.js',
         './../../../Shared/MATH.js',
         './../../../Shared/MODEL.js',
@@ -105,6 +108,11 @@ require([
     };
 
 
+    var setDebug = function(key, data) {
+        console.log("Set Debug: ", data);
+        SYSTEM_SETUP.DEBUG = data.on;
+    };
+    
     var sharedFilesLoaded = function() {
 
         function pipelineError(src, e) {
@@ -131,12 +139,16 @@ require([
         //        console.log("client ready: ", clientInitiated, remaining, loaded, started);
                 initClient();
                 clientInitiated = true;
+                
+                
+
+                
             }
 
         }
 
         PipelineAPI.addProgressCallback(pipelineCallback);
-
+        PipelineAPI.subscribeToCategoryKey('setup', 'debug', setDebug);
     };
 
 

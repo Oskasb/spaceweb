@@ -59,7 +59,7 @@ define(['Events'
 			var handleSendRequest = function(e) {
 			    var args = evt.args(e);
 
-				var msg = messages[args.id];
+				var msg = _this.socketMessages.getMessageById(args.id);
 
 				evt.fire(evt.list().MESSAGE_UI, {channel:'connection_send', message:'_'});
 				
