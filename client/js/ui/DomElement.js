@@ -123,6 +123,36 @@ define([
         };
 
 
+        var events = {
+            touchstart:'touchstart',
+            touchend:'touchend',
+            touchmove:'touchmove'
+        };
+
+        DomElement.prototype.enableInteraction = function(startCallback, endCallback) {
+
+    //        var handleTouchStart = function(e) {
+    //            //	if (!isFullscreen) enterFullscreen();
+    //            evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Touch Start'});
+    //         //   touchAction[0] = 1;
+    //            startCallback();
+    //            console.log("TStart")
+    //        };
+//
+    //        var handleTouchEnd = function(e) {
+    //       //     touchAction[0] = 0;
+    //            endCallback();
+    //            evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Touch End'});
+    //            console.log("TEnd")
+    //        };
+//
+    //       this.element.addEventListener(events.touchstart, handleTouchStart);
+    //       this.element.addEventListener(events.touchend, handleTouchEnd);
+
+
+            DomUtils.enableElementInteraction(this.element);
+        };
+
         DomElement.prototype.removeElement = function() {
             DomUtils.removeElement(this.element);
         };

@@ -2,10 +2,11 @@
   "styles": {
 
     "popup_select_name_root":{
-      "top": "75em",
+      "top": "25em",
       "left": "200em",
       "width": "500em",
-      "height": "300em",
+      "bottom": "25em",
+      "height": "350em",
       "fontSize": "inherit",
       "textAlign": "center",
       "position": "absolute",
@@ -19,10 +20,10 @@
       "zIndex":"200"
     },
     "popup_select_header":{
-      "top": "10%",
+      "top": "5%",
       "left": "10%",
       "right": "62%",
-      "height": "12%",
+      "height": "1.1em",
       "width": "auto",
       "fontSize": "30em",
       "textAlign": "center",
@@ -37,12 +38,13 @@
       "backgroundColor":"rgba(15, 45, 45, 0.4)",
       "textShadow":"0.03em 0.03em rgba(5, 225, 225, 0.3)"
     },
+
     "popup_input_data":{
-      "top": "70%",
-      "left": "12%",
+      "top": "60%",
+      "left": "10%",
       "right": "10%",
-      "height": "22%",
-      "width": "auto",
+      "height": "2.1em",
+      "width": "80%",
       "fontSize": "30em",
       "textAlign": "center",
       "position": "absolute",
@@ -57,10 +59,10 @@
     },
 
     "popup_output_data":{
-      "top": "10%",
+      "top": "5%",
       "left": "40%",
       "right": "10%",
-      "height": "12%",
+      "height": "1.1em",
       "width": "auto",
       "fontSize": "30em",
       "textAlign": "center",

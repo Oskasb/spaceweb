@@ -37,7 +37,7 @@ define([
                     }
                     closeCallback(_this.selection);
                     _this.removePopup();
-                }, 2000 + 100);
+                }, 222000 + 100);
         //    }
 
 
@@ -49,9 +49,13 @@ define([
             var dataSource;
             var dataSample;
 
-            var inputCallback = function() {
-                _this.inputChanged(dataSource.element.value);
+            var submitCallback = function() {
+                _this.submitValue(dataSource.element.value);
+            };
+
+            var inputValueCallback = function() {
                 dataSample.setText(dataSource.element.value);
+                _this.inputChanged(dataSource.element.value);
             };
 
             var parent = GameScreen.getElement()
@@ -68,7 +72,25 @@ define([
                 }
 
                 if (conf.data.input) {
-                    elem.element.onchange = inputCallback;
+                    
+                    var startCB = function(e) {
+                        e.stopPropagation();
+                    //    elem.element.focus();
+                    };
+
+                    var endCB = function(e) {
+                        e.stopPropagation();
+                        elem.element.focus();
+                    };
+
+                    elem.element.addEventListener('touchstart', startCB);
+                    elem.element.addEventListener('touchend', endCB);
+                    
+                    elem.element.addEventListener('click', startCB);
+
+                    elem.enableInteraction(startCB, endCB);
+                    elem.element.onchange = submitCallback;
+                    elem.element.oninput = inputValueCallback;
                     elem.element.placeholder = conf.data.input.placeholder;
                     dataSource = elem;
                 }
@@ -82,7 +104,8 @@ define([
 
         };
 
-        DomPopup.prototype.inputChanged = function(value) {
+
+        DomPopup.prototype.submitValue = function(value) {
             this.input = value;
             var _this = this;
 
@@ -92,8 +115,12 @@ define([
                 }
                 _this.closeCallback(_this.selection);
                 _this.removePopup();
-            }, 300); 
+            }, 300);
 
+        };
+
+        DomPopup.prototype.inputChanged = function(value) {
+            this.input = value;
         };
 
         DomPopup.prototype.removePopup = function() {

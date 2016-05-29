@@ -253,7 +253,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
     };
 
     var enableElementInteraction = function(element) {
-        element.style.pointerEvents = "";
+        element.style.pointerEvents = "auto";
         element.style.cursor = "pointer";
 
         for (index in element.soundInteractionListeners) {
