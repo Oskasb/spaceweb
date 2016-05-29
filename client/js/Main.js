@@ -57,10 +57,15 @@ require([
     var loadUrls = [
         './../../../Shared/io/Message.js',
         './../../../Shared/io/SocketMessages.js',
-        './../../../Shared/MATH.js',
+        './../../../Shared/MATH.js'
+
+    ];
+
+    var sharedUrls = [
         './../../../Shared/MODEL.js',
         './../../../Shared/GAME.js'
     ];
+
 
     var jsonRegUrl = './client/json/config_urls.json';
     window.jsonConfigUrls = 'client/json/';
@@ -161,18 +166,34 @@ require([
 
     var count = 0;
 
+    var sharedLoaded = function() {
+        count++;
+        if (count == sharedUrls.length) {
+            PipelineAPI.addReadyCallback(sharedFilesLoaded);
+        }
+    };
+
     var filesLoaded = function() {
         count++;
   //      console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
 
         if (count == loadUrls.length) {
-            PipelineAPI.addReadyCallback(sharedFilesLoaded);
+            count = 0;
+            for (var i = 0; i < sharedUrls.length; i++) {
+                loadJS(sharedUrls[i], sharedLoaded, document.body);
+            }
+
         }
     };
+
+
 
 
     for (var i = 0; i < loadUrls.length; i++) {
         loadJS(loadUrls[i], filesLoaded, document.body);
     }
+
+
+
 
 });

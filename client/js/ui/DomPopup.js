@@ -22,7 +22,6 @@ define([
             this.input = null;
 
             var callback = function(key, data) {
-                _this.removePopup();
                 _this.config = data;
                 _this.applyPopupConfigs(data);
             };
@@ -38,7 +37,7 @@ define([
                     }
                     closeCallback(_this.selection);
                     _this.removePopup();
-                }, 1000 + 100);
+                }, 4000 + 100);
             }
 
 
