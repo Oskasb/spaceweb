@@ -16,10 +16,15 @@ define([
 
         var count = 0;
 
-        var DomElement = function(parentElem, styleId) {
+        var DomElement = function(parentElem, styleId, input) {
             count++;
-            
-            var element = DomUtils.createDivElement(parentElem, count+'_'+Math.random(), '', 'point');
+            var element;
+            if (input) {
+                element = DomUtils.createTextInputElement(parentElem, count+'_'+Math.random(), input.varname, 'point');
+            } else {
+                element = DomUtils.createDivElement(parentElem, count+'_'+Math.random(), '', 'point');
+            }
+
             this.element = element;
             var styleCallback = function(key, data) {
                 DomUtils.applyElementStyleParams(element, data)

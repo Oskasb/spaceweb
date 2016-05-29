@@ -8,6 +8,8 @@ define(function() {
 
 		SEND_SERVER_REQUEST:{type:'SEND_SERVER_REQUEST', args:{data:{}}},
 		MESSAGE_UI:{type:'MESSAGE_UI', args:{}},
+		MESSAGE_POPUP:{type:'MESSAGE_POPUP', args:{}},
+
 
 		CLIENT_TICK:{type:'CLIENT_TICK', args:{data:{}}},
 		SERVER_MESSAGE:{type:'SERVER_MESSAGE', args:{data:{}}},

@@ -5,6 +5,8 @@
       "validation/type_validation.json",
       "validation/shapes_validation.json",
       "messages/ui_messages.json",
+      "ui/popups.json",
+      "styles/ui_popups.json",
       "styles/messaging.json",
       "styles/world_objects.json",
       "styles/ui_hud.json",

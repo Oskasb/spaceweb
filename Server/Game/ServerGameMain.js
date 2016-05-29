@@ -104,8 +104,14 @@ ServerGameMain.prototype.playerInput = function(data) {
 
 ServerGameMain.prototype.registerPlayer = function(data) {
 
-	var player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
-	this.addPlayer(player);
+    var player = this.serverWorld.getPlayer(data.clientId);
+    if (!player) {
+        player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
+        this.addPlayer(player);
+    }
+
+    player.piece.setName(data.name);
+
 	console.log("register player", JSON.stringify(data));
 	return JSON.parse(player.makePacket());
 };

@@ -5,13 +5,15 @@ define([
         'ui/DomMessage',
         'ui/GameScreen',
         'Events',
-    'PipelineAPI'
+    'PipelineAPI',
+        'ui/DomPopup'
     ],
     function(
         DomMessage,
         GameScreen,
         evt,
-        PipelineAPI
+        PipelineAPI,
+        DomPopup
     ) {
         
         var UiMessenger = function() {
@@ -24,6 +26,9 @@ define([
                 message.animateToXYZ(chan.anim[0], chan.anim[1], chan.anim[2]);
             }
 
+            function createMessagePopup(e) {
+                var popup = new DomPopup(evt.args(e).configId, evt.args(e).callback);
+            }
 
             function setup(data) {
                 channels = data;
@@ -37,6 +42,8 @@ define([
             };
 
             PipelineAPI.subscribeToCategoryKey('messages', 'channels', channelData)
+
+            evt.on(evt.list().MESSAGE_POPUP, createMessagePopup);
             
         };
         

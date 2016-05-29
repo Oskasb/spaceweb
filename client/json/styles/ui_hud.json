@@ -5,11 +5,11 @@
     },
 
     "name_plate":{
-      "top": "-3em",
+      "top": "-4em",
       "left": "-2em",
       "width": "auto",
       "height": "auto",
-      "fontSize": "14em",
+      "fontSize": "10em",
       "textAlign": "center",
       "position": "relative",
       "display": "inline-block",

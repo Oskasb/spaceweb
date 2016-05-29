@@ -113,8 +113,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
     };
 
 
-    var createTextInputElement = function(parentId, id, varName, styleClass) {
-        var parent = document.getElementById(parentId);
+    var createTextInputElement = function(parent, id, varName, styleClass) {
         var index = parent.getElementsByTagName("*");
         var newdiv = document.createElement('input', [index]);
 
@@ -125,6 +124,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
         newdiv.className = styleClass;
 
         parent.appendChild(newdiv);
+        return newdiv;
     };
 
     var setElementHtml = function(element, text) {
@@ -308,6 +308,7 @@ define(["Events", "io/TouchActionListener"], function(event, touchListener) {
     };
 
     return {
+        createTextInputElement:createTextInputElement,
         quickHideElement:quickHideElement,
         quickShowElement:quickShowElement,
         applyElementStyleParams:applyElementStyleParams,

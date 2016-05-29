@@ -106,11 +106,12 @@ define([
 
 			var count = 0;
 
-			var requestPlayer = function() {
-				console.log("Request Player");
-
+			var requestPlayer = function(name) {
+				console.log("Request Player", name);
+				clientRegistry.setName(name);
+				
 				if (ClientState == GAME.ENUMS.ClientStates.CLIENT_REQUESTED) {
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:clientRegistry.clientId}});
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:clientRegistry.clientId, name:clientRegistry.getName()}});
 					setClientState(GAME.ENUMS.ClientStates.PLAYER_REQUESTED);
 					evt.removeListener(evt.list().CURSOR_PRESS, requestPlayer);
 				}
@@ -118,13 +119,16 @@ define([
 
 			var requestClient = function() {
 				console.log("Request Client");
-
+				
 				if (ClientState == GAME.ENUMS.ClientStates.READY) {
 					count++;
 					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientRegistry.clientId}});
 					setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
                     setTimeout(function() {
-                        evt.on(evt.list().CURSOR_PRESS, requestPlayer);
+						
+						evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
+						
+                      //  evt.on(evt.list().CURSOR_PRESS, requestPlayer);
                     }, 10);
 
 				}

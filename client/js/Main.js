@@ -139,10 +139,6 @@ require([
         //        console.log("client ready: ", clientInitiated, remaining, loaded, started);
                 initClient();
                 clientInitiated = true;
-                
-                
-
-                
             }
 
         }
