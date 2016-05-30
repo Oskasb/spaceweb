@@ -5,6 +5,13 @@ ServerWorld = function() {
 	this.actionHandlers;
 	this.pieceCount = 0;
 	this.pieceConfigs;
+
+    var _this = this;
+    var broadcast = function(piece) {
+        _this.broadcastPieceState(piece);
+    };
+
+    this.serverPieceProcessor = new ServerPieceProcessor(broadcast);
 };
 
 ServerWorld.prototype.initWorld = function(clients) {
@@ -44,7 +51,7 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, d
 	var apply = cannonModuleData.applies;
 	this.pieceCount++;
 	var bullet = new GAME.Piece('bullet_'+this.pieceCount, now, apply.lifeTime);
-
+    bullet.registerParentPiece(sourcePiece);
 	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
 //	bullet.temporal.timeDelta = dt;
   //  bullet.spatial.setSpatial(sourcePiece.spatial);
@@ -89,6 +96,12 @@ ServerWorld.prototype.fetch = function(data) {
 ServerWorld.prototype.broadcastPieceState = function(piece) {
 	var packet = piece.makePacket();
 	this.clients.broadcastToAllClients(packet);
+
+    if (piece.getState() == GAME.ENUMS.PieceStates.EXPLODE) {
+        piece.setState(GAME.ENUMS.PieceStates.TIME_OUT);
+        this.removePiece(piece);
+    }
+
 };
 
 ServerWorld.prototype.updateWorldPiece = function(piece, currentTime) {
@@ -98,6 +111,7 @@ ServerWorld.prototype.updateWorldPiece = function(piece, currentTime) {
     if (piece.networkDirty) {
         this.broadcastPieceState(piece);
         piece.networkDirty = false;
+
     }
 
 };
@@ -130,6 +144,8 @@ ServerWorld.prototype.tickSimulationWorld = function(currentTime) {
 
     this.updatePieces(currentTime);
     this.updatePlayers(currentTime);
+    this.serverPieceProcessor.checkProximity(this.players, this.pieces);
+    
 };
 
 

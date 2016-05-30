@@ -13,7 +13,7 @@ define([
     ) {
 
         var DomPopup = function(configId, closeCallback) {
-        
+            this.active = true;
             var _this = this;
             
             this.selection = "Name_"+Math.floor(1+Math.random()*1000);
@@ -23,7 +23,10 @@ define([
 
             var callback = function(key, data) {
                 _this.config = data;
-                _this.applyPopupConfigs(data);
+                if (_this.active) {
+                    _this.applyPopupConfigs(data);
+                }
+
             };
 
             this.elements = {};
@@ -37,7 +40,7 @@ define([
                     }
                     closeCallback(_this.selection);
                     _this.removePopup();
-                }, 222000 + 100);
+                }, 5000 + 100);
         //    }
 
 
@@ -124,6 +127,7 @@ define([
         };
 
         DomPopup.prototype.removePopup = function() {
+            this.active = false;
             this.elements[this.config[0].id].removeElement();
             delete this;
         };

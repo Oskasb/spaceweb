@@ -15,7 +15,7 @@ define([
 	) {
 
 		var DomProgress = function(parentElem, style) {
-			this.root = new DomElement(parentElem, 'progress_box');
+			this.root = new DomElement(parentElem, style);
 			this.progress = new DomElement(this.root.element, 'progress');
 		};
 
@@ -23,6 +23,9 @@ define([
 			this.progress.element.style.width = 100 * fraction + '%';
 		};
 
+		DomProgress.prototype.removeProgress = function() {
+			this.root.removeElement();
+		};
 
 		return DomProgress;
 

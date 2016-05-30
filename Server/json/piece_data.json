@@ -102,7 +102,8 @@
       },
       "controls":{
         "actions": {
-          "applyForward":1
+          "applyForward":1,
+          "timeoutEvent": "EXPLODE"
         },
         "constants":{
           "velocityDrag":0,

@@ -8,7 +8,7 @@
             RegisterPlayer:{source:'ServerGameMain', method:'registerPlayer', target:'gameMain', reflect:true},
 
 
-            playerUpdate:{source:'', method:'', target:'gameMain', reflect:true},
+            playerUpdate:{source:'', method:'', target:'gameMain', reflect:false},
 
             clientConnected:{source:'Clients', method:'registerConnection', target:'clientRegistry', reflect:true},
 

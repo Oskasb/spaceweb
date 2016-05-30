@@ -8,6 +8,7 @@ define([
 		'ui/DomVector',
 		'ui/DomProgress',
 		'ui/DomMessage',
+		'ui/DomEffect',
 		'ui/DomElement',
 		'ui/DomModule'
 	],
@@ -18,6 +19,7 @@ define([
 		DomVector,
 		DomProgress,
 		DomMessage,
+		DomEffect,
 		DomElement,
 		DomModule
 	) {
@@ -78,6 +80,13 @@ define([
 			var y = 0.01*GameScreen.getHeight() * this.pos[1] // -2 + Math.random()*4;
 			var message = new DomMessage(parent, text, 'piece_state_hint', x, y, 0.3);
 			message.animateToXYZscale(x, y-15, 0, 1.5);
+		};
+
+		DomPiece.prototype.renderEffect = function(style, duration, scaleTo) {
+			var x = 0.01*GameScreen.getWidth() * this.pos[0]; // -1 + Math.random()*2;
+			var y = 0.01*GameScreen.getHeight() * this.pos[1]; // -2 + Math.random()*4;
+			var fx = new DomEffect(parent, style, x, y, duration);
+			fx.animateToXYZscale(x, y, 0, scaleTo);
 		};
 
 		DomPiece.prototype.sampleSpatial = function(spatial) {

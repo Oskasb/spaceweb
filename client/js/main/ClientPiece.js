@@ -122,12 +122,19 @@ define([
 			}
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TIME_OUT) {
-				this.domPlayer.renderStateText("BOOM");
+				this.domPlayer.renderEffect('effect_shockwave_light', 0.25, 1.4);
 				this.playerRemove();
 				return;
 			}
-			
 
+            if (serverState.state == GAME.ENUMS.PieceStates.EXPLODE) {
+                this.domPlayer.renderEffect('effect_explosion_bullet', 0.4, 1);
+                this.domPlayer.renderEffect('effect_shockwave_heavy', 0.25, 1.4);
+            }
+
+            if (serverState.state == GAME.ENUMS.PieceStates.BURST) {
+                this.domPlayer.renderEffect('effect_shockwave_light', 0.45, 0.6);
+            }
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TELEPORT) {
 				//	this.piece.notifyTrigger(true);
@@ -139,6 +146,7 @@ define([
 			if (serverState.state == GAME.ENUMS.PieceStates.SPAWN) {
 				//	this.piece.notifyTrigger(true);
 				this.domPlayer.updateDomPiece();
+				this.domPlayer.renderEffect('effect_shockwave_light', 0.15, 0.4);
 				var _this = this;
 
 				var appear = function() {
@@ -146,7 +154,7 @@ define([
 				};
 
 				setTimeout(function() {
-					appear()
+			//		appear()
 				}, 0);
 			}
 

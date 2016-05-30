@@ -127,6 +127,10 @@ if(typeof(MODEL) == "undefined"){
 		return this.vel;
 	};
 
+    MODEL.Spatial.prototype.getPosVec = function() {
+        return this.pos;
+    };
+    
 	MODEL.Spatial.prototype.addVelVec = function(velVec) {
 		this.vel.addVec(velVec);
 	};

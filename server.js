@@ -48,6 +48,7 @@ var SetupServer = function() {
 		'Server/DataHub',
 		'Server/Game/ServerWorld',
 		'Server/Game/ServerGameMain',
+        'Server/Game/ServerPieceProcessor',
 		'Server/ServerMain',
 		'Server/Game/ServerPlayer',
 		'Server/io/ConfigLoader'

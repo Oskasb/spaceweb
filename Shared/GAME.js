@@ -25,6 +25,8 @@ if(typeof(GAME) == "undefined"){
 		TELEPORT:'TELEPORT',
 		SPAWN:'SPAWN',
 		KILLED:'KILLED',
+		BURST:'BURST',
+		EXPLODE:'EXPLODE',
 		REMOVED:'REMOVED'
 	};
 
@@ -168,7 +170,8 @@ if(typeof(GAME) == "undefined"){
 		this.modules = [];
 		this.moduleStates = {};
 		this.serverState = {};
-
+		this.config = null;
+		
 		this.posDiff = 0;
 		this.rotDiff = 0;
 
@@ -188,15 +191,29 @@ if(typeof(GAME) == "undefined"){
 		}
 	};
 
+	GAME.Piece.prototype.registerParentPiece = function(piece) {
+		this.parentPiece = piece;;
+	};
+
 	GAME.Piece.prototype.registerModuleFromServerState = function(module) {
 		this.modules.push(module);
 	};
 	
 	GAME.Piece.prototype.applyConfig = function(pieceConfigs) {
+		this.config = pieceConfigs;
 		this.pieceControls.applyControlConfig(pieceConfigs.controls);
 		if (pieceConfigs.modules) this.attachModules(pieceConfigs.modules);
 	};
 
+	GAME.Piece.prototype.getTimeoutEvent = function() {
+		if (!this.config.controls) return;
+		if (this.config.controls.actions) {
+			if (this.config.controls.actions.timeoutEvent) {
+				return this.config.controls.actions.timeoutEvent;
+			}			
+		}
+	};
+	
 	GAME.Piece.prototype.setState = function(state) {
 		this.state = state;
 	};
