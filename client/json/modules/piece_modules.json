@@ -4,7 +4,7 @@
     {
       "id":"radialSegments",
       "data":{
-        "radialSegments":16,
+        "radialSegments":32,
         "distanceSegments":3,
         "radius":150,
         "width":20,

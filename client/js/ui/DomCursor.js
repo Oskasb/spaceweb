@@ -28,6 +28,8 @@ define([
 
 		var handleCursorMove = function(e) {
 
+			if (!SYSTEM_SETUP.DEBUG.renderCursor) return;
+
 			var pointer = evt.args(e).pointer;
 
 			if (vector) {
@@ -50,6 +52,7 @@ define([
 
 
 		var handleCursorVector = function(e) {
+			if (!SYSTEM_SETUP.DEBUG.renderCursor) return;
 			vector = true;
 			var args = evt.args(e);
 			pos.x = args.fromX;

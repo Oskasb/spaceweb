@@ -20,7 +20,7 @@
           "fireCannon":false
         },
         "constants":{
-          "radialSegments":16,
+          "radialSegments":32,
           "throttleSegments": 3,
           "velocityDrag":1.5,
           "radialDrag":2.45,

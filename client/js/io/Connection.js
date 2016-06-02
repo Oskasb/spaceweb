@@ -34,7 +34,7 @@ define(['Events'
 
 			socket.onclose = function () {
 				disconnectedCallback();
-				evt.removeListener(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
+				
 			};
 
 			socket.onmessage = function (message) {
@@ -59,7 +59,7 @@ define(['Events'
 			var sendMessage = function(msg, args) {
                 
                 
-				evt.fire(evt.list().MESSAGE_UI, {channel:'connection_send', message:'_'});
+				
 
 				if (!msg) {
 					console.log("SEND REQUEST missing", msg, args);

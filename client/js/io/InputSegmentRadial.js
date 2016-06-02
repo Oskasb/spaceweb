@@ -122,7 +122,7 @@ define([
                 this.setDisabled(this.distance[i]);
             }
 
-            if (SYSTEM_SETUP.DEBUG) {
+            if (SYSTEM_SETUP.DEBUG.renderInput) {
                 var message = new DomMessage(GameScreen.getElement(), 'Release', 'ui_state_hint_off', this.pointer.x, this.pointer.y, 0.3);
                 message.animateToXYZscale(this.pointer.x, this.pointer.y + 30, 0, 1.5);    
             }
@@ -146,14 +146,19 @@ define([
                 y:mouse.y
             };
 
-            if (SYSTEM_SETUP.DEBUG) {
+            if (SYSTEM_SETUP.DEBUG.renderInput) {
                 var message = new DomMessage(GameScreen.getElement(), 'Control', 'ui_state_hint_on', this.pointer.x, this.pointer.y, 0.3);
                 message.animateToXYZscale(this.pointer.x, this.pointer.y - 30, 0, 1.5);
             }
 
-            this.root.showElement();
-            this.root.translateXYZ(this.pointer.x, this.pointer.y, 0);
-            this.renderSegments(this.configs.radialSegments, this.configs.radius);
+
+            if (SYSTEM_SETUP.DEBUG.renderSegments) {
+                this.root.showElement();
+                this.root.translateXYZ(this.pointer.x, this.pointer.y, 0);
+                this.renderSegments(this.configs.radialSegments, this.configs.radius);
+            }
+
+
         };
 
         InputSegmentRadial.prototype.setActiveSectorColor = function(vectors) {
@@ -177,7 +182,7 @@ define([
 
             if (this.currentState[1]!=distanceSegment) {
                 this.currentState[1] = distanceSegment;
-                if (SYSTEM_SETUP.DEBUG) {
+                if (SYSTEM_SETUP.DEBUG.renderInput) {
 
                     var message = new DomMessage(GameScreen.getElement(), "Length " + distanceSegment, 'ui_state_hint_on', this.pointer.x + 50, this.pointer.y - 30, 0.4);
                     message.animateToXYZscale(this.pointer.x + 50, this.pointer.y - 51, 0, 1.1);
@@ -192,7 +197,7 @@ define([
 
             var selection = MATH.moduloPositive(Math.clamp(Math.round(radians), 0 ,this.configs.radialSegments), this.configs.radialSegments) ;
             if (selection != this.selectionIndex) {
-                if (SYSTEM_SETUP.DEBUG) {
+                if (SYSTEM_SETUP.DEBUG.renderInput) {
                     var message = new DomMessage(GameScreen.getElement(), "Sector " + selection, 'ui_state_hint_on', this.pointer.x - 50, this.pointer.y + 30, 0.4);
                     message.animateToXYZscale(this.pointer.x - 50, this.pointer.y + 51, 0, 1.1);
                 }
@@ -204,30 +209,35 @@ define([
                 this.selectionIndex = selection;
             }
 
-            var width = segmentAngle * (1+distanceSegment) * this.configs.radius *0.25;
-            var width2 = segmentAngle * distanceSegment * this.configs.radius * 0.25;
 
-            var addx = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
-            var addy = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
+            if (SYSTEM_SETUP.DEBUG.renderDistanceSegments) {
+                var width = segmentAngle * (1+distanceSegment) * this.configs.radius *0.25;
+                var width2 = segmentAngle * distanceSegment * this.configs.radius * 0.25;
 
-            this.distance[0].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection + Math.PI * 0.5);
-            this.distance[1].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection - Math.PI * 0.5);
+                var addx = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
+                var addy = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
+
+                this.distance[0].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection + Math.PI * 0.5);
+                this.distance[1].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection - Math.PI * 0.5);
 
 
-            var addx2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
-            var addy2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
+                var addx2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
+                var addy2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
 
-            this.distance[2].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection + Math.PI * 0.5);
-            this.distance[3].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection - Math.PI * 0.5);
+                this.distance[2].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection + Math.PI * 0.5);
+                this.distance[3].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection - Math.PI * 0.5);
 
-            this.root.setStyleParam('width',  ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
-            this.root.setStyleParam('height', ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
-            this.root.setStyleParam('top',   -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
-            this.root.setStyleParam('left',  -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
+                this.root.setStyleParam('width',  ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
+                this.root.setStyleParam('height', ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
+                this.root.setStyleParam('top',   -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
+                this.root.setStyleParam('left',  -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
 
-            for (var i = 0; i < this.distance.length; i++) {
-                this.setActiveSectorColor(this.distance[i]);
+                for (var i = 0; i < this.distance.length; i++) {
+                    this.setActiveSectorColor(this.distance[i]);
+                }
             }
+
+            
 
             if (this.dirty) {
                 this.segmentSelected();
@@ -238,7 +248,7 @@ define([
 
 
         InputSegmentRadial.prototype.segmentSelected = function() {
-            if (SYSTEM_SETUP.DEBUG) {
+            if (SYSTEM_SETUP.DEBUG.renderInput) {
                 var message = new DomMessage(GameScreen.getElement(), this.currentState, 'ui_state_hint_on', this.pointer.x, this.pointer.y, 0.3);
                 message.animateToXYZscale(this.pointer.x, this.pointer.y - 30, 0, 1.5);
             }
@@ -256,7 +266,7 @@ define([
             };
 
             evt.fire(evt.list().INPUT_PLAYER_CONTROL, {id:'InputVector', data:vector});
-            if (SYSTEM_SETUP.DEBUG) {
+            if (SYSTEM_SETUP.DEBUG.renderInput) {
                 var message = new DomMessage(GameScreen.getElement(), "Send Input", 'ui_state_hint_on', 50, 45, 0.3);
                 message.animateToXYZscale(50, 40, 0, 1.5);
             }

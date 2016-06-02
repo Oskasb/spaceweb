@@ -33,15 +33,15 @@ define([
             
             PipelineAPI.subscribeToCategoryKey('popups', 'select_name', callback);
 
-        //    if (SYSTEM_SETUP.DEBUG) {
+            if (SYSTEM_SETUP.DEBUG.autoName) {
                 setTimeout(function() {
                     if (_this.input) {
                         _this.selection = _this.input;
                     }
                     closeCallback(_this.selection);
                     _this.removePopup();
-                }, 5000 + 100);
-        //    }
+                }, 7000 + 100);
+            }
 
 
         };

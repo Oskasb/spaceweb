@@ -18,6 +18,8 @@ define([
 
         var DomElement = function(parentElem, styleId, input) {
             count++;
+            this.sourceColor = 'rgba(0, 0, 0, 1)';
+            this.sourceTransition = 'all 0.5s ease-out';
             var element;
             if (input) {
                 element = DomUtils.createTextInputElement(parentElem, count+'_'+Math.random(), input.varname, 'point');
@@ -91,7 +93,10 @@ define([
             this.applyTransform("translate3d("+x+"px,"+y+"px,"+z+"px)");
         };
 
-
+        DomElement.prototype.setTransformOrigin = function(x, y) {
+            this.element.transformOrigin = x*100+'% '+y*100+'%';
+        };
+        
         DomElement.prototype.translateCnvRotateXYZxyzw = function(tx, ty, tz, rx, ry, rz, w) {
             this.applyTransform("translate3d("+GameScreen.pxToPercentX(tx)+"em,"+GameScreen.pxToPercentY(ty)+"em,"+tz+"em) rotate3d("+rx+","+ry+","+rz+", "+w+"rad)");
         };
@@ -112,6 +117,20 @@ define([
 
         DomElement.prototype.applyTransition = function(transition) {
             DomUtils.setElementTransition(this.element, transition);
+        };
+
+        DomElement.prototype.flashElement = function() {
+            if (this.element.style.transition) this.sourceTransition = this.element.style.transition;
+            this.sourceColor = this.element.style.backgroundColor;
+    //        this.applyTransition('none');
+            this.element.style.backgroundColor = "rgba(225, 255, 255, 1)";
+            
+        };
+
+        DomElement.prototype.deFlashElement = function() {
+    //        this.applyTransition(this.sourceTransition);
+            this.element.style.backgroundColor = this.sourceColor;
+
         };
 
         DomElement.prototype.hideElement = function() {

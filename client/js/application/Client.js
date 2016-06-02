@@ -2,14 +2,14 @@
 
 
 define([
-	'Events',
-	'application/ClientRegistry',
-	'io/Connection',
-	'application/TimeTracker',
-	'main/ClientWorld',
-	'main/GameMain',
-        'ui/UiMessenger'
-],
+		'Events',
+		'application/ClientRegistry',
+		'io/Connection',
+		'application/TimeTracker',
+		'main/ClientWorld',
+		'main/GameMain',
+		'ui/UiMessenger'
+	],
 	function(
 		evt,
 		ClientRegistry,
@@ -17,18 +17,21 @@ define([
 		TimeTracker,
 		ClientWorld,
 		GameMain,
-        UiMessenger
-		) {
+		UiMessenger,
+		DomMonitor
+	) {
 
 
 
 
 		var Client = function(pointerCursor) {
 			this.pointerCursor = pointerCursor;
+			
 		};
 
 
 		Client.prototype.initiateClient = function(socketMessages) {
+			
             new UiMessenger();
 			var _this = this;
 			var messages = socketMessages.messages;
@@ -39,9 +42,7 @@ define([
 				var res = evt.args(e);
 				var message = socketMessages.getMessageById(res.id)
 				if (message) {
-					//	console.log("Message Recieved: ", messages[res.id], res)
 					_this[message.target][res.id](res.data);
-                    evt.fire(evt.list().MESSAGE_UI, {channel:'connection_receive', message:'_'});
 				} else {
 					console.log("unhandled message response:", res);
                     evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
@@ -76,7 +77,7 @@ define([
 				ClientState = GAME.ENUMS.ClientStates.DISCONNECTED;
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_error', message:'Connection Lost'});
 				evt.fire(evt.list().CONNECTION_CLOSED, {data:'closed'});
-
+				evt.removeListener(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
 				setTimeout(function() {
 					connect();
 				}, 100)

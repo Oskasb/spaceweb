@@ -1,7 +1,9 @@
 "use strict";
 
 var SYSTEM_SETUP = {
-    DEBUG:false
+    DEBUG:{
+        on:false
+    }
 };
 
 require.config({
@@ -37,7 +39,8 @@ require([
     'Events',
     'PipelineAPI',
     'ui/DomMessage',
-    'ui/DomProgress'
+    'ui/DomProgress',
+    'ui/DomMonitor'
 ], function(
     Client,
     GameScreen,
@@ -46,12 +49,14 @@ require([
     evt,
     PipelineAPI,
     DomMessage,
-    DomProgress
-
+    DomProgress,
+    DomMonitor
 ) {
 
     GameScreen.registerAppContainer(document.body);
 
+    var domMonitor = new DomMonitor();
+    
     var path = './../../..';
 
     var loadUrls = [
@@ -115,7 +120,8 @@ require([
 
     var setDebug = function(key, data) {
         console.log("Set Debug: ", data);
-        SYSTEM_SETUP.DEBUG = data.on;
+        SYSTEM_SETUP.DEBUG = data;
+        domMonitor.applyDebugSettings(data);
     };
     
     var sharedFilesLoaded = function() {
@@ -150,7 +156,7 @@ require([
         }
 
         PipelineAPI.addProgressCallback(pipelineCallback);
-        PipelineAPI.subscribeToCategoryKey('setup', 'debug', setDebug);
+        PipelineAPI.subscribeToCategoryKey('setup', 'DEBUG', setDebug);
     };
 
 
