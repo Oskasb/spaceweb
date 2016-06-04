@@ -3,6 +3,7 @@
 
 define([
 		'Events',
+	'ui/GooPiece',
 		'ui/GameScreen',
 		'ui/DomUtils',
 		'ui/DomVector',
@@ -14,6 +15,7 @@ define([
 	],
 	function(
 		evt,
+		GooPiece,
 		GameScreen,
 		DomUtils,
 		DomVector,
@@ -29,6 +31,7 @@ define([
 		var parent = document.getElementById('game_window');
 
 		var DomPiece = function(piece) {
+			this.gooPiece = new GooPiece(piece);
 			this.modules = [];
 			this.id = piece.id;
 			this.piece = piece;
@@ -38,6 +41,7 @@ define([
 			this.rotVel = [];
 			this.domRoot = new DomElement(parent, 'point');
 			this.domHull = new DomElement(this.domRoot.element, 'ship_root');
+
 
 			if (debug) this.attachDebugElements();
 		};
@@ -68,9 +72,10 @@ define([
 
 		DomPiece.prototype.removeDomPiece = function() {
 			this.domRoot.removeElement();
+			this.gooPiece.removeGooPiece();
 		};
 
-		DomPiece.prototype.setIsOwnPlayer = function() {
+		DomPiece.prototype.setIsOwnPlayer = function(bool) {
 			this.domHull.addStyleJsonId('ship_hull_friendly');
 		};
 
@@ -109,6 +114,8 @@ define([
 			this.domRoot.translateCnvXYZ(GameScreen.percentToX(this.pos[0]), GameScreen.percentToY(this.pos[1]), 0);
 			this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);
 			this.updateModules();
+
+			this.gooPiece.updateGooPiece();
 
 			if (debug) this.renderDebugElements();
 		};

@@ -4,8 +4,13 @@
       "validation/schemas/base_schema.json",
       "validation/type_validation.json",
       "validation/shapes_validation.json",
+
+      "effects/particle_effects.json",
+
       "messages/ui_messages.json",
+
       "ui/popups.json",
+
       "styles/ui_popups.json",
       "styles/messaging.json",
       "styles/world_objects.json",
@@ -14,7 +19,6 @@
       "styles/effects.json",
 
       "modules/piece_modules.json",
-
 
       "system_setup.json"
 

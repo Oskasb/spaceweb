@@ -83,6 +83,10 @@ define([
 				this.domPlayer.updateDomPiece();
 			}
 
+			if (this.isOwnPlayer) {
+				evt.fire(evt.list().CONTROLLED_PIECE_UPDATED, this.piece)
+			}
+
 
 		};
 

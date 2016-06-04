@@ -17,8 +17,7 @@ define([
 		TimeTracker,
 		ClientWorld,
 		GameMain,
-		UiMessenger,
-		DomMonitor
+		UiMessenger
 	) {
 
 

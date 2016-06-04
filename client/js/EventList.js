@@ -3,12 +3,17 @@
 define(function() {
     var func = function(){};
     return {
+		SETTING_CONTROL_EVENT:{type:'SETTING_CONTROL_EVENT', args:{}},
+
+		ENGINE_READY:{type:'ENGINE_READY', args:{}},
+		
 		INIT_CLIENT:{type:'INIT_CLIENT', args:{data:{}}},
 		CONNECTION_CLOSED:{type:'CONNECTION_CLOSED', args:{data:{}}},
 
 		SEND_SERVER_REQUEST:{type:'SEND_SERVER_REQUEST', args:{data:{}}},
 		MESSAGE_UI:{type:'MESSAGE_UI', args:{}},
 		MESSAGE_POPUP:{type:'MESSAGE_POPUP', args:{}},
+
 
 
 		CLIENT_TICK:{type:'CLIENT_TICK', args:{data:{}}},
@@ -24,6 +29,7 @@ define(function() {
 
 		
 		INPUT_PLAYER_CONTROL:{type:'INPUT_PLAYER_CONTROL', args:{data:{}}},
+		CONTROLLED_PIECE_UPDATED:{type:'CONTROLLED_PIECE_UPDATED', args:{}},
 		
         CLIENT_READY:{type:'CLIENT_READY', args:{data:{}}}
     }

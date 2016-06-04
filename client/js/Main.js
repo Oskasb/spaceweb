@@ -8,8 +8,10 @@ var SYSTEM_SETUP = {
 
 require.config({
     paths: {
+        goo:'./lib/goo',
         shared:'./../../../Shared',
         PipelineAPI:'./lib/data_pipeline/src/PipelineAPI',
+        particle_system:'./lib/particles',
         data_pipeline:'./lib/data_pipeline/src/'
     }
 });
@@ -32,6 +34,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 };
 
 require([
+    '3d/SceneController',
     'application/Client',
     'ui/GameScreen',
     'io/InputState',
@@ -42,6 +45,7 @@ require([
     'ui/DomProgress',
     'ui/DomMonitor'
 ], function(
+    SceneController,
     Client,
     GameScreen,
     InputState,
@@ -56,6 +60,7 @@ require([
     GameScreen.registerAppContainer(document.body);
 
     var domMonitor = new DomMonitor();
+    var sceneController = new SceneController();
     
     var path = './../../..';
 
@@ -109,12 +114,12 @@ require([
 
     var initClient = function() {
         if (clientInitiated) {
-  //          console.log("Multi Inits requested, bailing");
+            console.log("Multi Inits requested, bailing");
             return;
         }
         var client = new Client(new PointerCursor(new InputState()));
         client.initiateClient(new SocketMessages());
-        
+        sceneController.setup3dScene();
     };
 
 
