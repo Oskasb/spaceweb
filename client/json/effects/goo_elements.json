@@ -1,0 +1,16 @@
+[{
+    "goo_elements": {
+        "s11_piece":{
+            "game_effect":"s11_piece"
+        },
+        "world_star":{
+            "game_effect":"world_star"
+        },
+        "dim_star":{
+            "game_effect":"dim_star"
+        },
+        "yellow_star":{
+            "game_effect":"yellow_star"
+        }
+    }
+}]

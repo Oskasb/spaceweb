@@ -64,8 +64,8 @@ define([
 
         }
 
-        ParticlePlayer.prototype.getEffectData = function(key) {
-            return effectConfigs[key];
+        ParticlePlayer.prototype.getEffectData = function(key, idx) {
+            return effectConfigs[key][idx];
         };
 
         ParticlePlayer.prototype.getParticleData = function(key) {
@@ -85,15 +85,15 @@ define([
             
         };
 
-        ParticlePlayer.prototype.setupParticleData = function(effect, params) {
+        ParticlePlayer.prototype.setupParticleData = function(idx, effect, params) {
 
             if (params) {
                 for (var key in params) {
-                    this.getParticleData(this.getEffectData(effect).effect)[key] = params[key];
+                    this.getParticleData(this.getEffectData(effect, idx).effect)[key] = params[key];
                 }
             }
 
-            return this.getParticleData(this.getEffectData(effect).effect);
+            return this.getParticleData(this.getEffectData(effect, idx).effect);
         };
 
         ParticlePlayer.prototype.playGameEffect = function(args) {
@@ -104,10 +104,22 @@ define([
             particleData.vel.data[0] = args.vel.data[0];
             particleData.vel.data[1] = args.vel.data[1];
             particleData.vel.data[2] = args.vel.data[2];
-            
-            this.simpleParticles.spawn(this.getEffectData(args.effect).simulator, particleData.pos, particleData.vel, this.setupParticleData(args.effect, args.params), args.callbacks, this.getEffectData(args.effect).density);
+
+
+            for (var i = 0; i < effectConfigs[args.effect].length; i++) {
+                this.spawnGameEffects(this.getEffectData(args.effect, i), particleData, this.setupParticleData(i, args.effect, args.params), args.callbacks, this.getEffectData(args.effect, i).density);
+            }
+
+
+
+        //    this.simpleParticles.spawn(this.getEffectData(args.effect).simulator, particleData.pos, particleData.vel, this.setupParticleData(args.effect, args.params), args.callbacks, this.getEffectData(args.effect).density);
         };
 
+
+        ParticlePlayer.prototype.spawnGameEffects = function(effectData, particleData, customEffectData, callbacks, density) {
+
+            this.simpleParticles.spawn(effectData.simulator, particleData.pos, particleData.vel, customEffectData, callbacks, density);
+        };
 
 
         ParticlePlayer.prototype.update = function(tpf) {

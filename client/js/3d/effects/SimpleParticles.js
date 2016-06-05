@@ -1,4 +1,5 @@
 define([
+	'Events',
 		'particle_system/ParticlesAPI',
 		'particle_system/defaults/DefaultRendererConfigs',
 		'particle_system/defaults/DefaultSpriteAtlas',
@@ -6,6 +7,7 @@ define([
 		'goo/renderer/TextureCreator'
 	],
 	function(
+		evt,
 		ParticlesAPI,
 		DefaultRendererConfigs,
 		DefaultSpriteAtlas,
@@ -13,10 +15,12 @@ define([
 		TextureCreator
 	) {
 
+		var particlesAPI;
 
 		function SimpleParticles(goo) {
 			this.goo = goo;
 			this.particlesAPI = new ParticlesAPI(goo);
+			particlesAPI = this.particlesAPI;
 			this.ready = false;
 		}
 
@@ -31,6 +35,7 @@ define([
 			var txLoaded = function() {
 				this.particlesAPI.createParticleSystems(DefaultSimulators, DefaultRendererConfigs, DefaultSpriteAtlas.atlases[0], texture);
 				this.ready = true;
+				evt.fire(evt.list().PARTICLES_READY, {});
 			}.bind(this);
 
 			var textureCreator = new TextureCreator();
@@ -52,7 +57,7 @@ define([
 		};
 
 		SimpleParticles.prototype.update = function(tpf) {
-			this.particlesAPI.requestFrameUpdate(tpf);
+			particlesAPI.requestFrameUpdate(tpf);
 		};
 
 		return SimpleParticles;

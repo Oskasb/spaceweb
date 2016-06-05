@@ -119,7 +119,12 @@ require([
         }
         var client = new Client(new PointerCursor(new InputState()));
         client.initiateClient(new SocketMessages());
-        sceneController.setup3dScene();
+
+        var clientTick = function(tpf) {
+            client.tick(tpf)
+        };
+
+        sceneController.setup3dScene(clientTick);
     };
 
 

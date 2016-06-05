@@ -65,7 +65,7 @@ define(['Events',
 
         console.log("Setup Goo Camera", cameraEntity);
 
-
+        evt.fire(evt.list().CAMERA_READY, {goo:goo, camera:cameraEntity});
     };
 
 

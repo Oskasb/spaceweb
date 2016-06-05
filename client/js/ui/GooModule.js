@@ -29,9 +29,12 @@ define([
             this.animate = this.applies.animate;
             this.animationState = {};
 
+
+            this.callbacks = {};
+
             if (this.applies) {
                 if (this.applies.transform) {
-                    GooEntityFactory.attachPrimitive(this.entity);
+        //            GooEntityFactory.attachPrimitive(this.entity);
                     if (this.applies.transform.pos) {
                         GooEntityFactory.translateEntity(this.entity, this.applies.transform.pos);
                     }
@@ -45,6 +48,14 @@ define([
 
             if (this.applies.game_effect) {
                 this.attachGameEffect(piece.spatial, this.applies.game_effect)
+            }
+
+            if (this.applies.spawn_effect) {
+
+           //     setTimeout(function() {
+                    evt.fire(evt.list().GAME_EFFECT, {effect:module.data.applies.spawn_effect, pos:piece.spatial.pos, vel:piece.spatial.vel});
+           //     }, 100);
+
             }
 
         };
@@ -79,19 +90,23 @@ define([
 
         GooModule.prototype.removeModule = function() {
 
+
+            if (this.applies.remove_effect) {
+
+                this.tempSpatial.rot.setXYZ(0, 0, 0);
+
+                evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.remove_effect, pos:this.piece.spatial.pos, vel:this.tempSpatial.rot});
+            }
+
             this.callbacks.particleUpdate = null;
 
             for (var i = 0; i < this.particles.length; i++) {
-                this.particles[i].lifeSpan = this.piece.temporal.lifeTime;
-                this.particles[i].lifeSpanTotal = this.particles[i].lifeSpan
+                this.particles[i].lifeSpan = 1;
+                this.particles[i].lifeSpanTotal = 1;
             }
             this.entity.removeFromWorld();
         };
 
-        GooModule.prototype.removeGooModule = function() {
-            this.entity.removeFromWorld();
-            this.removeModuleParticles();
-        };
 
         GooModule.prototype.populateAnimationState = function(state) {
             if (this.applies.flicker) {
@@ -103,7 +118,7 @@ define([
         };
 
 
-        GooModule.prototype.updateDomModule = function() {
+        GooModule.prototype.updateGooModule = function() {
 
             if (this.applies) {
 
@@ -117,7 +132,15 @@ define([
                 this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
                 
                 if (this.applies.emit_effect) {
-                    evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:{strength:this.module.state.value*2}});
+
+                    if (this.module.state.value > 0) {
+                        evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:{strength:this.module.state.value * 1.3, count:Math.ceil(this.module.state.value*0.2)}});
+                    };
+
+
+
+                    //         evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:{strength:this.module.state.value*2, count:1}});
+
                 }
 
             }

@@ -9,7 +9,8 @@ define([
 	'goo/math/Vector3',
 	'goo/renderer/Texture',
 	'goo/math/Vector',
-	'3d/GooCameraController'
+	'3d/GooCameraController',
+	'ui/GooMonitor'
 
 
 
@@ -21,14 +22,16 @@ define([
 	Vector3,
 	Texture,
 	Vector,
-	GooCameraController
+	GooCameraController,
+	GooMonitor
 ) {
 
 	var GooController = function() {
 		this.cameraController = new GooCameraController();
+		this.gooMonitor = new GooMonitor();
 	};
 
-	GooController.prototype.setupGooRunner = function() {
+	GooController.prototype.setupGooRunner = function(clientTickCallback) {
 
 
 
@@ -37,7 +40,8 @@ define([
 			debug:false,
 			manuallyStartGameLoop:true,
 			tpfSmoothingCount:1,
-			useTryCatch:false
+			useTryCatch:false,
+			logo:false
 		});
 
 
@@ -49,8 +53,9 @@ define([
 		Settings.addOnChangeCallback('display_pixel_scale', adjustPxScale);
 
 		this.goo = goo;
-		goo.renderer.setClearColor(0.08, 0.0, 0.11, 0.1);
+		goo.renderer.setClearColor(0.03, 0.0, 0.05, 0.01);
 
+		
 
 		var setupGooScene = function() {
 			console.log("Setup Goo Scene");
@@ -67,6 +72,7 @@ define([
 
 
 		setupGooScene();
+		this.registerGooUpdateCallback(clientTickCallback);
 	//	this.cameraController.setCameraPosition(0, 0, 0);
 	};
 

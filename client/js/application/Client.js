@@ -22,10 +22,10 @@ define([
 
 
 
+		var frame = 0;
 
 		var Client = function(pointerCursor) {
 			this.pointerCursor = pointerCursor;
-			
 		};
 
 
@@ -63,8 +63,7 @@ define([
 			var connectedCallback = function() {
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_status', message:'Connection Open'});
 				evt.fire(evt.list().CLIENT_READY, {});
-				evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'ServerWorld', data:'init'});
-				_this.tick(0);
+
 			};
 
 			var errorCallback = function(error) {
@@ -121,11 +120,12 @@ define([
 				console.log("Request Client");
 				
 				if (ClientState == GAME.ENUMS.ClientStates.READY) {
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'ServerWorld', data:'init'});
 					count++;
 					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientRegistry.clientId}});
 					setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
                     setTimeout(function() {
-						
+
 						evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
 						
                       //  evt.on(evt.list().CURSOR_PRESS, requestPlayer);
@@ -141,25 +141,39 @@ define([
 			};
 
 			var clientReady = function() {
-				setClientState(GAME.ENUMS.ClientStates.READY);
-				requestClient();
+				client = true;
+				checkReady();
 			};
-            
+
+			var particlesReady = function() {
+				particles = true;
+				checkReady();
+			};
+
+			var client = false;
+			var particles = false;
+
+			var checkReady = function() {
+
+				if (client && particles) {
+					setClientState(GAME.ENUMS.ClientStates.READY);
+					requestClient();
+				}
+
+			};
+
 			evt.on(evt.list().CLIENT_READY, clientReady);
+			evt.on(evt.list().PARTICLES_READY, particlesReady);
 
 		};
 
-		Client.prototype.tick = function(frame) {
+		Client.prototype.tick = function(tpf) {
+			frame++;
 			evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:this.timeTracker.tpf});
 
 			this.pointerCursor.tick();
 			this.gameMain.tickClientGame(this.timeTracker.tpf);
-            
-			var _this = this;
-			requestAnimationFrame(function() {
-				frame++;
-				_this.tick(frame);
-			});
+
 		};
         
 		return Client;

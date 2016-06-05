@@ -2,14 +2,11 @@
 
 
 define(['Events',
-		'ui/DomElement',
-	'ui/GameScreen'
-
+	'ui/GooElement'
 ],
 	function(
 		    evt,
-			DomElement,
-			GameScreen
+			GooElement
 		) {
 
 		var ClientWorld = function() {
@@ -30,22 +27,17 @@ define(['Events',
 		};
 
 		ClientWorld.prototype.addStars = function(starData) {
+			
+			var starTypes = ['blue_star', 'dim_star', 'yellow_star'];
+			
 			for (var i = 0; i < starData.length; i++) {
 				var pos = starData[i].pos;
-				var element = new DomElement(GameScreen.getElement(), 'background_star');
-
-				var distance = Math.floor(pos[2])*0.006;
-
-				var params = {
-					top : Math.floor(pos[0])+'%',
-					left : Math.floor(pos[1])+'%',
-					opacity:distance*(Math.random()+0.3)+0.1+distance*Math.random()
-
-				};
-
-				element.applyStyleParams(params);
-				element.scaleXYZ(distance*distance+0.1, distance*distance+0.1, 1);
-
+				
+				var spatial = new MODEL.Spatial();
+				spatial.setPosXYZ(pos[0], pos[1], pos[2]);
+				
+				var element = new GooElement(spatial, starTypes[Math.floor(Math.random()*starTypes.length)]);
+				
 				this.stars.push(element);
 			}
 		};

@@ -4,85 +4,213 @@
 
             {
                 "id":"s11_piece",
-                "effect_data":{
+                "effect_data":[{
                     "effect":"s11_hull",
                     "simulator":"StandardParticle",
                     "density":1
-                }
+                }]
             },
             {
                 "id":"ship_engine",
-                "effect_data":{
+                "effect_data":[{
                     "effect":"engine_flame",
                     "simulator":"AdditiveParticle",
                     "density":1
-                }
+                },{
+                    "effect":"engine_flame_blue",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
             },
             {
-                "id":"spawn",
-                "effect_data":{
+                "id":"blue_star",
+                "effect_data":[{
+                    "effect":"background_star",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
+            },
+            {
+                "id":"dim_star",
+                "effect_data":[{
+                    "effect":"dust_speck",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
+            },
+            {
+                "id":"yellow_star",
+                "effect_data":[{
+                    "effect":"yellow_flare",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
+            },
+            {
+                "id":"blue_firework",
+                "effect_data":[{
                     "effect":"firework_blue",
                     "simulator":"AdditiveParticle",
                     "density":100
-                }
+                }]
+
             },
             {
                 "id":"remove",
-                "effect_data":{
+                "effect_data":[{
                     "effect":"firework_blue",
                     "simulator_id":"AdditiveParticle",
                     "density":100
-                }
+                }]
+
+            },
+            {
+                "id":"shockwave",
+                "effect_data":[{
+                    "effect":"shockwave",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
             },
             {
                 "id":"explode",
-                "effect_data":{
-                    "effect":"firework_red",
+                "effect_data":[{
+                    "effect":"explosion",
                     "simulator":"AdditiveParticle",
-                    "density":100
-                }
+                    "density":1
+                },{
+                    "effect":"sparks",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
             },
             {
                 "id":"teleport",
-                "effect_data":{
-                    "effect":"tail_orange",
+                "effect_data":[{
+                    "effect":"firework_red",
                     "simulator":"AdditiveParticle",
                     "density":100
-                }
+                }]
+
             },
             {
                 "id":"burst",
-                "effect_data":{
+                "effect_data":[{
                     "effect":"firework_blue",
                     "simulator":"AdditiveParticle",
-                    "density":100
-                }
+                    "density":1
+                }]
+
+            },
+            {
+                "id":"collide",
+                "effect_data":[{
+                    "effect":"shell_shrapnel",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                },{
+                    "effect":"shockwave",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                },{
+                    "effect":"sparks",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
+            },
+
+            {
+                "id":"shell_detonate",
+                "effect_data":[{
+                    "effect":"shell_shrapnel",
+                    "simulator":"AdditiveParticleAndTrail",
+                    "density":1
+                },{
+                    "effect":"shockwave",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+                }]
+
             },
             {
                 "id":"time_out",
-                "effect_data":{
+                "effect_data":[{
                     "effect":"firework_green",
                     "simulator":"AdditiveParticleAndTrail",
                     "density":100
-                }
+                }]
+
             },
             {
                 "id":"fire_cannon",
-                "effect_data":{
-                        "effect":"tail_orange",
-                        "simulator":"AdditiveParticleAndTrail",
-                        "density":100
+                "effect_data":[{
+                        "effect":"firework_blue",
+                        "simulator":"AdditiveParticle",
+                        "density":1
 
-                }
+                }]
+
+            },
+            {
+                "id":"bullet_trail",
+                "effect_data":[{
+                    "effect":"tail_orange",
+                    "simulator":"FastAdditiveTrail",
+                    "density":1
+                },{
+                    "effect":"bullet_flare",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+
+                }]
+
+            },
+            {
+                "id":"muzzle_flash_cannon",
+                "effect_data":[{
+                    "effect":"cannon_muzzle_flash",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+
+                }]
+
+            },
+            {
+                "id":"spawn_pulse",
+                "effect_data":[{
+                    "effect":"spawn_shockwave",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+
+                }]
+
+            },
+            {
+                "id":"despawn_pulse",
+                "effect_data":[{
+                    "effect":"despawn_shockwave",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+
+                }]
+
             },
             {
                 "id":"ship_trails",
-                "effect_data":{
+                "effect_data":[{
                         "effect":"ship_trail",
                         "simulator":"AdditiveParticleAndTrail",
-                        "density":100
+                        "density":1
 
-                }
+                }]
+
             }
         ]
     }

@@ -64,15 +64,16 @@ define([
 			this.callbacks.particleUpdate = null;
 
 			for (var i = 0; i < this.particles.length; i++) {
-				this.particles[i].lifeSpan = this.piece.temporal.lifeTime;
-				this.particles[i].lifeSpanTotal = this.particles[i].lifeSpan
+				this.particles[i].lifeSpan = 1;
+				this.particles[i].lifeSpanTotal = 1;
 			}
 
 		};
 
 		GooPiece.prototype.removeGooPiece = function() {
-			this.entity.removeFromWorld();
 			this.removePieceParticles();
+			this.entity.removeFromWorld();
+
 		};
 
 		GooPiece.prototype.sampleSpatial = function(spatial) {

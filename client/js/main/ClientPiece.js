@@ -31,8 +31,9 @@ define([
 
 			this.domPlayer = new DomPiece(this.piece);
 			this.removeCallback = removeCallback;
-			this.attachModules(pieceData.modules);
 			this.setServerState(serverState);
+			this.attachModules(pieceData.modules);
+
 		};
 
 		ClientPiece.prototype.attachModules = function(modules) {
@@ -64,6 +65,11 @@ define([
 
 				}
 			}
+		};
+
+		ClientPiece.prototype.detachModules = function() {
+			this.piece.modules = [];
+			this.piece.moduleIndex = {};
 		};
 
 		ClientPiece.prototype.getPieceId = function() {
@@ -109,6 +115,7 @@ define([
 		};
 		
 		ClientPiece.prototype.playerRemove = function() {
+			this.detachModules();
 			this.domPlayer.removeDomPiece();
 			this.removeCallback(this.piece.id);
 		};
@@ -120,13 +127,13 @@ define([
 			this.piece.applyNetworkState(serverState);
 			
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
-				this.domPlayer.renderStateText("Poof");
+		//		this.domPlayer.renderStateText("Poof");
 				this.playerRemove();
 				return;
 			}
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TIME_OUT) {
-				evt.fire(evt.list().GAME_EFFECT, {effect:"time_out", pos:this.piece.spatial.pos, vel:{data:[0, 1, 0]}});
+			//	evt.fire(evt.list().GAME_EFFECT, {effect:"despawn_pulse", pos:this.piece.spatial.pos, vel:{data:[0, 1, 0]}});
 			//	this.domPlayer.renderEffect('effect_shockwave_light', 0.25, 1.4);
 				this.playerRemove();
 				return;
@@ -136,34 +143,27 @@ define([
             //    this.domPlayer.renderEffect('effect_explosion_bullet', 0.4, 1);
             //    this.domPlayer.renderEffect('effect_shockwave_heavy', 0.25, 1.4);
 				evt.fire(evt.list().GAME_EFFECT, {effect:"explode", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
+				evt.fire(evt.list().GAME_EFFECT, {effect:"shockwave", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
             }
 
             if (serverState.state == GAME.ENUMS.PieceStates.BURST) {
         //        this.domPlayer.renderEffect('effect_shockwave_light', 0.45, 0.6);
 
-				evt.fire(evt.list().GAME_EFFECT, {effect:"burst", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
+				evt.fire(evt.list().GAME_EFFECT, {effect:"collide", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
             }
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TELEPORT) {
 				//	this.piece.notifyTrigger(true);
-				this.domPlayer.renderStateText("Jump");
+			//	this.domPlayer.renderStateText("Jump");
 				this.domPlayer.updateDomPiece();
-				this.domPlayer.renderStateText("Teleport");
+				evt.fire(evt.list().GAME_EFFECT, {effect:"teleport", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
 			}
 
 			if (serverState.state == GAME.ENUMS.PieceStates.SPAWN) {
 				//	this.piece.notifyTrigger(true);
 				this.domPlayer.updateDomPiece();
-				this.domPlayer.renderEffect('effect_shockwave_light', 0.15, 0.4);
-				var _this = this;
+			//	evt.fire(evt.list().GAME_EFFECT, {effect:"spawn_pulse", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
 
-				var appear = function() {
-					_this.domPlayer.renderStateText("pew");
-				};
-
-				setTimeout(function() {
-			//		appear()
-				}, 0);
 			}
 
 		};

@@ -6,6 +6,7 @@ define(function() {
 		SETTING_CONTROL_EVENT:{type:'SETTING_CONTROL_EVENT', args:{}},
 
 		ENGINE_READY:{type:'ENGINE_READY', args:{}},
+		PARTICLES_READY:{type:'PARTICLES_READY', args:{}},
 		
 		INIT_CLIENT:{type:'INIT_CLIENT', args:{data:{}}},
 		CONNECTION_CLOSED:{type:'CONNECTION_CLOSED', args:{data:{}}},
@@ -34,7 +35,10 @@ define(function() {
 
 		INPUT_PLAYER_CONTROL:{type:'INPUT_PLAYER_CONTROL', args:{data:{}}},
 		CONTROLLED_PIECE_UPDATED:{type:'CONTROLLED_PIECE_UPDATED', args:{}},
-		
-        CLIENT_READY:{type:'CLIENT_READY', args:{data:{}}}
+
+		DRAW_RELATIVE_LINE:{type:'DRAW_RELATIVE_LINE', args:{}},
+
+		CAMERA_READY:{type:'CAMERA_READY', args:{}},
+        CLIENT_READY:{type:'CLIENT_READY', args:{}}
     }
 });

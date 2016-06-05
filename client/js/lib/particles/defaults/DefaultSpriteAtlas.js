@@ -10,6 +10,22 @@ define({
 			},
 			"sprites":[
 				{
+					"id":"flare_blue",
+					"tiles":[[3, 3]]
+				},
+				{
+					"id":"flare_yellow",
+					"tiles":[[4, 3]]
+				},
+				{
+					"id":"flare_bloomy",
+					"tiles":[[6, 4]]
+				},
+				{
+					"id":"shockwave",
+					"tiles":[[0, 0]]
+				},
+				{
 					"id":"0_0",
 					"tiles":[[0, 0]]
 				},
@@ -138,6 +154,34 @@ define({
                     "tiles":[[5, 1]]
                 },
 				{
+					"id":"sharp_trail",
+					"tiles":[[6, 1]]
+				},
+				{
+					"id":"spin_wave",
+					"tiles":[[7, 1]]
+				},
+				{
+					"id":"explosion",
+					"tiles":[[8, 0]]
+				},
+				{
+					"id":"orange_circle",
+					"tiles":[[8, 1]]
+				},
+				{
+					"id":"orange_light",
+					"tiles":[[8, 2]]
+				},
+				{
+					"id":"center_arc",
+					"tiles":[[1, 6]]
+				},
+				{
+					"id":"wavefront",
+					"tiles":[[4, 1]]
+				},
+				{
 					"id":"projectile_1",
 					"tiles":[[7, 2]]
 				},
@@ -148,6 +192,10 @@ define({
 				{
 					"id":"splash_thin",
 					"tiles":[[2, 0]]
+				},
+				{
+					"id":"thick_smoke",
+					"tiles":[[2, 1]]
 				},
 				{
 					"id":"smokey",

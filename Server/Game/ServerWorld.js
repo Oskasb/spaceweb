@@ -32,8 +32,8 @@ ServerWorld.prototype.spawnStars = function() {
 		this.pos = [x, y, z];
 	};
 
-	for (var i = 0; i < 60; i++) {
-		this.stars.push(new Star(Math.random() * 100, Math.random() * 100,Math.random() * 100))
+	for (var i = 0; i < 80; i++) {
+		this.stars.push(new Star(800 * (Math.random()-0.5), (Math.random()-0.5) * 800, Math.random() * -1500))
 	}
 };
 

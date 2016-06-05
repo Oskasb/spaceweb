@@ -43,13 +43,13 @@ function (
 
 		this.size = 1;
 		this.growthFactor = 1;
-		this.growth = [[0, 1], [1, 0]];
+		this.growth = [[0, 1], [1, 1]];
 
 		this.acceleration = 1;
 		this.gravity = 0;
 		this.rotation = 0;
 		this.spinspeed = 0;
-		this.spin = [[0, 1], [1, 0]];
+		this.spin = [[0, 0], [1, 0]];
 
 		this.lifeSpan = 0;
 		this.lifeSpanTotal = 0;

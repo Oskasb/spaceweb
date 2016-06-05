@@ -30,7 +30,7 @@ define([
 
 		var debug = false;
 
-		var parent = document.getElementById('game_window');
+	//	var parent = document.getElementById('game_window');
 
 		var DomPiece = function(piece) {
 			this.gooPiece = new GooPiece(piece);
@@ -41,8 +41,8 @@ define([
 			this.pos = [];
 			this.rot = [];
 			this.rotVel = [];
-			this.domRoot = new DomElement(parent, 'point');
-			this.domHull = new DomElement(this.domRoot.element, 'ship_root');
+		//	this.domRoot = new DomElement(parent, 'point');
+		//	this.domHull = new DomElement(this.domRoot.element, 'ship_root');
 
 
 			if (debug) this.attachDebugElements();
@@ -51,12 +51,12 @@ define([
 		
 
 		DomPiece.prototype.attachModule = function(module) {
-			var parent = this.domHull.element;
+		//	var parent = this.domHull.element;
 			if (module.data.parent) {
-				parent = this[module.data.parent].element;
+		//		parent = this[module.data.parent].element;
 			}
-			var domModule = new DomModule(module, parent, this.piece);
-			this.modules.push(domModule);
+		//	var domModule = new DomModule(module, parent, this.piece);
+		//	this.modules.push(domModule);
 
 			var gooModule = new GooModule(module, this.piece, this.gooPiece.entity);
 			this.modules.push(gooModule);
@@ -72,17 +72,19 @@ define([
 			for (var i = 0; i < this.modules.length; i++) {
 				this.modules[i].removeModule();
 			}
+			
 		};
 
 
 		DomPiece.prototype.removeDomPiece = function() {
-			this.removeModules();
-			this.domRoot.removeElement();
+			
+		//	this.domRoot.removeElement();
 			this.gooPiece.removeGooPiece();
+			this.removeModules();
 		};
 
 		DomPiece.prototype.setIsOwnPlayer = function(bool) {
-			this.domHull.addStyleJsonId('ship_hull_friendly');
+	//		this.domHull.addStyleJsonId('ship_hull_friendly');
 		};
 
 
@@ -109,16 +111,16 @@ define([
 
 		DomPiece.prototype.updateModules = function() {
 			for (var i = 0; i < this.modules.length; i++) {
-				this.modules[i].updateDomModule();
+				this.modules[i].updateGooModule();
 			}
 		};
 
 		DomPiece.prototype.updateDomPiece = function() {
 
 			this.sampleSpatial(this.piece.spatial);
-
-			this.domRoot.translateCnvXYZ(GameScreen.percentToX(this.pos[0]), GameScreen.percentToY(this.pos[1]), 0);
-			this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);
+//
+		//	this.domRoot.translateCnvXYZ(GameScreen.percentToX(this.pos[0]), GameScreen.percentToY(this.pos[1]), 0);
+		//	this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);
 			this.updateModules();
 
 			this.gooPiece.updateGooPiece();

@@ -41,7 +41,9 @@
           "type":"string",
           "style":"cannon_bullet",
           "message":"Load Bullet",
-          "game_effect":"ship_trails"
+          "game_effect":"bullet_trail",
+          "spawn_effect":"muzzle_flash_cannon",
+          "remove_effect":"shell_detonate"
         }
       }
     },{
@@ -93,23 +95,10 @@
         "source":"throttle",
         "applies":{
           "state":true,
-          "style":"ship_engine",
           "emit_effect":"ship_engine",
           "transform":{
             "rot":[-3.14, 0, 0],
             "pos":[0, 3, 0]
-          },
-          "animate":{
-            "height":1,
-            "opacity":2
-          },
-          "flicker":"0.6",
-          "random":{
-            "source":"random",
-            "frames":11,
-            "width":50,
-            "clamp":5,
-            "gain":-5
           },
           "threshold":0.2,
           "type":"float",

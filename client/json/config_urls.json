@@ -7,6 +7,7 @@
 
       "effects/particle_effects.json",
       "effects/gameplay_effects.json",
+      "effects/goo_elements.json",
 
       "messages/ui_messages.json",
 

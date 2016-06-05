@@ -7,7 +7,7 @@ define({
 				"ParticleRenderer",
 				"TrailRenderer"
 			],
-			"poolCount": 200,
+			"poolCount": 100,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",
@@ -28,7 +28,7 @@ define({
 			"renderers": [
 				"ParticleRenderer"
 			],
-			"poolCount": 2000,
+			"poolCount": 1000,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",
@@ -49,7 +49,7 @@ define({
 			"renderers": [
 				"ParticleRenderer"
 			],
-			"poolCount": 1000,
+			"poolCount": 500,
 			"blending": {
 				"value": "CustomBlending",
 				"type": "option",
@@ -70,7 +70,7 @@ define({
 			"renderers": [
 				"SurfaceRenderer"
 			],
-			"poolCount": 1000,
+			"poolCount": 200,
 			"blending": {
 				"value": "CustomBlending",
 				"type": "option",
@@ -91,7 +91,7 @@ define({
 			"renderers": [
 				"FastTrailRenderer"
 			],
-			"poolCount": 400,
+			"poolCount": 200,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",
