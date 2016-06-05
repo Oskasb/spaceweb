@@ -27,7 +27,11 @@ define(function() {
 		CURSOR_DRAG_TO:{type:'CURSOR_DRAG_TO', args:{data:{}}},
 		CURSOR_RELEASE_FAST:{type:'CURSOR_RELEASE_FAST', args:{data:{}}},
 
-		
+		PLAY_PARTICLE:{type:'PLAY_PARTICLE', args:{effect:"string", simulator:"string", pos:{data:[0, 0, 0]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:100}},
+
+		GAME_EFFECT:{type:'GAME_EFFECT', args:{effect:"string", pos:{data:[0, 0, 0]}, vel:{data:[0, 0, 0]}, callbacks:{}}},
+
+
 		INPUT_PLAYER_CONTROL:{type:'INPUT_PLAYER_CONTROL', args:{data:{}}},
 		CONTROLLED_PIECE_UPDATED:{type:'CONTROLLED_PIECE_UPDATED', args:{}},
 		

@@ -26,6 +26,7 @@
             "gain":-54
           },
           "style":"ship_hull",
+          "game_effect":"s11_piece",
           "message":"Load Hull"
         }
       }
@@ -39,7 +40,8 @@
           "state":true,
           "type":"string",
           "style":"cannon_bullet",
-          "message":"Load Bullet"
+          "message":"Load Bullet",
+          "game_effect":"ship_trails"
         }
       }
     },{
@@ -48,6 +50,10 @@
       "data":{
         "source":"trigger",
         "applies":{
+          "transform":{
+            "rot":[0, 0, 0],
+            "pos":[0, -3, 0]
+          },
           "state":true,
           "type":"boolean",
           "message":"pew!"
@@ -88,6 +94,11 @@
         "applies":{
           "state":true,
           "style":"ship_engine",
+          "emit_effect":"ship_engine",
+          "transform":{
+            "rot":[-3.14, 0, 0],
+            "pos":[0, 3, 0]
+          },
           "animate":{
             "height":1,
             "opacity":2

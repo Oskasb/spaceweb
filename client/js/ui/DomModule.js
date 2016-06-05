@@ -32,6 +32,13 @@ define([
             }
         };
 
+
+
+        DomModule.prototype.removeModule = function() {
+
+        };
+        
+
         DomModule.prototype.updateDomModule = function() {
             if (this.applies) {
                 this.populateAnimationState(this.module.state.value);

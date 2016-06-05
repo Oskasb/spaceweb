@@ -1,6 +1,5 @@
 define({
 	"simulators":[
-		/*
 		{
 			"id": "AdditiveParticleAndTrail",
 			"atlas":"defaultSpriteAtlas",
@@ -23,7 +22,6 @@ define({
 
 			}
 		},
-		*/
 		{
 			"id": "AdditiveParticle",
 			"atlas":"defaultSpriteAtlas",

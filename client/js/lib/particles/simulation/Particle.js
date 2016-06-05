@@ -141,6 +141,9 @@ function (
 	};
 
 
+	Particle.prototype.setTileIndex = function(idx) {
+		this.tileIndex = idx; // Math.floor(this.tileInfo.tiles.length * this.progress * this.loopcount) % this.tileInfo.tiles.length;
+	};
 
 	Particle.prototype.selectAnimationFrame = function() {
 		this.tileIndex = Math.floor(this.tileInfo.tiles.length * this.progress * this.loopcount) % this.tileInfo.tiles.length;

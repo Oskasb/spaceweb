@@ -126,18 +126,22 @@ define([
 			}
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TIME_OUT) {
-				this.domPlayer.renderEffect('effect_shockwave_light', 0.25, 1.4);
+				evt.fire(evt.list().GAME_EFFECT, {effect:"time_out", pos:this.piece.spatial.pos, vel:{data:[0, 1, 0]}});
+			//	this.domPlayer.renderEffect('effect_shockwave_light', 0.25, 1.4);
 				this.playerRemove();
 				return;
 			}
 
             if (serverState.state == GAME.ENUMS.PieceStates.EXPLODE) {
-                this.domPlayer.renderEffect('effect_explosion_bullet', 0.4, 1);
-                this.domPlayer.renderEffect('effect_shockwave_heavy', 0.25, 1.4);
+            //    this.domPlayer.renderEffect('effect_explosion_bullet', 0.4, 1);
+            //    this.domPlayer.renderEffect('effect_shockwave_heavy', 0.25, 1.4);
+				evt.fire(evt.list().GAME_EFFECT, {effect:"explode", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
             }
 
             if (serverState.state == GAME.ENUMS.PieceStates.BURST) {
-                this.domPlayer.renderEffect('effect_shockwave_light', 0.45, 0.6);
+        //        this.domPlayer.renderEffect('effect_shockwave_light', 0.45, 0.6);
+
+				evt.fire(evt.list().GAME_EFFECT, {effect:"burst", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});
             }
 
 			if (serverState.state == GAME.ENUMS.PieceStates.TELEPORT) {

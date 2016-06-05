@@ -4,6 +4,7 @@
 define([
 		'Events',
 	'ui/GooPiece',
+		'ui/GooModule',
 		'ui/GameScreen',
 		'ui/DomUtils',
 		'ui/DomVector',
@@ -16,6 +17,7 @@ define([
 	function(
 		evt,
 		GooPiece,
+		GooModule,
 		GameScreen,
 		DomUtils,
 		DomVector,
@@ -55,6 +57,9 @@ define([
 			}
 			var domModule = new DomModule(module, parent, this.piece);
 			this.modules.push(domModule);
+
+			var gooModule = new GooModule(module, this.piece, this.gooPiece.entity);
+			this.modules.push(gooModule);
 		};
 
 		DomPiece.prototype.attachNameplate = function() {
@@ -65,12 +70,13 @@ define([
 
 		DomPiece.prototype.removeModules = function() {
 			for (var i = 0; i < this.modules.length; i++) {
-				t// his.modules[i].element.removeElement();
+				this.modules[i].removeModule();
 			}
 		};
 
 
 		DomPiece.prototype.removeDomPiece = function() {
+			this.removeModules();
 			this.domRoot.removeElement();
 			this.gooPiece.removeGooPiece();
 		};

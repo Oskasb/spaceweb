@@ -21,6 +21,7 @@ define([
 		this.recover = [];
 		this.active = false;
         this.onUpdate = null;
+		this.callbacks = {};
         this.particleUpdate = null;
 		this.onParticleAdded = null;
 		this.onParticleDead = null;
@@ -34,6 +35,8 @@ define([
 
 
     ParticleSimulation.prototype.registerEffectCallbacks = function(callbacks) {
+		this.callbacks = callbacks;
+		return;
         if (callbacks.onUpdate) {
             this.onUpdate = callbacks.onUpdate;
         }
@@ -65,8 +68,8 @@ define([
 		for (var i = 0; i < this.renderers.length; i++) {
 			this.renderers[i].died(particle)
 		}
-		if (this.onParticleDead) {
-			this.onParticleDead(particle);
+		if (this.callbacks.onParticleDead) {
+			this.callbacks.onParticleDead(particle);
 		}
 
 		this.recover.push(particle);
@@ -75,9 +78,10 @@ define([
 	ParticleSimulation.prototype.includeParticle = function(particle, ratio) {
 		particle.joinSimulation(this.params, ratio);
 		this.particles.push(particle);
-		if (this.onParticleAdded) {
-			this.onParticleAdded(particle);
+		if (this.callbacks.onParticleAdded) {
+			this.callbacks.onParticleAdded(particle);
 		}
+		
 	};
 
 	ParticleSimulation.prototype.updateParticle = function(particle, tpf) {
@@ -94,8 +98,8 @@ define([
 
 		particle.lifeSpan -= deduct;
 
-		if (this.particleUpdate) {
-			this.particleUpdate(particle, deduct);
+		if (this.callbacks.particleUpdate) {
+			this.callbacks.particleUpdate(particle, deduct);
 		} else {
 			particle.defaultParticleUpdate(deduct);
 		}
@@ -110,8 +114,8 @@ define([
 
 	ParticleSimulation.prototype.updateSimParticles = function(tpf) {
 
-        if (this.onUpdate) {
-            this.onUpdate(this);
+        if (this.callbacks.onUpdate) {
+			this.callbacks.onUpdate(this);
         }
 
 

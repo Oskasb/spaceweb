@@ -162,7 +162,7 @@ function (
 		i = this.renderedCount;
 
 		particle.setTileInfo(this.sprites[particle.sprite], this.scaleX, this.scaleY);
-		particle.updateAtlasOffsets(this.loopScale);
+		particle.updateAtlasOffsets();
 		//	if (this.isTiled) {
 
 

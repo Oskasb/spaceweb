@@ -5,8 +5,8 @@ define({
 			"textureUrl": {
 				"value": "./client/assets/images/effects/particle_atlas.png",
 				"type": "texture",
-				"tilesX":8,
-				"tilesY":8
+				"tilesX":12,
+				"tilesY":12
 			},
 			"sprites":[
 				{
@@ -112,6 +112,14 @@ define({
 				{
 					"id":"trail_dot",
 					"tiles":[[2, 2],[3, 2],[4, 1], [5, 2], [6, 0], [7, 2], [8, 1]]
+				},
+				{
+					"id":"s11_frames",
+					"tiles":[[0, 11],[1, 11],[2, 11], [3, 11], [4, 11], [5, 11], [6, 11],[7, 11],[8, 11],[9, 11], [10, 11]]
+				},
+				{
+					"id":"s11_center",
+					"tiles":[[5, 11]]
 				},
 				{
 					"id":"flaredot",

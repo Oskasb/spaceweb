@@ -6,6 +6,7 @@
       "validation/shapes_validation.json",
 
       "effects/particle_effects.json",
+      "effects/gameplay_effects.json",
 
       "messages/ui_messages.json",
 

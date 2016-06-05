@@ -4,19 +4,19 @@
 define([
     '3d/GooController',
     '3d/GooEntityFactory',
-    '3d/effects/SimpleParticles',
+    '3d/effects/ParticlePlayer',
     'Events'
 
 ], function(
     GooController,
     GooEntityFactory,
-    SimpleParticles,
+    ParticlePlayer,
     evt
 ) {
     
     var world;
 
-    var simpleParticles;
+    var particlePlayer;
 
     var SceneController = function() {
         this.gooController = new GooController();
@@ -28,10 +28,10 @@ define([
             GooEntityFactory.setGoo(evt.args(e).goo);
             world = evt.args(e).goo.world;
 
-            simpleParticles = new SimpleParticles(evt.args(e).goo);
-            simpleParticles.createSystems();
+            particlePlayer = new ParticlePlayer(evt.args(e).goo);
 
-            debugBox(100);
+
+            tickListen();
 
         }
 
@@ -39,30 +39,20 @@ define([
 
     };
 
-    var boxes = [];
 
-    function debugBox(count) {
-
-
-
-        for (var i = 0; i < count; i++) {
-            var box = GooEntityFactory.buildPrimitive();
-            boxes.push(box);
-            box.transformComponent.transform.translation.setDirect(Math.random()*100, Math.random()*100, 0);
-            box.transformComponent.setUpdated();
-        }
+    function tickListen() {
 
 
         function clientTick(e) {
 
-            simpleParticles.testSpawn();
-            simpleParticles.update(evt.args(e).tpf);
+        //    particlePlayer.testSpawn();
+
+            evt.fire(evt.list().PLAY_PARTICLE, {effect:"background_star", simulator:"AdditiveParticle", pos:{data:[100*Math.random(), 100*Math.random(), -20]}, vel:{data:[5*Math.random(), 5*Math.random(), 12]}, callbacks:{}, density:100});
+
+    //        evt.fire(evt.list().GAME_EFFECT, {effect:"burst", pos:{data:[100*Math.random(), 100*Math.random(), -20]}, vel:{data:[5*Math.random(), 5*Math.random(), 12]}, callbacks:{}});
 
 
-            for (var i = 0; i < boxes.length; i++) {
-                boxes[i].transformComponent.transform.translation.data[2] = (Math.sin(i + evt.args(e).frame*0.05)*0.2*i) -150;
-                boxes[i].transformComponent.setUpdated();
-            }
+            particlePlayer.update(evt.args(e).tpf);
 
         }
 

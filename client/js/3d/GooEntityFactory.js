@@ -44,7 +44,7 @@ define([
     };
 
 
-    var handleBuildPrimitive = function() {
+    var handleBuildPrimitive = function(parentGooEntity) {
     //    var parentGooEntity = event.eventArgs(e).parentGooEntity;
     //    var pos = event.eventArgs(e).pos.clone();
     //    var rot = event.eventArgs(e).rot.toAngles();
@@ -74,7 +74,7 @@ define([
 
         addEntityMesh(primitive, meshData);
         applyMaterial(primitive, material);
-    //    parentGooEntity.transformComponent.attachChild(primitive.transformComponent);
+        parentGooEntity.transformComponent.attachChild(primitive.transformComponent);
     //    primitive.meshRendererComponent.isReflectable = false;
         primitive.addToWorld();
     //    primitive.transformComponent.transform.translation.setArray(pos.data);
@@ -82,12 +82,37 @@ define([
     //    event.eventArgs(e).callback(primitive);
         return primitive;
     };
+
+    var addChildEntity = function(parentGooEntity) {
+        var child = world.createEntity("child");
+        parentGooEntity.transformComponent.attachChild(child.transformComponent);
+        child.addToWorld();
+        return child;
+    };
     
+    var buildRootEntity = function() {
+        var root = world.createEntity("piece_root");
+        root.addToWorld();
+        return root;
+    };
         
+    var translateEntity = function(entity, pos) {
+        entity.transformComponent.transform.translation.setArray(pos);
+        entity.transformComponent.setUpdated();
+    };
+
+    var rotateEntity = function(entity, rot) {
+        entity.transformComponent.transform.setRotationXYZ(rot[0], rot[1], rot[2]);
+        entity.transformComponent.setUpdated();
+    };
     
     return {
+        translateEntity:translateEntity,
+        rotateEntity:rotateEntity,
         setGoo:setGoo,
-        buildPrimitive:handleBuildPrimitive
+        buildRootEntity:buildRootEntity,
+        addChildEntity:addChildEntity,
+        attachPrimitive:handleBuildPrimitive
     }
 
 });
