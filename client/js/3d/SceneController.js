@@ -48,21 +48,21 @@ define([
 
         //    particlePlayer.testSpawn();
 
-            if (Math.random() < 0.2) {
+            if (Math.random() < 0.03) {
 
                 evt.fire(evt.list().PLAY_PARTICLE, {effect:"dust_speck", simulator:"AdditiveParticle", pos:{data:[500*(Math.random()-0.5), 500*(Math.random()-0.5), -20 - 100*Math.random()]}, vel:{data:[50*Math.random(), 50*Math.random(), 0]}, callbacks:{}, density:1});
 
             }
 
-            if (Math.random() < 0.05) {
+            if (Math.random() < 0.01) {
 
-                evt.fire(evt.list().PLAY_PARTICLE, {effect:"space_cloud", simulator:"AdditiveParticle", pos:{data:[1000*(Math.random()-0.5), 1000*(Math.random()-0.5), -200 - 500*Math.random()]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:1});
+        //        evt.fire(evt.list().PLAY_PARTICLE, {effect:"space_cloud", simulator:"AdditiveParticle", pos:{data:[1000*(Math.random()-0.5), 1000*(Math.random()-0.5), -200 - 500*Math.random()]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:1});
 
             }
 
-            if (Math.random() < 0.03) {
+            if (Math.random() < 0.01) {
 
-                evt.fire(evt.list().PLAY_PARTICLE, {effect:"thick_space_cloud", simulator:"AdditiveParticle", pos:{data:[2000*(Math.random()-0.5), 2000*(Math.random()-0.5), -400 - 800*Math.random()]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:1});
+        //        evt.fire(evt.list().PLAY_PARTICLE, {effect:"thick_space_cloud", simulator:"AdditiveParticle", pos:{data:[2000*(Math.random()-0.5), 2000*(Math.random()-0.5), -400 - 800*Math.random()]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:1});
 
             }
 

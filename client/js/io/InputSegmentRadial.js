@@ -2,7 +2,6 @@
 
 define([
         'ui/GameScreen',
-        'ui/DomCursor',
         'ui/DomElement',
         'ui/DomVector',
         'ui/DomMessage',
@@ -10,7 +9,6 @@ define([
     ],
     function(
         GameScreen,
-        DomCursor,
         DomElement,
         DomVector,
         DomMessage,
@@ -19,7 +17,7 @@ define([
 
         var InputSegmentRadial = function() {
 
-            this.root = new DomElement(GameScreen.getElement(), 'segment_pointer');
+        //    this.root = new DomElement(GameScreen.getElement(), 'segment_pointer');
 
             this.currentState = [0, 0];
             this.lastSensState = [0, 0];
@@ -27,6 +25,9 @@ define([
             this.lastSendTime = 0;
 
             this.active = false;
+
+            this.offsetX = 20;
+            this.offsetY = 20;
 
             this.pointer = {
                 x:0,
@@ -40,12 +41,7 @@ define([
             };
 
             this.vectors = [];
-            this.distance = [
-                new DomVector(GameScreen.getElement()),
-                new DomVector(GameScreen.getElement()),
-                new DomVector(GameScreen.getElement()),
-                new DomVector(GameScreen.getElement())
-            ];
+            this.distance = [0, 0, 0, 0];
             this.selectionIndex = 0;
 
             var _this = this;
@@ -60,18 +56,11 @@ define([
 
 
         InputSegmentRadial.prototype.applyConfigs = function(configs) {
-            for (var i = 0; i < this.vectors; i++) {
-                this.vectors[i].removeVector();
-            }
-
-            console.log("Register config", configs);
             this.configs = configs.data;
 
             for (var i = 0; i < this.configs.radialSegments; i++) {
-                this.vectors.push(new DomVector(GameScreen.getElement()));
-            };
-            
-
+                this.vectors.push(0);
+            }
         };
 
         InputSegmentRadial.prototype.registerControlledPiece = function(piece) {
@@ -128,7 +117,7 @@ define([
             }
 
 
-            this.root.hideElement();
+        //    this.root.hideElement();
 
             if (this.line != undefined) {
                 this.line.toX = this.line.fromX;
@@ -152,26 +141,19 @@ define([
             }
 
 
-            if (SYSTEM_SETUP.DEBUG.renderSegments) {
-                this.root.showElement();
-                this.root.translateXYZ(this.pointer.x, this.pointer.y, 0);
-                this.renderSegments(this.configs.radialSegments, this.configs.radius);
-            }
+        //    if (SYSTEM_SETUP.DEBUG.renderSegments) {
+        //        this.root.showElement();
+        //        this.root.translateXYZ(this.pointer.x, this.pointer.y, 0);
+    //            this.renderSegments(this.configs.radialSegments, this.configs.radius);
+        //    }
 
 
         };
 
-        InputSegmentRadial.prototype.setActiveSectorColor = function(vectors) {
-            vectors.setColorRGBA(0.2, 0.4, 0.5, 0.9);
-        };
 
-        InputSegmentRadial.prototype.setNeutralSectorColor = function(vectors) {
-            vectors.setColorRGBA(0.2, 0.4, 0.7, 0.2);
-        };
 
-        InputSegmentRadial.prototype.setDisabled = function(vector) {
+        InputSegmentRadial.prototype.setDisabled = function() {
             this.active = false;
-            vector.vector.translateScaleXYZSize(-100, -100, 0, 0);
         };
 
         InputSegmentRadial.prototype.determineSelectedSegment = function(line) {
@@ -203,39 +185,47 @@ define([
                 }
                 this.dirty = true;
                 this.currentState[0] = selection;
-                
-                this.setNeutralSectorColor(this.vectors[this.selectionIndex]);
-                this.setActiveSectorColor(this.vectors[selection]);
+
                 this.selectionIndex = selection;
             }
 
 
-            if (SYSTEM_SETUP.DEBUG.renderDistanceSegments) {
-                var width = segmentAngle * (1+distanceSegment) * this.configs.radius *0.25;
-                var width2 = segmentAngle * distanceSegment * this.configs.radius * 0.25;
+        //    if (SYSTEM_SETUP.DEBUG.renderDistanceSegments) {
 
-                var addx = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
-                var addy = ((1+distanceSegment) * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
+                var color = 'YELLOW';
 
-                this.distance[0].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection + Math.PI * 0.5);
-                this.distance[1].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection - Math.PI * 0.5);
+            var width = segmentAngle * (1+distanceSegment) * this.configs.radius *0.05;
+            var width2 = segmentAngle * distanceSegment * this.configs.radius * 0.05;
+
+            var addx = ((1+distanceSegment) * this.configs.radius*0.07 / this.configs.distanceSegments) * Math.cos(segmentAngle*selection);
+            var addy = ((1+distanceSegment) * this.configs.radius*0.07 / this.configs.distanceSegments) * Math.sin(segmentAngle*selection);
+
+            //    this.distance[0].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection + Math.PI * 0.5);
+            //    this.distance[1].renderPosRadial(this.pointer.x + addx, this.pointer.y +addy, width/2, segmentAngle*selection - Math.PI * 0.5);
+
+            evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx, y:addy, distance:width*2, angle:segmentAngle*selection + Math.PI * 0.5, color:color, anchor:'bottom_right'});
+            evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx, y:addy, distance:width*2, angle:segmentAngle*selection - Math.PI * 0.5, color:color, anchor:'bottom_right'});
 
 
-                var addx2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.cos(segmentAngle*selection+ Math.PI * 0.5);
-                var addy2 = (distanceSegment * this.configs.radius / this.configs.distanceSegments) * Math.sin(segmentAngle*selection+ Math.PI * 0.5);
+            var addx2 = (distanceSegment * this.configs.radius*0.07 / this.configs.distanceSegments) * Math.cos(segmentAngle*selection);
+            var addy2 = (distanceSegment * this.configs.radius*0.07 / this.configs.distanceSegments) * Math.sin(segmentAngle*selection);
 
-                this.distance[2].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection + Math.PI * 0.5);
-                this.distance[3].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection - Math.PI * 0.5);
+            //    this.distance[2].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection + Math.PI * 0.5);
+            //    this.distance[3].renderPosRadial(this.pointer.x + addx2, this.pointer.y +addy2, width2/2, segmentAngle*selection - Math.PI * 0.5);
 
-                this.root.setStyleParam('width',  ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
-                this.root.setStyleParam('height', ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
-                this.root.setStyleParam('top',   -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
-                this.root.setStyleParam('left',  -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
+            evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx2, y:addy2, distance:width2*1.5, angle:segmentAngle*selection + Math.PI * 1.5, color:color, anchor:'bottom_right'});
+            evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx2, y:addy2, distance:width2*1.5, angle:segmentAngle*selection - Math.PI * 1.5, color:color, anchor:'bottom_right'});
 
-                for (var i = 0; i < this.distance.length; i++) {
-                    this.setActiveSectorColor(this.distance[i]);
-                }
-            }
+
+        //        this.root.setStyleParam('width',  ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
+        //        this.root.setStyleParam('height', ((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)*2));
+        //        this.root.setStyleParam('top',   -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
+        //        this.root.setStyleParam('left',  -((1+distanceSegment) * (this.configs.radius / this.configs.distanceSegments)));
+//
+        //        for (var i = 0; i < this.distance.length; i++) {
+        //            this.setActiveSectorColor(this.distance[i]);
+        //        }
+        //    }
 
             
 
@@ -278,18 +268,30 @@ define([
             var angle = MATH.TWO_PI / count;
 
             for (var i = 0; i < this.vectors.length; i++) {
-                var addx = (radius / this.configs.distanceSegments) * Math.cos(angle*i + Math.PI * 0.5);
-                var addy = (radius / this.configs.distanceSegments) * Math.sin(angle*i + Math.PI * 0.5);
-                this.vectors[i].renderPosRadial(this.pointer.x + addx, this.pointer.y + addy, radius, angle*i);
-           //    this.vectors[i].vecStyle.width = '1px';
-                this.setNeutralSectorColor(this.vectors[i]);
+                var addx = (radius*0.2 / this.configs.distanceSegments) * Math.cos(angle*i);
+                var addy = (radius*0.2 / this.configs.distanceSegments) * Math.sin(angle*i);
+            //    this.vectors[i].renderPosRadial(this.pointer.x + addx, this.pointer.y + addy, radius, angle*i);
+
+                var color = 'MAGENTA';
+
+                if (i == this.currentState[0]) {
+                    color = 'YELLOW';
+                }
+                evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx, y:addy, distance:radius*0.03, angle:angle*i, color:color, anchor:'bottom_right'});
+
             }
         };
 
 
         InputSegmentRadial.prototype.tickInputFrame = function(tpf) {
 
+            if (this.active) {
+                this.renderSegments(this.configs.radialSegments, this.configs.radius);
+            }
+
+
             if (this.active && this.lastSendTime > this.configs.streamTimeout) {
+
                 this.sendState();
                 this.lastSendTime = 0;
             } else {

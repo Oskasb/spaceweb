@@ -45,13 +45,13 @@ body {
 }
 
 #game_window {
-    top: 5em;
-    left: 5em;
-    right: 5em;
-    bottom: 5em;
+    top: 0em;
+    left: 0em;
+    right: 0em;
+    bottom: 0em;
     position: fixed;
     overflow: hidden;
-    border: 2em solid rgba(95, 255, 95, 0.6);
+    border: 0em solid rgba(95, 255, 95, 0.6);
 }
 
 

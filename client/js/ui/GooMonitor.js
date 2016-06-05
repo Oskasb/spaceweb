@@ -4,12 +4,14 @@
 define([
         'Events',
         'ui/GooFpsGraph',
+        'ui/GooTrafficGraph',
         'goo/addons/linerenderpack/LineRenderSystem',
         'goo/math/Vector3'
     ],
     function(
         evt,
         GooFpsGraph,
+        GooTrafficGraph,
         LineRenderSystem,
         Vector3
     ) {
@@ -17,23 +19,19 @@ define([
         var lineRenderSystem;
         var cameraEntity;
         var gooFpsGraph;
+        var gooTrafficGraph;
         
         var calcVec = new Vector3();
         var calcVec2 = new Vector3();
         var calcVec3 = new Vector3();
         var calcVec4 = new Vector3();
 
-
-        var handleSendRequest = function() {
-            if (!SYSTEM_SETUP.DEBUG.trackTraffic) return;
-            evt.fire(evt.list().MESSAGE_UI, {channel:'connection_send', message:'_'});
-        };
-
-
-        var handleServerMessage = function() {
-            if (!SYSTEM_SETUP.DEBUG.trackTraffic) return;
-            evt.fire(evt.list().MESSAGE_UI, {channel:'connection_receive', message:'_'});
-        };
+        var width = 10;
+        var step = 0;
+        var height = 3;
+        var posLeft = -26;
+        var posTop = 34;
+        var padding = 0.3;
         
 
         var GooMonitor = function() {
@@ -52,31 +50,11 @@ define([
             }
 
 
-            if (debug.trackTraffic) {
-                evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
-                evt.on(evt.list().SERVER_MESSAGE, handleServerMessage);
-            } else {
-                evt.removeListener(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
-                evt.removeListener(evt.list().SERVER_MESSAGE, handleServerMessage);
-            }
 
         };
 
-        var width = 20;
-        var step = 0;
-        var height = 6;
-        var posLeft = -40;
-        var posTop = 30;
-        var padding = 1;
 
-        function drawGraph(dataArray) {
-
-            width = 20;
-            step = 0;
-            height = 6;
-            posLeft = -40;
-            posTop = 30;
-            padding = 1;
+        function frameGraph() {
 
             calcVec.setDirect(posLeft-padding, posTop, 0);
             calcVec2.setDirect(posLeft+width+padding, posTop, 0);
@@ -86,21 +64,22 @@ define([
             calcVec2.setDirect(posLeft, posTop+height+padding, 0);
             screenSpaceLine(calcVec, calcVec2, lineRenderSystem.AQUA);
 
-            calcVec.setDirect(posLeft, posTop+height, 0);
-            calcVec2.setDirect(posLeft+width+padding, posTop+height, 0);
-            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.BLUE);
+            calcVec.setDirect(posLeft-padding, posTop+height, 0);
+            calcVec2.setDirect(posLeft+padding, posTop+height, 0);
+            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.AQUA);
+        }
+
+
+        function drawGraph(dataArray, scale, color) {
+
+
 
             for (var i = 0; i < dataArray.length-1; i++) {
-
                 step = width / dataArray.length;
-
-                calcVec.setDirect(posLeft+i*step, posTop + dataArray[i][0]*height, 0);
-                calcVec2.setDirect(posLeft+(i+1)*step, posTop + dataArray[i+1][0]*height, 0);
-
-                screenSpaceLine(calcVec, calcVec2, lineRenderSystem.YELLOW);
-
+                calcVec.setDirect(posLeft+i*step, posTop + dataArray[i][0]*height*scale, 0);
+                calcVec2.setDirect(posLeft+(i+1)*step, posTop + dataArray[i+1][0]*height*scale, 0);
+                screenSpaceLine(calcVec, calcVec2, lineRenderSystem[color]);
             }
-
         }
         
         function screenSpaceLine(from, to, color) {
@@ -117,7 +96,15 @@ define([
         }
         
         function drawRelativeLine(e) {
-            screenSpaceLine(evt.args(e).from, evt.args(e).to, lineRenderSystem[evt.args(e).color]);
+
+            calcVec3.setArray(evt.args(e).from.data);
+            calcVec4.setArray(evt.args(e).to.data);
+            if (anchors[evt.args(e).anchor]) {
+                applyAnchor(calcVec3, evt.args(e).anchor);
+                applyAnchor(calcVec4, evt.args(e).anchor);
+            };
+
+            screenSpaceLine(calcVec3, calcVec4, lineRenderSystem[evt.args(e).color]);
         }
 
         function drawWorldBounds() {
@@ -135,11 +122,41 @@ define([
             lineRenderSystem.drawLine(calcVec2, calcVec, lineRenderSystem.MAGENTA);
         }
 
+        var anchors = {
+            bottom_right:[18, -18, 0],
+            top_left:[-16, 16, 0]
+
+        };
+
+        function applyAnchor(vec, anchorKey) {
+            vec.data[0] += anchors[anchorKey][0];
+            vec.data[1] += anchors[anchorKey][1];
+            vec.data[2] += anchors[anchorKey][2];
+        };
+        
+        function drawRelativePosRad(e) {
+            calcVec3.setDirect(evt.args(e).x, evt.args(e).y, 0);
+            MATH.radialToVector(evt.args(e).angle, evt.args(e).distance, calcVec4);
+
+            if (anchors[evt.args(e).anchor]) {
+                applyAnchor(calcVec3, evt.args(e).anchor);
+                applyAnchor(calcVec4, evt.args(e).anchor);
+            }
+
+
+            screenSpaceLine(calcVec3, calcVec4, lineRenderSystem[evt.args(e).color]);
+        }
+        
 
         function handleCameraReady(e) {
-            gooFpsGraph = new GooFpsGraph();
 
-            gooFpsGraph.enableFpsTracker(40);
+            var trackFrames = 30;
+            
+            gooFpsGraph = new GooFpsGraph();
+            gooTrafficGraph = new GooTrafficGraph();
+            
+            gooFpsGraph.enableFpsTracker(trackFrames);
+            gooTrafficGraph.enableTrafficTracker(trackFrames);
             
             cameraEntity = evt.args(e).camera;
             lineRenderSystem = new LineRenderSystem(evt.args(e).goo.world);
@@ -151,9 +168,13 @@ define([
 
             function clientTick() {
                 drawWorldBounds();
-                drawGraph(gooFpsGraph.progressBars);
+                frameGraph();
+                drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
+                drawGraph(gooTrafficGraph.sentStack, -0.1, 'GREEN');
+                drawGraph(gooTrafficGraph.receiveStack, 0.1,  'RED');
             }
 
+            evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
             evt.on(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
             evt.on(evt.list().CLIENT_TICK, clientTick);
         }

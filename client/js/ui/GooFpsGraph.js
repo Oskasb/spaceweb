@@ -2,16 +2,10 @@
 
 
 define([
-        'Events',
-        'ui/DomElement',
-        'ui/DomProgress',
-        'ui/GameScreen'
+        'Events'
     ],
     function(
-        evt,
-        DomElement,
-        DomProgress,
-        GameScreen
+        evt
     ) {
 
         var handlers;

@@ -37,6 +37,7 @@ define([
 
 		var goo = new GooRunner({
 			showStats:false,
+			antialias:false,
 			debug:false,
 			manuallyStartGameLoop:true,
 			tpfSmoothingCount:1,
@@ -55,7 +56,7 @@ define([
 		this.goo = goo;
 		goo.renderer.setClearColor(0.03, 0.0, 0.05, 0.01);
 
-		
+		goo.renderer.downScale = 0.5;
 
 		var setupGooScene = function() {
 			console.log("Setup Goo Scene");

@@ -38,6 +38,8 @@ define(function() {
 
 		DRAW_RELATIVE_LINE:{type:'DRAW_RELATIVE_LINE', args:{}},
 
+		DRAW_RELATIVE_POS_RAD:{type:'DRAW_RELATIVE_POS_RAD', args:{}},
+
 		CAMERA_READY:{type:'CAMERA_READY', args:{}},
         CLIENT_READY:{type:'CLIENT_READY', args:{}}
     }

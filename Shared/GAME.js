@@ -135,7 +135,7 @@ if(typeof(GAME) == "undefined"){
 			this.currentDrag = this.constants.velocityDrag;
 		}
 
-		this.inputState.setSteeringZ( - MATH.TWO_PI * state[0] / this.constants.radialSegments);
+		this.inputState.setSteeringZ( Math.PI*0.5 + MATH.TWO_PI * state[0] / this.constants.radialSegments);
 
 	};
 

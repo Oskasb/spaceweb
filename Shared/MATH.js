@@ -29,6 +29,11 @@ if(typeof(MATH) == "undefined"){
 		var sn = (1-w)*Math.sin(a) + w*Math.sin(b);
 		return Math.atan2(sn,cs);
 	};
+	
+	MATH.radialToVector = function(angle, distance, store) {
+		store.data[0] = Math.cos(angle)*distance;
+		store.data[1] = Math.sin(angle)*distance;
+	};
 
 	MATH.radialClamp = function(value, min, max) {
 
