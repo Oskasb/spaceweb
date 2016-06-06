@@ -50,10 +50,12 @@ define([
 		LineRenderSystem.prototype.WHITE = new Vector3(1, 1, 1);
 		LineRenderSystem.prototype.RED = new Vector3(1, 0, 0);
 		LineRenderSystem.prototype.GREEN = new Vector3(0, 1, 0);
+		LineRenderSystem.prototype.PEA = new Vector3(0.5, 1, 0.5);
 		LineRenderSystem.prototype.BLUE = new Vector3(0, 0, 1);
 		LineRenderSystem.prototype.AQUA = new Vector3(0, 1, 1);
 		LineRenderSystem.prototype.MAGENTA = new Vector3(1, 0, 1);
 		LineRenderSystem.prototype.YELLOW = new Vector3(1, 1, 0);
+		LineRenderSystem.prototype.ORANGE = new Vector3(1, 0.8, 0.4);
 		LineRenderSystem.prototype.BLACK = new Vector3(0, 0, 0);
 
 		/**

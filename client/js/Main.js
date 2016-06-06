@@ -19,7 +19,7 @@ require.config({
 var meta = document.createElement('meta');
 meta.name = "viewport";
 meta.content = "initial-scale=1, maximum-scale=1";
-// document.getElementsByTagName('head')[0].appendChild(meta);
+document.getElementsByTagName('head')[0].appendChild(meta);
 
 
 Element.prototype.remove = function() {
@@ -111,19 +111,20 @@ require([
     };
 
     var clientInitiated = false;
+    var filesLoadedOK = false;
+    var particles = false;
+    var client;
+    var loadProgress = new DomProgress(GameScreen.getElement(), 'load_progress');
 
     var initClient = function() {
         if (clientInitiated) {
             console.log("Multi Inits requested, bailing");
             return;
         }
-        var client = new Client(new PointerCursor(new InputState()));
-        client.initiateClient(new SocketMessages());
-
+        client = new Client(new PointerCursor(new InputState()));
         var clientTick = function(tpf) {
             client.tick(tpf)
         };
-
         sceneController.setup3dScene(clientTick);
     };
 
@@ -143,7 +144,7 @@ require([
         
         PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup, pipelineError);
 
-        var loadProgress = new DomProgress(GameScreen.getElement(), 'load_progress');
+
 
         function pipelineCallback(started, remaining, loaded) {
             var spread = 150;
@@ -157,10 +158,11 @@ require([
 
 
             if (remaining == 0) {
-        //        console.log("client ready: ", clientInitiated, remaining, loaded, started);
+                if (clientInitiated) return;
+                filesLoadedOK = true;
                 initClient();
+                checkReady();
                 clientInitiated = true;
-                loadProgress.removeProgress();
             }
 
         }
@@ -206,11 +208,27 @@ require([
 
 
 
+
     for (var i = 0; i < loadUrls.length; i++) {
         loadJS(loadUrls[i], filesLoaded, document.body);
     }
 
+    var particlesReady = function() {
+        particles = true;
+        checkReady();
+    };
 
+    function checkReady() {
+        if (particles && filesLoadedOK) {
+            loadProgress.removeProgress();
+            client.initiateClient(new SocketMessages());
+            evt.removeListener(evt.list().PARTICLES_READY, particlesReady);
+        }
+    }
+
+
+
+    evt.on(evt.list().PARTICLES_READY, particlesReady);
 
 
 });

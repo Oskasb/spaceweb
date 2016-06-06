@@ -43,26 +43,37 @@ define([
 
     function tickListen() {
 
+        var effectData = {
+            color:[1, 1, 1, 1]
+        };
+
 
         function clientTick(e) {
 
         //    particlePlayer.testSpawn();
 
+            if (Math.random() < 0.2) {
+
+                effectData.color[0] = 0.5 + Math.random()*0.5;
+                effectData.color[1] = 0.5 + Math.random()*0.5;
+                effectData.color[2] = 0.5 + Math.random()*0.5;
+
+                evt.fire(evt.list().GAME_EFFECT, {effect:"space_spark", pos:{data:[200*(Math.random()-0.5), 200*(Math.random()-0.5), -10 - 80*Math.random()]}, vel:{data:[50*Math.random(), 50*Math.random(), 0]}, params:effectData});
+
+            }
+
+            if (Math.random() < 0.1) {
+
+                effectData.color[0] = 0.5 + Math.random()*0.2;
+                effectData.color[1] = 0.5 + Math.random()*0.3;
+                effectData.color[2] = 0.5 + Math.random()*0.5;
+
+                evt.fire(evt.list().GAME_EFFECT, {effect:"space_dust", pos:{data:[400*(Math.random()-0.5), 400*(Math.random()-0.5), -20 - 80*Math.random()]}, vel:{data:[0, 0, 0]}, params:effectData});
+            }
+
             if (Math.random() < 0.03) {
 
-                evt.fire(evt.list().PLAY_PARTICLE, {effect:"dust_speck", simulator:"AdditiveParticle", pos:{data:[500*(Math.random()-0.5), 500*(Math.random()-0.5), -20 - 100*Math.random()]}, vel:{data:[50*Math.random(), 50*Math.random(), 0]}, callbacks:{}, density:1});
-
-            }
-
-            if (Math.random() < 0.01) {
-
-        //        evt.fire(evt.list().PLAY_PARTICLE, {effect:"space_cloud", simulator:"AdditiveParticle", pos:{data:[1000*(Math.random()-0.5), 1000*(Math.random()-0.5), -200 - 500*Math.random()]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:1});
-
-            }
-
-            if (Math.random() < 0.01) {
-
-        //        evt.fire(evt.list().PLAY_PARTICLE, {effect:"thick_space_cloud", simulator:"AdditiveParticle", pos:{data:[2000*(Math.random()-0.5), 2000*(Math.random()-0.5), -400 - 800*Math.random()]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:1});
+                evt.fire(evt.list().GAME_EFFECT, {effect:"space_cloud", pos:{data:[1000*(Math.random()-0.5), 1000*(Math.random()-0.5), (Math.random()+0.3) * -2000]}, vel:{data:[0, 0, 0]}});
 
             }
 
@@ -79,7 +90,6 @@ define([
 
     SceneController.prototype.setup3dScene = function(clientTickCallback) {
         gooController.setupGooRunner(clientTickCallback);
-
     };
 
     

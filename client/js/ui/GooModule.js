@@ -30,9 +30,19 @@ define([
             this.animationState = {};
 
 
+            this.effectData = {
+                params:{},
+                state:{}
+            };
+
             this.callbacks = {};
 
             if (this.applies) {
+
+                if (this.applies.effect_data) {
+                    this.setupEffectData(this.applies.effect_data, this.applies.state_factor || 1);
+                }
+
                 if (this.applies.transform) {
         //            GooEntityFactory.attachPrimitive(this.entity);
                     if (this.applies.transform.pos) {
@@ -101,12 +111,24 @@ define([
             this.callbacks.particleUpdate = null;
 
             for (var i = 0; i < this.particles.length; i++) {
-                this.particles[i].lifeSpan = 1;
-                this.particles[i].lifeSpanTotal = 1;
+                this.particles[i].lifeSpan = 0.2;
+                this.particles[i].lifeSpanTotal = 0.2;
             }
             this.entity.removeFromWorld();
         };
 
+        GooModule.prototype.setupEffectData = function(effectData, factor) {
+            for (var key in effectData) {
+                this.effectData.params[key] = effectData[key] / factor;
+                this.effectData.state[key] = 0;
+            }
+        };
+
+        GooModule.prototype.populateEffectData = function(amplitude) {
+            for (var key in this.effectData.params) {
+                this.effectData.state[key] = this.effectData.params[key] * amplitude;
+            }
+        };
 
         GooModule.prototype.populateAnimationState = function(state) {
             if (this.applies.flicker) {
@@ -134,10 +156,9 @@ define([
                 if (this.applies.emit_effect) {
 
                     if (this.module.state.value > 0) {
-                        evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:{strength:this.module.state.value * 1.3, count:Math.ceil(this.module.state.value*0.2)}});
-                    };
-
-
+                        this.populateEffectData(this.module.state.value);
+                        evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:this.effectData.state});
+                    }
 
                     //         evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:{strength:this.module.state.value*2, count:1}});
 

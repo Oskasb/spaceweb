@@ -150,7 +150,7 @@ define([
 
         function handleCameraReady(e) {
 
-            var trackFrames = 30;
+            var trackFrames = 15;
             
             gooFpsGraph = new GooFpsGraph();
             gooTrafficGraph = new GooTrafficGraph();
@@ -167,11 +167,11 @@ define([
         //    window.lineRenderSystem = lineRenderSystem;
 
             function clientTick() {
-                drawWorldBounds();
+        //        drawWorldBounds();
                 frameGraph();
                 drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
-                drawGraph(gooTrafficGraph.sentStack, -0.1, 'GREEN');
-                drawGraph(gooTrafficGraph.receiveStack, 0.1,  'RED');
+                drawGraph(gooTrafficGraph.getSends(), 0.2, 'ORANGE');
+                drawGraph(gooTrafficGraph.getRecieves(), -0.2,  'PEA');
             }
 
             evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);

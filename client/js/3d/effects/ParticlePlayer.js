@@ -20,14 +20,16 @@ define([
 
 
 
+
         var particleConfigs = {};
         var effectConfigs = {};
+        var cheapParticleConfigs = {};
         
         function ParticlePlayer(goo) {
             
             this.simpleParticles = new SimpleParticles(goo);
             this.simpleParticles.createSystems();
-            
+            var simpleParticles = this.simpleParticles;
             
             function applyParticleConfigs(key, data) {
                 for (var i = 0; i < data.length; i++) {
@@ -46,6 +48,15 @@ define([
             PipelineAPI.subscribeToCategoryKey('effects', 'gameplay', applyGameplayEffectConfigs);
 
 
+            function applyCheapParticleConfigs(key, data) {
+                for (var i = 0; i < data.length; i++) {
+                    cheapParticleConfigs[data[i].id] = data[i].effect_data;
+                }
+                simpleParticles.applyCheapParticleConfigs(cheapParticleConfigs);
+            }
+
+            PipelineAPI.subscribeToCategoryKey('effects', 'cheap_particles', applyCheapParticleConfigs);
+            
             var _this = this;
 
             function playParticle(e) {
@@ -63,6 +74,10 @@ define([
             evt.on(evt.list().GAME_EFFECT, playGameEffect);
 
         }
+
+        ParticlePlayer.prototype.getCheapEffectData = function(key) {
+            return cheapParticleConfigs[key];
+        };
 
         ParticlePlayer.prototype.getEffectData = function(key, idx) {
             return effectConfigs[key][idx];
@@ -107,10 +122,13 @@ define([
 
 
             for (var i = 0; i < effectConfigs[args.effect].length; i++) {
-                this.spawnGameEffects(this.getEffectData(args.effect, i), particleData, this.setupParticleData(i, args.effect, args.params), args.callbacks, this.getEffectData(args.effect, i).density);
+
+                if (effectConfigs[args.effect][i].simulator == "CheapParticles") {
+                    this.simpleParticles.spawnCheap(effectConfigs[args.effect][i].effect, particleData.pos, particleData.vel, args.params);
+                } else {
+                    this.spawnGameEffects(this.getEffectData(args.effect, i), particleData, this.setupParticleData(i, args.effect, args.params), args.callbacks, this.getEffectData(args.effect, i).density);
+                }
             }
-
-
 
         //    this.simpleParticles.spawn(this.getEffectData(args.effect).simulator, particleData.pos, particleData.vel, this.setupParticleData(args.effect, args.params), args.callbacks, this.getEffectData(args.effect).density);
         };

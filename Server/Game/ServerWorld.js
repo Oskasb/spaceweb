@@ -32,7 +32,7 @@ ServerWorld.prototype.spawnStars = function() {
 		this.pos = [x, y, z];
 	};
 
-	for (var i = 0; i < 40; i++) {
+	for (var i = 0; i < 20; i++) {
 		this.stars.push(new Star(800 * (Math.random()-0.5), (Math.random()-0.5) * 800, Math.random() * -1500))
 	}
 };
@@ -134,13 +134,13 @@ ServerWorld.prototype.updatePieces = function(currentTime) {
 
 ServerWorld.prototype.updatePlayers = function(currentTime) {
 	for (var key in this.players) {
-		this.players[key].piece.processServerState(currentTime);        
+		this.players[key].piece.processServerState(currentTime);
+		this.players[key].client.notifyDataFrame();
 	}
 };
 
 
 ServerWorld.prototype.tickSimulationWorld = function(currentTime) {
-    var _this  = this;
 
     this.updatePieces(currentTime);
     this.updatePlayers(currentTime);

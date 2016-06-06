@@ -109,7 +109,7 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.PieceControls.prototype.setControlState = function(moduleData, action, value) {
-		console.log("Set Control: ", moduleData.source, action, value)
+	//	console.log("Set Control: ", moduleData.source, action, value)
 	};
 
 	GAME.PieceControls.prototype.applyControlConfig = function(configs) {
@@ -232,7 +232,7 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.Piece.prototype.makePacket = function() {
-		return JSON.stringify({
+		return {
 			id:"playerUpdate",
 			data:{
 				playerId:this.id,
@@ -242,7 +242,7 @@ if(typeof(GAME) == "undefined"){
 				temporal:this.temporal.getSendTemporal(),
 				state:this.getState()
 			}
-		});
+		};
 	};
 
 	GAME.Piece.prototype.processModules = function(moduleStates) {
@@ -366,7 +366,7 @@ if(typeof(GAME) == "undefined"){
 		this.setState(GAME.ENUMS.PieceStates.MOVING);
 		if (this.checkBounds()) {
 			this.teleportRandom();
-			this.broadcast();
+			this.broadcast(this.makePacket());
 		}
 		
 	};

@@ -276,8 +276,11 @@ define([
 
                 if (i == this.currentState[0]) {
                     color = 'YELLOW';
+                    evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx, y:addy, distance:radius*0.03, angle:angle*i, color:color, anchor:'bottom_right'});
+                } else {
+            //        evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx, y:addy, distance:radius*0.03, angle:angle*i, color:color, anchor:'bottom_right'});
                 }
-                evt.fire(evt.list().DRAW_RELATIVE_POS_RAD, {x:addx, y:addy, distance:radius*0.03, angle:angle*i, color:color, anchor:'bottom_right'});
+
 
             }
         };

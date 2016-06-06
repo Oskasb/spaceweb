@@ -13,13 +13,11 @@
             {
                 "id":"ship_engine",
                 "effect_data":[{
-                    "effect":"engine_flame",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "effect":"engine_jet_blue",
+                    "simulator":"CheapParticles"
                 },{
-                    "effect":"engine_flame_blue",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "effect":"engine_jet_fire",
+                    "simulator":"CheapParticles"
                 }]
 
             },
@@ -42,11 +40,34 @@
 
             },
             {
+                "id":"space_spark",
+                "effect_data":[{
+                    "effect":"space_sparks",
+                    "simulator":"CheapParticles"
+                }]
+
+            },
+            {
+                "id":"space_cloud",
+                "effect_data":[{
+                    "effect":"space_cloud",
+                    "simulator":"CheapParticles"
+                }]
+
+            },
+            {
+                "id":"space_dust",
+                "effect_data":[{
+                    "effect":"space_dust",
+                    "simulator":"CheapParticles"
+                }]
+
+            },
+            {
                 "id":"yellow_star",
                 "effect_data":[{
-                    "effect":"yellow_flare",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "effect":"space_dust",
+                    "simulator":"CheapParticles"
                 }]
 
             },
@@ -80,13 +101,14 @@
             {
                 "id":"explode",
                 "effect_data":[{
-                    "effect":"explosion",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "effect":"explosion_smoke",
+                    "simulator":"CheapParticles"
                 },{
-                    "effect":"sparks",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "effect":"explosion_big",
+                    "simulator":"CheapParticles"
+                },{
+                    "effect":"explosion_sparks",
+                    "simulator":"CheapParticles"
                 }]
 
             },
@@ -130,12 +152,17 @@
                 "id":"shell_detonate",
                 "effect_data":[{
                     "effect":"shell_shrapnel",
-                    "simulator":"AdditiveParticleAndTrail",
+                    "simulator":"AdditiveParticle",
                     "density":1
                 },{
                     "effect":"shockwave",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "simulator":"CheapParticles"
+                },{
+                    "effect":"explosion_fire",
+                    "simulator":"CheapParticles"
+                },{
+                    "effect":"explosion_sparks",
+                    "simulator":"CheapParticles"
                 }]
 
             },
@@ -143,8 +170,8 @@
                 "id":"time_out",
                 "effect_data":[{
                     "effect":"firework_green",
-                    "simulator":"AdditiveParticleAndTrail",
-                    "density":100
+                    "simulator":"AdditiveParticle",
+                    "density":1
                 }]
 
             },
@@ -175,10 +202,8 @@
             {
                 "id":"muzzle_flash_cannon",
                 "effect_data":[{
-                    "effect":"cannon_muzzle_flash",
-                    "simulator":"AdditiveParticle",
-                    "density":1
-
+                    "effect":"explosion_fire",
+                    "simulator":"CheapParticles"
                 }]
 
             },

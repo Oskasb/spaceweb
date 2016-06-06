@@ -22,8 +22,6 @@ function (
 
 	ParticleRenderer.prototype.init = function (goo, simConf, settings, spriteAtlas, texture) {
 
-
-
 		this.settings = settings;
 		this.atlasConf = spriteAtlas;
 
@@ -116,6 +114,13 @@ function (
 	ParticleRenderer.prototype.setVisible = function (visible) {
 		this.entity.meshRendererComponent.hidden = !visible;
 		this.entity.hidden = !visible;
+
+		if (visible) {
+			this.entity.addToWorld();
+		} else {
+			this.entity.removeFromWorld();
+		}
+
 	};
 
 	ParticleRenderer.prototype.died = function (particle) {

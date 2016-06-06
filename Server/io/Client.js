@@ -3,11 +3,25 @@ Client = function(seed, socket, clients) {
 	this.socket = socket;
     this.clients = clients;
 	socket.clientId = this.id;
+    this.dataBuffer = [];
+};
+
+
+Client.prototype.notifyDataFrame = function() {
+
+//    for (var i = 0; i < this.dataBuffer.length; i++) {
+    if (this.dataBuffer.length) {
+//        console.log("Data Buffer Length; ", this.dataBuffer.length);
+        this.socket.send(JSON.stringify(this.dataBuffer));
+    }
+
+//    }
+    this.dataBuffer = [];
 };
 
 
 Client.prototype.sendToClient = function(data) {
-	this.socket.send(data);
+    this.dataBuffer.push(data);
 };
 
 

@@ -1,5 +1,6 @@
 define({
 	"simulators":[
+		/*
 		{
 			"id": "AdditiveParticleAndTrail",
 			"atlas":"defaultSpriteAtlas",
@@ -22,13 +23,14 @@ define({
 
 			}
 		},
+	*/
 		{
 			"id": "AdditiveParticle",
 			"atlas":"defaultSpriteAtlas",
 			"renderers": [
 				"ParticleRenderer"
 			],
-			"poolCount": 600,
+			"poolCount": 300,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",
@@ -49,7 +51,7 @@ define({
 			"renderers": [
 				"ParticleRenderer"
 			],
-			"poolCount": 300,
+			"poolCount": 200,
 			"blending": {
 				"value": "CustomBlending",
 				"type": "option",
@@ -64,6 +66,7 @@ define({
 
 			}
 		},
+		/*
 		{
 			"id": "SurfaceParticle",
 			"atlas":"defaultSpriteAtlas",
@@ -85,13 +88,14 @@ define({
 
 			}
 		},
+		*/
 		{
 			"id": "FastAdditiveTrail",
 			"atlas":"defaultSpriteAtlas",
 			"renderers": [
 				"FastTrailRenderer"
 			],
-			"poolCount": 50,
+			"poolCount": 30,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",

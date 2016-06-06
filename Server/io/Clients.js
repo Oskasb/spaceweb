@@ -7,8 +7,8 @@ Clients.prototype.registerConnection = function(socket) {
 	this.clientCount++;
 	var client = new Client(this.clientCount, socket, this);
 	this.clients[client.id] = client;
-	client.sendToClient(JSON.stringify({id:'clientConnected', data:{clientId:client.id}}));
-
+	client.sendToClient({id:'clientConnected', data:{clientId:client.id}});
+	client.notifyDataFrame();
 };
 
 Clients.prototype.requestPlayer = function(data) {

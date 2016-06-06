@@ -33,18 +33,29 @@ define([
 
 	GooController.prototype.setupGooRunner = function(clientTickCallback) {
 
+		var isAndroid = !!navigator.userAgent.match(/Android/i);
+
+		var downscale = 1;
+		var antialias = true;
+		if (isAndroid){
+			downscale = 0.5;
+		//	antialias = false;
+		}
+
 
 
 		var goo = new GooRunner({
 			showStats:false,
-			antialias:false,
+			antialias:antialias,
 			debug:false,
 			manuallyStartGameLoop:true,
 			tpfSmoothingCount:1,
 			useTryCatch:false,
-			logo:false
+			logo:false,
+			downScale:downscale
 		});
 
+	//	goo.renderer.downScale = downscale;
 
 		var adjustPxScale = function(value) {
 			console.log("Adjust Px Scale: ", value)
@@ -56,7 +67,8 @@ define([
 		this.goo = goo;
 		goo.renderer.setClearColor(0.03, 0.0, 0.05, 0.01);
 
-		goo.renderer.downScale = 0.5;
+
+
 
 		var setupGooScene = function() {
 			console.log("Setup Goo Scene");
@@ -91,9 +103,9 @@ define([
 
 		console.log("Monkeypatch Engine");
 
-		Vector = function(size) {
-			this.data = new Float64Array(size);
-		};
+	//	Vector = function(size) {
+	//		this.data = new Float64Array(size);
+	//	};
 
 
 		var width = window.innerWidth;

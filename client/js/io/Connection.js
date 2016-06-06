@@ -10,6 +10,8 @@ define(['Events'
 
 		var socket;
 		var messages;
+		var frameStack = [];
+
 
 		var Connection = function(socketMessage) {
 			this.socketMessages = socketMessage;
@@ -20,8 +22,6 @@ define(['Events'
 		Connection.prototype.setupSocket = function(connectedCallback, errorCallback, disconnectedCallback) {
 			var host = location.origin.replace(/^http/, 'ws');
 			var pings = 0;
-
-			var _this = this;
 
 			socket = new WebSocket(host);
 
@@ -39,15 +39,7 @@ define(['Events'
 
 			socket.onmessage = function (message) {
 				pings++;
-
-				var res = JSON.parse(message.data);
-
-				if (socket.responseCallbacks[res.id]) {
-					socket.responseCallbacks[res.id]();
-				}
-
-				evt.fire(evt.list().SERVER_MESSAGE, res);
-
+				frameStack.push(message.data);
 			};
 
 			socket.onerror = function (error) {
@@ -57,9 +49,7 @@ define(['Events'
 
 
 			var sendMessage = function(msg, args) {
-                
-                
-				
+
 
 				if (!msg) {
 					console.log("SEND REQUEST missing", msg, args);
@@ -74,6 +64,66 @@ define(['Events'
 		};
 
 
+		var responseStack = [];
+
+		function processResponseStackEntry(stackEntry) {
+			evt.fire(evt.list().SERVER_MESSAGE, stackEntry);
+		}
+
+		function processStackedMessage(messageData) {
+			var resBuffer = JSON.parse(messageData);
+
+			if (!resBuffer.length) {
+				console.log("No Length Type", resBuffer);
+				responseStack.push(resBuffer);
+			} else {
+				for (var i = 0; i < resBuffer.length; i++) {
+
+					if (!resBuffer[i]) {
+						console.log("Empty Message",i, resBuffer);
+					} else {
+						responseStack.push(resBuffer[i]);
+					}
+				}
+			}
+		}
+
+
+		function processTick() {
+
+			for (var i = 0; i < frameStack.length; i++) {
+				processStackedMessage(frameStack[i]);
+			}
+
+
+			if (responseStack.length) {
+				processResponseStackEntry(responseStack.shift());
+			}
+
+			if (responseStack.length > 2) {
+				processResponseStackEntry(responseStack.shift());
+			}
+
+			if (responseStack.length > 5) {
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+			}
+
+			if (responseStack.length > 8) {
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+			}
+
+			frameStack = [];
+		}
+
+
+		evt.on(evt.list().CLIENT_TICK, processTick);
 
 		return Connection;
 

@@ -64,15 +64,11 @@ function (
 	};
 
 	ParticleSystem.prototype.update = function(tpf) {
-		var infostr = '';
 		for (var simulatorId in this.simulators) {
 			var simulator = this.simulators[simulatorId];
-			simulator.update(tpf);
-
-			infostr += simulatorId + ' = ' + simulator.aliveParticles + '<br>';
+				simulator.update(tpf);
 		}
-
-		// document.getElementById('particlestats').innerHTML = infostr;
+		
 	};
 
 	return ParticleSystem;

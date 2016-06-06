@@ -28,7 +28,7 @@ define(['Events',
 
 		ClientWorld.prototype.addStars = function(starData) {
 			
-			var starTypes = ['blue_star', 'dim_star', 'yellow_star'];
+			var starTypes = ['blue_star', 'dim_star'];
 			
 			for (var i = 0; i < starData.length; i++) {
 				var pos = starData[i].pos;

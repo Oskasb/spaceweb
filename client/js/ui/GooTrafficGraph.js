@@ -56,15 +56,25 @@ define([
         };
 
 
+        GooTrafficGraph.prototype.getSends = function() {
+            return sentStack;
+        };
+        GooTrafficGraph.prototype.getRecieves = function() {
+
+            return receiveStack;
+        };
+
+
+        GooTrafficGraph.prototype.recycleStack = function(trackStack) {
+            var recycle = trackStack.pop();
+            recycle[0] = 0.3;
+            trackStack.unshift(recycle);
+        };
+
         GooTrafficGraph.prototype.trackFrame = function() {
 
-            var recycle = sentStack.pop();
-            recycle[0] = 0.3;
-            sentStack.unshift(recycle);
-
-            var rec = receiveStack.pop();
-            rec[0] = 0.3;
-            receiveStack.unshift(rec);
+            this.recycleStack(sentStack);
+            this.recycleStack(receiveStack);
 
         };
 
@@ -78,13 +88,10 @@ define([
             for (var i = 0; i < this.barCount; i++) {
                 var progress = [0];
                 sentStack.push(progress);
-                receiveStack.push(progress);
+                var progress2 = [0];
+                receiveStack.push(progress2);
             }
-
-            this.sentStack = sentStack;
-            this.receiveStack = receiveStack;
-
-
+            
             this.disableTracker();
 
             var _this = this;

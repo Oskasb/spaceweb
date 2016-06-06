@@ -55,7 +55,7 @@ function (
 			this.initRenderer(settings.renderers[i], spriteAtlas, texture);
 		}
 
-		this.setVisible(true);
+		this.setVisible(false);
 
 	}
 
@@ -121,6 +121,8 @@ function (
 
 	ParticleSimulator.prototype.includeSimulation = function(sim, callbacks) {
 
+        this.setVisible(true);
+
         if (callbacks) {
             sim.registerEffectCallbacks(callbacks);
         }
@@ -183,9 +185,11 @@ function (
 		}
 
 		for (i = 0; i < this.renderers.length; i++) {
+		//	if (this.aliveParticles)
 			if (typeof(this.renderers[i].updateMeshdata) == 'function') {
 				this.renderers[i].updateMeshdata();
 			}
+
 		}
 
 	};

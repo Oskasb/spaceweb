@@ -112,8 +112,8 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 
     player.piece.setName(data.name);
 
-	console.log("register player", JSON.stringify(data));
-	return JSON.parse(player.makePacket());
+//	console.log("register player", JSON.stringify(data));
+	return player.makePacket();
 };
 
 ServerGameMain.prototype.getNow = function() {

@@ -6,9 +6,9 @@ ServerPlayer = function(clientId, client, simTime) {
 
 	var piece;
 
-	function broadcast() {
-		client.broadcastToAll(piece.makePacket());
-	}
+	var broadcast = function(piecePacket) {
+		client.broadcastToAll(piecePacket);
+	};
 	
 	piece = new GAME.Piece(this.id, simTime, Number.MAX_VALUE, broadcast);
 	this.piece = piece;

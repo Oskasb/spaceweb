@@ -933,6 +933,31 @@ define([
 		}
 	};
 
+	var updateAttributeData;
+
+
+
+
+	Renderer.prototype.updateMeshdataAttributes = function(meshData) {
+
+		var _this = this;
+
+	//	meshData._dirtyAttributeNames.forEach(function (name) {
+	//		updateAttributeData(meshData.dataViews[name], meshData.attributeMap[name].offset)
+	//	});
+
+		var updateCB = function(name) {
+			_this.updateAttributeData(meshData.dataViews[name], meshData.attributeMap[name].offset);
+		};
+
+
+		meshData._dirtyAttributeNames.forEach(updateCB);
+
+		meshData._attributeDataNeedsRefresh = false;
+		meshData._dirtyAttributeNames.clear();
+	};
+
+
 	Renderer.prototype.renderMesh = function (renderInfo) {
 		var meshData = renderInfo.meshData;
 		if (!meshData || meshData.vertexData === null || meshData.vertexData !== null && meshData.vertexData.data.byteLength === 0 || meshData.indexData !== null
@@ -943,19 +968,11 @@ define([
 		this.bindData(meshData.vertexData);
 
 		if (meshData._attributeDataNeedsRefresh) {
-			meshData._dirtyAttributeNames.forEach(function (name) {
-				this.updateAttributeData(meshData.dataViews[name], meshData.attributeMap[name].offset);
-			}.bind(this));
-
-			meshData._attributeDataNeedsRefresh = false;
-			meshData._dirtyAttributeNames.clear();
-		}
+			this.updateMeshdataAttributes(meshData);
+		};
 
 		var materials = renderInfo.materials;
 
-		/*if (this.overrideMaterial !== null) {
-			materials = this.overrideMaterial instanceof Array ? this.overrideMaterial : [this.overrideMaterial];
-		}*/
 
 		var flatOrWire = null;
 		var originalData = meshData;

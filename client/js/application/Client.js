@@ -26,6 +26,8 @@ define([
 
 		var Client = function(pointerCursor) {
 			this.pointerCursor = pointerCursor;
+			this.timeTracker = new TimeTracker();
+			this.gameMain = new GameMain();
 		};
 
 
@@ -54,11 +56,11 @@ define([
 			var clientRegistry = new ClientRegistry();
 			this.clientRegistry = clientRegistry;
 			var connection = new Connection(socketMessages);
-			this.timeTracker = new TimeTracker();
+
 			this.clientWorld = new ClientWorld();
 
 
-			this.gameMain = new GameMain();
+
 
 			var connectedCallback = function() {
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_status', message:'Connection Open'});
@@ -141,29 +143,13 @@ define([
 			};
 
 			var clientReady = function() {
-				client = true;
-				checkReady();
+				setClientState(GAME.ENUMS.ClientStates.READY);
+				requestClient();
+				evt.removeListener(evt.list().CLIENT_READY, clientReady)
 			};
-
-			var particlesReady = function() {
-				particles = true;
-				checkReady();
-			};
-
-			var client = false;
-			var particles = false;
-
-			var checkReady = function() {
-
-				if (client && particles) {
-					setClientState(GAME.ENUMS.ClientStates.READY);
-					requestClient();
-				}
-
-			};
-
+			
+			
 			evt.on(evt.list().CLIENT_READY, clientReady);
-			evt.on(evt.list().PARTICLES_READY, particlesReady);
 
 		};
 

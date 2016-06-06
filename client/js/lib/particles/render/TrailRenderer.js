@@ -312,6 +312,13 @@ define([
 		TrailRenderer.prototype.setVisible = function(visible) {
 			this.entity.meshRendererComponent.hidden = !visible;
 			this.entity.hidden = !visible;
+			
+			if (visible) {
+				this.entity.addToWorld();
+			} else {
+				this.entity.removeFromWorld();
+			}
+			
 		};
 
 		TrailRenderer.prototype.died = function(particle) {

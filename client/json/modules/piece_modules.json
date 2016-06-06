@@ -94,8 +94,14 @@
       "data": {
         "source":"throttle",
         "applies":{
+          "state_factor":30,
           "state":true,
           "emit_effect":"ship_engine",
+          "effect_data":{
+            "intensity":0.3,
+            "strength":15,
+            "lifeSpan":0.4
+          },
           "transform":{
             "rot":[-3.14, 0, 0],
             "pos":[0, 3, 0]
