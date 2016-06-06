@@ -70,15 +70,15 @@ define([
         }
 
 
-        function drawGraph(dataArray, scale, color, offset) {
+        function drawGraph(dataArray, scale, color, offset, offsetY) {
 
             if (!offset) offset = 0;
-
+            if (!offsetY) offsetY = 0;
 
             for (var i = 0; i < dataArray.length-1; i++) {
                 step = width / dataArray.length;
-                calcVec.setDirect(posLeft+i*step, offset + posTop + dataArray[i][0]*height*scale, 0);
-                calcVec2.setDirect(posLeft+(i+1)*step, offset + posTop + dataArray[i+1][0]*height*scale, 0);
+                calcVec.setDirect(offsetY + posLeft+i*step, offset + posTop + dataArray[i][0]*height*scale, 0);
+                calcVec2.setDirect(offsetY + posLeft+(i+1)*step, offset + posTop + dataArray[i+1][0]*height*scale, 0);
                 screenSpaceLine(calcVec, calcVec2, lineRenderSystem[color]);
             }
         }
@@ -111,16 +111,16 @@ define([
         function drawWorldBounds() {
             calcVec.setDirect(0, 0, 0);
             calcVec2.setDirect(100, 0, 0);
-            lineRenderSystem.drawLine(calcVec, calcVec2, lineRenderSystem.MAGENTA);
+            lineRenderSystem.drawLine(calcVec, calcVec2, lineRenderSystem.DARKPURP);
 
             calcVec.setDirect(100, 100, 0);
-            lineRenderSystem.drawLine(calcVec2, calcVec, lineRenderSystem.MAGENTA);
+            lineRenderSystem.drawLine(calcVec2, calcVec, lineRenderSystem.DARKPURP);
 
             calcVec2.setDirect(0, 100, 0);
-            lineRenderSystem.drawLine(calcVec, calcVec2, lineRenderSystem.MAGENTA);
+            lineRenderSystem.drawLine(calcVec, calcVec2, lineRenderSystem.DARKPURP);
 
             calcVec.setDirect(0, 0, 0);
-            lineRenderSystem.drawLine(calcVec2, calcVec, lineRenderSystem.MAGENTA);
+            lineRenderSystem.drawLine(calcVec2, calcVec, lineRenderSystem.DARKPURP);
         }
 
         var anchors = {
@@ -151,7 +151,7 @@ define([
 
         function handleCameraReady(e) {
 
-            var trackFrames = 30;
+            var trackFrames = 20;
             
             gooFpsGraph = new GooFpsGraph();
             gooTrafficGraph = new GooTrafficGraph();
@@ -168,17 +168,17 @@ define([
         //    window.lineRenderSystem = lineRenderSystem;
 
             function clientTick() {
-        //        drawWorldBounds();
+                drawWorldBounds();
                 frameGraph();
                 drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
                 drawGraph(gooTrafficGraph.getSends(), 0.2, 'ORANGE');
                 drawGraph(gooTrafficGraph.getRecieves(), -0.2,  'PEA');
 
             //    drawGraph(gooTrafficGraph.getServerTime(), 20,  'PEA', -6);
-                drawGraph(gooTrafficGraph.getServerIdle(), 30,  'CYAN', -6);
-                drawGraph(gooTrafficGraph.getServerBusy(), 200,'PINK', -6);
-                drawGraph(gooTrafficGraph.getServerPieces(), 0.1,'GREEN', 4);
-                drawGraph(gooTrafficGraph.getServerPlayers(), 0.1,'PURPLE', 4);
+                drawGraph(gooTrafficGraph.getServerIdle(), 20,  'CYAN', 0, 11);
+                drawGraph(gooTrafficGraph.getServerBusy(), 200,'PINK', 0, 11);
+                drawGraph(gooTrafficGraph.getServerPieces(), 0.05,'GREEN', 0, 22);
+                drawGraph(gooTrafficGraph.getServerPlayers(), 0.1,'PURPLE', 0, 22);
             }
 
             evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);

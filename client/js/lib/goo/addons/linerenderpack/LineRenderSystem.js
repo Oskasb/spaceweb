@@ -59,6 +59,7 @@ define([
 		LineRenderSystem.prototype.AQUA = new Vector3(0, 1, 1);
 		LineRenderSystem.prototype.CYAN = new Vector3(0.5, 1, 1);
 		LineRenderSystem.prototype.MAGENTA = new Vector3(1, 0, 1);
+		LineRenderSystem.prototype.DARKPURP = new Vector3(0.2, 0, 0.2);
 		LineRenderSystem.prototype.YELLOW = new Vector3(1, 1, 0);
 		LineRenderSystem.prototype.ORANGE = new Vector3(1, 0.8, 0.3);
 		LineRenderSystem.prototype.BLACK = new Vector3(0, 0, 0);
