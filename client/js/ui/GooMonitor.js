@@ -70,14 +70,15 @@ define([
         }
 
 
-        function drawGraph(dataArray, scale, color) {
+        function drawGraph(dataArray, scale, color, offset) {
 
+            if (!offset) offset = 0;
 
 
             for (var i = 0; i < dataArray.length-1; i++) {
                 step = width / dataArray.length;
-                calcVec.setDirect(posLeft+i*step, posTop + dataArray[i][0]*height*scale, 0);
-                calcVec2.setDirect(posLeft+(i+1)*step, posTop + dataArray[i+1][0]*height*scale, 0);
+                calcVec.setDirect(posLeft+i*step, offset + posTop + dataArray[i][0]*height*scale, 0);
+                calcVec2.setDirect(posLeft+(i+1)*step, offset + posTop + dataArray[i+1][0]*height*scale, 0);
                 screenSpaceLine(calcVec, calcVec2, lineRenderSystem[color]);
             }
         }
@@ -150,7 +151,7 @@ define([
 
         function handleCameraReady(e) {
 
-            var trackFrames = 15;
+            var trackFrames = 30;
             
             gooFpsGraph = new GooFpsGraph();
             gooTrafficGraph = new GooTrafficGraph();
@@ -172,6 +173,12 @@ define([
                 drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
                 drawGraph(gooTrafficGraph.getSends(), 0.2, 'ORANGE');
                 drawGraph(gooTrafficGraph.getRecieves(), -0.2,  'PEA');
+
+            //    drawGraph(gooTrafficGraph.getServerTime(), 20,  'PEA', -6);
+                drawGraph(gooTrafficGraph.getServerIdle(), 30,  'CYAN', -6);
+                drawGraph(gooTrafficGraph.getServerBusy(), 200,'PINK', -6);
+                drawGraph(gooTrafficGraph.getServerPieces(), 0.1,'GREEN', 4);
+                drawGraph(gooTrafficGraph.getServerPlayers(), 0.1,'PURPLE', 4);
             }
 
             evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);

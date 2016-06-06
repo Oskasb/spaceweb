@@ -1,5 +1,6 @@
 ServerWorld = function() {
 	this.players = {};
+	this.playerCount = 0;
 	this.pieces = [];
 	this.stars = [];
 	this.actionHandlers;
@@ -133,9 +134,11 @@ ServerWorld.prototype.updatePieces = function(currentTime) {
 };
 
 ServerWorld.prototype.updatePlayers = function(currentTime) {
+	this.playerCount = 0;
 	for (var key in this.players) {
 		this.players[key].piece.processServerState(currentTime);
 		this.players[key].client.notifyDataFrame();
+		this.playerCount++;
 	}
 };
 

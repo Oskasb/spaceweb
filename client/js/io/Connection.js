@@ -74,7 +74,8 @@ define(['Events'
 			var resBuffer = JSON.parse(messageData);
 
 			if (!resBuffer.length) {
-				console.log("No Length Type", resBuffer);
+				 console.log("No Length Type", resBuffer);
+				//		evt.fire(evt.list().SERVER_MESSAGE, resBuffer);
 				responseStack.push(resBuffer);
 			} else {
 				for (var i = 0; i < resBuffer.length; i++) {

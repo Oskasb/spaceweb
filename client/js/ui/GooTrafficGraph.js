@@ -9,24 +9,52 @@ define([
     ) {
 
         var handlers;
-
-
-
-        var sentStack = [];
-
+       var sentStack = [];
         var receiveStack = [];
+        var serverBusy = [0];
+        var serverIdle = [0];
+        var serverTime = [0];
+        var serverPieces = [0];
+        var serverPlayers = [0];
+
+
+        var recycleStack = function(trackStack) {
+            var recycle = trackStack.pop();
+            recycle[0] = 0.3;
+            trackStack.unshift(recycle);
+        };
+        
+        
+
+
+        var addServerStatusData = function(resData) {
+            recycleStack(serverBusy);
+            recycleStack(serverIdle);
+            recycleStack(serverTime);
+            recycleStack(serverPieces);
+            recycleStack(serverPlayers);
+            serverBusy[0][0] = resData.busy;
+            serverIdle[0][0] = resData.idle;
+            serverTime[0][0] = resData.idle + resData.busy;
+            serverPieces[0][0] = resData.pieces;
+            serverPlayers[0][0] = resData.players;
+
+        };
+
+        var handleServerMessage = function(e) {
+            var res = evt.args(e);
+            if (res.id == 'server_status') {
+
+                for (var i = 0; i < res.data.length; i++) {
+                    addServerStatusData(res.data[i]);
+                }
+            }
+            receiveStack[0][0] += 1;
+        };
 
         var handleSendRequest = function() {
             sentStack[0][0] += 1;
         };
-
-
-        var handleServerMessage = function() {
-            receiveStack[0][0] += 1;
-        };
-
-
-
 
         var GooTrafficGraph = function() {
 
@@ -59,37 +87,63 @@ define([
         GooTrafficGraph.prototype.getSends = function() {
             return sentStack;
         };
-        GooTrafficGraph.prototype.getRecieves = function() {
 
+        GooTrafficGraph.prototype.getRecieves = function() {
             return receiveStack;
         };
 
+        GooTrafficGraph.prototype.getServerIdle = function() {
+            return serverIdle;
+        };
 
-        GooTrafficGraph.prototype.recycleStack = function(trackStack) {
-            var recycle = trackStack.pop();
-            recycle[0] = 0.3;
-            trackStack.unshift(recycle);
+        GooTrafficGraph.prototype.getServerBusy = function() {
+            return serverBusy;
+        };
+
+        GooTrafficGraph.prototype.getServerTime = function() {
+            return serverTime;
+        };
+
+        GooTrafficGraph.prototype.getServerPieces = function() {
+            return serverPieces;
+        };
+
+        GooTrafficGraph.prototype.getServerPlayers = function() {
+            return serverPlayers;
         };
 
         GooTrafficGraph.prototype.trackFrame = function() {
 
-            this.recycleStack(sentStack);
-            this.recycleStack(receiveStack);
+            recycleStack(sentStack);
+            recycleStack(receiveStack);
 
         };
 
-        GooTrafficGraph.prototype.enableTrafficTracker = function(barCount) {
+        GooTrafficGraph.prototype.buildStack = function(dataStack, barCount) {
 
-            sentStack.length = 0;
-            receiveStack.length = 0;
+            dataStack.length = 0;
+            for (var i = 0; i < barCount; i++) {
+                dataStack.push([0]);
+            }
+
+        };
+
+
+        GooTrafficGraph.prototype.enableTrafficTracker = function(barCount) {
 
             this.barCount = barCount;
 
             for (var i = 0; i < this.barCount; i++) {
-                var progress = [0];
-                sentStack.push(progress);
-                var progress2 = [0];
-                receiveStack.push(progress2);
+                this.buildStack(sentStack, barCount);
+                this.buildStack(receiveStack, barCount);
+                this.buildStack(serverBusy, barCount);
+                this.buildStack(serverIdle, barCount);
+                this.buildStack(serverTime, barCount);
+                this.buildStack(serverPieces, barCount);
+                this.buildStack(serverPlayers, barCount);
+
+
+
             }
             
             this.disableTracker();

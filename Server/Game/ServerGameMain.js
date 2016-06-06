@@ -13,6 +13,8 @@ ServerGameMain = function(clients, serverWorld) {
 	this.timeDelta = 0;
 	this.clients = clients;
 	this.pieceConfigs = {};
+
+	this.healthData = [];
 };
 
 
@@ -121,17 +123,29 @@ ServerGameMain.prototype.getNow = function() {
 	return ((this.processTime[0]*1000) + (this.processTime[1]/1000000))*0.001;
 };
 
+
+
 ServerGameMain.prototype.tickGameSimulation = function() {
     this.headroom = this.getNow() - this.currentTime;
 	this.currentTime = this.getNow();
 
     this.serverWorld.tickSimulationWorld(this.currentTime);
     this.tickComputeTime = this.getNow() - this.currentTime;
-    if (Math.random() < 0.01) console.log("Load: ", this.headroom / this.tickComputeTime)
+    if (Math.random() < 0.01) console.log("Load: ", this.headroom / this.tickComputeTime);
 
+	this.healthData.push({time:this.currentTime, idle:this.headroom, busy:this.tickComputeTime, pieces:this.serverWorld.pieces.length,players:this.serverWorld.playerCount});
 };
 
 ServerGameMain.prototype.tickGameNetwork = function() {
     this.currentTime = this.getNow();
     this.serverWorld.tickNetworkWorld(this.currentTime);
+
+	var sendData = [];
+
+	for (var i = 0; i < this.healthData.length; i++) {
+		sendData.push(this.healthData[i]);
+	}
+
+	this.clients.broadcastToAllClients({id:"server_status", data:sendData});
+	this.healthData = [];
 };
