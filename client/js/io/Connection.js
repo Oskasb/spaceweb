@@ -105,15 +105,15 @@ define(['Events'
 				processResponseStackEntry(responseStack.shift());
 			}
 
-			if (responseStack.length > 5) {
+			if (responseStack.length > 3) {
 				processResponseStackEntry(responseStack.shift());
-	//			processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
 			}
 
-			if (responseStack.length > 9) {
+			if (responseStack.length > 5) {
 				processResponseStackEntry(responseStack.shift());
-	//			processResponseStackEntry(responseStack.shift());
-	//			processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
+				processResponseStackEntry(responseStack.shift());
 			}
 
 			frameStack = [];
