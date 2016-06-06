@@ -57,16 +57,16 @@ define([
         function frameGraph() {
 
             calcVec.setDirect(posLeft-padding, posTop, 0);
-            calcVec2.setDirect(posLeft+width+padding, posTop, 0);
-            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.AQUA);
+            calcVec2.setDirect(posLeft+width*3.3+padding, posTop, 0);
+            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.GREY);
 
             calcVec.setDirect(posLeft, posTop-padding, 0);
             calcVec2.setDirect(posLeft, posTop+height+padding, 0);
-            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.AQUA);
+            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.GREY);
 
             calcVec.setDirect(posLeft-padding, posTop+height, 0);
             calcVec2.setDirect(posLeft+padding, posTop+height, 0);
-            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.AQUA);
+            screenSpaceLine(calcVec, calcVec2, lineRenderSystem.GREY);
         }
 
 
@@ -176,9 +176,9 @@ define([
 
             //    drawGraph(gooTrafficGraph.getServerTime(), 20,  'PEA', -6);
                 drawGraph(gooTrafficGraph.getServerIdle(), 20,  'CYAN', 0, 11);
-                drawGraph(gooTrafficGraph.getServerBusy(), 200,'PINK', 0, 11);
+                drawGraph(gooTrafficGraph.getServerBusy(), 100,'PINK', 0, 11);
                 drawGraph(gooTrafficGraph.getServerPieces(), 0.05,'GREEN', 0, 22);
-                drawGraph(gooTrafficGraph.getServerPlayers(), 0.1,'PURPLE', 0, 22);
+                drawGraph(gooTrafficGraph.getServerPlayers(), -0.1,'PURPLE', 0, 22);
             }
 
             evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);

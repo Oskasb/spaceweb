@@ -137,7 +137,7 @@ ServerGameMain.prototype.tickGameSimulation = function() {
 };
 
 ServerGameMain.prototype.tickGameNetwork = function() {
-    this.currentTime = this.getNow();
+//    this.currentTime = this.getNow();
     this.serverWorld.tickNetworkWorld(this.currentTime);
 
 	var sendData = [];

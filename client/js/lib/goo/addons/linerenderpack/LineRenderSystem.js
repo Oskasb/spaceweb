@@ -48,6 +48,7 @@ define([
 
 		//setup a preset of colors
 		LineRenderSystem.prototype.WHITE = new Vector3(1, 1, 1);
+		LineRenderSystem.prototype.GREY = new Vector3(0.5, 0.5, 0.5);
 		LineRenderSystem.prototype.PINK = new Vector3(1, 0.6, 0.6);
 		LineRenderSystem.prototype.RED = new Vector3(1, 0, 0);
 
