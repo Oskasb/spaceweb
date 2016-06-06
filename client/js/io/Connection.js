@@ -107,17 +107,13 @@ define(['Events'
 
 			if (responseStack.length > 5) {
 				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
+	//			processResponseStackEntry(responseStack.shift());
 			}
 
-			if (responseStack.length > 8) {
+			if (responseStack.length > 9) {
 				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
+	//			processResponseStackEntry(responseStack.shift());
+	//			processResponseStackEntry(responseStack.shift());
 			}
 
 			frameStack = [];
