@@ -7,6 +7,7 @@ ServerPlayer = function(clientId, client, simTime) {
 	var piece;
 
 	var broadcast = function(piecePacket) {
+		if (!piecePacket) console.log("Bad broadcast", piecePacket);
 		client.broadcastToAll(piecePacket);
 	};
 	

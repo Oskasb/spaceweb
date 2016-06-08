@@ -379,7 +379,7 @@ if(typeof(GAME) == "undefined"){
 		this.processSpatialState(MODEL.SimulationTime);
 
 		if (this.networkDirty) {
-			this.broadcast();
+			this.broadcast(this.makePacket());
 			this.networkDirty = false;
 		}
 

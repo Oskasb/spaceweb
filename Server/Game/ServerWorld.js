@@ -96,6 +96,7 @@ ServerWorld.prototype.fetch = function(data) {
 
 ServerWorld.prototype.broadcastPieceState = function(piece) {
 	var packet = piece.makePacket();
+	if (!packet) console.log("Bad Packet?", piece);
 	this.clients.broadcastToAllClients(packet);
 
     if (piece.getState() == GAME.ENUMS.PieceStates.EXPLODE) {
@@ -109,12 +110,12 @@ ServerWorld.prototype.updateWorldPiece = function(piece, currentTime) {
 	piece.processTemporalState(currentTime);
 	piece.spatial.update(piece.temporal.stepTime);
 
+/*
     if (piece.networkDirty) {
         this.broadcastPieceState(piece);
         piece.networkDirty = false;
-
     }
-
+*/
 };
 
 
@@ -155,15 +156,17 @@ ServerWorld.prototype.tickSimulationWorld = function(currentTime) {
 ServerWorld.prototype.tickNetworkWorld = function() {
 
     for (var key in this.players) {
-        if (this.players[key].piece.spatial.vel.getLength() + Math.abs(this.players[key].piece.spatial.rotVel) > 0.1) {
-            this.broadcastPieceState(this.players[key].piece);
+        if (this.players[key].piece.spatial.vel.getLength() + Math.abs(this.players[key].piece.spatial.rotVel) > 0.4) {
+			this.players[key].piece.networkDirty = true;
+    //        this.broadcastPieceState(this.players[key].piece);
         }
 
     }
 
     for (var i = 0; i < this.pieces.length; i++) {
         if (this.pieces[i].spatial.vel.getLength() + Math.abs(this.pieces[i].spatial.rotVel) > 0.1) {
-            this.broadcastPieceState(this.pieces[i]);
+
+   //        this.broadcastPieceState(this.pieces[i]);
         }
     }
 

@@ -52,7 +52,7 @@ define([
 
         //    particlePlayer.testSpawn();
 
-            if (Math.random() < 0.2) {
+            if (Math.random() < 0.8) {
 
                 effectData.color[0] = 0.5 + Math.random()*0.5;
                 effectData.color[1] = 0.5 + Math.random()*0.5;
@@ -76,10 +76,6 @@ define([
                 evt.fire(evt.list().GAME_EFFECT, {effect:"space_cloud", pos:{data:[1000*(Math.random()-0.5), 1000*(Math.random()-0.5), (Math.random()+0.3) * -2000]}, vel:{data:[0, 0, 0]}});
 
             }
-
-
-    //        evt.fire(evt.list().GAME_EFFECT, {effect:"burst", pos:{data:[100*Math.random(), 100*Math.random(), -20]}, vel:{data:[5*Math.random(), 5*Math.random(), 12]}, callbacks:{}});
-
 
         }
 

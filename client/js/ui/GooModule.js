@@ -12,8 +12,7 @@ define([
 
         var GooModule = function(module, piece, gooParent) {
 
-        //    this.entity = GooEntityFactory.buildRootEntity();
-            this.entity = GooEntityFactory.addChildEntity(gooParent);
+
 
 
             this.tempSpatial = {
@@ -44,6 +43,8 @@ define([
                 }
 
                 if (this.applies.transform) {
+                    //    this.entity = GooEntityFactory.buildRootEntity();
+                    this.entity = GooEntityFactory.addChildEntity(gooParent);
         //            GooEntityFactory.attachPrimitive(this.entity);
                     if (this.applies.transform.pos) {
                         GooEntityFactory.translateEntity(this.entity, this.applies.transform.pos);
@@ -51,6 +52,8 @@ define([
                     if (this.applies.transform.rot) {
                         GooEntityFactory.rotateEntity(this.entity, this.applies.transform.rot);
                     }
+                } else {
+                    this.entity = gooParent;
                 }
             }
 
@@ -140,18 +143,31 @@ define([
         };
 
 
+        GooModule.prototype.readWorldTransform = function() {
+
+            this.entity.transformComponent.updateWorldTransform();
+            this.tempSpatial.rot.setXYZ(0, -1, 0);
+
+            this.tempSpatial.pos.data[0] = this.entity.transformComponent.worldTransform.translation.data[0];
+            this.tempSpatial.pos.data[1] = this.entity.transformComponent.worldTransform.translation.data[1];
+            this.tempSpatial.pos.data[2] = this.entity.transformComponent.worldTransform.translation.data[2];
+
+            this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
+
+        };
+
+
         GooModule.prototype.updateGooModule = function() {
 
             if (this.applies) {
 
-                this.entity.transformComponent.updateWorldTransform();
-                this.tempSpatial.rot.setXYZ(0, -1, 0);
+                if (this.applies.transform) {
+                    this.readWorldTransform()
+                } else {
 
-                this.tempSpatial.pos.data[0] = this.entity.transformComponent.worldTransform.translation.data[0];
-                this.tempSpatial.pos.data[1] = this.entity.transformComponent.worldTransform.translation.data[1];
-                this.tempSpatial.pos.data[2] = this.entity.transformComponent.worldTransform.translation.data[2];
+                }
 
-                this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
+
                 
                 if (this.applies.emit_effect) {
 

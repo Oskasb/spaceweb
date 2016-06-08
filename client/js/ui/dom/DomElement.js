@@ -4,7 +4,7 @@
 define([
         'Events',
         'ui/GameScreen',
-        'ui/DomUtils',
+        'ui/dom/DomUtils',
         'PipelineAPI'
     ],
     function(

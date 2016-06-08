@@ -47,8 +47,10 @@ define(['Events'], function(evt) {
 		this.lastFrameTime = this.frameTime;
 
 
-		if (this.frameTime - this.pingTime > this.pingInterval) {
-			this.pingSend(frame)
+		if (SYSTEM_SETUP.DEBUG.trackPing) {
+			if (this.frameTime - this.pingTime > this.pingInterval) {
+				this.pingSend(frame)
+			}
 		}
 
 	};

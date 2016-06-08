@@ -41,9 +41,9 @@ require([
     'io/PointerCursor',
     'Events',
     'PipelineAPI',
-    'ui/DomMessage',
-    'ui/DomProgress',
-    'ui/DomMonitor'
+    'ui/dom/DomMessage',
+    'ui/dom/DomProgress',
+    'ui/dom/DomMonitor'
 ], function(
     SceneController,
     Client,

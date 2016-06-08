@@ -4,8 +4,8 @@
 define([
 		'Events',
 		'ui/GameScreen',
-		'ui/DomUtils',
-		'ui/DomElement'
+		'ui/dom/DomUtils',
+		'ui/dom/DomElement'
 	],
 	function(
 		evt,

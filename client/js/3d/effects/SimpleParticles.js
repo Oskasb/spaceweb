@@ -4,6 +4,8 @@ define([
 		'particle_system/defaults/DefaultRendererConfigs',
 		'particle_system/defaults/DefaultSpriteAtlas',
 		'particle_system/defaults/DefaultSimulators',
+		'particle_system/defaults/FontRendererConfigs',
+		'particle_system/defaults/FontSimulators',
 		'3d/effects/CheapParticles',
 		'goo/renderer/TextureCreator'
 	],
@@ -13,6 +15,8 @@ define([
 		DefaultRendererConfigs,
 		DefaultSpriteAtlas,
 		DefaultSimulators,
+		FontRendererConfigs,
+		FontSimulators,
 		CheapParticles,
 		TextureCreator
 	) {
@@ -37,11 +41,26 @@ define([
 				atlases[DefaultSpriteAtlas.atlases[i].id] = DefaultSpriteAtlas.atlases[i];
 			}
 
+			var fontsRdy = false;
+			var spritesRdy = false;
+
+			var checkReady = function() {
+				if (fontsRdy && spritesRdy) {
+					this.ready = true;
+					evt.fire(evt.list().PARTICLES_READY, {});
+				}
+			}.bind(this);
+
+			var fontTxLoaded = function() {
+				this.particlesAPI.createParticleSystems(FontSimulators, FontRendererConfigs, DefaultSpriteAtlas.atlases[1], fontTexture);
+				fontsRdy = true;
+				checkReady();
+			}.bind(this);
+
 			var txLoaded = function() {
 				this.particlesAPI.createParticleSystems(DefaultSimulators, DefaultRendererConfigs, DefaultSpriteAtlas.atlases[0], texture);
-				this.ready = true;
-				evt.fire(evt.list().PARTICLES_READY, {});
-				
+				spritesRdy = true;
+				checkReady();
 			}.bind(this);
 
 			var textureCreator = new TextureCreator();
@@ -52,6 +71,15 @@ define([
 				wrapT: 'EdgeClamp'
 			}, function() {
 				txLoaded();
+			});
+
+
+			var fontTexture  = textureCreator.loadTexture2D(atlases[DefaultSpriteAtlas.atlases[1].id].textureUrl.value, {
+				minFilter:"NearestNeighborNoMipMaps",
+				wrapS: 'EdgeClamp',
+				wrapT: 'EdgeClamp'
+			}, function() {
+				fontTxLoaded();
 			});
 
 		};

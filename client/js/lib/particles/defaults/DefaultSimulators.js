@@ -95,7 +95,7 @@ define({
 			"renderers": [
 				"FastTrailRenderer"
 			],
-			"poolCount": 30,
+			"poolCount": 100,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",

@@ -6,6 +6,7 @@
       "validation/shapes_validation.json",
 
       "effects/cheap_particles.json",
+      "effects/text_particles.json",
       "effects/particle_effects.json",
       "effects/gameplay_effects.json",
       "effects/goo_elements.json",

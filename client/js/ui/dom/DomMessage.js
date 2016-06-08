@@ -2,7 +2,7 @@
 
 
 define([
-        'ui/DomElement'
+        'ui/dom/DomElement'
     ],
     function(
         DomElement

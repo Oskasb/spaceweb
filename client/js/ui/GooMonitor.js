@@ -125,8 +125,8 @@ define([
 
         var anchors = {
             bottom_right:[18, -18, 0],
-            top_left:[-16, 16, 0]
-
+            top_left:[-16, 16, 0],
+            center:[0, 0, 0]
         };
 
         function applyAnchor(vec, anchorKey) {
@@ -167,7 +167,17 @@ define([
             //	this.lineRenderSystem.passive = !this.debugOn;
         //    window.lineRenderSystem = lineRenderSystem;
 
-            function clientTick() {
+            var textStyle = {
+                posx: 20,
+                posy: 20,
+                size: 0.5,
+                particleConfig:'tpf_Letter',
+                textConfig:'text_config'
+            };
+
+            var time = 0;
+
+            function clientTick(e) {
                 drawWorldBounds();
                 frameGraph();
                 drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
@@ -179,6 +189,24 @@ define([
                 drawGraph(gooTrafficGraph.getServerBusy(), 100,'PINK', 0, 11);
                 drawGraph(gooTrafficGraph.getServerPieces(), 0.05,'GREEN', 0, 22);
                 drawGraph(gooTrafficGraph.getServerPlayers(), -0.1,'PURPLE', 0, 22);
+
+                calcVec.setDirect(-14, 19, 0);
+                calcVec.addVector(cameraEntity.transformComponent.transform.translation);
+                applyAnchor(calcVec, 'top_left');
+                textStyle.posx = calcVec.data[0];
+                textStyle.posy = calcVec.data[1];
+
+                time += evt.args(e).tpf;
+
+                if (time > 0.01) {
+                                        
+                    var text = ''+Math.round(evt.args(e).tpf*1000);
+               //         evt.fire(evt.list().PARTICLE_TEXT, {text:text, textStyle:textStyle});
+                    time = 0;
+                }
+
+
+
             }
 
             evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);

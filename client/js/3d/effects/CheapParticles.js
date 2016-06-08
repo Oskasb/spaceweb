@@ -36,7 +36,8 @@ function(
 
 
 
-	function Simulator(goo, particleSettings) {
+	function Simulator(goo, particleSettings, id) {
+		this.id = id;
 
 		this.ready = false;
 
@@ -128,7 +129,7 @@ function(
 
 		if (effectData) {
 			if (effectData.intensity) {
-				count = Math.ceil(count*effectData.intensity);
+				count = Math.ceil(1 + count*effectData.intensity);
 			}
             if (effectData.color) {
 				color = effectData.color;
@@ -260,8 +261,8 @@ function(
 		if (this.simulators[id]) {
 			this.disableSimulator(this.simulators[id]);
 		}
-		this.simulators[id] = new Simulator(this.goo, particleSettings);
-		this.simulators[id] .isEnabled = false;
+		this.simulators[id] = new Simulator(this.goo, particleSettings, id);
+		this.simulators[id].isEnabled = false;
 	};
 
 	CheapParticles.prototype.spawn = function(id, position, normal, effectData) {
@@ -275,21 +276,23 @@ function(
 		if (simulator.isEnabled) return;
 		simulator.isEnabled = true;
 		simulator.entity.addToWorld();
+		simulator.entity._world.processEntityChanges();
 	};
 
 	CheapParticles.prototype.disableSimulator = function(simulator) {
 		if (!simulator.isEnabled) return;
 		simulator.isEnabled = false;
 		simulator.entity.removeFromWorld();
+		simulator.entity._world.processEntityChanges();
 	};
 
 
 	CheapParticles.prototype.update = function(tpf) {
 		for (var simulatorId in this.simulators) {
 			var simulator = this.simulators[simulatorId];
-			if (simulator.aliveParticles > 0) {
+			simulator.update(tpf);
+			if (simulator.meshData.indexCount > 0) {
 				this.enableSimulator(simulator);
-				simulator.update(tpf);
 			} else {
 				this.disableSimulator(simulator);
 			}
@@ -321,7 +324,7 @@ function(
 
 			'void main(void) {',
 				'gl_Position = viewProjectionMatrix * worldMatrix * vec4(vertexPosition.xyz, 1.0);',
-				'gl_PointSize = vertexData.x * resolution.x / 1000.0 / gl_Position.w;',
+				'gl_PointSize = vertexData.x * resolution.y / 10.0 / gl_Position.w;',
 				'color = vertexColor;',
 				'float c = cos(vertexData.z); float s = sin(vertexData.z);',
 				'spinMatrix = mat3(c, s, 0.0, -s, c, 0.0, (s-c+1.0)*0.5, (-s-c+1.0)*0.5, 1.0);',

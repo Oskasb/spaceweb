@@ -3,7 +3,7 @@
 
 define([
         'Events',
-        'ui/DomFpsGraph'
+        'ui/dom/DomFpsGraph'
     ],
     function(
         evt,

@@ -17,7 +17,7 @@ Clients.prototype.requestPlayer = function(data) {
 };
 
 Clients.prototype.broadcastToAllClients = function(data) {
-    for (var key in this.clients) {
+	for (var key in this.clients) {
         this.clients[key].sendToClient(data);
     }
 };
@@ -33,5 +33,6 @@ Clients.prototype.getClientById = function(id) {
 
 Clients.prototype.clientDisconnected = function(clientId, packet) {
 	delete this.clients[clientId];
+	if (!packet) console.log("Bad DC?", clientId);
     this.broadcastToAllClients(packet);
 };

@@ -2,9 +2,9 @@
 
 define([
         'ui/GameScreen',
-        'ui/DomElement',
-        'ui/DomVector',
-        'ui/DomMessage',
+        'ui/dom/DomElement',
+        'ui/dom/DomVector',
+        'ui/dom/DomMessage',
         'Events'
     ],
     function(

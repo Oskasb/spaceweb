@@ -48,14 +48,12 @@ define([
                     if (res.id == 'server_status') {
                         
                     } else {
-                        evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});  
+                        evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
+                        console.log("unhandled message response:", res);
                     }
-					console.log("unhandled message response:", res);
-                    
+
 				}
-
-
-
+                
 			};
 
 			var clientRegistry = new ClientRegistry();

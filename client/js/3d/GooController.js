@@ -33,6 +33,12 @@ define([
 
 	GooController.prototype.setupGooRunner = function(clientTickCallback) {
 
+		var standalone = window.navigator.standalone,
+			userAgent = window.navigator.userAgent.toLowerCase(),
+			safari = /safari/.test( userAgent ),
+			ios = /iphone|ipod|ipad/.test( userAgent ),
+			chrome = /chrome/.test( userAgent );
+
 		var isAndroid = !!navigator.userAgent.match(/Android/i);
 
 		var downscale = 1;
@@ -42,9 +48,38 @@ define([
 		//	antialias = false;
 		}
 
+		var times = 0;
+
+		var notifyAgent =  setInterval(function() {
+			times ++;
+			if (standalone) {
+				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'STANDALONE'});
+			}
+			if (chrome) {
+				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:'CHROME'});
+			}
+
+			if (isAndroid) {
+				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'ANDROID'});
+			}
+
+		if (ios) {
+			SYSTEM_SETUP.ios = true;
+			downscale = 4;
+			antialias = false;
+
+				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'DEVICE: IOS'});
+
+			} else {
+
+			}
+
+			if (times == 15) clearInterval(notifyAgent);
+		}, 1000);
 
 
-		var goo = new GooRunner({
+
+	var goo = new GooRunner({
 			showStats:false,
 			antialias:antialias,
 			debug:false,
@@ -65,10 +100,10 @@ define([
 		Settings.addOnChangeCallback('display_pixel_scale', adjustPxScale);
 
 		this.goo = goo;
-		goo.renderer.setClearColor(0.03, 0.0, 0.05, 0.01);
+		goo.renderer.setClearColor(0.04, 0.0, 0.08, 0.21);
 
 
-
+		goo.startGameLoop();
 
 		var setupGooScene = function() {
 			console.log("Setup Goo Scene");

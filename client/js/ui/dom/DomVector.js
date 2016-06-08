@@ -3,7 +3,7 @@
 
 define([
 	'Events',
-	'ui/DomElement'
+	'ui/dom/DomElement'
 ],
 	function(
 		evt,

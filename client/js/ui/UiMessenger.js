@@ -2,11 +2,11 @@
 
 
 define([
-        'ui/DomMessage',
+        'ui/dom/DomMessage',
         'ui/GameScreen',
         'Events',
     'PipelineAPI',
-        'ui/DomPopup'
+        'ui/dom/DomPopup'
     ],
     function(
         DomMessage,

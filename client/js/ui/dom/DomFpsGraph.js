@@ -3,8 +3,8 @@
 
 define([
         'Events',
-        'ui/DomElement',
-        'ui/DomProgress',
+        'ui/dom/DomElement',
+        'ui/dom/DomProgress',
         'ui/GameScreen'
     ],
     function(

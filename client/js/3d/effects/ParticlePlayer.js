@@ -2,13 +2,15 @@ define([
     'Events',
         'particle_system/defaults/ExampleEffects',
     '3d/effects/SimpleParticles',
+    'ui/particle/ParticleText',
     'PipelineAPI',
         'goo/math/Vector3'
     ],
     function(
         evt,
         ExampleEffects,
-        SimpleParticles,        
+        SimpleParticles,
+        ParticleText,
         PipelineAPI,
         Vector3
     ) {
@@ -28,6 +30,7 @@ define([
         function ParticlePlayer(goo) {
             
             this.simpleParticles = new SimpleParticles(goo);
+            this.particleText = new ParticleText(this.simpleParticles);
             this.simpleParticles.createSystems();
             var simpleParticles = this.simpleParticles;
             
@@ -129,8 +132,6 @@ define([
                     this.spawnGameEffects(this.getEffectData(args.effect, i), particleData, this.setupParticleData(i, args.effect, args.params), args.callbacks, this.getEffectData(args.effect, i).density);
                 }
             }
-
-        //    this.simpleParticles.spawn(this.getEffectData(args.effect).simulator, particleData.pos, particleData.vel, this.setupParticleData(args.effect, args.params), args.callbacks, this.getEffectData(args.effect).density);
         };
 
 

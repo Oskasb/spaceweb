@@ -12,6 +12,8 @@ define(function() {
 		CONNECTION_CLOSED:{type:'CONNECTION_CLOSED', args:{data:{}}},
 
 		SEND_SERVER_REQUEST:{type:'SEND_SERVER_REQUEST', args:{data:{}}},
+		
+		
 		MESSAGE_UI:{type:'MESSAGE_UI', args:{}},
 		MESSAGE_POPUP:{type:'MESSAGE_POPUP', args:{}},
 
@@ -30,6 +32,8 @@ define(function() {
 
 		PLAY_PARTICLE:{type:'PLAY_PARTICLE', args:{effect:"string", simulator:"string", pos:{data:[0, 0, 0]}, vel:{data:[0, 0, 0]}, callbacks:{}, density:100}},
 
+		PARTICLE_TEXT:{type:'PARTICLE_TEXT', args:{}},
+		
 		GAME_EFFECT:{type:'GAME_EFFECT', args:{effect:"string", pos:{data:[0, 0, 0]}, vel:{data:[0, 0, 0]}, callbacks:{}}},
 
 

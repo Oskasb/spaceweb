@@ -21,16 +21,15 @@ Client.prototype.notifyDataFrame = function() {
 
 
 Client.prototype.sendToClient = function(data) {
+    if (!data) {
+        return;
+    }
     this.dataBuffer.push(data);
 };
 
 
 Client.prototype.broadcastToAll = function(data) {
-    this.clients.broadcastToAllClients(data);
-};
-
-Client.prototype.broadcastDisconnect = function(data) {
-    this.clients.clientDisconnected(this.id);
+    if (!data) console.log("Bad broadcast all", data);
     this.clients.broadcastToAllClients(data);
 };
 
