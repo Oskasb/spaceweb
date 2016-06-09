@@ -22,13 +22,13 @@
             },
             "svgPipe":{
                 "polling":{
-                    "enabled":true,
+                    "enabled":false,
                     "frequency":2
                 }
             },
             "imagePipe":{
                 "polling":{
-                    "enabled":true,
+                    "enabled":false,
                     "frequency":2
                 }
             }

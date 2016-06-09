@@ -56,8 +56,10 @@ define([
 				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'STANDALONE'});
 			}
 			if (chrome) {
-				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:'CHROME'});
+		//		event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:'CHROME'});
 			}
+
+			event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
 
 			if (isAndroid) {
 				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'ANDROID'});
