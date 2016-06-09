@@ -42,8 +42,7 @@ require([
     'Events',
     'PipelineAPI',
     'ui/dom/DomMessage',
-    'ui/dom/DomProgress',
-    'ui/dom/DomMonitor'
+    'ui/dom/DomProgress'
 ], function(
     SceneController,
     Client,
@@ -53,13 +52,12 @@ require([
     evt,
     PipelineAPI,
     DomMessage,
-    DomProgress,
-    DomMonitor
+    DomProgress
 ) {
 
-    GameScreen.registerAppContainer(document.body);
+    GameScreen.registerAppContainer(document.getElementById('game_window'));
 
-    var domMonitor = new DomMonitor();
+
     var sceneController = new SceneController();
     
     var path = './../../..';
@@ -85,7 +83,7 @@ require([
     evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
     var pipelineOn = false;
 
-    if (window.location.href == 'http://127.0.0.1:5000/' || window.location.href ==  'http://localhost:5000/') {
+    if (window.location.href == 'http://127.0.0.1:5000/' || window.location.href ==  'http://localhost:5000/' || window.location.href ==  'http://192.168.0.100:5000/') {
         pipelineOn = true;
     }
 
@@ -132,7 +130,6 @@ require([
     var setDebug = function(key, data) {
         console.log("Set Debug: ", data);
         SYSTEM_SETUP.DEBUG = data;
-        domMonitor.applyDebugSettings(data);
     };
     
     var sharedFilesLoaded = function() {
@@ -222,6 +219,7 @@ require([
         if (particles && filesLoadedOK) {
             loadProgress.removeProgress();
             client.initiateClient(new SocketMessages());
+
             evt.removeListener(evt.list().PARTICLES_READY, particlesReady);
         }
     }

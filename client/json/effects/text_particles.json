@@ -58,7 +58,7 @@
                     "rotation":[0,0],
                     "spin":"posToNeg",
                     "spinspeed":[-0.4, 0.4],
-                    "lifespan":[0.6, 1.44],
+                    "lifespan":[0.3, 0.5],
                     "sprite":"A"
                 }
             }

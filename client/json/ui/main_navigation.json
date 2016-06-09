@@ -1,0 +1,32 @@
+[{
+  "main_navigation": {
+    "right_panel":[
+      {
+        "id":"rightRoot",
+        "data":{
+          "style":"main_top_right"
+        }
+      },{
+        "id":"rightHeader",
+        "data":{
+          "parentId":"rightRoot",
+          "style":"main_top_header",
+          "text":"Main"
+        }
+      },{
+        "id":"buttonContainer",
+        "data":{
+          "parentId":"rightRoot",
+          "style":"main_button_container"
+        }
+        },{
+        "id":"button",
+        "data":{
+          "parentId":"buttonContainer",
+          "style":"main_button",
+          "text":"Button"
+        }
+      }
+    ]
+  }
+}]

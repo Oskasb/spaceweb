@@ -39,7 +39,7 @@ define([
 			height = gameScreen.offsetHeight;
 			resolution = getResolution(width, height);
 			sizeFactor = resolution / percentZoom;
-			element.style.fontSize = sizeFactor+"px";
+			document.body.style.fontSize = sizeFactor+"px";
 		//	scalePercentToX = (1/percentZoom);// * width * ( resolution / width);
 		//	scalePercentToY = (1/percentZoom);// * height* ( resolution / height);
 

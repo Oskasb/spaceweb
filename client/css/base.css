@@ -44,14 +44,27 @@ body {
     overflow: hidden;
 }
 
-#game_window {
+div.game_window {
     top: 0em;
     left: 0em;
     right: 0em;
     bottom: 0em;
-    position: fixed;
-    overflow: hidden;
-    border: 0em solid rgba(95, 255, 95, 0.6);
+    position: absolute;
+    border: 2em solid rgba(95, 255, 95, 0.6);
 }
 
+div.game_window_landscape {
+    top: 0em;
+    left: 100em;
+    right: 100em;
+    bottom: 0em;
+    position: absolute;
+}
 
+div.game_window_portrait {
+    top: 100em;
+    left: 0em;
+    right: 0em;
+    bottom: 0em;
+    position: absolute;
+}

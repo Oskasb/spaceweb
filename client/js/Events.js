@@ -3,6 +3,9 @@ define(["EventList"], function(eventList) {
     var element = document.createElement('div');
     var events = {};
 
+    var listeners = {};
+
+
     var eventException = function(message) {
         this.name = "EventArgumentException";
         this.message = message;
@@ -24,17 +27,22 @@ define(["EventList"], function(eventList) {
         }
     };
 
+    var TinyEvent = function(type) {
+        this.type = type;
+        this.arguments = {};
+    };
+
+    TinyEvent.prototype.setArgs = function(args) {
+        this.arguments = args;
+    };
+
     var setupEvent = function(event) {
 
         if (!events[event.type]) {
-            events[event.type] = new CustomEvent(event.type, {
-                    detail: {arguments:{}},
-                    bubbles: false,
-                    cancelable: false
-                }
-            )
+            listeners[event.type] = [];
+            events[event.type] = new TinyEvent(event.type);
         }
-    }
+    };
 
     var generateEvent = function(event, arguments) {
     //    validateEventArguments(event, arguments);
@@ -44,24 +52,44 @@ define(["EventList"], function(eventList) {
     };
 
     var setEventArgs = function(e, args) {
-        events[e.type].detail.arguments = args;
+        events[e.type].setArgs(args);
     };
 
     var eventArgs = function(e) {
-        return events[e.type].detail.arguments;
+        return events[e.type].arguments;
+    };
+
+    var dispatchEvent = function(event) {
+        for (var i = 0; i < listeners[event.type].length; i++) {
+            listeners[event.type][i](event);
+        }
     };
 
     var fireEvent = function(event, arguments) {
-        element.dispatchEvent(generateEvent(event, arguments));
+        dispatchEvent(event, generateEvent(event, arguments));
+    //    element.dispatchEvent(generateEvent(event, arguments));
     };
 
     var registerListener = function(event, callback) {
         setupEvent(event);
-        element.addEventListener(event.type, callback);
+        listeners[event.type].push(callback);
+     //   element.addEventListener(event.type, callback);
     };
 
     var removeListener = function(event, callback) {
-		element.removeEventListener(event.type, callback, null)
+
+        if (!listeners[event.type]) {
+            console.log("No listener yet?", event.type);
+            return;
+        }
+        console.log("Remove Listener? pre:", event.type, listeners, listeners[event.type].indexOf(callback));
+
+        if (listeners[event.type].indexOf(callback) == -1) return;
+        listeners[event.type].splice(listeners[event.type].indexOf(callback), 1);
+
+        console.log("Remove Listener? post:", event.type, listeners[event.type], listeners[event.type].indexOf(callback));
+
+	//	element.removeEventListener(event.type, callback, null)
     };
 
 

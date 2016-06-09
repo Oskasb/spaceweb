@@ -28,16 +28,63 @@ define([
         var cheapParticleConfigs = {};
         
         function ParticlePlayer(goo) {
-            
+
+            var _this = this;
+
+            function playParticle(e) {
+                _this.playParticleEffect(evt.args(e));
+            }
+
+
+
+
+            function playGameEffect(e) {
+                _this.playGameEffect(evt.args(e));
+            }
+
+
+            var allRdy = false;
+            var sysRdy = false;
+            var confRdy = false;
+            var cheapRdy = false;
+            var fxRdy = false;
+
+            function checkReady() {
+                if (allRdy) return;
+                console.log("particles ready? ", sysRdy, confRdy, cheapRdy, fxRdy);
+                if (sysRdy && confRdy && cheapRdy && fxRdy) {
+                    particlesReady();
+                    allRdy = true;
+                }
+
+            }
+
+            function systemsReady() {
+                sysRdy = true;
+                checkReady()
+            }
+
             this.simpleParticles = new SimpleParticles(goo);
             this.particleText = new ParticleText(this.simpleParticles);
-            this.simpleParticles.createSystems();
+            this.simpleParticles.createSystems(systemsReady);
             var simpleParticles = this.simpleParticles;
-            
+
+
+            function particlesReady() {
+                evt.fire(evt.list().PARTICLES_READY, {});
+                evt.on(evt.list().GAME_EFFECT, playGameEffect);
+                evt.on(evt.list().PLAY_PARTICLE, playParticle);
+            }
+
+
+
+
             function applyParticleConfigs(key, data) {
                 for (var i = 0; i < data.length; i++) {
                     particleConfigs[data[i].id] = data[i].effect_data;  
                 }
+                confRdy = true;
+                checkReady()
             }
             
             PipelineAPI.subscribeToCategoryKey('effects', 'particles', applyParticleConfigs);
@@ -46,6 +93,8 @@ define([
                 for (var i = 0; i < data.length; i++) {
                     effectConfigs[data[i].id] = data[i].effect_data;
                 }
+                fxRdy = true;
+                checkReady()
             }
 
             PipelineAPI.subscribeToCategoryKey('effects', 'gameplay', applyGameplayEffectConfigs);
@@ -56,25 +105,13 @@ define([
                     cheapParticleConfigs[data[i].id] = data[i].effect_data;
                 }
                 simpleParticles.applyCheapParticleConfigs(cheapParticleConfigs);
+                cheapRdy = true;
+                checkReady()
             }
 
             PipelineAPI.subscribeToCategoryKey('effects', 'cheap_particles', applyCheapParticleConfigs);
             
-            var _this = this;
 
-            function playParticle(e) {
-                _this.playParticleEffect(evt.args(e));
-            }
-
-
-            evt.on(evt.list().PLAY_PARTICLE, playParticle);
-
-            function playGameEffect(e) {
-                _this.playGameEffect(evt.args(e));
-            }
-
-
-            evt.on(evt.list().GAME_EFFECT, playGameEffect);
 
         }
 

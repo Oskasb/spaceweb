@@ -13,8 +13,10 @@
 
       "messages/ui_messages.json",
 
+      "ui/main_navigation.json",
       "ui/popups.json",
 
+      "styles/ui_main.json",
       "styles/ui_popups.json",
       "styles/messaging.json",
       "styles/world_objects.json",

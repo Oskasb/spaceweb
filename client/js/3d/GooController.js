@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 
 define([
@@ -10,7 +10,9 @@ define([
 	'goo/renderer/Texture',
 	'goo/math/Vector',
 	'3d/GooCameraController',
-	'ui/GooMonitor'
+	'ui/GooMonitor',
+    'ui/dom/DomUtils',
+    'ui/GameScreen'
 
 
 
@@ -23,7 +25,9 @@ define([
 	Texture,
 	Vector,
 	GooCameraController,
-	GooMonitor
+	GooMonitor,
+    DomUtils,
+    GameScreen
 ) {
 
 	var GooController = function() {
@@ -56,7 +60,7 @@ define([
 				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'STANDALONE'});
 			}
 			if (chrome) {
-		//		event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:'CHROME'});
+				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:'CHROME'});
 			}
 
 			event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
@@ -102,24 +106,16 @@ define([
 		Settings.addOnChangeCallback('display_pixel_scale', adjustPxScale);
 
 		this.goo = goo;
-		goo.renderer.setClearColor(0.04, 0.0, 0.08, 0.21);
+		goo.renderer.setClearColor(0.05, 0.0, 0.09, 0.21);
 
-
+		document.getElementById('game_window').appendChild(goo.renderer.domElement);
 		goo.startGameLoop();
 
 		var setupGooScene = function() {
 			console.log("Setup Goo Scene");
-
-			document.getElementById('game_window').appendChild(goo.renderer.domElement);
-
-
-			setTimeout(function() {
-				event.fire(event.list().ENGINE_READY, {goo:goo});
-				goo.startGameLoop();
-
-			},30)
+			
+			event.fire(event.list().ENGINE_READY, {goo:goo});
 		};
-
 
 		setupGooScene();
 		this.registerGooUpdateCallback(clientTickCallback);
@@ -143,19 +139,32 @@ define([
 	//	Vector = function(size) {
 	//		this.data = new Float64Array(size);
 	//	};
-
+        DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
 
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 
 		var handleResize = function() {
-			width = window.innerWidth;
-			height = window.innerHeight;
+			width = document.getElementById('game_window').offsetWidth;
+			height = document.getElementById('game_window').offsetHeight;
+
+            if (width > height) {
+                DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
+                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_portrait')
+            } else {
+                DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_portrait');
+                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_landscape')
+            }
+
+            width = document.getElementById('game_window').offsetWidth;
+            height = document.getElementById('game_window').offsetHeight;
+
 		};
 
 		window.addEventListener('resize', handleResize);
 
 		Renderer.prototype.checkResize = function (camera) {
+
 			var devicePixelRatio = this.devicePixelRatio = this._useDevicePixelRatio && window.devicePixelRatio ? window.devicePixelRatio / this.svg.currentScale : 1;
 
 			var adjustWidth = width * devicePixelRatio / this.downScale;
@@ -182,6 +191,7 @@ define([
 			}
 		};
 
+        handleResize();
 	};
 
 	monkeypatchCustomEngine();

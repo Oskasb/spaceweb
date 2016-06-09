@@ -101,7 +101,6 @@ define([
 				evt.fire(evt.list().CONTROLLED_PIECE_UPDATED, this.piece)
 			}
 
-
 		};
 
 		ClientPiece.prototype.setIsOwnPlayer = function(bool) {
@@ -118,7 +117,6 @@ define([
 			};
 
 			PipelineAPI.subscribeToCategoryKey('piece_data', 'controls', pieceModuleDataLoaded);
-			
 		};
 		
 		ClientPiece.prototype.playerRemove = function() {

@@ -33,7 +33,7 @@ define([
 			this.ready = false;
 		}
 
-		SimpleParticles.prototype.createSystems = function() {
+		SimpleParticles.prototype.createSystems = function(readyCallback) {
 
 			var atlases = {};
 
@@ -45,9 +45,12 @@ define([
 			var spritesRdy = false;
 
 			var checkReady = function() {
+				console.log("sys ready? ", fontsRdy, spritesRdy);
 				if (fontsRdy && spritesRdy) {
 					this.ready = true;
-					evt.fire(evt.list().PARTICLES_READY, {});
+					console.log("CALL ready? ", readyCallback);
+					readyCallback();
+
 				}
 			}.bind(this);
 

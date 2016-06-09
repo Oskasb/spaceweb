@@ -4,7 +4,7 @@
         "DEBUG":{
             "on":false,
             "autoName":true,
-            "trackTpf":false,
+            "trackTpf":true,
             "trackTpfAverage":false,
             "renderInput":false,
             "renderDistanceSegments":false,
@@ -13,7 +13,7 @@
             "trackPing":false,
             "trackTraffic":false,
             "monitorServer":false,
-            "graphPoints":5
+            "graphPoints":10
         },
         "pipeline":{
             "jsonPipe":{

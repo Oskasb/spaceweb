@@ -21,22 +21,26 @@ define([
     var SceneController = function() {
         gooController = new GooController();
 
-
         function rendererReady(e) {
             console.log("Renderer Ready: ", evt.args(e).goo);
             GooEntityFactory.setGoo(evt.args(e).goo);
             world = evt.args(e).goo.world;
-
             particlePlayer = new ParticlePlayer(evt.args(e).goo);
+            evt.removeListener(evt.list().ENGINE_READY, rendererReady);
+        }
 
-
+        function drawReady() {
             gooController.registerGooUpdateCallback(particlePlayer.simpleParticles.update);
-
             tickListen();
+
+            setTimeout(function() {
+                evt.removeListener(evt.list().PARTICLES_READY, drawReady);
+            }, 10)
 
         }
 
         evt.on(evt.list().ENGINE_READY, rendererReady);
+        evt.on(evt.list().PARTICLES_READY, drawReady);
 
     };
 

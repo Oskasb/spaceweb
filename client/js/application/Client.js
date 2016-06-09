@@ -8,6 +8,7 @@ define([
 		'application/TimeTracker',
 		'main/ClientWorld',
 		'main/GameMain',
+        'ui/GuiSetup',
 		'ui/UiMessenger'
 	],
 	function(
@@ -17,9 +18,9 @@ define([
 		TimeTracker,
 		ClientWorld,
 		GameMain,
+        GuiSetup,
 		UiMessenger
 	) {
-
 
 
 		var frame = 0;
@@ -28,6 +29,7 @@ define([
 			this.pointerCursor = pointerCursor;
 			this.timeTracker = new TimeTracker();
 			this.gameMain = new GameMain();
+            this.guiSetup = new GuiSetup();
 		};
 
 
@@ -46,29 +48,21 @@ define([
 					_this[message.target][res.id](res.data);
 				} else {
                     if (res.id == 'server_status') {
-                        
                     } else {
                         evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
                         console.log("unhandled message response:", res);
                     }
-
 				}
-                
 			};
-
+			
 			var clientRegistry = new ClientRegistry();
 			this.clientRegistry = clientRegistry;
 			var connection = new Connection(socketMessages);
-
 			this.clientWorld = new ClientWorld();
-
-
-
-
+			
 			var connectedCallback = function() {
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_status', message:'Connection Open'});
 				evt.fire(evt.list().CLIENT_READY, {});
-
 			};
 
 			var errorCallback = function(error) {
@@ -84,11 +78,9 @@ define([
 				setTimeout(function() {
 					connect();
 				}, 100)
-
 			};
 
 			var sendMessage = function() {};
-			
 			
 			var connect = function() {
 				sendMessage = connection.setupSocket(connectedCallback, errorCallback, disconnectedCallback);
@@ -104,9 +96,7 @@ define([
 
 			evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
 			
-			
 			evt.on(evt.list().SERVER_MESSAGE, handleServerMessage);
-
 
 			var count = 0;
 
@@ -125,21 +115,13 @@ define([
 				console.log("Request Client");
 				
 				if (ClientState == GAME.ENUMS.ClientStates.READY) {
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'ServerWorld', data:'init'});
 					count++;
 					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientRegistry.clientId}});
 					setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
-                    setTimeout(function() {
-
-						evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
-						
-                      //  evt.on(evt.list().CURSOR_PRESS, requestPlayer);
-                    }, 10);
-
+					evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
 				}
 			};
-
-
+			
 			var setClientState = function(state) {
 				ClientState = state;
                 evt.fire(evt.list().MESSAGE_UI, {channel:'client_state', message:'MAIN: '+state});
@@ -151,18 +133,14 @@ define([
 				evt.removeListener(evt.list().CLIENT_READY, clientReady)
 			};
 			
-			
 			evt.on(evt.list().CLIENT_READY, clientReady);
-
 		};
 
 		Client.prototype.tick = function(tpf) {
 			frame++;
-			evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:this.timeTracker.tpf});
-
+			evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:tpf});
 			this.pointerCursor.tick();
-			this.gameMain.tickClientGame(this.timeTracker.tpf);
-
+			this.gameMain.tickClientGame(tpf);
 		};
         
 		return Client;
