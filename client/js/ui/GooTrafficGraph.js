@@ -142,8 +142,6 @@ define([
                 this.buildStack(serverPieces, barCount);
                 this.buildStack(serverPlayers, barCount);
 
-
-
             }
             
             this.disableTracker();
@@ -153,6 +151,7 @@ define([
             var setup = function() {
                 _this.barCount = barCount;
                 evt.on(evt.list().CLIENT_TICK, handlers.trackCB);
+                
             };
 
             setTimeout(function() {
@@ -169,7 +168,6 @@ define([
         GooTrafficGraph.prototype.disableTracker = function() {
             evt.removeListener(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
             evt.removeListener(evt.list().SERVER_MESSAGE, handleServerMessage);
-
             evt.removeListener(evt.list().CLIENT_TICK, handlers.trackCB);
         };
 

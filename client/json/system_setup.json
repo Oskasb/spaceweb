@@ -11,7 +11,9 @@
             "renderSegments":false,
             "renderCursor":false,
             "trackPing":false,
-            "trackTraffic":false
+            "trackTraffic":false,
+            "monitorServer":false,
+            "graphPoints":5
         },
         "pipeline":{
             "jsonPipe":{

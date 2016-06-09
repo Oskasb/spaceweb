@@ -38,6 +38,7 @@ define([
         };
 
         GooFpsGraph.prototype.generateGraph = function() {
+            this.progressBars = [];
             for (var i = 0; i < this.barCount; i++) {
                 var progress = [0];
                 this.progressBars.push(progress);

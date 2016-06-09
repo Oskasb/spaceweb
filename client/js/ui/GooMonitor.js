@@ -6,6 +6,7 @@ define([
         'ui/GooFpsGraph',
         'ui/GooTrafficGraph',
         'goo/addons/linerenderpack/LineRenderSystem',
+        'PipelineAPI',
         'goo/math/Vector3'
     ],
     function(
@@ -13,10 +14,12 @@ define([
         GooFpsGraph,
         GooTrafficGraph,
         LineRenderSystem,
+        PipelineAPI,
         Vector3
     ) {
 
         var lineRenderSystem;
+        var world;
         var cameraEntity;
         var gooFpsGraph;
         var gooTrafficGraph;
@@ -147,25 +150,19 @@ define([
 
             screenSpaceLine(calcVec3, calcVec4, lineRenderSystem[evt.args(e).color]);
         }
-        
 
-        function handleCameraReady(e) {
 
-            var trackFrames = 20;
-            
-            gooFpsGraph = new GooFpsGraph();
-            gooTrafficGraph = new GooTrafficGraph();
-            
+        function trackersEnable(DEBUG) {
+            var trackFrames = DEBUG.graphPoints;
+
+
             gooFpsGraph.enableFpsTracker(trackFrames);
             gooTrafficGraph.enableTrafficTracker(trackFrames);
-            
-            cameraEntity = evt.args(e).camera;
-            lineRenderSystem = new LineRenderSystem(evt.args(e).goo.world);
 
-            evt.args(e).goo.setRenderSystem(lineRenderSystem);
+
             //	this.physicsDebugRenderSystem.passive = !this.debugOn;
             //	this.lineRenderSystem.passive = !this.debugOn;
-        //    window.lineRenderSystem = lineRenderSystem;
+            //    window.lineRenderSystem = lineRenderSystem;
 
             var textStyle = {
                 posx: 20,
@@ -180,11 +177,16 @@ define([
             function clientTick(e) {
                 drawWorldBounds();
                 frameGraph();
+
+
                 drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
+
+                if (!SYSTEM_SETUP.DEBUG.monitorServer) return;
+
                 drawGraph(gooTrafficGraph.getSends(), 0.2, 'ORANGE');
                 drawGraph(gooTrafficGraph.getRecieves(), -0.2,  'PEA');
 
-            //    drawGraph(gooTrafficGraph.getServerTime(), 20,  'PEA', -6);
+                //    drawGraph(gooTrafficGraph.getServerTime(), 20,  'PEA', -6);
                 drawGraph(gooTrafficGraph.getServerIdle(), 20,  'CYAN', 0, 11);
                 drawGraph(gooTrafficGraph.getServerBusy(), 100,'PINK', 0, 11);
                 drawGraph(gooTrafficGraph.getServerPieces(), 0.05,'GREEN', 0, 22);
@@ -199,19 +201,40 @@ define([
                 time += evt.args(e).tpf;
 
                 if (time > 0.01) {
-                                        
+
                     var text = ''+Math.round(evt.args(e).tpf*1000);
-               //         evt.fire(evt.list().PARTICLE_TEXT, {text:text, textStyle:textStyle});
+                    //         evt.fire(evt.list().PARTICLE_TEXT, {text:text, textStyle:textStyle});
                     time = 0;
                 }
 
-
-
             }
+
+            evt.removeListener(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
+            evt.removeListener(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
+            evt.removeListener(evt.list().CLIENT_TICK, clientTick);
 
             evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
             evt.on(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
             evt.on(evt.list().CLIENT_TICK, clientTick);
+        };
+
+        function handleCameraReady(e) {
+
+            world = evt.args(e).goo.world;
+            cameraEntity = evt.args(e).camera;
+
+            gooFpsGraph = new GooFpsGraph();
+            gooTrafficGraph = new GooTrafficGraph();
+            lineRenderSystem = new LineRenderSystem(world);
+
+            evt.args(e).goo.setRenderSystem(lineRenderSystem);
+
+            function debugLoaded(key, setupData) {
+                trackersEnable(setupData)
+            }
+
+            PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", debugLoaded);
+
         }
 
         
