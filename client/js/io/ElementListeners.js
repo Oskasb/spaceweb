@@ -3,12 +3,14 @@
 define([
 	'ui/GameScreen',
 	'io/MouseActionListener',
-	'io/TouchActionListener'
+	'io/TouchActionListener',
+	'Events'
 ],
 	function(
 		GameScreen,
 		MouseActionListener,
-		TouchActionListener
+		TouchActionListener,
+		evt
 		) {
 
 
@@ -19,14 +21,46 @@ define([
 		var wheelDelta;
 
 		var ElementListeners = function() {
-			this.mouseActionListener = new MouseActionListener();
-			this.touchActionListener = new TouchActionListener();
-			this.setupMouseListener();
-			this.setupTouchListener();
+
+			var touchWait;
+			var _this = this;
+
+			var setupTouch = function() {
+				evt.fire(evt.list().SCREEN_CONFIG, {inputModel:'touch'});
+				this.actionListener = new TouchActionListener();
+				this.setupTouchListener();
+
+				clearListeners();
+
+				clearTimeout(touchWait);
+
+			}.bind(this);
+
+			var setupMouse = function() {
+
+				touchWait = setTimeout(function() {
+					console.log("setup Mouse Action Listener")
+					evt.fire(evt.list().SCREEN_CONFIG, {inputModel:'mouse'});
+					_this.actionListener = new MouseActionListener();
+					_this.setupMouseListener();
+
+					clearListeners();
+				}, 200);
+				window.removeEventListener('mousemove', setupMouse);
+			}.bind(this);
+
+			var clearListeners = function() {
+				window.removeEventListener('mousemove', setupMouse);
+				window.removeEventListener('touchstart', setupTouch);
+			};
+			
+			
+			window.addEventListener('mousemove', setupMouse);
+			window.addEventListener('touchstart', setupTouch);
 		};
 
 		ElementListeners.prototype.setupMouseListener = function() {
-			this.mouseActionListener.setupElementClickListener(GameScreen.getElement());
+			this.actionListener.setupElementClickListener(GameScreen.getElement());
 			GameScreen.getElement().addEventListener('mousemove', function(e) {
 				e.stopPropagation();
 				x = (e.clientX);
@@ -55,7 +89,7 @@ define([
 		};
 
 		ElementListeners.prototype.setupTouchListener = function() {
-			this.touchActionListener.setupElementTouchListener(GameScreen.getElement());
+			this.actionListener.setupElementTouchListener(GameScreen.getElement());
 			GameScreen.getElement().addEventListener('touchstart', function(e) {
 				e.preventDefault();
 				x = (e.touches[0].clientX);
@@ -82,8 +116,8 @@ define([
 
 
 		ElementListeners.prototype.sampleMouseState = function(mouseStore) {
-			this.mouseActionListener.sampleMouseAction(mouseStore);
-			this.touchActionListener.sampleTouchAction(mouseStore);
+			mouseStore.action[0] = 0;
+			this.actionListener.sampleAction(mouseStore);
 
 			mouseStore.x = x;
 			mouseStore.y = y;

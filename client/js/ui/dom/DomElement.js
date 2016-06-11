@@ -15,11 +15,40 @@ define([
     ) {
 
         var count = 0;
+        var inputModel = {};
+
+        function configureScreen(e) {
+            if (evt.args(e).inputModel) {
+
+
+                if (evt.args(e).inputModel == 'mouse') {
+                    inputModel.hover = 'mouseover';
+                    inputModel.press = 'mousedown';
+                    inputModel.out = 'mouseout';
+                    inputModel.up = 'mouseup';
+                }
+
+                if (evt.args(e).inputModel == 'touch') {
+                //    inputModel.hover = 'mouseover';
+                    inputModel.move = 'touchmove';
+                    inputModel.press = 'touchstart';
+                    inputModel.out = 'touchleave';
+                    inputModel.up = 'touchend';
+                }
+
+                PipelineAPI.setCategoryData('SETUP', {INPUT_MODEL:evt.args(e).inputModel});
+                //   evt.removeListener(evt.list().SCREEN_CONFIG, configureScreen);
+            }
+        }
+
+        evt.on(evt.list().SCREEN_CONFIG, configureScreen);
 
         var DomElement = function(parentElem, styleId, input) {
             count++;
             this.sourceColor = 'rgba(0, 0, 0, 1)';
             this.sourceTransition = 'all 0.5s ease-out';
+
+            this.styleId = styleId;
             var element;
             if (input) {
                 element = DomUtils.createTextInputElement(parentElem, count+'_'+Math.random(), input.varname, 'point');
@@ -28,19 +57,76 @@ define([
             }
 
             this.element = element;
-            var styleCallback = function(key, data) {
-                DomUtils.applyElementStyleParams(element, data)
-            };
 
             setTimeout(function() {
                 parentElem.appendChild(element);
             },1);
 
-            PipelineAPI.subscribeToCategoryKey('styles', styleId, styleCallback)
+            var styleCallback = function(key, data) {
+        //        DomUtils.applyElementStyleParams(element, data)
+                this.addStyleJsonId(this.styleId)
+            }.bind(this);
+
+            if (typeof(styleId) == 'string') {
+                PipelineAPI.subscribeToCategoryKey('styles', styleId, styleCallback)
+            } else {
+                for (var i = 0; i < styleId.length; i++) {
+                    PipelineAPI.subscribeToCategoryKey('styles', styleId[i], styleCallback)
+                }
+            }
 
         };
 
-                
+
+        DomElement.prototype.setHover = function(style, callback) {
+
+            var _this =this;
+            this.hoverStyle = style;
+
+            function setHover(e) {
+                _this.addStyleJsonId(style);
+            }
+
+            function releaseHover(e) {
+                _this.addStyleJsonId(_this.styleId);
+            }
+
+            function touchMove(e) {
+                console.log(e.target != e.scrElement);
+                if (e.target != e.scrElement) {
+                    releaseHover()
+                }
+            }
+
+
+
+            if (!inputModel.hover) {
+                _this.hoverStyle = _this.styleId;
+                this.element.addEventListener(inputModel.move, touchMove);
+            } else {
+                this.element.addEventListener(inputModel.out, releaseHover);
+                this.element.addEventListener(inputModel.hover, setHover);
+            }
+
+
+        };
+
+        DomElement.prototype.setPress = function(style, callback) {
+
+            var _this =this;
+
+            function setPress(e) {
+                _this.addStyleJsonId(style);
+            }
+
+            function releasePress(e) {
+                _this.addStyleJsonId(_this.styleId);
+            }
+
+            this.element.addEventListener(inputModel.press, setPress);
+            this.element.addEventListener(inputModel.up, releasePress);
+        };
+
         DomElement.prototype.setText = function(text) {
             this.element.innerHTML = text;
         };
@@ -53,15 +139,15 @@ define([
             this.element.style[param] = value;
         };
         
-        DomElement.prototype.addStyleJsonId = function(styleId) {
+        DomElement.prototype.addStyleJsonId = function(styles) {
 
-            var element = this.element;
-
-            var styleCallback = function(key, data) {
-                DomUtils.applyElementStyleParams(element, data)
-            };
-            
-            PipelineAPI.subscribeToCategoryKey('styles', styleId, styleCallback)
+            if (typeof(styles) == 'string') {
+                DomUtils.applyElementStyleParams(this.element, PipelineAPI.readCachedConfigKey('styles', styles))
+            } else {
+                for (var i = 0; i < styles.length; i++) {
+                    DomUtils.applyElementStyleParams(this.element, PipelineAPI.readCachedConfigKey('styles', styles[i]))
+                }
+            }
         };
 
         DomElement.prototype.applyStyleParams = function(params) {

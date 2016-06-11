@@ -29,11 +29,21 @@ define([
 			this.pointerCursor = pointerCursor;
 			this.timeTracker = new TimeTracker();
 			this.gameMain = new GameMain();
-            this.guiSetup = new GuiSetup();
+			var guiSetup = new GuiSetup();
+			// var inputReady = function() {
+			guiSetup.initMainGui();
+			//     evt.removeListener(evt.list().INPUT_READY, inputReady);
+			// };
+
+			//  evt.on(evt.list().INPUT_READY, inputReady)
+
 		};
 
 
 		Client.prototype.initiateClient = function(socketMessages) {
+			
+			
+			
 			
             new UiMessenger();
 			var _this = this;
@@ -139,7 +149,6 @@ define([
 		Client.prototype.tick = function(tpf) {
 			frame++;
 			evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:tpf});
-			this.pointerCursor.tick();
 			this.gameMain.tickClientGame(tpf);
 		};
         

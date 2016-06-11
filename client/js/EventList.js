@@ -4,9 +4,12 @@ define(function() {
     var func = function(){};
     return {
 		SETTING_CONTROL_EVENT:{type:'SETTING_CONTROL_EVENT', args:{}},
+		SCREEN_CONFIG:{type:'SCREEN_CONFIG', args:{}},
 
 		ENGINE_READY:{type:'ENGINE_READY', args:{}},
 		PARTICLES_READY:{type:'PARTICLES_READY', args:{}},
+		
+		MONITOR_STATUS:{type:'MONITOR_STATUS', args:{}},
 		
 		INIT_CLIENT:{type:'INIT_CLIENT', args:{data:{}}},
 		CONNECTION_CLOSED:{type:'CONNECTION_CLOSED', args:{data:{}}},

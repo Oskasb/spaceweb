@@ -7,6 +7,7 @@ define([
 		) {
 
 		var gameScreen;
+		var landscape;
 		var width;
 		var height;
 		var resolution;
@@ -105,6 +106,13 @@ define([
 			return percentZoom;
 		};
 
+		var setLandscape = function(bool) {
+			landscape = bool;
+		};
+
+		var getLandscape = function() {
+			return landscape;
+		};
 
 		var setZoomFactor = function(factor) {
 			return percentZoom = 100*factor;
@@ -123,7 +131,9 @@ define([
 			pxToPercentX:pxToPercentX,
 			pxToPercentY:pxToPercentY,
 			percentToX:percentToX,
-			percentToY:percentToY
+			percentToY:percentToY,
+			getLandscape:getLandscape,
+			setLandscape:setLandscape
 		}
 
 	});

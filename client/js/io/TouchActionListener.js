@@ -52,7 +52,7 @@ define([], function() {
 		element.addEventListener(events.touchend, handleTouchEnd);
 	};
 
-	TouchActionListener.prototype.sampleTouchAction = function(mouseStore) {
+	TouchActionListener.prototype.sampleAction = function(mouseStore) {
 		mouseStore.action[0] += touchAction[0];
 	//	touchAction[0] = 0;
 	};

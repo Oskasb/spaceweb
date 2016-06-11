@@ -2,14 +2,16 @@
 
 define([
 		'io/VisualCursor',
+		'io/InputState',
 		'Events'
 	],
 	function(
 		VisualCursor,
+		InputState,
 		evt
 	) {
 
-		var PointerCursor = function(inputState) {
+		var PointerCursor = function() {
 
 			this.guiStateTransitionCallbacks = {
 				passive:[],
@@ -28,11 +30,28 @@ define([
 				release_2:[]
 			};
 
-			this.inputState = inputState;
+			this.inputState = new InputState();
+
 			this.visualCursor = new VisualCursor();
 			this.interactiveLayers = {};
 			this.x = 0;
 			this.y = 0;
+
+			var _this = this;
+			var tickCursor = function() {
+				_this.tick();
+			};
+
+			function configureListener(e) {
+				console.log("Conf Screen Listener", e)
+				if (evt.args(e).inputModel) {
+					console.log("input model")
+					evt.on(evt.list().CLIENT_TICK, tickCursor);
+					evt.removeListener(evt.list().SCREEN_CONFIG, configureListener);
+				}
+			}
+
+			evt.on(evt.list().SCREEN_CONFIG, configureListener);
 		};
 
 		PointerCursor.prototype.moveTo = function(x, y, hoverCount) {

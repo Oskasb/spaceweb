@@ -70,6 +70,13 @@ define(['data_pipeline/data/ConfigCache'],
 			return ConfigCache.getCachedConfigs();
 		};
 
+		PipelineAPI.setCategoryData = function(category, data) {
+			var store = {}
+
+			store[category] = data;
+			return ConfigCache.dataCombineToKey(category, 'local', store);
+		};
+		
 		PipelineAPI.dataPipelineSetup = function(jsonIndexUrl, options, pipelineError) {
 			ConfigCache.applyDataPipelineOptions(jsonIndexUrl, options, pipelineError);
 		};

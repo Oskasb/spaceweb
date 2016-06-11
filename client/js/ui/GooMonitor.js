@@ -174,6 +174,9 @@ define([
 
             var time = 0;
 
+
+
+
             function clientTick(e) {
                 drawWorldBounds();
                 frameGraph();
@@ -224,6 +227,12 @@ define([
             evt.on(evt.list().CLIENT_TICK, clientTick);
         };
 
+        function applyDebugConfig(DEBUG) {
+                            evt.fire(evt.list().MONITOR_STATUS, {MONITOR_SERVER:'MonSrv:'+DEBUG.monitorServer});
+                evt.fire(evt.list().MONITOR_STATUS, {MONITOR_TRAFFIC:'MonTraf:'+DEBUG.trackTraffic});
+                evt.fire(evt.list().MONITOR_STATUS, {MONITOR_TPF:'MonTpf:'+DEBUG.trackTpf});
+        }
+        
         function handleCameraReady(e) {
         //    return
             world = evt.args(e).goo.world;
@@ -237,13 +246,14 @@ define([
 
             function debugLoaded(key, setupData) {
                 trackersEnable(setupData)
+                applyDebugConfig(setupData)
             }
 
             PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", debugLoaded);
-
+            evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'Cam'});
         }
 
-        
+        evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'No Cam'});
         
         evt.on(evt.list().CAMERA_READY, handleCameraReady);
         

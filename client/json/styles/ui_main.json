@@ -1,95 +1,79 @@
 [{
   "styles": {
 
-    "main_top_right":{
-      "top": "5em",
-      "right": "5em",
-      "width": "90em",
-      "bottom": "auto",
-      "height": "90em",
+    "main_monitor_container":{
+      "margin":"2em",
+      "width": "96em",
+      "height": "96em",
       "textAlign": "center",
+      "position": "relative",
+      "display": "inline-block",
+      "borderRadius":"5em"
+    },
+    "main_monitor_text":{
+      "width:": "auto",
+      "top": "0.3em",
+      "left": "0.3em",
+      "margin": "0em",
+      "padding": "0.4em",
+      "fontSize": "10em",
+      "textAlign": "left",
+      "position": "absolute",
+      "display": "inline-block",
+      "zIndex":"200"
+    },
+    "main_top_right":{
+      "top": "0em",
+      "right": "0em",
+      "textAlign": "right",
       "position": "absolute",
       "display": "inline",
-      "padding":"0em",
-      "paddingLeft": "0.2em",
-      "paddingRight": "0.2em",
-      "backgroundColor":"rgba(15, 25, 55, 0.5)",
-      "border": "2em solid rgba(25, 215, 255, 0.4)",
-      "borderRadius":"10em",
       "zIndex":"200"
     },
 
-    "main_top_header":{
-      "top": "0.4em",
-      "right": "0em",
-      "left": "0em",
-      "bottom": "auto",
-      "height": "1em",
-      "fontSize": "13em",
-      "textAlign": "center",
-      "position": "absolute",
-      "display": "inline",
-      "zIndex":"200",
-      "border": "none"
+    "panel_landscape":{
+      "width": "100em",
+      "height": "100%"
+    },
+
+    "panel_portrait":{
+      "height": "100em",
+      "width": "50%"
     },
 
     "main_top_left":{
-      "top": "5%",
-      "left": "10%",
-      "right": "62%",
-      "height": "1.1em",
-      "width": "auto",
-      "fontSize": "30em",
-      "textAlign": "center",
-      "position": "absolute",
-      "display": "inline-block",
-      "padding":"0.05em",
-      "paddingLeft": "0.2em",
-      "paddingRight": "0.2em",
-      "color":"rgba(175, 225, 255, 0.7)",
-      "border": "0.12em solid rgba(75, 225, 255, 0.5)",
-      "borderRadius":"0.3em",
-      "backgroundColor":"rgba(15, 45, 45, 0.6)",
-      "textShadow":"0.03em 0.03em rgba(5, 225, 225, 0.3)"
-    },
-    "main_button_container":{
       "top": "0em",
       "left": "0em",
-      "right": "0em",
-      "bottom": "0em",
-      "width": "auto",
-      "fontSize": "1em",
-      "textAlign": "center",
+      "textAlign": "left",
       "position": "absolute",
-      "display": "inline-block",
-      "padding":"0em",
-      "paddingLeft": "0em",
-      "paddingRight": "0em",
-      "color":"rgba(175, 225, 255, 0.7)",
-      "border": "0.12em solid rgba(75, 225, 255, 0.5)",
-      "borderRadius":"4em",
-      "backgroundColor":"rgba(0, 5, 25, 0.4)"
+      "display": "inline",
+      "zIndex":"200"
+    },
+    "main_button_container":{
+      "margin":"2em",
+      "width": "96em",
+      "height": "96em",
+      "textAlign": "center",
+      "position": "relative",
+      "display": "inline-block"
     },
 
-    "main_button":{
-      "top": "0.2em",
-      "left": "0.2em",
-      "right": "0.2em",
+    "panel_button":{
+      "top": "0.1em",
+      "left": "0.1em",
+      "right": "0.1em",
       "height": "auto",
       "width": "auto",
-      "bottom": "0.2em",
+      "bottom": "0.1em",
       "fontSize": "17em",
       "textAlign": "center",
       "position": "absolute",
       "display": "inline-block",
       "padding":"1.7em",
       "paddingLeft": "0.2em",
-      "paddingRight": "0.2em",
-      "color":"rgba(195, 225, 255, 0.5)",
-      "border": "0.1em solid rgba(75, 225, 255, 0.5)",
-      "borderRadius":"0.2em",
-      "backgroundColor":"rgba(40, 65, 115, 0.4)"
+      "paddingRight": "0.2em"
     }
+
 
   }
 }]

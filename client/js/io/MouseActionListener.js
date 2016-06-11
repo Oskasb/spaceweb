@@ -97,7 +97,7 @@ define(function() {
 		element.addEventListener(events.mouseout, handleMouseEvent);
 	};
 
-	MouseActionListener.prototype.sampleMouseAction = function(mouseStore) {
+	MouseActionListener.prototype.sampleAction = function(mouseStore) {
 		mouseStore.action[0] = mouseAction[0];
 		mouseStore.action[1] = mouseAction[1];
 	};

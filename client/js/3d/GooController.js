@@ -2,200 +2,222 @@
 
 
 define([
-	'application/Settings',
-	'Events',
-	'goo/entities/GooRunner',
-	'goo/renderer/Renderer',
-	'goo/math/Vector3',
-	'goo/renderer/Texture',
-	'goo/math/Vector',
-	'3d/GooCameraController',
-	'ui/GooMonitor',
+    'PipelineAPI',
+    'application/Settings',
+    'Events',
+    'goo/entities/GooRunner',
+    'goo/renderer/Renderer',
+    'goo/math/Vector3',
+    'goo/renderer/Texture',
+    'goo/math/Vector',
+    '3d/GooCameraController',
+    'ui/GooMonitor',
     'ui/dom/DomUtils',
     'ui/GameScreen'
 
 
 
 ], function(
-	Settings,
-	event,
-	GooRunner,
-	Renderer,
-	Vector3,
-	Texture,
-	Vector,
-	GooCameraController,
-	GooMonitor,
+    PipelineAPI,
+    Settings,
+    evt,
+    GooRunner,
+    Renderer,
+    Vector3,
+    Texture,
+    Vector,
+    GooCameraController,
+    GooMonitor,
     DomUtils,
     GameScreen
 ) {
 
-	var GooController = function() {
-		this.cameraController = new GooCameraController();
-		this.gooMonitor = new GooMonitor();
-	};
+    var GooController = function() {
+        this.cameraController = new GooCameraController();
+        this.gooMonitor = new GooMonitor();
+    };
 
-	GooController.prototype.setupGooRunner = function(clientTickCallback) {
+    GooController.prototype.setupGooRunner = function(clientTickCallback) {
 
-		var standalone = window.navigator.standalone,
-			userAgent = window.navigator.userAgent.toLowerCase(),
-			safari = /safari/.test( userAgent ),
-			ios = /iphone|ipod|ipad/.test( userAgent ),
-			chrome = /chrome/.test( userAgent );
+        var standalone = window.navigator.standalone,
+            userAgent = window.navigator.userAgent.toLowerCase(),
+            safari = /safari/.test( userAgent ),
+            ios = /iphone|ipod|ipad/.test( userAgent ),
+            chrome = /chrome/.test( userAgent ),
+            android = /android/.test( userAgent );
 
-		var isAndroid = !!navigator.userAgent.match(/Android/i);
+        var isAndroid = !!navigator.userAgent.match(/Android/i);
 
-		var downscale = 1;
-		var antialias = true;
-		if (isAndroid){
-			downscale = 0.5;
-		//	antialias = false;
-		}
+        var downscale = 1;
+        var antialias = true;
+        if (isAndroid){
+            downscale = 0.5;
+            //	antialias = false;
+            PipelineAPI.setCategoryData('SETUP', {CLIENT_OS:'Android'});
+        }
 
-		var times = 0;
+        var times = 0;
 
-		var notifyAgent =  setInterval(function() {
-			times ++;
-			if (standalone) {
-				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'STANDALONE'});
-			}
-			if (chrome) {
-				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:'CHROME'});
-			}
+        if (standalone) {
+            PipelineAPI.setCategoryData('SETUP', {BROWSER:'Standalone'});
+        }
+        if (chrome) {
+            PipelineAPI.setCategoryData('SETUP', {BROWSER:'Chrome'});
+        }
 
-			event.fire(event.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
+        if (safari) {
+            PipelineAPI.setCategoryData('SETUP', {BROWSER:'Safari'});
+        }
 
-			if (isAndroid) {
-				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'ANDROID'});
-			}
 
-		if (ios) {
-			SYSTEM_SETUP.ios = true;
-			downscale = 4;
-			antialias = false;
+        evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
 
-				event.fire(event.list().MESSAGE_UI, {channel:'pipeline_error', message:'DEVICE: IOS'});
 
-			} else {
+        if (ios) {
+            SYSTEM_SETUP.ios = true;
+            downscale = 4;
+            antialias = false;
 
-			}
+            PipelineAPI.setCategoryData('SETUP', {CLIENT_OS:'IOS'});
 
-			if (times == 15) clearInterval(notifyAgent);
-		}, 1000);
+        }
 
 
 
-	var goo = new GooRunner({
-			showStats:false,
-			antialias:antialias,
-			debug:false,
-			manuallyStartGameLoop:true,
-			tpfSmoothingCount:1,
-			useTryCatch:false,
-			logo:false,
-			downScale:downscale
-		});
 
-	//	goo.renderer.downScale = downscale;
 
-		var adjustPxScale = function(value) {
-			console.log("Adjust Px Scale: ", value)
-			goo.renderer.downScale = value;
-		};
 
-		Settings.addOnChangeCallback('display_pixel_scale', adjustPxScale);
+        var goo = new GooRunner({
+            showStats:false,
+            antialias:antialias,
+            debug:false,
+            manuallyStartGameLoop:true,
+            tpfSmoothingCount:1,
+            useTryCatch:false,
+            logo:false,
+            downScale:downscale
+        });
 
-		this.goo = goo;
-		goo.renderer.setClearColor(0.05, 0.0, 0.09, 0.21);
+        //	goo.renderer.downScale = downscale;
 
-		document.getElementById('game_window').appendChild(goo.renderer.domElement);
-		goo.startGameLoop();
+        var adjustPxScale = function(value) {
+            console.log("Adjust Px Scale: ", value)
+            goo.renderer.downScale = value;
+        };
 
-		var setupGooScene = function() {
-			console.log("Setup Goo Scene");
-			
-			event.fire(event.list().ENGINE_READY, {goo:goo});
-		};
+        Settings.addOnChangeCallback('display_pixel_scale', adjustPxScale);
 
-		setupGooScene();
-		this.registerGooUpdateCallback(clientTickCallback);
-	//	this.cameraController.setCameraPosition(0, 0, 0);
-	};
+        this.goo = goo;
+        goo.renderer.setClearColor(0.05, 0.0, 0.09, 0.21);
 
-	GooController.prototype.updateWorld = function(tpf) {
-		this.gooCameraController.updateCamera()
-	};
+        document.getElementById('game_window').appendChild(goo.renderer.domElement);
+        goo.startGameLoop();
 
-	GooController.prototype.registerGooUpdateCallback = function(callback) {
-		this.goo.callbacksPreRender.push(callback);
-		//	this.updateCallbacks.push(callback);
-	};
-	
+        var setupGooScene = function() {
+            console.log("Setup Goo Scene");
 
-	var monkeypatchCustomEngine = function() {
+            evt.fire(evt.list().ENGINE_READY, {goo:goo});
+        };
 
-		console.log("Monkeypatch Engine");
+        setupGooScene();
+        this.registerGooUpdateCallback(clientTickCallback);
+        //	this.cameraController.setCameraPosition(0, 0, 0);
+    };
 
-	//	Vector = function(size) {
-	//		this.data = new Float64Array(size);
-	//	};
+    GooController.prototype.updateWorld = function(tpf) {
+        this.gooCameraController.updateCamera()
+    };
+
+    GooController.prototype.registerGooUpdateCallback = function(callback) {
+        this.goo.callbacksPreRender.push(callback);
+        //	this.updateCallbacks.push(callback);
+    };
+
+
+    var monkeypatchCustomEngine = function() {
+
+        console.log("Monkeypatch Engine");
+
+        //	Vector = function(size) {
+        //		this.data = new Float64Array(size);
+        //	};
         DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
 
-		var width = window.innerWidth;
-		var height = window.innerHeight;
+        var width = window.innerWidth;
+        var height = window.innerHeight;
 
-		var handleResize = function() {
-			width = document.getElementById('game_window').offsetWidth;
-			height = document.getElementById('game_window').offsetHeight;
+        var handleResize = function() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+
 
             if (width > height) {
                 DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
-                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_portrait')
+                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_portrait');
+                GameScreen.setLandscape(true);
+                evt.fire(evt.list().SCREEN_CONFIG, {landscape:true})
+
             } else {
                 DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_portrait');
-                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_landscape')
+                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_landscape');
+                GameScreen.setLandscape(false);
+                evt.fire(evt.list().SCREEN_CONFIG, {landscape:false})
             }
 
             width = document.getElementById('game_window').offsetWidth;
             height = document.getElementById('game_window').offsetHeight;
 
-		};
+        };
 
-		window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
 
-		Renderer.prototype.checkResize = function (camera) {
+        Renderer.prototype.checkResize = function (camera) {
 
-			var devicePixelRatio = this.devicePixelRatio = this._useDevicePixelRatio && window.devicePixelRatio ? window.devicePixelRatio / this.svg.currentScale : 1;
+            var devicePixelRatio = this.devicePixelRatio = this._useDevicePixelRatio && window.devicePixelRatio ? window.devicePixelRatio / this.svg.currentScale : 1;
 
-			var adjustWidth = width * devicePixelRatio / this.downScale;
-			var adjustHeight = height * devicePixelRatio / this.downScale;
+            var adjustWidth = width * devicePixelRatio / this.downScale;
+            var adjustHeight = height * devicePixelRatio / this.downScale;
 
-			var fullWidth = adjustWidth;
-			var fullHeight = adjustHeight;
+            var fullWidth = adjustWidth;
+            var fullHeight = adjustHeight;
 
-			if (camera && camera.lockedRatio === true && camera.aspect) {
-				adjustWidth = adjustHeight * camera.aspect;
-			}
+            if (camera && camera.lockedRatio === true && camera.aspect) {
+                adjustWidth = adjustHeight * camera.aspect;
+            }
 
-			var aspect = adjustWidth / adjustHeight;
-			this.setSize(adjustWidth, adjustHeight, fullWidth, fullHeight);
+            var aspect = adjustWidth / adjustHeight;
+            this.setSize(adjustWidth, adjustHeight, fullWidth, fullHeight);
 
-			if (camera && camera.lockedRatio === false && camera.aspect !== aspect) {
-				camera.aspect = aspect;
-				if (camera.projectionMode === 0) {
-					camera.setFrustumPerspective();
-				} else {
-					camera.setFrustum();
-				}
-				camera.onFrameChange();
-			}
-		};
+            if (camera && camera.lockedRatio === false && camera.aspect !== aspect) {
+                camera.aspect = aspect;
+                if (camera.projectionMode === 0) {
+                    camera.setFrustumPerspective();
+                } else {
+                    camera.setFrustum();
+                }
+                camera.onFrameChange();
+            }
+        };
+        setTimeout(function() {
+            handleResize();
+        }, 1000);
 
-        handleResize();
-	};
+        setTimeout(function() {
+            handleResize();
+        }, 300);
 
-	monkeypatchCustomEngine();
+        setTimeout(function() {
+            handleResize();
+        }, 100);
 
-	return GooController;
+        setTimeout(function() {
+            handleResize();
+        }, 20)
+
+    };
+
+    monkeypatchCustomEngine();
+
+    return GooController;
 
 });

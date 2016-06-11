@@ -1,30 +1,98 @@
 [{
-  "main_navigation": {
+  "ui_panels": {
     "right_panel":[
       {
         "id":"rightRoot",
         "data":{
-          "style":"main_top_right"
-        }
-      },{
-        "id":"rightHeader",
-        "data":{
-          "parentId":"rightRoot",
-          "style":"main_top_header",
-          "text":"Main"
+          "style":["main_top_right", "coloring_panel_main"]
         }
       },{
         "id":"buttonContainer",
         "data":{
           "parentId":"rightRoot",
-          "style":"main_button_container"
+          "style":["main_button_container", "coloring_container_main_panel"]
         }
         },{
         "id":"button",
         "data":{
           "parentId":"buttonContainer",
-          "style":"main_button",
+          "style":["panel_button", "coloring_button_main_panel"],
+          "button":{
+            "id":"panel_button"
+          },
           "text":"Button"
+        }
+      }
+    ],
+    "left_panel":[
+      {
+        "id":"leftRoot",
+        "data":{
+          "style":["main_top_left", "coloring_panel_main"]
+        }
+      },{
+        "id":"buttonContainer1",
+        "data":{
+          "parentId":"leftRoot",
+          "style":["main_button_container", "coloring_container_main_panel"]
+        }
+      },{
+        "id":"button1",
+        "data":{
+          "parentId":"buttonContainer1",
+          "style":["panel_button", "coloring_button_main_panel"],
+          "button":{
+            "id":"panel_button"
+          },
+          "text":"Button1"
+        }
+      },{
+        "id":"buttonContainer2",
+        "data":{
+          "parentId":"leftRoot",
+          "style":["main_button_container", "coloring_container_main_panel"]
+        }
+      },{
+        "id":"button2",
+        "data":{
+          "parentId":"buttonContainer2",
+          "style":["panel_button", "coloring_button_main_panel"],
+          "button":{
+            "id":"panel_button"
+          },
+          "text":"Button2"
+        }
+      }, {
+        "id": "monitorContainer",
+        "data": {
+          "parentId": "leftRoot",
+          "style": ["main_button_container", "coloring_container_main_panel"]
+        }
+      }, {
+        "id": "monitorText",
+        "data": {
+          "parentId": "monitorContainer",
+          "style": ["main_monitor_text", "coloring_data_text_field"],
+          "dataField":{
+            "dataKeys":["CLIENT_CONFIG", "BROWSER", "CLIENT_OS", "INPUT_MODEL"],
+            "dataCategory":"SETUP"
+          }
+        }
+      }, {
+        "id": "monitorContainer2",
+        "data": {
+          "parentId": "leftRoot",
+          "style": ["main_button_container", "coloring_container_main_panel"]
+        }
+      }, {
+        "id": "monitorText",
+        "data": {
+          "parentId": "monitorContainer2",
+          "style": ["main_monitor_text", "coloring_data_text_field"],
+          "dataField":{
+            "dataKeys":["CACHE_LOADED", "CAMERA", "MONITOR_SERVER", "MONITOR_TPF", "MONITOR_TRAFFIC"],
+            "dataCategory":"STATUS"
+          }
         }
       }
     ]
