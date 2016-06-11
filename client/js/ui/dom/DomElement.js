@@ -22,6 +22,7 @@ define([
 
 
                 if (evt.args(e).inputModel == 'mouse') {
+                    inputModel.click = 'click';
                     inputModel.hover = 'mouseover';
                     inputModel.press = 'mousedown';
                     inputModel.out = 'mouseout';
@@ -30,13 +31,14 @@ define([
 
                 if (evt.args(e).inputModel == 'touch') {
                 //    inputModel.hover = 'mouseover';
+                    inputModel.click = 'click';
                     inputModel.move = 'touchmove';
                     inputModel.press = 'touchstart';
                     inputModel.out = 'touchleave';
                     inputModel.up = 'touchend';
                 }
 
-                PipelineAPI.setCategoryData('SETUP', {INPUT_MODEL:evt.args(e).inputModel});
+                PipelineAPI.setCategoryData('SETUP', {INPUT:evt.args(e).inputModel});
                 //   evt.removeListener(evt.list().SCREEN_CONFIG, configureScreen);
             }
         }
@@ -49,6 +51,7 @@ define([
             this.sourceTransition = 'all 0.5s ease-out';
 
             this.styleId = styleId;
+            this.pressed = false;
             var element;
             if (input) {
                 element = DomUtils.createTextInputElement(parentElem, count+'_'+Math.random(), input.varname, 'point');
@@ -74,9 +77,19 @@ define([
                     PipelineAPI.subscribeToCategoryKey('styles', styleId[i], styleCallback)
                 }
             }
-
         };
 
+        DomElement.prototype.enableActive = function(style) {
+            this.activeStyle = style;
+        };
+        
+        DomElement.prototype.setActive = function(bool) {
+            if (bool) {
+                this.addStyleJsonId(this.activeStyle);
+            } else {
+                this.addStyleJsonId(this.styleId);
+            }
+        };
 
         DomElement.prototype.setHover = function(style, callback) {
 
@@ -89,6 +102,7 @@ define([
 
             function releaseHover(e) {
                 _this.addStyleJsonId(_this.styleId);
+                _this.pressed = false;
             }
 
             function touchMove(e) {
@@ -99,7 +113,6 @@ define([
             }
 
 
-
             if (!inputModel.hover) {
                 _this.hoverStyle = _this.styleId;
                 this.element.addEventListener(inputModel.move, touchMove);
@@ -107,7 +120,6 @@ define([
                 this.element.addEventListener(inputModel.out, releaseHover);
                 this.element.addEventListener(inputModel.hover, setHover);
             }
-
 
         };
 
@@ -117,16 +129,26 @@ define([
 
             function setPress(e) {
                 _this.addStyleJsonId(style);
+                _this.pressed = true;
             }
 
             function releasePress(e) {
                 _this.addStyleJsonId(_this.styleId);
+                if (_this.pressed) {
+
+                }
+                _this.pressed = false;
             }
 
             this.element.addEventListener(inputModel.press, setPress);
             this.element.addEventListener(inputModel.up, releasePress);
         };
 
+        DomElement.prototype.setClick = function(callback) {
+            this.element.addEventListener(inputModel.click, callback);
+        };
+        
+        
         DomElement.prototype.setText = function(text) {
             this.element.innerHTML = text;
         };

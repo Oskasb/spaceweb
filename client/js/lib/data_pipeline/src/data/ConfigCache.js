@@ -112,8 +112,10 @@ define([
 			fireCallbacks(categories[key].callbacks, key, configs[key]);
 
 			for (var index in categories[key].subscription) {
-				if (configs[key][index]) {
+				if (typeof(configs[key][index]) != 'undefined') {
 					fireCallbacks(categories[key].subscription[index], index, configs[key][index]);
+				} else {
+					console.log("Undefined cache entry?", key);
 				}
 			}
 			masterReset();
@@ -141,7 +143,7 @@ define([
 
 		ConfigCache.getConfigKey = function(category, key) {
 			var data = ConfigCache.getCategory(category)[key];
-			if(!data) return "No value for "+key;
+			if(typeof(data) == 'undefined') return "No value for "+key;
 			return data;
 		};
 

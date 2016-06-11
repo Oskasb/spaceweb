@@ -35,7 +35,8 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 
 require([
     '3d/SceneController',
-
+    'application/SystemDetector',
+    'application/ButtonEventDispatcher',
     'application/Client',
     'application/StatusMonitor',
     'ui/GameScreen',
@@ -46,6 +47,8 @@ require([
     'ui/dom/DomProgress'
 ], function(
     SceneController,
+    SystemDetector,
+    ButtonEventDispatcher,
     Client,
     StatusMonitor,
     GameScreen,
@@ -57,6 +60,8 @@ require([
 ) {
 
     new StatusMonitor();
+    new SystemDetector();
+    new ButtonEventDispatcher();
 
     GameScreen.registerAppContainer(document.getElementById('game_window'));
 
@@ -148,12 +153,8 @@ require([
 
         function pipelineCallback(started, remaining, loaded) {
             var spread = 150;
-            evt.fire(evt.list().MONITOR_STATUS, {CACHE_LOADED:loaded});
-            var x = 50*0.01*GameScreen.getWidth()-spread*0.5 + Math.random()*spread;
-            var y = 50*0.01*GameScreen.getHeight()-spread*0.5 + Math.random()*spread;
-            var message = new DomMessage(GameScreen.getElement(), loaded, 'piece_state_hint', x, y, 0.8);
-            message.animateToXYZ(x, y-2, 0);
-            
+            evt.fire(evt.list().MONITOR_STATUS, {FILE_CACHE:loaded});
+
             loadProgress.setProgress(loaded / started);
 
 

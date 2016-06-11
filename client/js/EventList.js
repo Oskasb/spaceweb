@@ -10,7 +10,8 @@ define(function() {
 		PARTICLES_READY:{type:'PARTICLES_READY', args:{}},
 		
 		MONITOR_STATUS:{type:'MONITOR_STATUS', args:{}},
-		
+        BUTTON_EVENT:{type:'BUTTON_EVENT', args:{}},
+        
 		INIT_CLIENT:{type:'INIT_CLIENT', args:{data:{}}},
 		CONNECTION_CLOSED:{type:'CONNECTION_CLOSED', args:{data:{}}},
 

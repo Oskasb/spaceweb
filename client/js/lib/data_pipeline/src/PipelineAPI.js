@@ -4,7 +4,9 @@ define(['data_pipeline/data/ConfigCache'],
 	function(
 		ConfigCache
 		) {
-		
+
+		var pipeOptions = {};
+
 		var PipelineAPI = function() {
 
 		};
@@ -78,7 +80,14 @@ define(['data_pipeline/data/ConfigCache'],
 		};
 		
 		PipelineAPI.dataPipelineSetup = function(jsonIndexUrl, options, pipelineError) {
+			for (var key in options) {
+				pipeOptions[key] = options[key];
+			}
 			ConfigCache.applyDataPipelineOptions(jsonIndexUrl, options, pipelineError);
+		};
+
+		PipelineAPI.getPipelineOptions = function(key) {
+			return pipeOptions[key];
 		};
 		
 		return PipelineAPI;

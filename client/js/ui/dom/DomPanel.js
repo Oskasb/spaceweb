@@ -7,6 +7,7 @@ define([
         'ui/dom/DomElement',
         'ui/dom/DomButton',
         'ui/dom/DomDataField',
+        'ui/dom/DomDataLog',
         'ui/GameScreen'
     ],
     function(
@@ -15,6 +16,7 @@ define([
         DomElement,
         DomButton,
         DomDataField,
+        DomDataLog,
         GameScreen
     ) {
 
@@ -51,12 +53,12 @@ define([
             PipelineAPI.subscribeToCategoryKey('ui_panels', panelId, callback);
         };
 
-        DomPanel.prototype.applyButton = function(elem, confData) {
+        DomPanel.prototype.applyButton = function(parent, elem, confData) {
 
             var setupReady = function(src, data) {
-                new DomButton(elem, confData.button) 
+                new DomButton(parent, elem, confData.button) 
             };
-            PipelineAPI.subscribeToCategoryKey('SETUP', 'INPUT_MODEL', setupReady);
+            PipelineAPI.subscribeToCategoryKey('SETUP', 'INPUT', setupReady);
             
             
         };
@@ -94,12 +96,16 @@ define([
                 }
 
                 if (conf.data.button) {
-                    this.applyButton(elem, conf.data);
+                    this.applyButton(this.elements[conf.data.parentId], elem, conf.data);
                     
                 }
 
                 if (conf.data.dataField) {
                     new DomDataField(elem, conf.data.dataField)
+                }
+
+                if (conf.data.dataLog) {
+                    new DomDataLog(elem, conf.data.dataLog)
                 }
 
                 if (conf.data.input) {

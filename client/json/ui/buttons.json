@@ -8,11 +8,8 @@
         "press":{
           "style":"main_button_press"
         },
-        "click":{
-          "style":"main_button_press"
-        },
         "active":{
-          "style":"main_button_press"
+          "style":"main_button_container_active"
         }
       }
 

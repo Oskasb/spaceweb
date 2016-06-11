@@ -19,12 +19,29 @@ define([
             };
 
             evt.on(evt.list().MONITOR_STATUS, monitorStatus);
+            this.monitorSystem();
+
+            this.monitorPipeline();
         };
 
         StatusMonitor.prototype.registerStatus = function(data) {
             PipelineAPI.setCategoryData('STATUS', data);
         };
 
+        StatusMonitor.prototype.monitorSystem = function() {
+            function applyDebugConfig(src, DEBUG) {
+                evt.fire(evt.list().MONITOR_STATUS, {MON_SERVER:DEBUG.monitorServer});
+                evt.fire(evt.list().MONITOR_STATUS, {MON_TRAFFIC:DEBUG.trackTraffic});
+                evt.fire(evt.list().MONITOR_STATUS, {MON_TPF:DEBUG.trackTpf});
+                evt.fire(evt.list().MONITOR_STATUS, {PIPELINE:PipelineAPI.getPipelineOptions('jsonPipe').polling.enabled});
+            }
+
+            PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", applyDebugConfig);
+        };
+
+        StatusMonitor.prototype.monitorPipeline = function() {
+
+        };
 
         return StatusMonitor;
 

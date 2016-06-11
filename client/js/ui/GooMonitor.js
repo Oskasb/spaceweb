@@ -23,7 +23,7 @@ define([
         var cameraEntity;
         var gooFpsGraph;
         var gooTrafficGraph;
-        
+
         var calcVec = new Vector3();
         var calcVec2 = new Vector3();
         var calcVec3 = new Vector3();
@@ -35,23 +35,9 @@ define([
         var posLeft = -26;
         var posTop = 34;
         var padding = 0.3;
-        
+
 
         var GooMonitor = function() {
-            
-            
-        };
-
-        GooMonitor.prototype.applyDebugSettings = function(debug) {
-            
-            if (debug.trackTpf) {
-                if (this.fpsGraph) this.fpsGraph.disableFpsTracker();
-                this.fpsGraph = new DomFpsGraph('fps_graph_container');
-                this.fpsGraph.enableFpsTracker(debug.trackTpf);
-            } else if (this.fpsGraph) {
-                this.fpsGraph.disableFpsTracker();
-            }
-
 
 
         };
@@ -85,7 +71,7 @@ define([
                 screenSpaceLine(calcVec, calcVec2, lineRenderSystem[color]);
             }
         }
-        
+
         function screenSpaceLine(from, to, color) {
             calcVec.setArray(from.data);
             calcVec2.setArray(to.data);
@@ -98,7 +84,7 @@ define([
 
             lineRenderSystem.drawLine(calcVec, calcVec2, color);
         }
-        
+
         function drawRelativeLine(e) {
 
             calcVec3.setArray(evt.args(e).from.data);
@@ -137,7 +123,7 @@ define([
             vec.data[1] += anchors[anchorKey][1];
             vec.data[2] += anchors[anchorKey][2];
         };
-        
+
         function drawRelativePosRad(e) {
             calcVec3.setDirect(evt.args(e).x, evt.args(e).y, 0);
             MATH.radialToVector(evt.args(e).angle, evt.args(e).distance, calcVec4);
@@ -175,16 +161,15 @@ define([
             var time = 0;
 
 
-
+            var draw = false;
 
             function clientTick(e) {
+
+                draw = false;
                 drawWorldBounds();
-                frameGraph();
 
-
-                drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
-
-                if (SYSTEM_SETUP.DEBUG.monitorServer) {
+                if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_SERVER')) {
+                    draw = true;
                     //    drawGraph(gooTrafficGraph.getServerTime(), 20,  'PEA', -6);
                     drawGraph(gooTrafficGraph.getServerIdle(), 20,  'CYAN', 0, 11);
                     drawGraph(gooTrafficGraph.getServerBusy(), 100,'PINK', 0, 11);
@@ -192,13 +177,15 @@ define([
                     drawGraph(gooTrafficGraph.getServerPlayers(), -0.1,'PURPLE', 0, 22);
                 }
 
-                if (SYSTEM_SETUP.DEBUG.trackTraffic) {
+                if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TRAFFIC')) {
+                    draw = true;
                     drawGraph(gooTrafficGraph.getSends(), 0.2, 'ORANGE');
                     drawGraph(gooTrafficGraph.getRecieves(), -0.2,  'PEA');
                 }
 
-
-                if (SYSTEM_SETUP.DEBUG.trackTpf) {
+                if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TPF')) {
+                    draw = true;
+                    drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
                     calcVec.setDirect(-14, 19, 0);
                     calcVec.addVector(cameraEntity.transformComponent.transform.translation);
                     applyAnchor(calcVec, 'top_left');
@@ -215,6 +202,9 @@ define([
                     }
                 }
 
+                if (draw) {
+                    frameGraph();
+                }
 
             }
 
@@ -225,16 +215,12 @@ define([
             evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
             evt.on(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
             evt.on(evt.list().CLIENT_TICK, clientTick);
-        };
-
-        function applyDebugConfig(DEBUG) {
-                            evt.fire(evt.list().MONITOR_STATUS, {MONITOR_SERVER:'MonSrv:'+DEBUG.monitorServer});
-                evt.fire(evt.list().MONITOR_STATUS, {MONITOR_TRAFFIC:'MonTraf:'+DEBUG.trackTraffic});
-                evt.fire(evt.list().MONITOR_STATUS, {MONITOR_TPF:'MonTpf:'+DEBUG.trackTpf});
         }
-        
+
+
+
         function handleCameraReady(e) {
-        //    return
+            //    return
             world = evt.args(e).goo.world;
             cameraEntity = evt.args(e).camera;
 
@@ -245,18 +231,18 @@ define([
             evt.args(e).goo.setRenderSystem(lineRenderSystem);
 
             function debugLoaded(key, setupData) {
-                trackersEnable(setupData)
-                applyDebugConfig(setupData)
+                trackersEnable(setupData);
             }
 
+            
             PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", debugLoaded);
             evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'Cam'});
         }
 
         evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'No Cam'});
-        
+
         evt.on(evt.list().CAMERA_READY, handleCameraReady);
-        
+
         return GooMonitor;
 
     });

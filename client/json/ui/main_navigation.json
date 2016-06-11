@@ -6,6 +6,26 @@
         "data":{
           "style":["main_top_right", "coloring_panel_main"]
         }
+
+      }, {
+        "id": "monitorContainer",
+        "data": {
+          "parentId": "rightRoot",
+          "style": ["main_button_container", "coloring_container_main_panel"]
+        }
+      }, {
+        "id": "monitorText",
+        "data": {
+          "parentId": "monitorContainer",
+          "style": ["data_log_container"],
+          "dataLog":{
+            "style":"message_log_field",
+            "channels":["pipeline_message", "pipeline_error", "ping_tracker", "receive_error", "connection_error", "button_update", "connection_status"],
+            "argument":"message",
+            "eventId":"MESSAGE_UI"
+          }
+        }
+
       },{
         "id":"buttonContainer",
         "data":{
@@ -18,9 +38,10 @@
           "parentId":"buttonContainer",
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
-            "id":"panel_button"
+            "id":"panel_button",
+            "event":{"category":"STATUS", "key":"MON_TPF", "type":"toggle"}
           },
-          "text":"Button"
+          "text":"TPF"
         }
       }
     ],
@@ -42,9 +63,10 @@
           "parentId":"buttonContainer1",
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
-            "id":"panel_button"
+            "id":"panel_button",
+            "event":{"category":"STATUS", "key":"MON_TRAFFIC", "type":"toggle"}
           },
-          "text":"Button1"
+          "text":"TRAFFIC"
         }
       },{
         "id":"buttonContainer2",
@@ -58,9 +80,10 @@
           "parentId":"buttonContainer2",
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
-            "id":"panel_button"
+            "id":"panel_button",
+            "event":{"category":"STATUS", "key":"MON_SERVER", "type":"toggle"}
           },
-          "text":"Button2"
+          "text":"SERVER"
         }
       }, {
         "id": "monitorContainer",
@@ -72,9 +95,9 @@
         "id": "monitorText",
         "data": {
           "parentId": "monitorContainer",
-          "style": ["main_monitor_text", "coloring_data_text_field"],
+          "style": ["data_list_container"],
           "dataField":{
-            "dataKeys":["CLIENT_CONFIG", "BROWSER", "CLIENT_OS", "INPUT_MODEL"],
+            "dataKeys":["BROWSER", "OS", "INPUT", "PX_SCALE", "ANTIALIAS", "SCREEN"],
             "dataCategory":"SETUP"
           }
         }
@@ -88,9 +111,9 @@
         "id": "monitorText",
         "data": {
           "parentId": "monitorContainer2",
-          "style": ["main_monitor_text", "coloring_data_text_field"],
+          "style": ["data_list_container"],
           "dataField":{
-            "dataKeys":["CACHE_LOADED", "CAMERA", "MONITOR_SERVER", "MONITOR_TPF", "MONITOR_TRAFFIC"],
+            "dataKeys":["FILE_CACHE", "CAMERA", "MON_SERVER", "MON_TPF", "MON_TRAFFIC", "PIPELINE"],
             "dataCategory":"STATUS"
           }
         }

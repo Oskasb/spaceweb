@@ -38,54 +38,11 @@ define([
     };
 
     GooController.prototype.setupGooRunner = function(clientTickCallback) {
-
-        var standalone = window.navigator.standalone,
-            userAgent = window.navigator.userAgent.toLowerCase(),
-            safari = /safari/.test( userAgent ),
-            ios = /iphone|ipod|ipad/.test( userAgent ),
-            chrome = /chrome/.test( userAgent ),
-            android = /android/.test( userAgent );
-
-        var isAndroid = !!navigator.userAgent.match(/Android/i);
-
-        var downscale = 1;
-        var antialias = true;
-        if (isAndroid){
-            downscale = 0.5;
-            //	antialias = false;
-            PipelineAPI.setCategoryData('SETUP', {CLIENT_OS:'Android'});
-        }
-
-        var times = 0;
-
-        if (standalone) {
-            PipelineAPI.setCategoryData('SETUP', {BROWSER:'Standalone'});
-        }
-        if (chrome) {
-            PipelineAPI.setCategoryData('SETUP', {BROWSER:'Chrome'});
-        }
-
-        if (safari) {
-            PipelineAPI.setCategoryData('SETUP', {BROWSER:'Safari'});
-        }
-
-
-        evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
-
-
-        if (ios) {
-            SYSTEM_SETUP.ios = true;
-            downscale = 4;
-            antialias = false;
-
-            PipelineAPI.setCategoryData('SETUP', {CLIENT_OS:'IOS'});
-
-        }
-
-
-
-
-
+        
+        var antialias = PipelineAPI.readCachedConfigKey('SETUP', 'ANTIALIAS');;
+        
+        var downscale = PipelineAPI.readCachedConfigKey('SETUP', 'PX_SCALE');
+        
 
         var goo = new GooRunner({
             showStats:false,
@@ -122,6 +79,16 @@ define([
         setupGooScene();
         this.registerGooUpdateCallback(clientTickCallback);
         //	this.cameraController.setCameraPosition(0, 0, 0);
+
+        var notifyRezize = function() {
+            setTimeout(function() {
+                goo.renderer.checkResize(goo.renderer.mainCamera);
+            }, 100);
+
+        };
+
+        window.addEventListener('resize', notifyRezize);
+        notifyRezize();
     };
 
     GooController.prototype.updateWorld = function(tpf) {
@@ -166,6 +133,8 @@ define([
 
             width = document.getElementById('game_window').offsetWidth;
             height = document.getElementById('game_window').offsetHeight;
+            PipelineAPI.setCategoryData('SETUP', {SCREEN:[width, height]});
+
 
         };
 
@@ -198,22 +167,11 @@ define([
                 camera.onFrameChange();
             }
         };
+
         setTimeout(function() {
             handleResize();
         }, 1000);
-
-        setTimeout(function() {
-            handleResize();
-        }, 300);
-
-        setTimeout(function() {
-            handleResize();
-        }, 100);
-
-        setTimeout(function() {
-            handleResize();
-        }, 20)
-
+        
     };
 
     monkeypatchCustomEngine();

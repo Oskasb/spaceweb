@@ -14,6 +14,11 @@
     src: url('../css/fonts/BRLNSB.TTF');
 }
 
+span {
+    display:block;
+    left:0em;
+    right:0em;
+}
 
 div.point {
     position: absolute;

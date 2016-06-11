@@ -22,6 +22,7 @@ define([
 
             function createMessage(e) {
                 var chan = channels[evt.args(e).channel];
+                if (!chan) return;
                 var message = new DomMessage(GameScreen.getElement(), evt.args(e).message, chan.style, 0, 0, chan.time);
                 message.animateToXYZ(chan.anim[0], chan.anim[1], chan.anim[2]);
             }

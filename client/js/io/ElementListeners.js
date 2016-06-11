@@ -43,9 +43,8 @@ define([
 					evt.fire(evt.list().SCREEN_CONFIG, {inputModel:'mouse'});
 					_this.actionListener = new MouseActionListener();
 					_this.setupMouseListener();
-
 					clearListeners();
-				}, 200);
+				}, 10);
 				window.removeEventListener('mousemove', setupMouse);
 			}.bind(this);
 
