@@ -40,7 +40,20 @@
       "width": "50%"
     },
 
+    "dev_panel_left":{
+      "pointerEvents": "auto",
+      "top": "20em",
+      "left": "15em",
+      "width": "110em",
+      "height": "auto",
+      "textAlign": "left",
+      "position": "absolute",
+      "display": "inline",
+      "zIndex":"200"
+    },
+
     "main_top_left":{
+      "pointerEvents": "auto",
       "top": "0em",
       "left": "0em",
       "textAlign": "left",
@@ -48,8 +61,30 @@
       "display": "inline",
       "zIndex":"200"
     },
+
+    "dev_monitor_container":{
+      "margin":"2em",
+      "marginRight":"0em",
+      "width": "106em",
+      "height": "96em",
+      "textAlign": "center",
+      "position": "relative",
+      "display": "inline-block"
+    },
+
+    "dev_button_container":{
+      "margin":"2em",
+      "marginRight":"0em",
+      "width": "106em",
+      "height": "50em",
+      "textAlign": "center",
+      "position": "relative",
+      "display": "inline-block"
+    },
+
     "main_button_container":{
       "margin":"2em",
+      "marginRight":"0em",
       "width": "96em",
       "height": "96em",
       "textAlign": "center",
@@ -84,6 +119,22 @@
       "position": "absolute",
       "display": "inline-block",
       "padding":"1.7em",
+      "paddingLeft": "0.2em",
+      "paddingRight": "0.2em"
+    },
+
+    "dev_panel_button":{
+      "top": "0.1em",
+      "left": "0.1em",
+      "right": "0.1em",
+      "height": "auto",
+      "width": "auto",
+      "bottom": "0.1em",
+      "fontSize": "14em",
+      "textAlign": "center",
+      "position": "absolute",
+      "display": "inline-block",
+      "padding":"0.7em",
       "paddingLeft": "0.2em",
       "paddingRight": "0.2em"
     }

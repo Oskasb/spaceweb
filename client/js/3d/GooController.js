@@ -116,7 +116,7 @@ define([
         var handleResize = function() {
             width = window.innerWidth;
             height = window.innerHeight;
-
+            
 
             if (width > height) {
                 DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
@@ -133,12 +133,16 @@ define([
 
             width = document.getElementById('game_window').offsetWidth;
             height = document.getElementById('game_window').offsetHeight;
+            GameScreen.notifyResize();
             PipelineAPI.setCategoryData('SETUP', {SCREEN:[width, height]});
-
-
+            
         };
 
         window.addEventListener('resize', handleResize);
+
+        window.addEventListener('load', function() {
+            handleResize()
+        });
 
         Renderer.prototype.checkResize = function (camera) {
 
@@ -171,7 +175,7 @@ define([
         setTimeout(function() {
             handleResize();
         }, 1000);
-        
+
     };
 
     monkeypatchCustomEngine();

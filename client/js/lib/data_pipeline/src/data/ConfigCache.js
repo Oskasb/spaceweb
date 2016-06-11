@@ -56,7 +56,7 @@ define([
 			var indexLoaded = function(url, json) {
 	//			console.log("JSON Pipe: ", url, json);
 
-				GameDataPipeline.applyPipelineOptions(opts, pipelineErrorCb);
+				GameDataPipeline.applyPipelineOptions(opts, pipelineErrorCb, ConfigCache);
 
 				var indexFiledAdded = function(iurl, jsn) {
 		//			console.log("JSON File Indexed: ", iurl, jsn);
@@ -143,7 +143,7 @@ define([
 
 		ConfigCache.getConfigKey = function(category, key) {
 			var data = ConfigCache.getCategory(category)[key];
-			if(typeof(data) == 'undefined') return "No value for "+key;
+			if(typeof(data) == 'undefined') return key;
 			return data;
 		};
 
@@ -170,7 +170,8 @@ define([
 
 		ConfigCache.subscribeToCategoryKey = function(category, key, callback) {
 			var data = ConfigCache.getConfigKey(category, key);
-			if (typeof(data) != 'string') {
+			if (data != key) {
+            //    console.log("reject string", data)
 				callback(key, data);
 			}
 			ConfigCache.registerCategoryKeySubscriber(category, key, callback);

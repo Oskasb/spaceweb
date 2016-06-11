@@ -35,8 +35,8 @@ define([
 			ImagePipe.tickImagePipe(tpf);
 		};
 
-		GameDataPipeline.applyPipelineOptions = function(opts, pipelineErrorCb) {
-			JsonPipe.setJsonPipeOpts(opts.jsonPipe, pipelineErrorCb);
+		GameDataPipeline.applyPipelineOptions = function(opts, pipelineErrorCb, ConfigCache) {
+			JsonPipe.setJsonPipeOpts(opts.jsonPipe, pipelineErrorCb, ConfigCache);
 			SvgPipe.setSvgPipeOpts(opts.svgPipe, pipelineErrorCb);
 			ImagePipe.setImagePipeOpts(opts.imagePipe, pipelineErrorCb);
 		};

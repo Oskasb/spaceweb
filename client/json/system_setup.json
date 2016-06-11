@@ -4,16 +4,16 @@
         "DEBUG":{
             "on":false,
             "autoName":true,
-            "trackTpf":true,
+            "trackTpf":false,
             "trackTpfAverage":false,
             "renderInput":false,
             "renderDistanceSegments":false,
             "renderSegments":false,
             "renderCursor":false,
             "trackPing":false,
-            "trackTraffic":true,
+            "trackTraffic":false,
             "monitorServer":false,
-            "graphPoints":10
+            "graphPoints":20
         },
         "pipeline":{
             "jsonPipe":{

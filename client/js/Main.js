@@ -35,6 +35,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 
 require([
     '3d/SceneController',
+    'application/DevConfigurator',
     'application/SystemDetector',
     'application/ButtonEventDispatcher',
     'application/Client',
@@ -47,6 +48,7 @@ require([
     'ui/dom/DomProgress'
 ], function(
     SceneController,
+    DevConfigurator,
     SystemDetector,
     ButtonEventDispatcher,
     Client,
@@ -62,6 +64,7 @@ require([
     new StatusMonitor();
     new SystemDetector();
     new ButtonEventDispatcher();
+    new DevConfigurator();
 
     GameScreen.registerAppContainer(document.getElementById('game_window'));
 

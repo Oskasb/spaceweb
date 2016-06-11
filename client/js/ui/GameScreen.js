@@ -24,10 +24,19 @@ define([
 			element.oncontextmenu = function() { return false; };
 			gameScreen = element;
 			gameScreen.style.pointerEvents = 'auto';
-			window.addEventListener('resize', function(){
-				handleResize()
-			});
-			handleResize();
+
+			setTimeout(function() {
+				handleResize();
+			}, 3000);
+
+			setTimeout(function() {
+				handleResize();
+			}, 1000);
+
+			setTimeout(function() {
+				handleResize();
+			}, 100);
+
 		};
 
 		var getResolution = function(width, height) {
@@ -48,6 +57,7 @@ define([
 			scalePercentToY = (1/percentZoom) * height* ( resolution / height);
 
 		};
+
 
 		var getElement = function() {
 			return gameScreen;
@@ -120,6 +130,7 @@ define([
 
 		return {
 			registerAppContainer:registerAppContainer,
+			notifyResize:handleResize,
 			getElement:getElement,
 			getWidth:getWidth,
 			getHeight:getHeight,

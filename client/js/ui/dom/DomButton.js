@@ -3,20 +3,21 @@
 
 define([
         'Events',
-        'PipelineAPI',
-        'ui/dom/DomElement',
-    'ui/GameScreen'
+        'PipelineAPI'
     ],
     function(
         evt,
-        PipelineAPI,
-        DomElement,
-        GameScreen
+        PipelineAPI
     ) {
 
+        var DomButton = function() {
+            this.active = false;
 
-        var DomButton = function(parent, domElem, buttonData) {
-
+        };
+        
+        DomButton.prototype.setupReady = function(parent, domElem, buttonData) {
+            if (this.active) return;
+            
             var state = {
                 pressed:false,
                 active:PipelineAPI.readCachedConfigKey(buttonData.event.category, buttonData.event.key),
@@ -34,32 +35,55 @@ define([
 
             };
 
-            var onActive = function() {
+            var onActive = function(key, value) {
+
+                if (key != buttonData.event.key) {
+                    console.log("Wong Key? ", key);
+                    return
+                }
+
+                state.active = value;
+                notifyActive()
+            };
+
+            var notifyActive = function() {
 
             };
 
-            var onClick = function() {
-
-                if (buttonData.event.type == 'toggle') {
-                    state.active = !state.active;
+            var enableActive = function() {
+                notifyActive = function() {
                     parent.setActive(state.active);
-                    state.value = state.active;
-                }
+                };
+            };
+            
+            var onClick = function() {
+                
+                state.value = !state.active;
+
                 data[buttonData.event.key] = state.value;
                 evt.fire(evt.list().BUTTON_EVENT, {category:buttonData.event.category, data:data});
             };
 
+
+            if (buttonData.event.type == 'toggle') {
+                PipelineAPI.subscribeToCategoryKey(buttonData.event.category, buttonData.event.key, onActive);
+            }
             
             var callback = function(key, data) {
                 domElem.setHover(data.hover.style, onHover);
                 domElem.setPress(data.press.style, onPress);
                 domElem.setClick(onClick);
-                parent.enableActive(data.active.style, onActive);
-                parent.setActive(state.active);
+
+                if (buttonData.event.type == 'toggle') {
+                    parent.enableActive(data.active.style);
+                    enableActive()
+                }
             };
 
             PipelineAPI.subscribeToCategoryKey('ui_buttons', buttonData.id, callback);
+            this.active = true;
         };
+         
         
         return DomButton;
 

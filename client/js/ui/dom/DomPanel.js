@@ -22,7 +22,7 @@ define([
 
         var styles = {};
 
-        var DomPanel = function(parent, panelId) {
+        var DomPanel = function(parent, panelId, adaptiveLayout) {
             this.active = true;
             var _this = this;
 
@@ -30,41 +30,49 @@ define([
 
             var callback = function(key, data) {
                 _this.config = data;
+                console.log("apply panel again")
                 if (_this.active) {
                     _this.applyConfigs(parent, data);
-
-                    setTimeout(function() {
-                        _this.setLandscape();
-                    }, 10);
-                }
+                                    }
             };
 
             this.elements = {};
 
-            var orientationStyle = function(key, data) {
-                styles[key] = data;
-                _this.setLandscape();
-            };
-
-
-            PipelineAPI.subscribeToCategoryKey('styles', 'panel_portrait', orientationStyle);
-            PipelineAPI.subscribeToCategoryKey('styles', 'panel_landscape', orientationStyle);
-
             PipelineAPI.subscribeToCategoryKey('ui_panels', panelId, callback);
+
+            if (adaptiveLayout) {
+                var orientationStyle = function(key, data) {
+                    styles[key] = data;
+                    _this.setLandscape();
+                };
+
+                PipelineAPI.subscribeToCategoryKey('styles', 'panel_portrait', orientationStyle);
+                PipelineAPI.subscribeToCategoryKey('styles', 'panel_landscape', orientationStyle);
+            }
+            
+
         };
 
         DomPanel.prototype.applyButton = function(parent, elem, confData) {
+            var button = new DomButton();
 
             var setupReady = function(src, data) {
-                new DomButton(parent, elem, confData.button) 
+                button.setupReady(parent, elem, confData.button)
             };
-            PipelineAPI.subscribeToCategoryKey('SETUP', 'INPUT', setupReady);
-            
-            
+
+            if (PipelineAPI.readCachedConfigKey('SETUP', 'INPUT') == 'mouse' || PipelineAPI.readCachedConfigKey('SETUP', 'INPUT') == 'touch') {
+                setupReady();
+            } else {
+                PipelineAPI.subscribeToCategoryKey('SETUP', 'INPUT', setupReady);
+            }
+
         };
         
         
         DomPanel.prototype.applyConfigs = function(parent, config) {
+
+            console.log("apply panel configs")
+
             var _this = this;
 
             if (this.elements[this.config[0].id]) {
@@ -137,11 +145,7 @@ define([
                 }
                 this.elements[conf.id] = elem;
             }
-
-            setTimeout(function() {
-                _this.setLandscape();
-            }, 100);
-
+            
         };
 
         DomPanel.prototype.setLandscape = function() {
@@ -154,16 +158,11 @@ define([
 
         };
 
-        DomPanel.prototype.removeMainGui = function() {
+        DomPanel.prototype.removeGuiPanel = function() {
             this.active = false;
             this.elements[this.config[0].id].removeElement();
             delete this;
         };
-
-        DomPanel.prototype.tickTextRenderer = function(tpf) {
-
-        };
-
 
         return DomPanel;
 

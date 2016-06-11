@@ -16,26 +16,26 @@
       "left": "0em",
       "top": "2em",
       "width": "94%",
-      "height": "10em",
+      "height": "13em",
       "textAlign": "left",
       "position": "relative",
       "display": "inline-block",
       "margin":"1em",
       "padding":"0em",
       "borderRadius":"2em",
-      "backgroundColor":"rgba(15, 15, 55, 0.8)"
+      "backgroundColor":"rgba(2, 2, 2, 0.5)"
     },
 
     "data_field_key":{
-      "color":"rgba(225, 125, 255, 0.7)",
+      "color":"rgba(155, 255, 85, 1)",
+      "textShadow": "0.15em 0.15em 0.3em rgb(12,11,25)",
       "position":"absolute",
-      "fontSize":"8em",
-      "marginLeft": "0.4em",
-      "top": "0px",
+      "fontSize":"7em",
+      "marginLeft": "0.3em",
+      "top": "0.4em",
       "left": "0px",
       "width": "auto",
-      "height": "0px",
-      "backgroundColor":"rgba(15, 25, 155, 0.6)"
+      "height": "0px"
     },
 
     "data_field_value":{
@@ -44,11 +44,10 @@
       "position":"absolute",
       "textAlign":"right",
       "marginRight": "0.4em",
-      "top": "0em",
+      "top": "0.2em",
       "right": "0em",
       "width": "auto",
-      "height": "90%",
-      "color":"rgba(215, 215, 215, 0.6)"
+      "height": "90%"
     }
   }
 }]

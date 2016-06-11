@@ -19,8 +19,8 @@ define([
 
         GuiSetup.prototype.initMainGui = function() {
             var parent = document.body;
-            rightPanel = new DomPanel(parent, 'right_panel');
-            leftPanel = new DomPanel(parent, 'left_panel');
+            rightPanel = new DomPanel(parent, 'right_panel', true);
+            leftPanel = new DomPanel(parent, 'left_panel', true);
 
             function screenConfigUpdate() {
                 rightPanel.setLandscape();

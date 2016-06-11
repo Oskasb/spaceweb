@@ -39,12 +39,13 @@
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
-            "event":{"category":"STATUS", "key":"MON_TPF", "type":"toggle"}
+            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_1", "type":"toggle"}
           },
-          "text":"TPF"
+          "text":"Action1"
         }
       }
     ],
+
     "left_panel":[
       {
         "id":"leftRoot",
@@ -64,9 +65,9 @@
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
-            "event":{"category":"STATUS", "key":"MON_TRAFFIC", "type":"toggle"}
+            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_2", "type":"toggle"}
           },
-          "text":"TRAFFIC"
+          "text":"Action2"
         }
       },{
         "id":"buttonContainer2",
@@ -81,16 +82,100 @@
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
+            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_3", "type":"toggle"}
+          },
+          "text":"Action3"
+        }
+      },{
+        "id":"buttonContainer3",
+        "data":{
+          "parentId":"leftRoot",
+          "style":["main_button_container", "coloring_container_main_panel"]
+        }
+      },{
+        "id":"button3",
+        "data":{
+          "parentId":"buttonContainer3",
+          "style":["panel_button", "coloring_button_main_panel"],
+          "button":{
+            "id":"panel_button",
+            "event":{"category":"STATUS", "key":"DEV_MODE", "type":"toggle"}
+          },
+          "text":"DEV"
+        }
+      }
+
+    ],
+
+
+    "dev_panel":[
+      {
+        "id":"panelRoot",
+        "data":{
+          "style":["dev_panel_left", "coloring_panel_dev"]
+        }
+      },{
+        "id":"buttonContainer1",
+        "data":{
+          "parentId":"panelRoot",
+          "style":["dev_button_container", "coloring_container_dev_panel"]
+        }
+      },{
+        "id":"button1",
+        "data":{
+          "parentId":"buttonContainer1",
+          "style":["dev_panel_button", "coloring_button_dev_panel"],
+          "button":{
+            "id":"panel_button",
+            "event":{"category":"STATUS", "key":"MON_TRAFFIC", "type":"toggle"}
+          },
+          "text":"TRAFFIC"
+        }
+      },{
+        "id":"buttonContainer2",
+        "data":{
+          "parentId":"panelRoot",
+          "style":["dev_button_container", "coloring_container_dev_panel"]
+        }
+      },{
+        "id":"button2",
+        "data":{
+          "parentId":"buttonContainer2",
+          "style":["dev_panel_button", "coloring_button_dev_panel"],
+          "button":{
+            "id":"panel_button",
             "event":{"category":"STATUS", "key":"MON_SERVER", "type":"toggle"}
           },
           "text":"SERVER"
         }
-      }, {
+      },{
+        "id":"buttonContainer",
+        "data":{
+          "parentId":"panelRoot",
+          "style":["dev_button_container", "coloring_container_dev_panel"]
+        }
+      },{
+        "id":"button",
+        "data":{
+          "parentId":"buttonContainer",
+          "style":["dev_panel_button", "coloring_button_dev_panel"],
+          "button":{
+            "id":"panel_button",
+            "event":{"category":"STATUS", "key":"MON_TPF", "type":"toggle"}
+          },
+          "text":"TPF"
+        }
+      },
+
+      {
         "id": "monitorContainer",
         "data": {
-          "parentId": "leftRoot",
-          "style": ["main_button_container", "coloring_container_main_panel"]
+          "parentId": "panelRoot",
+          "style": ["dev_monitor_container", "coloring_container_main_panel"]
         }
+
+
+
       }, {
         "id": "monitorText",
         "data": {
@@ -104,8 +189,8 @@
       }, {
         "id": "monitorContainer2",
         "data": {
-          "parentId": "leftRoot",
-          "style": ["main_button_container", "coloring_container_main_panel"]
+          "parentId": "panelRoot",
+          "style": ["dev_monitor_container", "coloring_container_main_panel"]
         }
       }, {
         "id": "monitorText",
@@ -117,7 +202,26 @@
             "dataCategory":"STATUS"
           }
         }
+      },{
+        "id":"buttonContainer4",
+        "data":{
+          "parentId":"panelRoot",
+          "style":["dev_button_container", "coloring_container_dev_panel"]
+        }
+      },{
+        "id":"button4",
+        "data":{
+          "parentId":"buttonContainer4",
+          "style":["dev_panel_button", "coloring_button_dev_panel"],
+          "button":{
+            "id":"panel_button",
+            "event":{"category":"STATUS", "key":"PIPELINE", "type":"toggle"}
+          },
+          "text":"PIPELINE"
+        }
       }
+
     ]
+
   }
 }]

@@ -17,7 +17,7 @@ define([
         var count = 0;
         var inputModel = {};
 
-        function configureScreen(e) {
+        var configureScreen = function(e) {
             if (evt.args(e).inputModel) {
 
 
@@ -39,9 +39,17 @@ define([
                 }
 
                 PipelineAPI.setCategoryData('SETUP', {INPUT:evt.args(e).inputModel});
-                //   evt.removeListener(evt.list().SCREEN_CONFIG, configureScreen);
+                setTimeout(function() {
+                    removeListener();
+                }, 0)
+
+
             }
-        }
+        };
+
+        var removeListener = function() {
+            evt.removeListener(evt.list().SCREEN_CONFIG, configureScreen);
+        };
 
         evt.on(evt.list().SCREEN_CONFIG, configureScreen);
 
@@ -97,15 +105,18 @@ define([
             this.hoverStyle = style;
 
             function setHover(e) {
+                e.stopPropagation();
                 _this.addStyleJsonId(style);
             }
 
             function releaseHover(e) {
+                e.stopPropagation();
                 _this.addStyleJsonId(_this.styleId);
                 _this.pressed = false;
             }
 
             function touchMove(e) {
+                e.stopPropagation();
                 console.log(e.target != e.scrElement);
                 if (e.target != e.scrElement) {
                     releaseHover()
@@ -128,11 +139,13 @@ define([
             var _this =this;
 
             function setPress(e) {
+                e.stopPropagation();
                 _this.addStyleJsonId(style);
                 _this.pressed = true;
             }
 
             function releasePress(e) {
+                e.stopPropagation();
                 _this.addStyleJsonId(_this.styleId);
                 if (_this.pressed) {
 

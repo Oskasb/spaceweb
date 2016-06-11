@@ -195,6 +195,14 @@ define([
 			this.checkResize(Renderer.mainCamera);
 		}.bind(this));
 
+		var resizeFunc = function() {
+			this.checkResize(Renderer.mainCamera);
+		}.bind(this);
+
+		window.addEventListener('load', function() {
+			resizeFunc();
+		});
+
 		this._definesIndices = [];
 
 		// #ifdef DEBUG

@@ -76,10 +76,27 @@ define([
 			}
 		};
 
-		JsonPipe.setJsonPipeOpts = function(opts, pipelineErrorCb) {
+		JsonPipe.setJsonPipeOpts = function(opts, pipelineErrorCb, ConfigCache) {
 			options = opts;
 			errorCallback = pipelineErrorCb;
+
+
+			var statusUpdate = function(key, value) {
+				console.log("Set JsonPoll: ", key, value);
+
+				if (value) {
+					evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:'Enable JSON Poll'});
+				} else {
+					evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Disable JSON Poll'});
+				}
+
+				options.polling.enabled = value;
+
+			};
+
+			ConfigCache.subscribeToCategoryKey('STATUS', "PIPELINE", statusUpdate)
 		};
+
 
 		return JsonPipe
 
