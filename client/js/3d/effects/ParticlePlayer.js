@@ -173,7 +173,6 @@ define([
 
 
         ParticlePlayer.prototype.spawnGameEffects = function(effectData, particleData, customEffectData, callbacks, density) {
-
             this.simpleParticles.spawn(effectData.simulator, particleData.pos, particleData.vel, customEffectData, callbacks, density);
         };
 

@@ -8,6 +8,10 @@ function (
 	"use strict";
 
 	function ParticleSystem(goo) {
+		this.particleCount = 0;
+		this.materialsCount = 0;
+		this.simulatorCount = 0;
+		this.simulationsCount = 0;
 		this.goo = goo;
 		this.atlases = {};
 		this.simData = {};
@@ -29,6 +33,22 @@ function (
 
 	ParticleSystem.prototype.get = function (id) {
 		return this.simulators[id];
+	};
+
+	
+
+
+	ParticleSystem.prototype.getSystemMaterialCount = function (id) {
+		return this.materialsCount;
+	};
+
+
+	ParticleSystem.prototype.getParticleSimCount = function (id) {
+		return this.simulationsCount;
+	};
+	
+	ParticleSystem.prototype.getParticleTotalCount = function (id) {
+		return this.particleCount;
 	};
 
 	ParticleSystem.prototype.removeParticleSystemId = function(id) {
@@ -64,9 +84,16 @@ function (
 	};
 
 	ParticleSystem.prototype.update = function(tpf) {
+		this.particleCount = 0;
+		this.simulationsCount = 0;
+		this.materialsCount = 0;
+		
 		for (var simulatorId in this.simulators) {
 			var simulator = this.simulators[simulatorId];
-				simulator.update(tpf);
+			simulator.update(tpf);
+			this.particleCount += simulator.totalPool - simulator.availableParticles.length;
+			this.simulationsCount += simulator.activeSimulations;
+			this.materialsCount += simulator.materialsCount;
 		}
 		
 	};

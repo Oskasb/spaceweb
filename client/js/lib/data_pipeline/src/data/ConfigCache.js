@@ -108,18 +108,24 @@ define([
 					callbacks[i](id, data);
 				}
 			};
-
 			fireCallbacks(categories[key].callbacks, key, configs[key]);
-
-			for (var index in categories[key].subscription) {
-				if (typeof(configs[key][index]) != 'undefined') {
-					fireCallbacks(categories[key].subscription[index], index, configs[key][index]);
-				} else {
-					console.log("Undefined cache entry?", key);
-				}
-			}
-			masterReset();
 		};
+
+        ConfigCache.fireCategoryKeyCallbacks = function(category, key) {
+            var fireCallbacks = function(callbacks, id, data) {
+                for (var i = 0; i < callbacks.length; i++) {
+                    callbacks[i](id, data);
+                }
+            };
+
+            if (categories[category].subscription[key]) {
+                fireCallbacks(categories[category].subscription[key], key, configs[category][key]);
+            }
+
+
+
+
+        };
 
 
 		ConfigCache.dataCombineToKey = function(key, url, data) {
@@ -127,7 +133,11 @@ define([
 				ConfigCache.addCategory(key);
 			}
 			for (var index in data[key]) {
-				configs[key][index] = data[key][index];
+                if (configs[key][index] != data[key][index]) {
+                    configs[key][index] = data[key][index];
+                    ConfigCache.fireCategoryKeyCallbacks(key, index);
+                }
+
 			}
 
 			ConfigCache.fireCategoryCallbacks(key);

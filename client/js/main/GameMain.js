@@ -15,6 +15,8 @@ define([
 
 		var GameMain = function() {
 			this.pieces = {};
+			this.lastPieceCount = 0;
+			this.pieceCount = 0;
 			this.ownPlayer;
 
 			var pieces = this.pieces;
@@ -115,10 +117,23 @@ define([
 			}
 		};
 
+		GameMain.prototype.trackClientPieces = function(count) {
+			if (this.lastPieceCount != count) {
+				this.lastPieceCount = count;
+				evt.fire(evt.list().MONITOR_STATUS, {CLIENT_PIECES:this.pieceCount});
+			}
+		};
+		
+		
 		GameMain.prototype.tickClientGame = function(tpf) {
+			this.pieceCount = 0;
+
 			for (var key in this.pieces) {
 				this.pieces[key].updatePlayer(tpf);
+				this.pieceCount += 1;
+				this.trackClientPieces(this.pieceCount)
 			}
+			
 		};
 
 		return GameMain;

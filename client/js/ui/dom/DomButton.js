@@ -76,7 +76,9 @@ define([
 
                 if (buttonData.event.type == 'toggle') {
                     parent.enableActive(data.active.style);
-                    enableActive()
+                    enableActive();
+                    notifyActive()
+
                 }
             };
 

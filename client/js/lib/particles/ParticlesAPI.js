@@ -34,5 +34,18 @@ define([
 			this.particleSystem.remove();
 		};
 
+		ParticlesAPI.prototype.getParticleCount = function() {
+			return this.particleSystem.getParticleTotalCount();
+		};
+		
+		ParticlesAPI.prototype.getParticleSimCount = function() {
+			return this.particleSystem.getParticleSimCount();
+		};
+
+		ParticlesAPI.prototype.getParticleMaterialCount = function() {
+			return this.particleSystem.getSystemMaterialCount();
+		};
+		
+		
 		return ParticlesAPI
 	});

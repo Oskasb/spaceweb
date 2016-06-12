@@ -21,6 +21,7 @@ function(
 		this.goo = goo;
 		this.simulators = {};
 		this.groups = {};
+		this.materialCount = 0;
 	}
 
 	function Particle() {
@@ -287,12 +288,33 @@ function(
 	};
 
 
+
+	CheapParticles.prototype.getCheapMaterialCount = function() {
+		return this.materialCount;
+
+	};
+
+	CheapParticles.prototype.getCheapParticleCount = function() {
+		return this.totalCount;
+
+	};
+
+	CheapParticles.prototype.getCheapParticleSimCount = function() {
+		return this.simCount;
+	};
+
 	CheapParticles.prototype.update = function(tpf) {
+		this.totalCount = 0;
+		this.simCount = 0;
+		this.materialCount = 0;
 		for (var simulatorId in this.simulators) {
 			var simulator = this.simulators[simulatorId];
 			simulator.update(tpf);
 			if (simulator.meshData.indexCount > 0) {
 				this.enableSimulator(simulator);
+				this.totalCount += simulator.meshData.indexCount;
+				this.simCount += 1;
+				this.materialCount += 1;
 			} else {
 				this.disableSimulator(simulator);
 			}

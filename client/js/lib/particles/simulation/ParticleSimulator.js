@@ -24,6 +24,7 @@ function (
 
 	function ParticleSimulator(goo, settings, rendererConfigs, spriteAtlas, texture) {
 		this.goo = goo;
+		this.activeSimulations = 0;
 		this.settings = settings;
 		this.rendererConfigs = rendererConfigs;
 		this.rendererSettings = {};
@@ -171,6 +172,7 @@ function (
 		if (sim.particles.length == sim.recover.length) {
 			this.recoverSimulation(sim);
 		}
+		this.activeSimulations += 1;
 	};
 
 
@@ -180,15 +182,25 @@ function (
 			return;
 		}
 
+		this.materialsCount = 0;
+		this.activeSimulations = 0;
+
 		for (i = 0; i < this.simulations.length; i++) {
 			this.updateSimulation(tpf, this.simulations[i]);
 		}
 
 		for (i = 0; i < this.renderers.length; i++) {
 		//	if (this.aliveParticles)
-			if (typeof(this.renderers[i].updateMeshdata) == 'function') {
+		//	if (typeof(this.renderers[i].updateMeshdata) == 'function') {
 				this.renderers[i].updateMeshdata();
-			}
+
+                if (!this.renderers[i].entity.hidden) {
+                    this.materialsCount += 1;
+                }
+		//	} else {
+         //       console.log("Renderer not a function?")
+        //    }
+
 
 		}
 

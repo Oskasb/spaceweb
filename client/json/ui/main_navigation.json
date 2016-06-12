@@ -126,7 +126,7 @@
           "parentId":"buttonContainer1",
           "style":["dev_panel_button", "coloring_button_dev_panel"],
           "button":{
-            "id":"panel_button",
+            "id":"dev_panel_button",
             "event":{"category":"STATUS", "key":"MON_TRAFFIC", "type":"toggle"}
           },
           "text":"TRAFFIC"
@@ -143,7 +143,7 @@
           "parentId":"buttonContainer2",
           "style":["dev_panel_button", "coloring_button_dev_panel"],
           "button":{
-            "id":"panel_button",
+            "id":"dev_panel_button",
             "event":{"category":"STATUS", "key":"MON_SERVER", "type":"toggle"}
           },
           "text":"SERVER"
@@ -160,7 +160,7 @@
           "parentId":"buttonContainer",
           "style":["dev_panel_button", "coloring_button_dev_panel"],
           "button":{
-            "id":"panel_button",
+            "id":"dev_panel_button",
             "event":{"category":"STATUS", "key":"MON_TPF", "type":"toggle"}
           },
           "text":"TPF"
@@ -214,10 +214,26 @@
           "parentId":"buttonContainer4",
           "style":["dev_panel_button", "coloring_button_dev_panel"],
           "button":{
-            "id":"panel_button",
+            "id":"dev_panel_button",
             "event":{"category":"STATUS", "key":"PIPELINE", "type":"toggle"}
           },
           "text":"PIPELINE"
+        }
+      },{
+        "id": "monitorContainer3",
+        "data": {
+          "parentId": "panelRoot",
+          "style": ["dev_monitor_container", "coloring_container_main_panel"]
+        }
+      }, {
+        "id": "monitorText",
+        "data": {
+          "parentId": "monitorContainer3",
+          "style": ["data_list_container"],
+          "dataField":{
+            "dataKeys":["FANCY_PARTICLES","FANCY_SIMULATIONS", "CHEAP_PARTICLES","CHEAP_SIMULATORS", "MATERIALS", "CLIENT_PIECES"],
+            "dataCategory":"STATUS"
+          }
         }
       }
 

@@ -25,7 +25,12 @@ define([
         };
 
         StatusMonitor.prototype.registerStatus = function(data) {
-            PipelineAPI.setCategoryData('STATUS', data);
+
+        //    if (data.value != PipelineAPI.readCachedConfigKey('STATUS', data.key)) {
+                PipelineAPI.setCategoryData('STATUS', data);
+        //    }
+
+
         };
 
         StatusMonitor.prototype.monitorSystem = function() {

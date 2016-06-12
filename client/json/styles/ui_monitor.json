@@ -27,7 +27,7 @@
     },
 
     "data_field_key":{
-      "color":"rgba(155, 255, 85, 1)",
+      "color":"rgba(115, 255, 235, 1)",
       "textShadow": "0.15em 0.15em 0.3em rgb(12,11,25)",
       "position":"absolute",
       "fontSize":"7em",

@@ -106,9 +106,61 @@ define([
 
 
 
+        var lastFancyParticles = 0;
+        var lastfancySims = 0;
+        var lastCheapParticles = 0;
+        var lastCheapSims = 0;
+        var lastMatCount= 0;
+
+
+		var monitorParticleStatus = function() {
+
+            var count = particlesAPI.getParticleCount();
+
+            if (count != lastFancyParticles) {
+                lastFancyParticles = count;
+                evt.fire(evt.list().MONITOR_STATUS, {FANCY_PARTICLES:lastFancyParticles});
+            }
+
+            count = particlesAPI.getParticleSimCount();
+
+            if (count != lastfancySims) {
+                lastfancySims = count;
+                evt.fire(evt.list().MONITOR_STATUS, {FANCY_SIMULATIONS:lastfancySims});
+            }
+
+            count = cheapParticles.getCheapParticleCount();
+
+            if (count != lastCheapParticles) {
+                lastCheapParticles = count;
+                evt.fire(evt.list().MONITOR_STATUS, {CHEAP_PARTICLES:lastCheapParticles});
+            }
+
+            count = cheapParticles.getCheapParticleSimCount();
+
+            if (count != lastCheapSims) {
+                lastCheapSims = count;
+                evt.fire(evt.list().MONITOR_STATUS, {CHEAP_SIMULATORS:lastCheapSims});
+            }
+
+            var matCount = particlesAPI.getParticleMaterialCount();
+            matCount += cheapParticles.getCheapMaterialCount();
+
+            if (matCount != lastMatCount) {
+                lastMatCount = matCount;
+                evt.fire(evt.list().MONITOR_STATUS, {MATERIALS:lastMatCount});
+            }
+
+		};
+
+        SimpleParticles.prototype.monitorParticleStatus = function() {
+            monitorParticleStatus();
+        };
+
 		SimpleParticles.prototype.update = function(tpf) {
 			particlesAPI.requestFrameUpdate(tpf);
 			cheapParticles.update(tpf);
+            monitorParticleStatus();
 		};
 
 		return SimpleParticles;
