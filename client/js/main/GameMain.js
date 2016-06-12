@@ -81,8 +81,7 @@ define([
 
 		GameMain.prototype.RegisterPlayer = function(msg) {
 			var data = msg.data;
-			console.log("Server Player: ", data);
-			var _this = this;
+			
 
 			if (this.pieces[data.playerId]) {
 				console.log("Player already registered", data.playerId, this.pieces)
@@ -93,19 +92,15 @@ define([
 				this.ownPlayer = player;
 
 				var handleCursorLine = function(e) {
-
 					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:evt.args(e).data, playerId:player.getPieceId()}});
 				};
 
-
 				var handleFastClick = function(e) {
-
 					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{fire:true, playerId:player.getPieceId()}});
 				};
 
 				evt.on(evt.list().CURSOR_RELEASE_FAST, handleFastClick);
-
-
+				
 				evt.on(evt.list().INPUT_PLAYER_CONTROL, handleCursorLine);
 
 				var disconnect = function(e) {

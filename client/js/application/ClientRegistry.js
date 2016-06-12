@@ -17,7 +17,6 @@ define(['Events'
 			data.clientId = this.clientId;
 		};
 
-
 		ClientRegistry.prototype.setName = function(name) {
 			this.playerName = name;
 		};
@@ -27,7 +26,6 @@ define(['Events'
 		};
 		
 		ClientRegistry.prototype.clientConnected = function(data) {
-			console.log("Client Connected", data);
 			this.clientId = data.clientId;
 		};
 

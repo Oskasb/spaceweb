@@ -46,6 +46,7 @@
       "left": "15em",
       "width": "110em",
       "height": "auto",
+      "paddingBottom": "4em",
       "textAlign": "left",
       "position": "absolute",
       "display": "inline",
@@ -65,7 +66,7 @@
     "dev_monitor_container":{
       "margin":"2em",
       "width": "106em",
-      "height": "96em",
+      "height": "auto",
       "textAlign": "center",
       "position": "relative",
       "display": "inline-block"
@@ -91,8 +92,8 @@
 
     "data_list_container":{
       "width": "100%",
-      "height": "100%",
-      "position": "absolute"
+      "height": "auto",
+      "position": "relative"
     },
 
     "data_log_container":{

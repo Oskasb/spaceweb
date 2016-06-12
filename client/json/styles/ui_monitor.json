@@ -14,9 +14,9 @@
 
     "entry_data_field":{
       "left": "0em",
-      "top": "2em",
+      "top": "0.5m",
       "width": "94%",
-      "height": "13em",
+      "height": "10em",
       "textAlign": "left",
       "position": "relative",
       "display": "inline-block",
@@ -32,7 +32,7 @@
       "position":"absolute",
       "fontSize":"7em",
       "marginLeft": "0.3em",
-      "top": "0.4em",
+      "top": "0.1em",
       "left": "0px",
       "width": "auto",
       "height": "0px"
@@ -44,7 +44,7 @@
       "position":"absolute",
       "textAlign":"right",
       "marginRight": "0.4em",
-      "top": "0.2em",
+      "top": "0.1em",
       "right": "0em",
       "width": "auto",
       "height": "90%"

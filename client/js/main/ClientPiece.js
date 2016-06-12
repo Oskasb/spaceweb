@@ -35,14 +35,12 @@ define([
 			this.startSpatial = new MODEL.Spatial();
 			this.temporal = new MODEL.Temporal();
 
-		//	this.domPlayer = new DomPiece(this.piece);
 			this.gooPiece = new GooPiece(this.piece);
 			
 			this.removeCallback = removeCallback;
 			this.setServerState(serverState);
 			this.attachModules(pieceData.modules);
-
-
+			
 		};
 
 		ClientPiece.prototype.attachModules = function(modules) {

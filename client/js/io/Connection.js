@@ -25,7 +25,6 @@ define(['Events'
 
 			socket = new WebSocket(host);
 
-			console.log(host, socket);
 			socket.responseCallbacks = {};
 
 			socket.onopen = function () {
@@ -74,8 +73,6 @@ define(['Events'
 			var resBuffer = JSON.parse(messageData);
 
 			if (!resBuffer.length) {
-				 console.log("No Length Type", resBuffer);
-				//		evt.fire(evt.list().SERVER_MESSAGE, resBuffer);
 				responseStack.push(resBuffer);
 			} else {
 				for (var i = 0; i < resBuffer.length; i++) {

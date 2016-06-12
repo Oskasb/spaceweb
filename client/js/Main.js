@@ -139,7 +139,6 @@ require([
 
 
     var setDebug = function(key, data) {
-        console.log("Set Debug: ", data);
         SYSTEM_SETUP.DEBUG = data;
     };
     

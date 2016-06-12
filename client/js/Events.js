@@ -41,6 +41,7 @@ define(["EventList"], function(eventList) {
         if (!events[event.type]) {
             listeners[event.type] = [];
             events[event.type] = new TinyEvent(event.type);
+            fireEvent(list().MONITOR_STATUS, {EVENT_TYPES:getEventCount()});
         }
     };
 
@@ -73,7 +74,7 @@ define(["EventList"], function(eventList) {
     var registerListener = function(event, callback) {
         setupEvent(event);
         listeners[event.type].push(callback);
-     //   element.addEventListener(event.type, callback);
+        fireEvent(list().MONITOR_STATUS, {EVENT_LISTENERS:getListenerCount()});
     };
 
 
@@ -86,6 +87,22 @@ define(["EventList"], function(eventList) {
         asynchifySplice(listener, callback);
     };
 
+    var eventCount = 0;
+    var listenerCount = 0;
+    var getListenerCount = function() {
+        eventCount = 0;
+        listenerCount = 0;
+        for (var key in listeners) {
+            eventCount++;
+            listenerCount += listeners[key].length;
+        }
+        return listenerCount
+    };
+
+    var getEventCount = function() {
+        return eventCount;
+    };
+
     var removeListener = function(event, callback) {
 
         if (!listeners[event.type]) {
@@ -94,11 +111,13 @@ define(["EventList"], function(eventList) {
 
         if (listeners[event.type].indexOf(callback) == -1) return;
         spliceListener(listeners[event.type], callback);
-
+        fireEvent(list().MONITOR_STATUS, {EVENT_LISTENERS:getListenerCount()});
     };
 
 
     return {
+        getListenerCount:getListenerCount,
+        getEventCount:getEventCount,
         removeListener:removeListener,
         on:registerListener,
         args:eventArgs,
