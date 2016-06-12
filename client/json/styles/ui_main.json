@@ -8,7 +8,7 @@
       "bottom": "2em",
       "position": "absolute",
       "display": "inline-block",
-      "borderRadius":"8em"
+      "borderRadius":"0em"
     },
 
     "main_monitor_container":{

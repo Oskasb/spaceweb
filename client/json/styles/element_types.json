@@ -2,13 +2,12 @@
   "styles": {
 
     "coloring_dark":{
-      "borderRadius":"10em",
+      "borderRadius":"0em",
       "backgroundColor":"rgb(15, 65, 95)"
     },
 
 
     "coloring_canvas_host":{
-      "boxShadow": "0em 0em 2em 0.3em rgb(15, 251, 255)",
       "backgroundColor":"rgb(35, 65, 125)"
     },
 

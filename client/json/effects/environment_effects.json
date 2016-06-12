@@ -6,8 +6,8 @@
         "id":"stars",
         "effect_data":[{
           "game_effect":"space_dust",
-          "volume":[42, 42, 20],
-          "distance": 30,
+          "volume":[33, 33, 15],
+          "distance": 25,
           "speed":[0, 0, 0],
           "colorMin":[0.2, 0.3, 0.4],
           "colorMax":[1, 1, 1],
@@ -18,12 +18,12 @@
         "id":"sparks",
         "effect_data":[{
           "game_effect":"space_spark",
-          "volume":[25, 25, 30],
-          "distance": 40,
+          "volume":[25, 25, 20],
+          "distance": 35,
           "speed":[0, 0, 0],
           "colorMin":[0.2, 0.2, 0.5],
           "colorMax":[1, 1, 1],
-          "frequency":0.1
+          "frequency":0.06
         }]
 
       },
@@ -31,12 +31,12 @@
         "id":"blue_star",
         "effect_data":[{
           "game_effect":"space_cloud",
-          "volume":[350, 350, 210],
+          "volume":[250, 250, 210],
           "distance": 430,
           "speed":[0, 0, 0],
           "colorMin":[0.2, 0.2, 0.5],
           "colorMax":[1, 1, 1],
-          "frequency":0.2
+          "frequency":0.1
         }]
 
       }

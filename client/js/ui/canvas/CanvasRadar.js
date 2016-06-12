@@ -43,8 +43,8 @@ define([
             left: 0
         };
         var size = {
-            height:128,
-            width: 128
+            height:64,
+            width: 64
         };
 
         var pathVec = {
@@ -61,11 +61,11 @@ define([
 
 
         var vectorToX = function(vec) {
-            return 128 - vec.data[1] * 1.28;
+            return size.height - vec.data[1] * size.height*0.01;
         };
 
         var vectorToY = function(vec) {
-            return vec.data[0] * 1.28;
+            return vec.data[0] * size.height*0.01;
         };
 
         var vectorToCanvasX = function(vec) {
@@ -100,7 +100,7 @@ define([
 
             for (var i = 0; i < size.height/2; i++) {
 
-                if (Math.random() < 0.02) {
+                if (Math.random() < 0.002) {
 
 
                     ctx.lineWidth = 1.5+Math.sin(i*0.1*seed);
@@ -135,20 +135,15 @@ define([
             centerX = vectorToX(camera.transformComponent.transform.translation);
             centerY = vectorToY(camera.transformComponent.transform.translation);
 
-
-
-
-
-            1
             var pathPlotTO = setTimeout(function() {
                 wait = false;
                 zLine = true;
             }, 1500);
 
-            var xMax = centerX+64;
-            var xMin = centerX-64;
-            var yMax = centerY+64;
-            var yMin = centerY-64;
+            var xMax = centerX+34;
+            var xMin = centerX-34;
+            var yMax = centerY+34;
+            var yMin = centerY-34;
 
             /*256
              for (var index in gamePieces) {
@@ -214,13 +209,17 @@ define([
 
 
              */
-            tempRect.left 	= playerY -3;
-            tempRect.top 	= playerX -3;
-            tempRect.width 	= 6;
-            tempRect.height = 6;
+            tempRect.left 	= playerY -122;
+            tempRect.top 	= playerX -122;
+            tempRect.width 	= 22;
+            tempRect.height = 22;
             //	tempRect[params.target] *= state * params.factor;
 
-            drawWorldBorders(ctx);
+
+            if (Math.random() < 0.2) {
+                drawWorldBorders(ctx);
+            }
+23
 
             var entCount = 0;
             for (var index in gamePieces) {
@@ -237,10 +236,10 @@ define([
 
 
                 if (gamePieces[index].gooPiece.entity) {
-                    tempRect.left 	= left -2*seed;
-                    tempRect.top 	= top -2*seed;
-                    tempRect.width 	= 4*seed;
-                    tempRect.height = 4*seed;
+                    tempRect.left 	= left -1*seed;
+                    tempRect.top 	= top -1*seed;
+                    tempRect.width 	= 2*seed;
+                    tempRect.height = 2*seed;
 
 
                     ctx.fillStyle = toRgba([0.8+Math.sin(age*51)*0.1, 0.8+Math.sin(100+age*1.15)*0.2, 0.8+Math.cos(age*125)*0.2, Math.random()*0.5+0.5]);

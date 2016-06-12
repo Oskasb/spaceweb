@@ -15,15 +15,23 @@ define([
     ) {
 
         var DomCanvas = function(parent, configId) {
-            var canvasApi = new CanvasGuiAPI(parent.element, 128);
+            var canvasApi = new CanvasGuiAPI(parent.element, 64);
 
         //    var canvasRadar = new CanvasRadar();
 
             var pieces = PipelineAPI.readCachedConfigKey('GAME_DATA', 'PIECES');
             var camera = PipelineAPI.readCachedConfigKey('GAME_DATA', 'CAMERA');
 
+            var pop;
+            var threshold = 0.5;
+
             var canvasCallback = function(tpf) {
-                CanvasRadar.drawRadarContent(pieces, ctx, camera)
+
+                if (pop < threshold) {
+                    CanvasRadar.drawRadarContent(pieces, ctx, camera)
+                }
+
+
             };
 
 
@@ -46,7 +54,11 @@ define([
             
             
             var clientTick = function(e) {
-                canvasApi.updateCanvasGui(evt.args(e).tpf);
+                pop = Math.random();
+                if (pop < threshold) {
+                    canvasApi.updateCanvasGui(evt.args(e).tpf);
+                }
+
             };
 
 

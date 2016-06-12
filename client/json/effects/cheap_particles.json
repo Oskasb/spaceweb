@@ -15,7 +15,7 @@
           "strength": 6,
           "lifespan": [1, 4],
           "poolCount": 100,
-          "growth": [3,6],
+          "growth": [2,4],
           "spin": [0,0 ],
           "acceleration": 0.99
         }
@@ -34,8 +34,8 @@
           "spread": 0.12,
           "strength": 3,
           "acceleration": 1.15,
-          "lifespan": [ 0.1,   0.4],
-          "poolCount": 500
+          "lifespan": [ 0.1,   0.2],
+          "poolCount": 200
         }
       },{
         "id": "engine_jet_blue",
@@ -48,12 +48,12 @@
           "rotation": [0,360],
           "spin": [150, 150],
           "gravity": 0,
-          "count": 3,
+          "count": 2,
           "spread": 0.03,
           "strength": 3,
           "acceleration": 1.2,
-          "lifespan": [0.11, 0.22],
-          "poolCount": 500
+          "lifespan": [0.05, 0.15],
+          "poolCount": 200
         }
       },{
         "id": "explosion_big",
@@ -120,7 +120,7 @@
           "color": [  0.6,   0.8,  0.9, 1 ],
           "blending": "additive",
           "size": [ 0, 1 ],
-          "growth": [1, 2 ],
+          "growth": [1, 1.5 ],
           "rotation": [0, 360 ],
           "spin": [ -150,150 ],
           "gravity": 0,
@@ -129,7 +129,7 @@
           "strength": 0,
           "acceleration": 0.96,
           "lifespan": [1,4],
-          "poolCount": 160
+          "poolCount": 110
         }
 
       },
@@ -149,7 +149,7 @@
           "strength": 0,
           "acceleration": 0.96,
           "lifespan": [2,10],
-          "poolCount": 420
+          "poolCount": 120
         }
 
       },
