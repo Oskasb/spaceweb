@@ -100,17 +100,16 @@ define([
 
             for (var i = 0; i < size.height/2; i++) {
 
-                if (Math.random() < 0.002) {
+                if (Math.random() < 0.05) {
 
 
-                    ctx.lineWidth = 1.5+Math.sin(i*0.1*seed);
+                    ctx.lineWidth = 1;
 
-                    ctx.strokeStyle = toRgba([0.4+Math.sin(i*0.6)*0.2, 0.6+Math.cos(i*0.5*seed)*0.5, 0.6+Math.cos(i*0.4*seed)*0.4, Math.random()*0.2]);
+                    ctx.strokeStyle = toRgba([0.5+Math.sin(i*0.6)*0.1, 0.9+Math.cos(i*0.5*seed)*0.1, 0.9+Math.cos(i*0.4*seed)*0.1, 0.1 + Math.random()*0.1]);
 
                     CustomGraphCallbacks.startGraph(ctx, 0, i*2);
 
                     pathVec.data[0] = path[i]+centerX;
-                    i++
                     pathVec.data[1] = path[i]+centerY;
 
                     CustomGraphCallbacks.addPointToGraph(ctx, size.width, i*2);
@@ -140,10 +139,10 @@ define([
                 zLine = true;
             }, 1500);
 
-            var xMax = centerX+34;
-            var xMin = centerX-34;
-            var yMax = centerY+34;
-            var yMin = centerY-34;
+            var xMax = centerX+44;
+            var xMin = centerX-44;
+            var yMax = centerY+44;
+            var yMin = centerY-44;
 
             /*256
              for (var index in gamePieces) {
