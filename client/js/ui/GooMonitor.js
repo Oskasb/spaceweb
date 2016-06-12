@@ -234,7 +234,7 @@ define([
                 trackersEnable(setupData);
             }
 
-            
+            PipelineAPI.setCategoryData('GAME_DATA', {CAMERA:cameraEntity});
             PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", debugLoaded);
             evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'Cam'});
         }

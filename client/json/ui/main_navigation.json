@@ -43,6 +43,22 @@
           },
           "text":"Action1"
         }
+      },{
+        "id":"mapContainer",
+        "data":{
+          "parentId":"rightRoot",
+          "style":["main_button_container", "coloring_dark"]
+        }
+      },{
+        "id":"radar",
+        "data":{
+          "parentId":"mapContainer",
+          "style":["canvas_host", "coloring_canvas_host"],
+          "canvas":{
+            "id":"canvas_radar",
+            "config":{}
+          }
+        }
       }
     ],
 

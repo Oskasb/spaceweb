@@ -1,5 +1,10 @@
 ServerPlayer = function(clientId, client, simTime) {
 
+	if (!client) {
+		console.log("Bad Client!", clientId);
+		return;
+	}
+
 	this.id = clientId;
 	this.client = client;
 	this.clientId = clientId;
@@ -7,7 +12,10 @@ ServerPlayer = function(clientId, client, simTime) {
 	var piece;
 
 	var broadcast = function(piecePacket) {
-		if (!piecePacket) console.log("Bad broadcast", piecePacket);
+		if (!client) {
+			console.log("Bad Client!", piece.id, piecePacket);
+			return;
+		}
 		client.broadcastToAll(piecePacket);
 	};
 	
@@ -50,6 +58,10 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 };
 
 ServerPlayer.prototype.applyPieceConfig = function(configs) {
+    if(!this.piece) {
+        console.log('Bad Server Player');
+        return
+    }
 	this.piece.applyConfig(configs);
 };
 

@@ -20,6 +20,10 @@ span {
     right:0em;
 }
 
+canvas {
+    border-radius:inherit;
+}
+
 div.point {
     position: absolute;
 

@@ -19,6 +19,12 @@ define([
 			this.pieceCount = 0;
 			this.ownPlayer;
 
+			var gameData = {
+				PIECES:this.pieces
+			};
+			
+			PipelineAPI.setCategoryData('GAME_DATA', gameData);
+			
 			var pieces = this.pieces;
 			var removeAllPieces = function() {
 				for (var key in pieces) {

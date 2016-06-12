@@ -4,33 +4,31 @@
       {
         "id": "space_sparks",
         "effect_data":{
-          "texture": "speck.png",
-          "blending": "additive",
-          "color":    [1, 0.8, 1, 0.9],
-          "size":     [1, 4 ],
+          "texture":"speck.png",
+          "blending":"additive",
+          "color":[1, 0.8, 1, 0.9],
+          "size": [0, 2],
           "rotation": [0, 360],
           "gravity": 0,
-          "count": 1,
+          "count": 2,
           "spread": 1,
-          "strength": 3,
-          "lifespan": [8,26 ],
+          "strength": 6,
+          "lifespan": [1, 4],
           "poolCount": 100,
-          "growth": [ 1, 8],
+          "growth": [3,6],
           "spin": [0,0 ],
-          "acceleration": 0.9
+          "acceleration": 0.99
         }
-
-      },
-      {
+      },{
         "id": "engine_jet_fire",
         "effect_data":{
           "texture": "explosion.png",
-          "color": [1, 1, 0.2,0.4],
+          "color": [1, 1, 0.2,0.3],
           "blending": "additive",
-          "size": [   3, 64  ],
-          "growth": [ -29, 124          ],
-          "rotation": [            0,            360          ],
-          "spin": [            -150,            150          ],
+          "size": [ 3, 44  ],
+          "growth": [ -29, 154],
+          "rotation": [0, 360 ],
+          "spin": [ 150,150],
           "gravity": 0,
           "count":2,
           "spread": 0.12,
@@ -39,9 +37,7 @@
           "lifespan": [ 0.1,   0.4],
           "poolCount": 500
         }
-      },
-
-      {
+      },{
         "id": "engine_jet_blue",
         "effect_data":{
           "texture": "explosion.png",
@@ -59,8 +55,7 @@
           "lifespan": [0.11, 0.22],
           "poolCount": 500
         }
-      },
-      {
+      },{
         "id": "explosion_big",
         "effect_data":{
           "texture": "explosion.png",
@@ -79,9 +74,7 @@
           "poolCount": 80
         }
 
-      },
-
-      {
+      }, {
         "id": "explosion_fire",
         "effect_data":{
           "texture": "sharpsmoke.png",
@@ -100,8 +93,7 @@
           "poolCount":50
         }
 
-      },
-      {
+      }, {
         "id": "explosion_sparks",
         "effect_data":{
           "texture": "spark.png",
@@ -127,16 +119,16 @@
           "texture": "energybullet.png",
           "color": [  0.6,   0.8,  0.9, 1 ],
           "blending": "additive",
-          "size": [ 20, 48 ],
-          "growth": [ 9, 14 ],
+          "size": [ 0, 1 ],
+          "growth": [1, 2 ],
           "rotation": [0, 360 ],
           "spin": [ -150,150 ],
           "gravity": 0,
-          "count": 1,
+          "count": 2,
           "spread": 1,
-          "strength": 6,
+          "strength": 0,
           "acceleration": 0.96,
-          "lifespan": [2.5,4.5],
+          "lifespan": [1,4],
           "poolCount": 160
         }
 
@@ -147,8 +139,8 @@
         "effect_data":{
           "texture": "star.png",
           "color": [1, 1,1,1],
-          "size": [1,125],
-          "growth": [ 59,124],
+          "size": [1,15],
+          "growth": [ 29,54],
           "rotation": [ 0, 360 ],
           "spin": [0, 0],
           "gravity": 0,
@@ -156,7 +148,7 @@
           "spread": 1,
           "strength": 0,
           "acceleration": 0.96,
-          "lifespan": [8,22],
+          "lifespan": [2,10],
           "poolCount": 420
         }
 

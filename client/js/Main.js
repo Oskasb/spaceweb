@@ -11,6 +11,7 @@ require.config({
         goo:'./lib/goo',
         shared:'./../../../Shared',
         PipelineAPI:'./lib/data_pipeline/src/PipelineAPI',
+        gui:'./lib/canvas_gui/',
         particle_system:'./lib/particles',
         data_pipeline:'./lib/data_pipeline/src/'
     }
@@ -65,6 +66,7 @@ require([
     new SystemDetector();
     new ButtonEventDispatcher();
     new DevConfigurator();
+
 
     GameScreen.registerAppContainer(document.getElementById('game_window'));
 

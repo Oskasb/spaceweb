@@ -4,6 +4,7 @@ define([
 	'gui/GuiConfigLoader',
 	'gui/CanvasGuiState',
 	'gui/CanvasCalls',
+		'gui/CanvasCalls2d',
 	'gui/GuiBusSends',
 	'gui/io/InputState',
 	'gui/io/PointerCursor',
@@ -13,6 +14,7 @@ define([
 		GuiConfigLoader,
 		CanvasGuiState,
 		CanvasCalls,
+		CanvasCalls2d,
 		GuiBusSends,
 		InputState,
 		PointerCursor,
@@ -20,8 +22,8 @@ define([
 		) {
 
 
-		var CanvasGuiMain = function() {
-			GameScreen.registerAppContainer(document.body);
+		var CanvasGuiMain = function(parentDiv) {
+			GameScreen.registerAppContainer(parentDiv);
 			this.inputState = new InputState();
 			this.pointerCursor = new PointerCursor(this.inputState);
 			this.guiConfigLoader = new GuiConfigLoader();
@@ -40,7 +42,14 @@ define([
 			this.canvasCalls.registerResetCallback(reset);
 		};
 
-
+		CanvasGuiMain.prototype.initGui2d = function(callbackMap, uiResolution) {
+			this.canvasCalls = new CanvasCalls2d(GameScreen.getElement(), uiResolution, callbackMap);
+			this.canvasGuiState = new CanvasGuiState(this.canvasCalls, this.pointerCursor);
+			var reset = function() {
+				this.canvasGuiState.rebuildGuiLayers();
+			}.bind(this);
+			this.canvasCalls.registerResetCallback(reset);
+		};
 
 
 		CanvasGuiMain.prototype.setMainUiState = function(state) {

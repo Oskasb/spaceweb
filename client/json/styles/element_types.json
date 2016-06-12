@@ -1,6 +1,17 @@
 [{
   "styles": {
 
+    "coloring_dark":{
+      "borderRadius":"10em",
+      "backgroundColor":"rgb(15, 65, 95)"
+    },
+
+
+    "coloring_canvas_host":{
+      "boxShadow": "0em 0em 2em 0.3em rgb(15, 251, 255)",
+      "backgroundColor":"rgb(35, 65, 125)"
+    },
+
     "coloring_panel_main":{
       "backgroundColor":"rgb(15, 5, 45)",
       "background": "linear-gradient(to bottom, rgb(155, 155, 255) 0%, rgb(15, 15, 15) 100%)"

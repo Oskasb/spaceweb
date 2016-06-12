@@ -21,7 +21,7 @@ define([
 
 			ConfigCache.registerCategoryKeySubscriber('setup', 'pipeline', applyOpts);
 		*/
-			ConfigCache.applyDataPipelineOptions(window.dataPipelineSetup);
+		//	ConfigCache.applyDataPipelineOptions(window.dataPipelineSetup);
 			this.canvasGuiImages = new CanvasGuiImages();
 		};
 
@@ -83,7 +83,6 @@ define([
 			}
 		};
 
-
 		GuiConfigLoader.prototype.initConfigs = function(masterUrl, ok, fail) {
 			this.registryUrls[masterUrl] = {success:ok, fail:fail};
 			var loadFromMaster = function(data, srcUrl) {
@@ -92,8 +91,6 @@ define([
 			this.loadConfigDataFile(masterUrl, loadFromMaster, fail);
 
 		};
-
-
 
 
 		return GuiConfigLoader

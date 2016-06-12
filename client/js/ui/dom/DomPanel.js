@@ -8,6 +8,7 @@ define([
         'ui/dom/DomButton',
         'ui/dom/DomDataField',
         'ui/dom/DomDataLog',
+    'ui/dom/DomCanvas',
         'ui/GameScreen'
     ],
     function(
@@ -17,6 +18,7 @@ define([
         DomButton,
         DomDataField,
         DomDataLog,
+        DomCanvas,
         GameScreen
     ) {
 
@@ -113,6 +115,10 @@ define([
                     new DomDataLog(elem, conf.data.dataLog)
                 }
 
+                if (conf.data.canvas) {
+                    new DomCanvas(elem, conf.data.canvas)
+                }
+                
                 if (conf.data.input) {
 
                     var startCB = function(e) {

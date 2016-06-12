@@ -1,6 +1,16 @@
 [{
   "styles": {
 
+    "canvas_host":{
+      "top":"2em",
+      "left": "2em",
+      "right": "2em",
+      "bottom": "2em",
+      "position": "absolute",
+      "display": "inline-block",
+      "borderRadius":"8em"
+    },
+
     "main_monitor_container":{
       "margin":"2em",
       "width": "96em",
