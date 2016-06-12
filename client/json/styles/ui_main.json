@@ -42,7 +42,7 @@
 
     "dev_panel_left":{
       "pointerEvents": "auto",
-      "top": "20em",
+      "top": "5em",
       "left": "15em",
       "width": "110em",
       "height": "auto",
@@ -64,7 +64,6 @@
 
     "dev_monitor_container":{
       "margin":"2em",
-      "marginRight":"0em",
       "width": "106em",
       "height": "96em",
       "textAlign": "center",
@@ -74,7 +73,6 @@
 
     "dev_button_container":{
       "margin":"2em",
-      "marginRight":"0em",
       "width": "106em",
       "height": "40em",
       "textAlign": "center",
@@ -84,7 +82,6 @@
 
     "main_button_container":{
       "margin":"2em",
-      "marginRight":"0em",
       "width": "96em",
       "height": "96em",
       "textAlign": "center",

@@ -2,81 +2,80 @@
   "styles": {
 
     "coloring_panel_main":{
-      "backgroundColor":"rgba(15, 5, 45, 0.5)",
+      "backgroundColor":"rgb(15, 5, 45)",
       "background": "linear-gradient(to bottom, rgb(155, 155, 255) 0%, rgb(15, 15, 15) 100%)"
     },
 
     "coloring_panel_dev":{
-      "backgroundColor":"rgba(15, 5, 45, 0.5)",
+      "backgroundColor":"rgba(15, 5, 45)",
       "background": "linear-gradient(to bottom, rgb(55, 75, 225) 0%, rgb(35, 75, 115) 100%)"
     },
 
     "coloring_container_main_panel":{
-      "color":"rgba(195, 225, 255, 0.5)",
+      "color":"rgb(195, 225, 255)",
       "borderRadius":"5em",
-      "boxShadow": "inset 0em 0em 10em 0em rgba(4,1,5,0.8)",
-      "backgroundColor":"rgba(2, 5, 2, 0.5)",
-      "transition":"background-color 0.2s linear"
+      "backgroundColor":"rgb(25, 85, 115)"
     },
 
     "coloring_container_dev_panel":{
-      "color":"rgba(125, 175, 195, 0.8)",
+      "color":"rgb(125, 175, 195)",
       "borderRadius":"5em",
-      "boxShadow": "inset 0em 0em 10em 0em rgba(4,1,5,0.8)",
-      "backgroundColor":"rgba(2, 75, 2, 0.4)",
-      "transition":"background-color 0.2s linear"
+      "backgroundColor":"rgb(25, 115, 191)"
     },
 
-    "main_button_container_active":{
-      "color":"rgba(5, 155, 205, 0.3)",
-      "boxShadow": "inset 0em 0em 26em 3em rgba(124,171,235,1)",
-      "backgroundColor":"rgba(212, 231, 255, 1)"
+    "main_button_active":{
+      "color":"rgb(235, 255, 255)",
+      "border": "0.1em solid rgb(125, 185, 255)",
+      "backgroundColor":"rgb(152, 201, 235)"
     },
 
     "coloring_button_main_panel":{
-      "color":"inherit",
-      "border": "0.1em solid rgba(125, 185, 245, 0.6)",
-      "boxShadow": "inset 0em 0em 2em 0em rgba(124,171,195,0.4)",
+      "color":"rgb(65, 95, 145)",
+      "border": "0.1em solid rgb(125, 185, 245)",
       "borderRadius":"0.2em",
-      "backgroundColor":"rgba(60, 185, 205, 0.3)"
+      "backgroundColor":"rgb(100, 135, 185)"
     },
 
     "coloring_button_dev_panel":{
       "color":"inherit",
-      "border": "0.1em solid rgba(125, 155, 245, 0.2)",
-      "boxShadow": "inset 0em 0em 2em 0em rgba(24,61,115,0.5)",
+      "border": "0.1em solid rgb(25, 55, 85)",
       "borderRadius":"0.2em",
-      "backgroundColor":"rgba(40, 55, 105, 0.4)"
+      "backgroundColor":"rgb(40, 55, 105)"
     },
 
     "main_button_hover":{
-      "color":"rgba(235, 245, 255, 1)",
-      "border": "0.1em solid rgba(255, 255, 255, 1)",
-      "backgroundColor":"rgba(225, 225, 225, 0.3)"
+      "color":"rgb(235, 245, 255)",
+      "border": "0.1em solid rgb(255, 255, 255)",
+      "backgroundColor":"rgb(172, 221, 255)"
     },
 
     "main_button_press":{
-      "color":"rgba(255, 255, 255, 1)",
-      "border": "0.1em solid rgba(195, 245, 255, 1)",
-      "backgroundColor":"rgba(120, 165, 195, 0.9)"
+      "color":"rgb(255, 255, 255)",
+      "border": "0.1em solid rgb(255, 255, 255)",
+      "backgroundColor":"rgb(182, 241, 255)"
     },
 
     "dev_button_hover":{
-      "color":"rgba(215, 245, 215, 1)",
-      "border": "0.1em solid rgba(255, 255, 255, 1)",
-      "backgroundColor":"rgba(225, 225, 225, 0.3)"
+      "color":"rgb(175, 205, 255)",
+      "border": "0.1em solid rgb(255, 255, 255)",
+      "backgroundColor":"rgb(155, 175, 225)"
     },
 
     "dev_button_press":{
-      "color":"rgba(235, 255, 255, 1)",
-      "border": "0.1em solid rgba(195, 245, 255, 1)",
-      "backgroundColor":"rgba(120, 165, 195, 0.9)"
+      "color":"rgb(215, 215, 255)",
+      "border": "0.1em solid rgb(195, 245, 255)",
+      "backgroundColor":"rgb(120, 165, 195)"
     },
 
     "dev_button_container_active":{
       "color":"rgba(215, 235,255, 0.9)",
-      "boxShadow": "inset 0em 0em 26em 3em rgba(114,151,255,1)",
       "backgroundColor":"rgba(82, 151, 195, 1)"
+    },
+
+    "dev_button_active":{
+      "color":"rgb(215, 235,255)",
+      "border": "none",
+      "backgroundColor":"rgb(82, 151, 195)"
     },
 
     "coloring_data_text_field":{

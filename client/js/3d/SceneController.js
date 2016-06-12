@@ -66,7 +66,7 @@ define([
 
             }
 
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.3) {
 
                 effectData.color[0] = 0.5 + Math.random()*0.2;
                 effectData.color[1] = 0.5 + Math.random()*0.3;
@@ -75,7 +75,7 @@ define([
                 evt.fire(evt.list().GAME_EFFECT, {effect:"space_dust", pos:{data:[400*(Math.random()-0.5), 400*(Math.random()-0.5), -20 - 80*Math.random()]}, vel:{data:[0, 0, 0]}, params:effectData});
             }
 
-            if (Math.random() < 0.03) {
+            if (Math.random() < 0.1) {
 
                 evt.fire(evt.list().GAME_EFFECT, {effect:"space_cloud", pos:{data:[1000*(Math.random()-0.5), 1000*(Math.random()-0.5), (Math.random()+0.3) * -2000]}, vel:{data:[0, 0, 0]}});
 

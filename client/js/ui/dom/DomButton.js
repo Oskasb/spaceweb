@@ -50,9 +50,10 @@ define([
 
             };
 
-            var enableActive = function() {
+            var enableActive = function(data) {
+                domElem.enableActive(data.active.style);
                 notifyActive = function() {
-                    parent.setActive(state.active);
+                    domElem.setActive(state.active);
                 };
             };
             
@@ -75,10 +76,8 @@ define([
                 domElem.setClick(onClick);
 
                 if (buttonData.event.type == 'toggle') {
-                    parent.enableActive(data.active.style);
-                    enableActive();
+                    enableActive(data);
                     notifyActive()
-
                 }
             };
 

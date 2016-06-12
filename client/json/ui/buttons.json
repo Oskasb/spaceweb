@@ -9,7 +9,7 @@
           "style":"main_button_press"
         },
         "active":{
-          "style":"main_button_container_active"
+          "style":"main_button_active"
         }
       },
     "dev_panel_button":
@@ -21,7 +21,7 @@
         "style":"dev_button_press"
       },
       "active":{
-        "style":"dev_button_container_active"
+        "style":"dev_button_active"
       }
     }
 

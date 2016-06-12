@@ -92,6 +92,7 @@ define([
         };
         
         DomElement.prototype.setActive = function(bool) {
+            this.active = bool;
             if (bool) {
                 this.addStyleJsonId(this.activeStyle);
             } else {
@@ -106,12 +107,18 @@ define([
 
             function setHover(e) {
                 e.stopPropagation();
-                _this.addStyleJsonId(style);
+                _this.addStyleJsonId(_this.hoverStyle);
             }
 
             function releaseHover(e) {
                 e.stopPropagation();
-                _this.addStyleJsonId(_this.styleId);
+
+                if(_this.active) {
+                    _this.addStyleJsonId(_this.activeStyle);
+                } else {
+                    _this.addStyleJsonId(_this.styleId);
+                }
+
                 _this.pressed = false;
             }
 
