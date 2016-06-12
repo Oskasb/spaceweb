@@ -30,7 +30,6 @@ define([
 
             var callback = function(key, data) {
                 _this.config = data;
-                console.log("apply panel again")
                 if (_this.active) {
                     _this.applyConfigs(parent, data);
                                     }
@@ -70,8 +69,6 @@ define([
         
         
         DomPanel.prototype.applyConfigs = function(parent, config) {
-
-            console.log("apply panel configs")
 
             var _this = this;
 

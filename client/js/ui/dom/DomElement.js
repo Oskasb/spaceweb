@@ -39,17 +39,13 @@ define([
                 }
 
                 PipelineAPI.setCategoryData('SETUP', {INPUT:evt.args(e).inputModel});
-                setTimeout(function() {
-                    removeListener();
-                }, 0)
+
+                evt.removeListener(evt.list().SCREEN_CONFIG, configureScreen);
 
 
             }
         };
 
-        var removeListener = function() {
-            evt.removeListener(evt.list().SCREEN_CONFIG, configureScreen);
-        };
 
         evt.on(evt.list().SCREEN_CONFIG, configureScreen);
 

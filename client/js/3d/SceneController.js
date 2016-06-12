@@ -22,7 +22,6 @@ define([
         gooController = new GooController();
 
         function rendererReady(e) {
-            console.log("Renderer Ready: ", evt.args(e).goo);
             GooEntityFactory.setGoo(evt.args(e).goo);
             world = evt.args(e).goo.world;
             particlePlayer = new ParticlePlayer(evt.args(e).goo);
@@ -32,11 +31,7 @@ define([
         function drawReady() {
             gooController.registerGooUpdateCallback(particlePlayer.simpleParticles.update);
             tickListen();
-
-            setTimeout(function() {
-                evt.removeListener(evt.list().PARTICLES_READY, drawReady);
-            }, 10)
-
+            evt.removeListener(evt.list().PARTICLES_READY, drawReady);
         }
 
         evt.on(evt.list().ENGINE_READY, rendererReady);

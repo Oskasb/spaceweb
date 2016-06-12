@@ -43,9 +43,7 @@ define([
 			};
 
 			function configureListener(e) {
-				console.log("Conf Screen Listener", e)
 				if (evt.args(e).inputModel) {
-					console.log("input model")
 					evt.on(evt.list().CLIENT_TICK, tickCursor);
 					evt.removeListener(evt.list().SCREEN_CONFIG, configureListener);
 				}

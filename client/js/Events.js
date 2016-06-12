@@ -76,20 +76,25 @@ define(["EventList"], function(eventList) {
      //   element.addEventListener(event.type, callback);
     };
 
+
+    var spliceListener = function(listener, callback) {
+        var asynchifySplice = function(list, cb) {
+            setTimeout(function() {
+                list.splice(list.indexOf(cb), 1);
+            }, 0)
+        };
+        asynchifySplice(listener, callback);
+    };
+
     var removeListener = function(event, callback) {
 
         if (!listeners[event.type]) {
-            console.log("No listener yet?", event.type);
             return;
         }
-        console.log("Remove Listener? pre:", event.type, listeners, listeners[event.type].indexOf(callback));
 
         if (listeners[event.type].indexOf(callback) == -1) return;
-        listeners[event.type].splice(listeners[event.type].indexOf(callback), 1);
+        spliceListener(listeners[event.type], callback);
 
-        console.log("Remove Listener? post:", event.type, listeners[event.type], listeners[event.type].indexOf(callback));
-
-	//	element.removeEventListener(event.type, callback, null)
     };
 
 

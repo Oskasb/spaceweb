@@ -45,12 +45,9 @@ define([
 			var spritesRdy = false;
 
 			var checkReady = function() {
-				console.log("sys ready? ", fontsRdy, spritesRdy);
 				if (fontsRdy && spritesRdy) {
 					this.ready = true;
-					console.log("CALL ready? ", readyCallback);
 					readyCallback();
-
 				}
 			}.bind(this);
 

@@ -18,14 +18,11 @@ define([
             this.panel = null;
             this.currentValue = 0;
 
-            console.log("More popups?")
-
             PipelineAPI.setCategoryData('STATUS', {DEV_MODE:false});
 
             var _this=this;
 
             var applyDevConfig = function(src, value) {
-                console.log("Apply Dev Mode", src, value)
                 _this.applyDevConfig(value)
             };
 

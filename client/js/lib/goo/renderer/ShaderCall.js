@@ -334,11 +334,9 @@ function () {
 			this.location.value = matrix.clone();
 		}
 
-		for (var i = 0; i < matrix.data.length; i++) {
-			matrix.data32[i] = matrix.data[i];
-		}
 
-		this.context.uniformMatrix3fv(this.location, transpose, matrix.data32);
+
+		this.context.uniformMatrix3fv(this.location, transpose, matrix.data);
 	};
 
 	ShaderCall.prototype.uniformMatrix4fv = function (matrix, transpose) {
@@ -373,12 +371,9 @@ function () {
 			this.location.value = matrix.clone();
 		}
 
+		
 
-		for (var i = 0; i < matrix.data.length; i++) {
-			matrix.data32[i] = matrix.data[i];
-		}
-
-		this.context.uniformMatrix4fv(this.location, transpose, matrix.data32);
+		this.context.uniformMatrix4fv(this.location, transpose, matrix.data);
 	};
 
 	return ShaderCall;

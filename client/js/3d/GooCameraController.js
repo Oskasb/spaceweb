@@ -52,7 +52,6 @@ define(['Events',
 
     var setupGooCamera = function(e) {
         goo = evt.args(e).goo;
-        console.log("Setup Goo Camera");
 
         camera = new Camera(45, 1, 0.25, 45000);
         cameraEntity = goo.world.createEntity('ViewCameraEntity');
@@ -62,8 +61,6 @@ define(['Events',
 
         cameraEntity.transformComponent.transform.translation.setDirect(0, 0, 150);
         cameraEntity.transformComponent.setUpdated();
-
-        console.log("Setup Goo Camera", cameraEntity);
 
         evt.fire(evt.list().CAMERA_READY, {goo:goo, camera:cameraEntity});
     };

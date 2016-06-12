@@ -71,8 +71,6 @@ define([
         goo.startGameLoop();
 
         var setupGooScene = function() {
-            console.log("Setup Goo Scene");
-
             evt.fire(evt.list().ENGINE_READY, {goo:goo});
         };
 
@@ -102,8 +100,6 @@ define([
 
 
     var monkeypatchCustomEngine = function() {
-
-        console.log("Monkeypatch Engine");
 
         //	Vector = function(size) {
         //		this.data = new Float64Array(size);
