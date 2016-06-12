@@ -279,7 +279,7 @@ define([
 		//	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
             if(Math.random() < 0.3) {
-                this.attenuateColor = this.toRgba([0.3 + Math.random()*0.04, 0.5 + Math.random()*0.1, 0.6 + Math.random()*0.16, 0.24 + Math.random()*0.06])
+                this.attenuateColor = this.toRgba([0.3 + Math.random()*0.04, 0.7 + Math.random()*0.13, 0.6 + Math.random()*0.16, 0.24 + Math.random()*0.06])
             }
 
             if(Math.random() < 0.6) {

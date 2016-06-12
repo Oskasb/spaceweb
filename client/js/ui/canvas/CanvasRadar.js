@@ -79,7 +79,7 @@ define([
         var drawWorldBorders = function(ctx) {
             ctx.lineWidth = 1;
             var seed = (1+Math.random())*0.8;
-            ctx.strokeStyle = toRgba([0.3+Math.sin(0.6)*0.2, 0.3+Math.cos(seed*0.5*seed)*0.5, 0.4+Math.cos(seed*0.4*seed)*0.3, 0.3+Math.random()*0.4]);
+            ctx.strokeStyle = toRgba([0.8+Math.sin(0.6)*0.2, 0.8+Math.cos(seed*0.5*seed)*0.2, 0.9+Math.cos(seed*0.4*seed)*0.1, 0.3+Math.random()*0.4]);
 
             ctx.beginPath();
             CustomGraphCallbacks.addPointToGraph(ctx, vectorToCanvasY(startVec) ,vectorToCanvasX(startVec) );
@@ -241,7 +241,7 @@ define([
                     tempRect.height = 2*seed;
 
 
-                    ctx.fillStyle = toRgba([0.8+Math.sin(age*51)*0.1, 0.8+Math.sin(100+age*1.15)*0.2, 0.8+Math.cos(age*125)*0.2, Math.random()*0.5+0.5]);
+                    ctx.fillStyle = toRgba([0.8+Math.sin(age*51)*0.1, 0.9+Math.sin(100+age*1.15)*0.1, 0.9+Math.cos(age*125)*0.1, Math.random()*0.2+0.8]);
 //
 //
             //        ctx.strokeStyle =  toRgba([0.6+Math.sin(age*2)*0.4, 0.6+Math.sin(age*0.5*seed)*0.4, 0.6+Math.cos(age*0.25)*0.4, 1]);
@@ -263,7 +263,7 @@ define([
                     tempRect.top 	= top -1;
                     tempRect.width 	= 2;
                     tempRect.height = 2;
-                    ctx.fillStyle = toRgba([0.9, 0.6, 0.4, 0.8]);
+                    ctx.fillStyle = toRgba([0.9, 1, 1, 0.4]);
             //        ctx.strokeStyle = toRgba([0.9, 0.4, 0.3, 0.2]);
                 }
 
