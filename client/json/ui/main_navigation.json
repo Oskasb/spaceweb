@@ -247,7 +247,7 @@
           "parentId": "monitorContainer4",
           "style": ["data_list_container"],
           "dataField":{
-            "dataKeys":["EVENT_TYPES","EVENT_LISTENERS"],
+            "dataKeys":["EVENT_TYPES","EVENT_LISTENERS", "FIRED_EVENTS"],
             "dataCategory":"STATUS"
           }
         }

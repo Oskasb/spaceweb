@@ -126,9 +126,9 @@ define([
 			for (var key in this.pieces) {
 				this.pieces[key].updatePlayer(tpf);
 				this.pieceCount += 1;
-				this.trackClientPieces(this.pieceCount)
 			}
-			
+			this.trackClientPieces(this.pieceCount)
+			evt.getFiredCount();
 		};
 
 		return GameMain;

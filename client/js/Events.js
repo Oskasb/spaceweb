@@ -69,6 +69,7 @@ define(["EventList"], function(eventList) {
     var fireEvent = function(event, arguments) {
         dispatchEvent(event, generateEvent(event, arguments));
     //    element.dispatchEvent(generateEvent(event, arguments));
+        firedCount++;
     };
 
     var registerListener = function(event, callback) {
@@ -87,9 +88,18 @@ define(["EventList"], function(eventList) {
         asynchifySplice(listener, callback);
     };
 
+    var firedCount = 0;
     var eventCount = 0;
     var listenerCount = 0;
+
+    var getFiredCount = function() {
+        fireEvent(list().MONITOR_STATUS, {FIRED_EVENTS:firedCount});
+        firedCount = 0;
+    };
+
     var getListenerCount = function() {
+
+
         eventCount = 0;
         listenerCount = 0;
         for (var key in listeners) {
@@ -116,6 +126,7 @@ define(["EventList"], function(eventList) {
 
 
     return {
+        getFiredCount:getFiredCount,
         getListenerCount:getListenerCount,
         getEventCount:getEventCount,
         removeListener:removeListener,

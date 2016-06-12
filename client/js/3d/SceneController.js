@@ -51,7 +51,7 @@ define([
 
         //    particlePlayer.testSpawn();
 
-            if (Math.random() < 0.8) {
+            if (Math.random() < 0.3) {
 
                 effectData.color[0] = 0.5 + Math.random()*0.5;
                 effectData.color[1] = 0.5 + Math.random()*0.5;
@@ -61,7 +61,7 @@ define([
 
             }
 
-            if (Math.random() < 0.3) {
+            if (Math.random() < 0.1) {
 
                 effectData.color[0] = 0.5 + Math.random()*0.2;
                 effectData.color[1] = 0.5 + Math.random()*0.3;
