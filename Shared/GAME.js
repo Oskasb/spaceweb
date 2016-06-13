@@ -158,8 +158,9 @@ if(typeof(GAME) == "undefined"){
 
 
 
-	GAME.Piece = function(id, creationTime, lifeTime, broadcast) {
+	GAME.Piece = function(type, id, creationTime, lifeTime, broadcast) {
 		this.id = id;
+		this.type = type;
 		this.broadcast = broadcast;
 		this.pieceControls = new GAME.PieceControls();
 		this.temporal = new MODEL.Temporal(creationTime, lifeTime);
@@ -236,6 +237,7 @@ if(typeof(GAME) == "undefined"){
 			id:"playerUpdate",
 			data:{
 				playerId:this.id,
+				type:this.type,
 				spatial:this.spatial.getSendSpatial(),
 				modules:this.getModuleStates(),
 				trigger:this.pieceControls.getTriggerState(),

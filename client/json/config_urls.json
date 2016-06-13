@@ -30,6 +30,7 @@
       "styles/effects.json",
 
       "modules/piece_modules.json",
+      "modules/canvas_systems.json",
 
       "system_setup.json"
 

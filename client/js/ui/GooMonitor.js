@@ -159,14 +159,35 @@ define([
             };
 
             var time = 0;
-
+            var cooldown = 0;
 
             var draw = false;
 
             function clientTick(e) {
 
                 draw = false;
-                drawWorldBounds();
+
+
+                time += evt.args(e).tpf;
+                cooldown += evt.args(e).tpf;
+
+                if (cooldown > 0.2) {
+                    if (time > 1 || evt.args(e).tpf > 0.02) {
+
+                        cooldown = 0;
+
+                        calcVec.setDirect(-14, 19, 0);
+                        calcVec.addVector(cameraEntity.transformComponent.transform.translation);
+                        applyAnchor(calcVec, 'top_left');
+                        textStyle.posx = calcVec.data[0];
+                        textStyle.posy = calcVec.data[1];
+
+                        var text = ''+Math.round(evt.args(e).tpf*1000);
+                        evt.fire(evt.list().PARTICLE_TEXT, {text:text, textStyle:textStyle});
+                        time = 0;
+                    }
+                }
+
 
                 if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_SERVER')) {
                     draw = true;
@@ -203,8 +224,21 @@ define([
                 }
 
                 if (draw) {
+
+                    if (!linerendering) {
+                        enableLineRenderSys();
+                    }
+                    
+                    drawWorldBounds();
                     frameGraph();
+                    
+                } else {
+                    if (linerendering) {
+                        diableLineRenderSys(); 
+                    }
+                    
                 }
+                
 
             }
 
@@ -217,6 +251,23 @@ define([
             evt.on(evt.list().CLIENT_TICK, clientTick);
         }
 
+        var goo;
+        var linerendering = false;
+
+        function enableLineRenderSys() {
+            linerendering = true;
+            if (lineRenderSystem.passive == true) {
+                lineRenderSystem.passive = false
+            } else {
+                goo.setRenderSystem(lineRenderSystem);
+            }
+        };
+        
+
+        function diableLineRenderSys() {
+            linerendering = false;
+            lineRenderSystem.passive = true;
+        };
 
 
         function handleCameraReady(e) {
@@ -227,8 +278,9 @@ define([
             gooFpsGraph = new GooFpsGraph();
             gooTrafficGraph = new GooTrafficGraph();
             lineRenderSystem = new LineRenderSystem(world);
-
-            evt.args(e).goo.setRenderSystem(lineRenderSystem);
+            goo = evt.args(e).goo
+            
+            
 
             function debugLoaded(key, setupData) {
                 trackersEnable(setupData);

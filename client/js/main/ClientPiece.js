@@ -25,7 +25,7 @@ define([
 		var ClientPiece = function(serverState, pieceData, removeCallback) {
 
 			this.isOwnPlayer = false;
-			var piece = new GAME.Piece(serverState.playerId);
+			var piece = new GAME.Piece(serverState.type, serverState.playerId);
 			piece.serverState = serverState;
 			this.piece = piece;
 			this.playerId = serverState.playerId;
@@ -138,6 +138,8 @@ define([
 
 				evt.fire(evt.list().PARTICLE_TEXT, {text:'POOF', textStyle:textStyle});
 
+                evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:this.piece.id+' has left the area' });
+
 				this.playerRemove();
 				return;
 			}
@@ -182,6 +184,7 @@ define([
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
 				textStyle.posy = this.piece.spatial.pos.getY()+5;
 				evt.fire(evt.list().PARTICLE_TEXT, {text:'TELEPORT', textStyle:textStyle});
+                evt.fire(evt.list().MESSAGE_UI, {channel:'server_message', message:this.piece.id+' - Teleport' });
 			}
 
 			if (serverState.state == GAME.ENUMS.PieceStates.SPAWN) {

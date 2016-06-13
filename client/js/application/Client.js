@@ -114,6 +114,9 @@ define([
 
 			var requestPlayer = function(name) {
 				console.log("Request Player", name);
+                
+                if (!name) name = 'NoName';
+                
                 evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Name: '+name});
 				PipelineAPI.setCategoryData('REGISTRY', {PLAYER_NAME:name});
 
@@ -144,7 +147,10 @@ define([
 
                     evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'ID: '+PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')});
                     setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
-                    evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
+
+
+                    evt.on(evt.list().CURSOR_PRESS, requestPlayer);
+                //    evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
                 }
             };
 			

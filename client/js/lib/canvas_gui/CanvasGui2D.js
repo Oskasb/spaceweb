@@ -84,14 +84,9 @@ define([
 
 		};
 
-		CanvasGui2D.prototype.scaleCanvasGuiResolution = function(scale) {
-			this.txScale = scale;
-			var targetRes = Math.round(this.config.resolution * this.txScale);
-
-			if (targetRes != this.resolution) {
-				this.resolution = targetRes;
+		CanvasGui2D.prototype.setCanvasGuiResolution = function(res) {
+				this.resolution = res;
 				this.resolutionUpdated();
-			}
 		};
 
 		CanvasGui2D.prototype.handleConfigUpdate = function(url, config) {

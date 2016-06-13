@@ -19,7 +19,7 @@ ServerPlayer = function(clientId, client, simTime) {
 		client.broadcastToAll(piecePacket);
 	};
 	
-	piece = new GAME.Piece(this.id, simTime, Number.MAX_VALUE, broadcast);
+	piece = new GAME.Piece('player', this.id, simTime, Number.MAX_VALUE, broadcast);
 	this.piece = piece;
 	this.piece.teleportRandom();
 

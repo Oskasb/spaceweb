@@ -7,14 +7,13 @@
       "right": "2em",
       "bottom": "2em",
       "position": "absolute",
-      "display": "inline-block",
-      "borderRadius":"0em"
+      "transform": "translate3d(0px, 0px, 0)"
     },
 
     "main_monitor_container":{
       "margin":"2em",
-      "width": "96em",
-      "height": "96em",
+      "width": "116em",
+      "height": "116em",
       "textAlign": "center",
       "position": "relative",
       "display": "inline-block",
@@ -32,34 +31,33 @@
       "zIndex":"200"
     },
     "main_top_right":{
-      "top": "0em",
+      "bottom": "0em",
       "right": "0em",
       "textAlign": "right",
       "position": "absolute",
-      "display": "inline",
       "zIndex":"200"
     },
 
     "panel_landscape":{
-      "width": "100em",
+      "width": "120em",
       "height": "100%"
     },
 
     "panel_portrait":{
-      "height": "100em",
-      "width": "50%"
+      "height": "120em",
+      "width": "100%"
     },
 
     "dev_panel_left":{
       "pointerEvents": "auto",
       "top": "5em",
-      "left": "15em",
+      "left": "35em",
       "width": "110em",
       "height": "auto",
       "paddingBottom": "4em",
       "textAlign": "left",
       "position": "absolute",
-      "display": "inline",
+      "display": "block",
       "zIndex":"200"
     },
 
@@ -69,7 +67,6 @@
       "left": "0em",
       "textAlign": "left",
       "position": "absolute",
-      "display": "inline",
       "zIndex":"200"
     },
 
@@ -84,7 +81,10 @@
 
     "dev_button_container":{
       "margin":"2em",
-      "width": "106em",
+      "top": "1em",
+      "width": "102em",
+      "right": "2em",
+      "left": "2em",
       "height": "40em",
       "textAlign": "center",
       "position": "relative",
@@ -93,8 +93,9 @@
 
     "main_button_container":{
       "margin":"2em",
-      "width": "96em",
-      "height": "96em",
+      "padding": "0em",
+      "width": "116em",
+      "height": "116em",
       "textAlign": "center",
       "position": "relative",
       "display": "inline-block"
@@ -116,19 +117,17 @@
     },
 
     "panel_button":{
-      "top": "0.1em",
-      "left": "0.1em",
-      "right": "0.1em",
+      "top": "0.12em",
+      "left": "0.12em",
+      "right": "0.12em",
+      "bottom": "0.12em",
       "height": "auto",
       "width": "auto",
-      "bottom": "0.1em",
-      "fontSize": "17em",
+      "fontSize": "24em",
       "textAlign": "center",
       "position": "absolute",
-      "display": "inline-block",
-      "padding":"1.7em",
-      "paddingLeft": "0.2em",
-      "paddingRight": "0.2em"
+      "display": "block",
+      "paddingTop":"1.6em"
     },
 
     "dev_panel_button":{

@@ -59,6 +59,10 @@ define([
 			this.canvasGuiMain.setGuiTextureScale(txScale)
 		};
 
+		CanvasGuiAPI.prototype.setGuiTextureResolution = function(res) {
+			this.canvasGuiMain.setGuiTextureResolution(res)
+		};
+		
 		CanvasGuiAPI.prototype.getPointerState = function() {
 			return this.getPointerCursor().getPointerState();
 		};

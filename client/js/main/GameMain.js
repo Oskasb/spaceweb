@@ -67,12 +67,20 @@ define([
 
 			this.pieces[data.playerId] = new ClientPiece(data, this.pieceData, removeCallback);
 
+            if (data.type != 'player') {
+                return this.pieces[data.playerId];
+            }
+
 			if (!this.ownPlayer) {
 				if (data.playerId == PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')) {
                     this.contolOwnPlayer(this.pieces[data.playerId]);
 
-				}
-			}
+				} else {
+                    evt.fire(evt.list().MESSAGE_UI, {channel:'server_message', message:'Present: '+data.playerId });
+                }
+			} else {
+                evt.fire(evt.list().MESSAGE_UI, {channel:'server_message', message:'Appear: '+data.playerId });
+            }
 
 			return this.pieces[data.playerId];
 		};

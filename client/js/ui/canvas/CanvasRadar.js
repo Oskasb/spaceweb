@@ -94,18 +94,21 @@ define([
 
 
 
-        var drawRaster = function(ctx) {
+        var drawRaster = function(ctx, raster) {
 
             var seed = (1+Math.random())*0.8;
+            ctx.strokeStyle = toRgba([
+                raster.color[0]+Math.random()*raster.flicker,
+                raster.color[1]+Math.random()*raster.flicker,
+                raster.color[2]+Math.random()*raster.flicker,
+                raster.color[3]+Math.random()*raster.flicker
+                ]);
 
             for (var i = 0; i < size.height/2; i++) {
 
-                if (Math.random() < 0.05) {
-
+                if (Math.random() < raster.probability) {
 
                     ctx.lineWidth = 1;
-
-                    ctx.strokeStyle = toRgba([0.5+Math.sin(i*0.6)*0.1, 0.9+Math.cos(i*0.5*seed)*0.1, 0.9+Math.cos(i*0.4*seed)*0.1, 0.1 + Math.random()*0.1]);
 
                     CustomGraphCallbacks.startGraph(ctx, 0, i*2);
 
@@ -114,20 +117,22 @@ define([
 
                     CustomGraphCallbacks.addPointToGraph(ctx, size.width, i*2);
                     ctx.stroke();
-
+                    i++
                 }
             }
         };
 
 
-        CanvasRadar.drawRadarContent = function(gamePieces, ctx, camera) {
+        CanvasRadar.drawRadarContent = function(gamePieces, ctx, camera, confData) {
 
+            pos = confData.pos;
+            size = confData.size;
 
 
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
 
-            drawRaster(ctx);
+            drawRaster(ctx, confData.raster);
 
             var curveCount = 0;
 
@@ -139,10 +144,10 @@ define([
                 zLine = true;
             }, 1500);
 
-            var xMax = centerX+44;
-            var xMin = centerX-44;
-            var yMax = centerY+44;
-            var yMin = centerY-44;
+            var xMax = centerX+confData.zoom;
+            var xMin = centerX-confData.zoom;
+            var yMax = centerY+confData.zoom;
+            var yMin = centerY-confData.zoom;
 
             /*256
              for (var index in gamePieces) {
@@ -234,7 +239,7 @@ define([
                 var seed = (Math.random()+1)*0.8;
 
 
-                if (gamePieces[index].gooPiece.entity) {
+                if (gamePieces[index].piece.type == 'player') {
                     tempRect.left 	= left -1*seed;
                     tempRect.top 	= top -1*seed;
                     tempRect.width 	= 2*seed;
@@ -246,17 +251,17 @@ define([
 //
             //        ctx.strokeStyle =  toRgba([0.6+Math.sin(age*2)*0.4, 0.6+Math.sin(age*0.5*seed)*0.4, 0.6+Math.cos(age*0.25)*0.4, 1]);
 
-                    /*
-                    if (Math.random() < 0.1) {
-                        ctx.font = "10px Russo One";
+
+/*
+                        ctx.font = "6px Russo One";
                         ctx.textAlign = "center";
                         ctx.fillText(
                             gamePieces[index].playerId,
                             tempRect.left,
-                            tempRect.top - 6
+                            tempRect.top - 4
                         );
-                    }
-                    */
+*/
+
 
                 } else {
                     tempRect.left 	= left -1;

@@ -64,16 +64,16 @@ div.game_window {
 
 div.game_window_landscape {
     top: 0em;
-    left: 100em;
-    right: 100em;
+    left: 101em;
+    right: 101em;
     bottom: 0em;
     position: absolute;
 }
 
 div.game_window_portrait {
-    top: 100em;
+    top: 121em;
     left: 0em;
     right: 0em;
-    bottom: 0em;
+    bottom: 121em;
     position: absolute;
 }

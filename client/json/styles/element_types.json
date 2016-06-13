@@ -2,7 +2,6 @@
   "styles": {
 
     "coloring_dark":{
-      "borderRadius":"0em",
       "backgroundColor":"rgb(15, 65, 95)"
     },
 
@@ -42,7 +41,7 @@
     "coloring_button_main_panel":{
       "color":"rgb(65, 95, 145)",
       "border": "0.1em solid rgb(125, 185, 245)",
-      "borderRadius":"0.2em",
+      "borderRadius":"0.14em",
       "backgroundColor":"rgb(100, 135, 185)"
     },
 

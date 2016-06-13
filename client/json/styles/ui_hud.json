@@ -73,7 +73,6 @@
       "width": "24em",
       "height": "24em",
       "backgroundColor":"rgba(40, 85, 146, 0.1)",
-      "boxShadow": "0 0 0 1em rgba(115, 215, 225, 0.9)",
       "border": "0em solid rgba(115, 215, 225, 0.2)",
       "borderRadius": "50%",
       "outline":"none"

@@ -279,13 +279,13 @@ define([
 		//	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
             if(Math.random() < 0.3) {
-                this.attenuateColor = this.toRgba([0.3 + Math.random()*0.04, 0.7 + Math.random()*0.13, 0.6 + Math.random()*0.16, 0.24 + Math.random()*0.06])
+                this.attenuateColor = this.toRgba([0.1 + Math.random()*0.08, 0.57 + Math.random()*0.07, 0.46 + Math.random()*0.11, 0.14 + Math.random()*0.02])
             }
 
-            if(Math.random() < 0.6) {
+        //    if(Math.random() < 0.6) {
                 this.ctx.fillStyle = this.attenuateColor;
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            }
+        //    }
 
 
 		};
@@ -300,10 +300,10 @@ define([
 			this.canvasGui2d.applyChanges();
 			this.canvasGui2d.updateCanvasGui();
 
-		//	this.ctx.globalCompositeOperation = 'lighter';
-		//	this.setAttenuateColor([0, 0, 0, 0.2]);
-			this.attenuateGui();
 			this.ctx.globalCompositeOperation = 'source-over';
+		//	this.setAttenuateColor([0, 0, 0, 0.1]);
+			this.attenuateGui();
+			this.ctx.globalCompositeOperation = 'lighter';
 			UiCallbacks.getCallById('processCallbacks')(tpf);
 
 			this.drawDepthLayers();
@@ -377,6 +377,18 @@ define([
 			this.attenuateColor = this.toRgba(color);
 		};
 
+		
+
+		CanvasCalls2d.prototype.applyTextureResolution = function(res) {
+			this.canvasGui2d.setCanvasGuiResolution(res);
+
+			if (this.resolution != res) {
+				this.callResetCallbacks();
+			}
+			this.resolution = res;
+
+		};
+		
 		CanvasCalls2d.prototype.applyTextureScale = function(txScale) {
 			this.canvasGui2d.scaleCanvasGuiResolution(txScale);
 

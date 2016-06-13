@@ -17,7 +17,7 @@ define([
 
 		var CanvasCalls = function(cameraEntity, resolution, uiCallbacks) {
 			this.callsToCanvas = 0;
-			this.registerUiCallbacks(uiCallbacks)
+			this.registerUiCallbacks(uiCallbacks);
 			this.uiParent = new UiParent(this);
 			this.canvasGui3d = new CanvasGui3d(cameraEntity, resolution);
 			this.aspect = this.canvasGui3d.aspect;
@@ -291,10 +291,10 @@ define([
 			this.canvasGui3d.applyChanges();
 			this.canvasGui3d.updateCanvasGui();
 
-		//	this.ctx.globalCompositeOperation = 'lighter';
-		//	this.setAttenuateColor([0, 0, 0, 0.2]);
-			this.attenuateGui();
 			this.ctx.globalCompositeOperation = 'source-over';
+			this.setAttenuateColor([0, 0, 0, 0.2]);
+			this.attenuateGui();
+			this.ctx.globalCompositeOperation = 'lighter';
 			UiCallbacks.getCallById('processCallbacks')(tpf);
 
 			this.drawDepthLayers();

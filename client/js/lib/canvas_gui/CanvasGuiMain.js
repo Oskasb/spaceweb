@@ -76,7 +76,11 @@ define([
 			this.pointerCursor.addGuiStateTransitionCallback(transitionId, callback)
 		};
 
+		
 
+		CanvasGuiMain.prototype.setGuiTextureResolution = function(res) {
+			this.canvasCalls.applyTextureResolution(res);
+		};
 
 		CanvasGuiMain.prototype.setGuiTextureScale = function(txScale) {
 			this.canvasCalls.applyTextureScale(txScale);

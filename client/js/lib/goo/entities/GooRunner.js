@@ -324,19 +324,22 @@ define([
 
 	var tpfSmoothingArray = [];
 	var tpfIndex = 0;
+	var tpf = 0;
 
 	GooRunner.prototype._updateFrame = function (time) {
 		if (this.start < 0) {
 			this.start = time;
 		}
 
-		var tpf = (time - this.start) / 1000.0;
+		tpf = (time - this.start) / 1000.0;
 
-		if (tpf < 0 || tpf > 1.0) { // skip a loop - original start time probably bad.
+	/*
+			if (tpf < 0 || tpf > 1.0) { // skip a loop - original start time probably bad.
 			this.start = time;
 			this.animationId = window.requestAnimationFrame(this.run.bind(this));
 			return;
 		}
+	*/
 
 		tpf = Math.max(Math.min(tpf, 0.5), 0.0001); //! AT: MathUtils.clamp
 
@@ -473,10 +476,9 @@ define([
 			this._takeSnapshots = [];
 		}
 
+
 		// schedule next frame
-		if (this.animationId) {
-			this.animationId = window.requestAnimationFrame(this.run.bind(this));
-		}
+
 	};
 
 	//TODO: move this to Logo
@@ -740,9 +742,18 @@ define([
 	 * @private
 	 */
 	GooRunner.prototype._startGameLoop = function () {
+
+		var _this = this;
+
+		function tick(time) {
+			_this._updateFrame(time);
+			_this.animationId = window.requestAnimationFrame(tick)
+		}
+
+
 		if (!this.animationId) {
 			this.start = -1;
-			this.animationId = window.requestAnimationFrame(this.run.bind(this));
+			this.animationId = window.requestAnimationFrame(tick);
 		}
 	};
 

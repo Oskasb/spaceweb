@@ -51,7 +51,7 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, d
 
 	var apply = cannonModuleData.applies;
 	this.pieceCount++;
-	var bullet = new GAME.Piece('bullet_'+this.pieceCount, now, apply.lifeTime);
+	var bullet = new GAME.Piece('bullet', 'bullet_'+this.pieceCount, now, apply.lifeTime);
     bullet.registerParentPiece(sourcePiece);
 	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
 //	bullet.temporal.timeDelta = dt;
