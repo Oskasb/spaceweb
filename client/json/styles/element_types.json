@@ -24,7 +24,7 @@
     "coloring_container_main_panel":{
       "color":"rgb(195, 225, 255)",
       "borderRadius":"5em",
-      "backgroundColor":"rgb(25, 85, 115)"
+      "backgroundColor":"rgb(25, 45, 85)"
     },
 
     "coloring_container_dev_panel":{

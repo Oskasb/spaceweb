@@ -13,6 +13,7 @@ define([
     ) {
 
         var logChannels = {
+            client_state:"#fea",
             pipeline_message:"#cfc",
             connection_status:"#9fd",
             button_update:"ff0",
@@ -20,7 +21,9 @@ define([
             ping_tracker:"af6",
             receive_error:"f33",
             connection_error:"fa2",
-            undefined:"#aaf"
+            undefined:"#aaf",
+            system_status:"#f8F",
+            server_message:"#4f9"
         };
 
 
@@ -48,7 +51,7 @@ define([
                     text += texts[i]+'\n';
                     logElem.setText(text)
                 }
-                if (texts.length > 18) {
+                if (texts.length > logData.entry_count) {
                     texts.shift();
                 }
             };
@@ -61,7 +64,11 @@ define([
             
             
             var callback = function(e) {
-                logMessage(evt.args(e)[logData.argument], logChannels[evt.args(e).channel]);
+                if (logData.channels.indexOf(evt.args(e).channel) != -1) {
+                    logMessage(evt.args(e)[logData.argument], logChannels[evt.args(e).channel]);
+                } else {
+                    console.log("Not logging", evt.args(e).channel, evt.args(e)[logData.argument])
+                }
             };
 
             if (this.active) return;

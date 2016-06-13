@@ -9,7 +9,8 @@ define([
 		'main/ClientWorld',
 		'main/GameMain',
         'ui/GuiSetup',
-		'ui/UiMessenger'
+		'ui/UiMessenger',
+		'PipelineAPI'
 	],
 	function(
 		evt,
@@ -19,7 +20,8 @@ define([
 		ClientWorld,
 		GameMain,
         GuiSetup,
-		UiMessenger
+		UiMessenger,
+		PipelineAPI
 	) {
 
 
@@ -112,34 +114,52 @@ define([
 
 			var requestPlayer = function(name) {
 				console.log("Request Player", name);
-				clientRegistry.setName(name);
-				
+                evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Name: '+name});
+				PipelineAPI.setCategoryData('REGISTRY', {PLAYER_NAME:name});
+
 				if (ClientState == GAME.ENUMS.ClientStates.CLIENT_REQUESTED) {
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:clientRegistry.clientId, name:clientRegistry.getName()}});
+					var clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')
+					console.log(clientId)
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterPlayer', data:{clientId:clientId, name:name}});
 					setClientState(GAME.ENUMS.ClientStates.PLAYER_REQUESTED);
+
 					evt.removeListener(evt.list().CURSOR_PRESS, requestPlayer);
 				}
 			};
 
-			var requestClient = function() {
-				console.log("Request Client");
-				
-				if (ClientState == GAME.ENUMS.ClientStates.READY) {
-					count++;
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientRegistry.clientId}});
-					setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
-					evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
-				}
-			};
+            var requestClient = function() {
+                console.log("Request Client");
+
+                if (ClientState == GAME.ENUMS.ClientStates.READY) {
+                    count++;
+
+                    var clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')
+                    if (clientId == 'CLIENT_ID') {
+                        evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Request ID'});
+                        clientReady();
+                        return;
+                    }
+
+                    evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RegisterClient', data:{clientId:clientId}});
+
+                    evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'ID: '+PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')});
+                    setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
+                    evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
+                }
+            };
 			
 			var setClientState = function(state) {
 				ClientState = state;
-                evt.fire(evt.list().MESSAGE_UI, {channel:'client_state', message:'MAIN: '+state});
+                evt.fire(evt.list().MESSAGE_UI, {channel:'client_state', message:' - '+state});
 			};
 
 			var clientReady = function() {
 				setClientState(GAME.ENUMS.ClientStates.READY);
-				requestClient();
+				setTimeout(function() {
+					requestClient();
+				}, 100);
+
+
 				evt.removeListener(evt.list().CLIENT_READY, clientReady)
 			};
 			

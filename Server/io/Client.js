@@ -4,7 +4,33 @@ Client = function(seed, socket, clients) {
     this.clients = clients;
 	socket.clientId = this.id;
     this.dataBuffer = [];
+
+    this.player;
+    
+    this.clientStates = {
+        CONSTRUCTED:'CONSTRUCTED',
+        DISCONNECTED:'DISCONNECTED',
+        CONNECTED:'CONNECTED',
+        PLAYING:'PLAYING'
+    };
+    this.setState(this.clientStates.CONSTRUCTED);
+
 };
+
+Client.prototype.setState = function(state) {
+    console.log("Set Client state: ", state);
+    this.state = this.clientStates[state];
+};
+
+Client.prototype.getState = function() {
+    return this.state;
+};
+
+Client.prototype.attachPlayer = function(serverPlayer) {
+    this.player = serverPlayer;
+};
+
+
 
 
 Client.prototype.notifyDataFrame = function() {

@@ -12,6 +12,8 @@ define([
         PipelineAPI
     ) {
 
+        var autoSubmit;
+
         var DomPopup = function(configId, closeCallback) {
             this.active = true;
             var _this = this;
@@ -34,7 +36,7 @@ define([
             PipelineAPI.subscribeToCategoryKey('popups', 'select_name', callback);
 
             if (SYSTEM_SETUP.DEBUG.autoName) {
-                setTimeout(function() {
+                autoSubmit = setTimeout(function() {
                     if (_this.input) {
                         _this.selection = _this.input;
                     }
@@ -127,6 +129,7 @@ define([
         };
 
         DomPopup.prototype.removePopup = function() {
+            clearTimeout(autoSubmit);
             this.active = false;
             this.elements[this.config[0].id].removeElement();
             delete this;

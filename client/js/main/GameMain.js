@@ -63,11 +63,17 @@ define([
                 setTimeout(function() {
                     delete _this.pieces[playerId];
                 }, 20)
-
-        };
+        	};
 
 			this.pieces[data.playerId] = new ClientPiece(data, this.pieceData, removeCallback);
-		//	this.pieces[data.playerId].startSpatial.setSendData(data.spatial);
+
+			if (!this.ownPlayer) {
+				if (data.playerId == PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')) {
+                    this.contolOwnPlayer(this.pieces[data.playerId]);
+
+				}
+			}
+
 			return this.pieces[data.playerId];
 		};
 
@@ -85,24 +91,18 @@ define([
 			}
 		};
 
-		GameMain.prototype.RegisterPlayer = function(msg) {
-			var data = msg.data;
-			
+		GameMain.prototype.contolOwnPlayer = function(clientPiece) {
 
-			if (this.pieces[data.playerId]) {
-				console.log("Player already registered", data.playerId, this.pieces)
-			} else {
-				var player = this.registerPlayer(data);
-				player.setIsOwnPlayer(true);
-			//	player.setServerState(data);
-				this.ownPlayer = player;
+                clientPiece.setIsOwnPlayer(true);
+
+				this.ownPlayer = clientPiece;
 
 				var handleCursorLine = function(e) {
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:evt.args(e).data, playerId:player.getPieceId()}});
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{vector:evt.args(e).data, playerId:clientPiece.getPieceId()}});
 				};
 
 				var handleFastClick = function(e) {
-					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{fire:true, playerId:player.getPieceId()}});
+					evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{fire:true, playerId:clientPiece.getPieceId()}});
 				};
 
 				evt.on(evt.list().CURSOR_RELEASE_FAST, handleFastClick);
@@ -115,7 +115,6 @@ define([
 				};
 
 				evt.on(evt.list().CONNECTION_CLOSED, disconnect);
-			}
 		};
 
 		GameMain.prototype.trackClientPieces = function(count) {

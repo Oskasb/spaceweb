@@ -20,8 +20,9 @@
           "style": ["data_log_container"],
           "dataLog":{
             "style":"message_log_field",
-            "channels":["pipeline_message", "pipeline_error", "ping_tracker", "receive_error", "connection_error", "button_update", "connection_status"],
+            "channels":["server_message", "system_status", "client_state", "pipeline_error", "ping_tracker", "receive_error", "connection_error", "button_update", "connection_status"],
             "argument":"message",
+            "entry_count":11,
             "eventId":"MESSAGE_UI"
           }
         }

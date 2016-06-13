@@ -1,20 +1,20 @@
 "use strict";
 
 
-define(['Events'
-
+define([
+	'PipelineAPI'
 ],
 	function(
-		evt
+		PipelineAPI
 		) {
 
 		var ClientRegistry = function() {
-			this.clientId;
 			this.playerName = "Default Name"
+            this.data = {}
 		};
 
 		ClientRegistry.prototype.RegisterClient = function(data) {
-			data.clientId = this.clientId;
+			data.clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID');
 		};
 
 		ClientRegistry.prototype.setName = function(name) {
@@ -26,7 +26,9 @@ define(['Events'
 		};
 		
 		ClientRegistry.prototype.clientConnected = function(data) {
-			this.clientId = data.clientId;
+            console.log("Connected Data: ", data)
+            this.data.CLIENT_ID = data.clientId;
+			PipelineAPI.setCategoryData('REGISTRY', this.data)
 		};
 
 		return ClientRegistry;

@@ -106,16 +106,32 @@ ServerGameMain.prototype.playerInput = function(data) {
 
 ServerGameMain.prototype.registerPlayer = function(data) {
 
-    var player = this.serverWorld.getPlayer(data.clientId);
-    if (!player) {
-        player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
-        this.addPlayer(player);
-    }
+	var client = this.clients.getClientById(data.clientId);
+	if (client) {
+		console.log("Client present, state:", client.getState());
+		if (client.getState() == client.clientStates.CONNECTED) {
 
-    player.piece.setName(data.name);
-
+			var player = this.serverWorld.getPlayer(data.clientId);
+			if (player) {
+				console.log("Player already registered", data.clientId);
+			} else {
+				player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
+			}
+			player.piece.setName(data.name);
+			
+			this.addPlayer(player);
+			client.broadcastToAll(player.makePacket());
+		} else {
+			console.log("ERR - suspect client state:", client.getState(), data.clientId);
+			return;
+		}
+	} else {
+		console.log("ERR - No client for request:", data.clientId)
+		return;
+	}
+	
 //	console.log("register player", JSON.stringify(data));
-	return player.makePacket();
+	
 };
 
 ServerGameMain.prototype.getNow = function() {

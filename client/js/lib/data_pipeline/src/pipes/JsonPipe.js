@@ -83,7 +83,7 @@ define([
 			var statusUpdate = function(key, value) {
 
 				if (value) {
-					evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:'Enable JSON Poll'});
+					evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Enable JSON Poll'});
 				} else {
 					evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Disable JSON Poll'});
 				}

@@ -102,6 +102,7 @@ define([
 		};
 
 		ClientPiece.prototype.setIsOwnPlayer = function(bool) {
+			evt.fire(evt.list().MESSAGE_UI, {channel:'server_message', message:'Player Ready'});
 			this.isOwnPlayer = bool;
 			this.attachRadialControl();
 		};

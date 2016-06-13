@@ -1,11 +1,15 @@
 Clients = function() {
 	this.clientCount = 0;
 	this.clients = {};
+	
+
+	
 };
 
 Clients.prototype.registerConnection = function(socket) {
 	this.clientCount++;
 	var client = new Client(this.clientCount, socket, this);
+	client.setState(client.clientStates.CONNECTED);
 	this.clients[client.id] = client;
 	client.sendToClient({id:'clientConnected', data:{clientId:client.id}});
 	client.notifyDataFrame();

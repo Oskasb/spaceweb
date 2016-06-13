@@ -109,8 +109,8 @@
     "data_log_container":{
       "width": "100%",
       "right": "0em",
-      "left": "0em",
-      "bottom": "0em",
+      "left": "3em",
+      "bottom": "2em",
       "display": "block",
       "position": "absolute"
     },
