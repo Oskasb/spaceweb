@@ -15,12 +15,8 @@ define([
 		//	this.pointerCursor = this.canvasGuiMain.pointerCursor;
 		};
 
-		CanvasGuiAPI.prototype.initCanvasGui = function(masterUrl, cameraEntity, callbackMap, onReady, onError) {
-			var masterLoaded = function(srcKey, data) {
-				this.canvasGuiMain.initGuiMain(cameraEntity, callbackMap, this.uiTxResolution, this.pointerCursor);
-				onReady(srcKey, data);
-			}.bind(this);
-			this.canvasGuiMain.loadMasterConfig(masterUrl, masterLoaded, onError);
+		CanvasGuiAPI.prototype.init3dCanvasGui = function(cameraEntity, callbackMap, canvasGuiConfig) {
+			this.canvasGuiMain.initGuiMain(cameraEntity, callbackMap, this.uiTxResolution, canvasGuiConfig);
 		};
 
 		CanvasGuiAPI.prototype.initDomCanvasGui = function(callbackMap) {
@@ -62,11 +58,21 @@ define([
 		CanvasGuiAPI.prototype.setGuiTextureResolution = function(res) {
 			this.canvasGuiMain.setGuiTextureResolution(res)
 		};
+
+		CanvasGuiAPI.prototype.setGuiAttenuationRgba = function(rgba) {
+			this.canvasGuiMain.setGuiAttenuationRgba(rgba)
+		};
 		
 		CanvasGuiAPI.prototype.getPointerState = function() {
 			return this.getPointerCursor().getPointerState();
 		};
 
+		CanvasGuiAPI.prototype.removeCanvasGui = function() {
+			this.canvasGuiMain.removeGuiMain()
+			
+			
+		};
+		
 		return CanvasGuiAPI;
 
 	});

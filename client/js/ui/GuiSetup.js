@@ -23,8 +23,10 @@ define([
             leftPanel = new DomPanel(parent, 'left_panel', true);
 
             function screenConfigUpdate() {
-                rightPanel.setLandscape();
-                leftPanel.setLandscape();
+
+                    rightPanel.setLandscape();
+                    leftPanel.setLandscape();
+
             }
 
             evt.on(evt.list().SCREEN_CONFIG, screenConfigUpdate)

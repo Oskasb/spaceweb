@@ -23,7 +23,10 @@ define([
             var _this=this;
 
             var applyDevConfig = function(src, value) {
-                _this.applyDevConfig(value)
+                setTimeout(function() {
+                    _this.applyDevConfig(value)
+                }, 100);
+
             };
 
             PipelineAPI.subscribeToCategoryKey('STATUS', 'DEV_MODE', applyDevConfig);

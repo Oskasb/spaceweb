@@ -76,33 +76,71 @@ define([
             return ((vectorToY(vec) - centerY)*size.width/rangeY)  +  pos.left + size.width * 0.5;
         };
 
-        var drawWorldBorders = function(ctx) {
-            ctx.lineWidth = 1;
-            var seed = (1+Math.random())*0.8;
-            ctx.strokeStyle = toRgba([0.8+Math.sin(0.6)*0.2, 0.8+Math.cos(seed*0.5*seed)*0.2, 0.9+Math.cos(seed*0.4*seed)*0.1, 0.3+Math.random()*0.4]);
+        var randomizedColor = function(color, flicker) {
+            return toRgba([
+                color[0]*(1-flicker + Math.random()*flicker),
+                color[1]*(1-flicker + Math.random()*flicker),
+                color[2]*(1-flicker + Math.random()*flicker),
+                color[3]*(1-flicker + Math.random()*flicker)
+            ]);
+        };
+
+
+        var drawWorldBorders = function(ctx, worldSection) {
+
+            if (Math.random() < worldSection.probability) {
+                ctx.lineWidth = 2;
+
+                ctx.strokeStyle = randomizedColor(worldSection.borderColor, worldSection.flicker);
+
+                tempRect.left 	= vectorToCanvasY(startVec);
+                tempRect.top 	= vectorToCanvasX(startVec);
+                tempRect.width 	= vectorToCanvasY(sizeVec);
+                tempRect.height = vectorToCanvasX(sizeVec);
+
+                ctx.beginPath();
+                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left  ,tempRect.top );
+                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.width ,tempRect.top );
+                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.width ,tempRect.height);
+                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left  ,tempRect.height);
+                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left  ,tempRect.top );
+                ctx.stroke();
+
+                ctx.fillStyle = randomizedColor(worldSection.color, worldSection.flicker);
+                ctx.fillRect(
+                    tempRect.left+1 ,
+                    tempRect.top-1  ,
+                    tempRect.width - tempRect.left -1,
+                    tempRect.height - tempRect.top +1
+                );
+            }
+
+        };
+
+        var drawElementBorders = function(ctx, elementBorder) {
+            if (Math.random() > elementBorder.probability) {
+                return;
+            }
+
+            ctx.lineWidth = elementBorder.width*(1-elementBorder.flicker + Math.random()*elementBorder.flicker);
+
+            ctx.strokeStyle = randomizedColor(elementBorder.color, elementBorder.flicker);
 
             ctx.beginPath();
-            CustomGraphCallbacks.addPointToGraph(ctx, vectorToCanvasY(startVec) ,vectorToCanvasX(startVec) );
-            CustomGraphCallbacks.addPointToGraph(ctx, vectorToCanvasY(sizeVec)  ,vectorToCanvasX(startVec) );
-            CustomGraphCallbacks.addPointToGraph(ctx, vectorToCanvasY(sizeVec)  ,vectorToCanvasX(sizeVec) );
-            CustomGraphCallbacks.addPointToGraph(ctx, vectorToCanvasY(startVec) ,vectorToCanvasX(sizeVec)  );
-            CustomGraphCallbacks.addPointToGraph(ctx, vectorToCanvasY(startVec) ,vectorToCanvasX(startVec) );
+            CustomGraphCallbacks.addPointToGraph(ctx, elementBorder.margin , elementBorder.margin );
+            CustomGraphCallbacks.addPointToGraph(ctx, size.width - elementBorder.margin  ,elementBorder.margin);
+            CustomGraphCallbacks.addPointToGraph(ctx, size.width - elementBorder.margin  ,size.height - elementBorder.margin );
+            CustomGraphCallbacks.addPointToGraph(ctx,  elementBorder.margin , size.height - elementBorder.margin  );
+            CustomGraphCallbacks.addPointToGraph(ctx,  elementBorder.margin , elementBorder.margin );
             ctx.stroke();
 
         };
 
 
-
-
         var drawRaster = function(ctx, raster) {
 
             var seed = (1+Math.random())*0.8;
-            ctx.strokeStyle = toRgba([
-                raster.color[0]+Math.random()*raster.flicker,
-                raster.color[1]+Math.random()*raster.flicker,
-                raster.color[2]+Math.random()*raster.flicker,
-                raster.color[3]+Math.random()*raster.flicker
-                ]);
+            ctx.strokeStyle = randomizedColor(raster.color, raster.flicker);
 
             for (var i = 0; i < size.height/2; i++) {
 
@@ -132,6 +170,8 @@ define([
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
 
+            drawElementBorders(ctx, confData.elementBorder);
+            drawWorldBorders(ctx, confData.worldSection);
             drawRaster(ctx, confData.raster);
 
             var curveCount = 0;
@@ -220,10 +260,7 @@ define([
             //	tempRect[params.target] *= state * params.factor;
 
 
-            if (Math.random() < 0.2) {
-                drawWorldBorders(ctx);
-            }
-23
+
 
             var entCount = 0;
             for (var index in gamePieces) {
@@ -246,30 +283,32 @@ define([
                     tempRect.height = 2*seed;
 
 
-                    ctx.fillStyle = toRgba([0.8+Math.sin(age*51)*0.1, 0.9+Math.sin(100+age*1.15)*0.1, 0.9+Math.cos(age*125)*0.1, Math.random()*0.2+0.8]);
-//
-//
-            //        ctx.strokeStyle =  toRgba([0.6+Math.sin(age*2)*0.4, 0.6+Math.sin(age*0.5*seed)*0.4, 0.6+Math.cos(age*0.25)*0.4, 1]);
 
 
-/*
-                        ctx.font = "6px Russo One";
+                    if (confData.playerNames.on) {
+              //          ctx.strokeStyle = toRgba(confData.playerNames.color);
+
+                        ctx.fillStyle = randomizedColor(confData.playerNames.color, 0.3);
+
+                        ctx.font = confData.playerNames.font;
                         ctx.textAlign = "center";
                         ctx.fillText(
                             gamePieces[index].playerId,
                             tempRect.left,
                             tempRect.top - 4
                         );
-*/
+                    }
 
+
+                    ctx.fillStyle == randomizedColor([0.8+Math.sin(age*51)*0.1, 0.9+Math.sin(100+age*1.15)*0.1, 0.9+Math.cos(age*125)*0.1, Math.random()*0.2+0.8], 0.3);
 
                 } else {
                     tempRect.left 	= left -1;
                     tempRect.top 	= top -1;
                     tempRect.width 	= 2;
                     tempRect.height = 2;
-                    ctx.fillStyle = toRgba([0.9, 1, 1, 0.4]);
-            //        ctx.strokeStyle = toRgba([0.9, 0.4, 0.3, 0.2]);
+                    ctx.fillStyle = randomizedColor([0.9, 1, 1, 0.4], 0.2);
+
                 }
 
 

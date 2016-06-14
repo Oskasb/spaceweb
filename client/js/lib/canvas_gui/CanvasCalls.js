@@ -15,11 +15,11 @@ define([
 		UiParent
 		) {
 
-		var CanvasCalls = function(cameraEntity, resolution, uiCallbacks) {
+		var CanvasCalls = function(cameraEntity, resolution, uiCallbacks, canvasGuiConfig) {
 			this.callsToCanvas = 0;
 			this.registerUiCallbacks(uiCallbacks);
 			this.uiParent = new UiParent(this);
-			this.canvasGui3d = new CanvasGui3d(cameraEntity, resolution);
+			this.canvasGui3d = new CanvasGui3d(cameraEntity, resolution, canvasGuiConfig);
 			this.aspect = this.canvasGui3d.aspect;
 			var onUpdate = function() {
 				this.updateParentLayout();
@@ -275,7 +275,7 @@ define([
 
 		CanvasCalls.prototype.attenuateGui = function() {
 			this.resolution = this.canvasGui3d.resolution;
-			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		//	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			this.ctx.fillStyle = this.attenuateColor;
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -292,7 +292,6 @@ define([
 			this.canvasGui3d.updateCanvasGui();
 
 			this.ctx.globalCompositeOperation = 'source-over';
-			this.setAttenuateColor([0, 0, 0, 0.2]);
 			this.attenuateGui();
 			this.ctx.globalCompositeOperation = 'lighter';
 			UiCallbacks.getCallById('processCallbacks')(tpf);
@@ -368,6 +367,16 @@ define([
 			this.attenuateColor = this.toRgba(color);
 		};
 
+		CanvasCalls.prototype.applyTextureResolution = function(res) {
+			this.canvasGui3d.setCanvasGuiResolution(res);
+
+			if (this.resolution != res) {
+				this.callResetCallbacks();
+			}
+			this.resolution = res;
+
+		};
+		
 		CanvasCalls.prototype.applyTextureScale = function(txScale) {
 			this.canvasGui3d.scaleCanvasGuiResolution(txScale);
 
@@ -383,13 +392,17 @@ define([
 		var resetTimeout;
 		CanvasCalls.prototype.callResetCallbacks = function() {
 			this.updateParentLayout();
-			this.setAttenuateColor([0, 0, 0, 1]);
+            var attenuation = this.attenuateColor;
+        //    this.setAttenuateColor([0, 0, 0, 1]);
+
 			this.attenuateGui();
+            this.attenuateGui();
+            this.attenuateGui();
 			this.renderDepthLayers = [];
 			this.drawInstructions = [];
 			var rebuild = function() {
 				this.updateParentLayout();
-				this.setAttenuateColor([0, 0, 0, 0.2]);
+        //        this.attenuateColor = attenuation;
 				this.resolution = this.canvasGui3d.resolution;
 				for (var i = 0; i < this.resetCallbacks.length; i++) {
 					this.resetCallbacks[i]();
@@ -405,6 +418,13 @@ define([
 			}, 0);
 
 		};
+
+        
+
+        CanvasCalls.prototype.removeGuiElements = function() {
+            this.canvasGui3d.remove3dGuiHost();
+
+        };
 
 
 		return CanvasCalls

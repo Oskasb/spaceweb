@@ -20,7 +20,9 @@ define([
 
 		var CanvasGuiState = function(canvasCalls, cursor) {
 			this.uiParent = canvasCalls.uiParent;
-			this.pointerCursor = cursor;
+
+		//	this.pointerCursor = cursor;
+
 			this.pointerX = 50;
 			this.pointerY = 50;
 			this.canvasCalls = canvasCalls;
@@ -207,13 +209,13 @@ define([
 
 		CanvasGuiState.prototype.updateGuySystems = function(tpf, inputState) {
 			for (var key in this.activeTemplates) {
-				this.activeTemplates[key].updateGuiSystem(tpf, inputState.mouseState);
+	//			this.activeTemplates[key].updateGuiSystem(tpf, inputState.mouseState);
 			}
 		};
 
 		CanvasGuiState.prototype.drawLayers = function(tpf) {
 			this.canvasCalls.updateCanvasCalls(tpf);
-			GameDataPipeline.tickDataLoader(tpf);
+	//		GameDataPipeline.tickDataLoader(tpf);
 		};
 
 		return CanvasGuiState

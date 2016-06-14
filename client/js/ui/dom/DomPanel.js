@@ -24,12 +24,19 @@ define([
 
         var styles = {};
 
-        var DomPanel = function(parent, panelId, adaptiveLayout) {
+        var DomPanel = function(parentElem, panelId, adaptiveLayout) {
             this.active = true;
+            this.ready = false;
             var _this = this;
+
+            var parent = {
+                element:parentElem
+            };
 
             this.config = {};
 
+            this.uiSystems = [];
+            
             var callback = function(key, data) {
                 _this.config = data;
                 if (_this.active) {
@@ -93,9 +100,15 @@ define([
 
             for (var i = 0; i < config.length; i++) {
                 var conf = config[i];
-                if (conf.data.parentId) parent = this.elements[conf.data.parentId].element;
+                if (conf.data.parentId) parent = this.elements[conf.data.parentId];
 
-                var elem = new DomElement(parent, conf.data.style, conf.data.input);
+                
+                if (conf.data.style) {
+                    var elem = new DomElement(parent.element, conf.data.style, conf.data.input);
+                }else {
+                    elem = parent;
+                }
+                
 
                 if (conf.data.data_sample) {
                     dataSample = elem;
@@ -112,11 +125,12 @@ define([
                 }
 
                 if (conf.data.dataLog) {
-                    new DomDataLog(elem, conf.data.dataLog)
+                    new DomDataLog(elem, conf.data.dataLog);
+                    
                 }
 
                 if (conf.data.canvas) {
-                    new DomCanvas(elem, conf.data.canvas)
+                    this.uiSystems.push(new DomCanvas(elem, conf.data.canvas))
                 }
                 
                 if (conf.data.input) {
@@ -148,10 +162,12 @@ define([
                 }
                 this.elements[conf.id] = elem;
             }
-            
+            this.ready = true;
         };
 
         DomPanel.prototype.setLandscape = function() {
+
+            if (!this.ready) return;
 
             if (GameScreen.getLandscape()) {
                 this.elements[this.config[0].id].applyStyleParams(styles.panel_landscape);
@@ -162,6 +178,11 @@ define([
         };
 
         DomPanel.prototype.removeGuiPanel = function() {
+            
+            for (var i = 0; i < this.uiSystems.length; i++) {
+                this.uiSystems.removeUiSystem();
+            }
+            
             this.active = false;
             this.elements[this.config[0].id].removeElement();
             delete this;

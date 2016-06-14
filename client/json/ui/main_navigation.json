@@ -54,10 +54,17 @@
         "id":"radar",
         "data":{
           "parentId":"mapContainer",
-          "style":["canvas_host", "coloring_canvas_host"],
           "canvas":{
             "id":"canvas_radar",
-            "config":{}
+            "renderModel":"canvas3d",
+            "config":{
+              "callback":"radarMap",
+              "element":{
+                "pos":[62, 65],
+                "size":[17, 17],
+                "blendMode":"add_color"
+              }
+            }
           }
         }
       }

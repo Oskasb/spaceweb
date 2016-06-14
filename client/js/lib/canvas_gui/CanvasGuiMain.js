@@ -23,18 +23,18 @@ define([
 
 
 		var CanvasGuiMain = function(parentDiv) {
-			GameScreen.registerAppContainer(parentDiv);
-			this.inputState = new InputState();
-			this.pointerCursor = new PointerCursor(this.inputState);
-			this.guiConfigLoader = new GuiConfigLoader();
+		//	GameScreen.registerAppContainer(parentDiv);
+		//	this.inputState = new InputState();
+		//	this.pointerCursor = new PointerCursor(this.inputState);
+		//	this.guiConfigLoader = new GuiConfigLoader();
 		};
 
 		CanvasGuiMain.prototype.loadMasterConfig = function(masterUrl, ok, fail) {
 			this.guiConfigLoader.initConfigs(masterUrl, ok, fail);
 		};
 
-		CanvasGuiMain.prototype.initGuiMain = function(cameraEntity, callbackMap, uiResolution) {
-			this.canvasCalls = new CanvasCalls(cameraEntity, uiResolution, callbackMap);
+		CanvasGuiMain.prototype.initGuiMain = function(cameraEntity, callbackMap, uiResolution, canvasGuiConfig) {
+			this.canvasCalls = new CanvasCalls(cameraEntity, uiResolution, callbackMap, canvasGuiConfig);
 			this.canvasGuiState = new CanvasGuiState(this.canvasCalls, this.pointerCursor);
 			var reset = function() {
 				this.canvasGuiState.rebuildGuiLayers();
@@ -44,7 +44,7 @@ define([
 
 		CanvasGuiMain.prototype.initGui2d = function(callbackMap, uiResolution) {
 			this.canvasCalls = new CanvasCalls2d(GameScreen.getElement(), uiResolution, callbackMap);
-			this.canvasGuiState = new CanvasGuiState(this.canvasCalls, this.pointerCursor);
+			this.canvasGuiState = new CanvasGuiState(this.canvasCalls);
 			var reset = function() {
 				this.canvasGuiState.rebuildGuiLayers();
 			}.bind(this);
@@ -65,17 +65,22 @@ define([
 		};
 
 		CanvasGuiMain.prototype.tickGuiMain = function(tpf) {
-			this.inputState.initFrameSample();
+	//		this.inputState.initFrameSample();
 			this.canvasGuiState.updateGuySystems(tpf, this.inputState);
-			this.inputState.updateInputState(tpf, this.pointerCursor);
-			this.canvasGuiState.drawLayers(tpf)
-
+	//		this.inputState.updateInputState(tpf, this.pointerCursor);
+	//		this.canvasGuiState.drawLayers(tpf)
+            this.canvasCalls.updateCanvasCalls(tpf);
 		};
 
 		CanvasGuiMain.prototype.addGuiStateTransitionCallback = function(transitionId, callback) {
 			this.pointerCursor.addGuiStateTransitionCallback(transitionId, callback)
 		};
 
+
+		
+		CanvasGuiMain.prototype.setGuiAttenuationRgba = function(rgba) {
+			this.canvasCalls.setAttenuateColor(rgba);
+		};
 		
 
 		CanvasGuiMain.prototype.setGuiTextureResolution = function(res) {
@@ -85,6 +90,11 @@ define([
 		CanvasGuiMain.prototype.setGuiTextureScale = function(txScale) {
 			this.canvasCalls.applyTextureScale(txScale);
 		};
+
+
+        CanvasGuiMain.prototype.removeGuiMain = function() {
+            this.canvasCalls.removeGuiElements();
+        };
 
 		return CanvasGuiMain;
 

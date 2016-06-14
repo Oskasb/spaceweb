@@ -35,7 +35,7 @@ define([
 			this.constructCanvas();
 
 			var configUpdated = function(url, config) {
-				this.handleConfigUpdate(url, config);
+			//	this.handleConfigUpdate(url, config);
 			}.bind(this);
 
 		   PipelineAPI.subscribeToCategoryKey('setup', 'page', configUpdated);

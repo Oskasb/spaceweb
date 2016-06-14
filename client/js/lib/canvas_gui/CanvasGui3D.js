@@ -22,8 +22,24 @@ define([
 		PipelineAPI
 		) {
 
-	    var CanvasGui3D = function(cameraEntity, resolution) {
+        var guiConfig = {
+            element:{
+                pos:[70, 70],
+                size:[20, 20],
+                blendMode:'color_add'
+            }
+
+
+        };
+
+
+        var CanvasGui3D = function(cameraEntity, resolution, canvasGuiConfig) {
 			console.log(cameraEntity)
+
+            if (canvasGuiConfig) {
+                guiConfig = canvasGuiConfig;
+            }
+
 			this.cameraEntity = cameraEntity;
 			this.camera = cameraEntity.cameraComponent.camera;
 
@@ -56,9 +72,11 @@ define([
 
 			var configUpdated = function(url, config) {
 				this.handleConfigUpdate(url, config);
+                this.setBlendModeId(guiConfig.element.blendMode);
 			}.bind(this);
 
 		   PipelineAPI.subscribeToCategoryKey('setup', 'page', configUpdated);
+
 
 
 		};
@@ -143,19 +161,19 @@ define([
 			this.top = this.camera._frustumTop;
 			this.left = Math.abs(this.camera._frustumLeft);
 
-			if (this.top < this.left) {
-				this.aspectMarginTop = 2 * (this.left - this.top);
-				this.aspectMarginLeft = 0;
-				this.size = this.left;
-				this.uiQuad.transformComponent.transform.translation.set(0, -this.aspectMarginTop*0.5*1.01, -this.camera.near*1.01);
-				this.scalePxToX =  this.top / this.size;
-			} else {
-				this.aspectMarginLeft = 2 * (this.top - this.left);
-				this.aspectMarginTop = 0;
-				this.size = this.top;
-				this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft*0.5*1.01, 0, -this.camera.near*1.01);
-				this.scalePxToX = this.left / this.size;
-			}
+            if (this.top > this.left) {
+                this.aspectMarginLeft = this.left * (guiConfig.element.pos[1]+guiConfig.element.size[1])*0.01;
+                this.aspectMarginTop = this.top * (guiConfig.element.pos[0]+guiConfig.element.size[0])*0.01;
+                this.size = this.left * guiConfig.element.size[1]*0.01;
+                this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*1.01);
+                this.scalePxToX =  this.top / this.size;
+            } else {
+                this.aspectMarginLeft = this.left * (guiConfig.element.pos[1]+guiConfig.element.size[1])*0.01;
+                this.aspectMarginTop = this.top * (guiConfig.element.pos[0]+guiConfig.element.size[0])*0.01;
+                this.size = this.top * guiConfig.element.size[0]*0.01;
+                this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*1.01);
+                this.scalePxToX = this.left / this.size;
+            }
 
 			this.aspect = this.left / this.top;
 
@@ -215,13 +233,15 @@ define([
 		CanvasGui3D.prototype.scaleCanvasGuiResolution = function(scale) {
 			this.txScale = scale;
 			var targetRes = MathUtils.nearestHigherPowerOfTwo(this.config.resolution * this.txScale);
-
 			if (targetRes != this.resolution) {
-				this.resolution = targetRes;
-				this.resolutionUpdated();
+				this.setCanvasGuiResolution(targetRes);
 			}
 		};
 
+		CanvasGui3D.prototype.setCanvasGuiResolution = function(res) {
+			this.resolution = res;
+			this.resolutionUpdated();
+		};
 
 		CanvasGui3D.prototype.handleConfigUpdate = function(url, config) {
 			this.config = config;
@@ -258,6 +278,13 @@ define([
 				this.onUpdateCallbacks[i]();
 			}
 		};
+
+
+
+        CanvasGui3D.prototype.remove3dGuiHost = function() {
+            this.uiQuad.removeFromWold();
+            this.canvas.removeElement();
+        };
 
 		return CanvasGui3D
 

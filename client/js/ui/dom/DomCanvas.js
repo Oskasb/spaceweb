@@ -5,47 +5,71 @@ define([
         'Events',
         'PipelineAPI',
         'gui/CanvasGuiAPI',
+    'ui/GameScreen',
         'ui/canvas/CanvasRadar'
     ],
     function(
         evt,
         PipelineAPI,
         CanvasGuiAPI,
+        GameScreen,
         CanvasRadar
     ) {
 
-
+        
+        var pieces;
+        var camera;
+        var renderModel;
+        var canvasApi;
+        var canvasApi3d;
+        
         var configs = {};
+        var canvasGuiConfig = {
+            element:{
+                pos:[70, 70],
+                size:[20, 20],
+                blendMode:'color_add'
+            }
+        };
 
         var DomCanvas = function(parent, canvasParams) {
 
+            var renderModel = canvasParams.renderModel;
+            if (renderModel == 'canvas3d') {
+                parent = GameScreen.getElement();
+            }
+            
+
             this.active = false;
 
-            var pop;
-            var threshold = 0.5;
-            var canvasApi = new CanvasGuiAPI(parent.element, 64);
+            for (var key in canvasParams.config) {
+                canvasGuiConfig[key] = canvasParams.config[key];
+            }
 
-            var pieces = PipelineAPI.readCachedConfigKey('GAME_DATA', 'PIECES');
-            var camera = PipelineAPI.readCachedConfigKey('GAME_DATA', 'CAMERA');
+
+            pieces = PipelineAPI.readCachedConfigKey('GAME_DATA', 'PIECES');
+            camera = PipelineAPI.readCachedConfigKey('GAME_DATA', 'CAMERA');
             var time = 0;
             var ready = false;
 
             var configLoaded = function(conf) {
 
-                console.log("Radar: ", conf)
+                console.log("Radar: ", conf);
 
 
 
+                var radarCallback = function(tpf) {
+                    CanvasRadar.drawRadarContent(pieces, ctx, camera, configs);
+                };
 
-                var canvasCallback = function(tpf) {
 
-                    CanvasRadar.drawRadarContent(pieces, ctx, camera, conf.data)
-
+                var canvasCallbacks = {
+                    radarMap:radarCallback
                 };
 
 
                 var callbackMap = {
-                    processCallbacks:canvasCallback
+                    processCallbacks:canvasCallbacks[canvasGuiConfig.callback]
                 };
 
 
@@ -54,13 +78,23 @@ define([
                 };
 
                 var guiReady = function(src, data) {
-                    console.log("Gui Ready", src, data)
+                    ready = true;
+                    console.log("Gui Ready", src, data, guiReady, guiError)
                 };
 
+                if (!ready) {
 
-                canvasApi.initDomCanvasGui(callbackMap);
-                var ctx = canvasApi.getCanvasContext();
-                canvasApi.setGuiTextureResolution(conf.data.resolution);
+                    if (renderModel == 'canvas3d') {
+                        canvasApi.init3dCanvasGui(camera, callbackMap, canvasGuiConfig);
+                    } else {
+                        canvasApi.initDomCanvasGui(callbackMap);
+                    }
+
+                    var ctx = canvasApi.getCanvasContext();
+                }
+
+                canvasApi.setGuiTextureResolution(configs.resolution);
+                canvasApi.setGuiAttenuationRgba(configs.attenuation);
                 ready = true;
 
             };
@@ -68,7 +102,7 @@ define([
             var clientTick = function(e) {
                 if (!ready) return;
                 time += evt.args(e).tpf;
-                if (time > configs[canvasParams.id].data.tpf) {
+                if (time > configs.tpf) {
                     canvasApi.updateCanvasGui(evt.args(e).tpf);
                     time = 0;
                 }
@@ -78,18 +112,16 @@ define([
             var canvasConfigs = function(src, config) {
                 console.log(config)
                 for (var i = 0; i < config.length; i++) {
-                    configs[config[i].id] = config[i];
-                    console.log(configs[config[i].id])
-                    if (configs[canvasParams.id]) {
-                        console.log(configs[canvasParams.id])
-                        configLoaded(configs[canvasParams.id])
+                    if (config[i].id == canvasParams.id) {
+                        console.log(configs = config[i].data);
+                        configLoaded()
                     }
                 }
             };
 
             if (!this.active) {
+                canvasApi = new CanvasGuiAPI(parent.element, 64);
                 PipelineAPI.subscribeToCategoryKey('canvas', 'systems', canvasConfigs);
-
                 evt.on(evt.list().CLIENT_TICK, clientTick);
             }
             this.active = true;
@@ -97,8 +129,8 @@ define([
 
         };
 
-        DomCanvas.prototype.setupReady = function(parent, domElem, buttonData) {
-
+        DomCanvas.prototype.removeUiSystem = function(parent, domElem, buttonData) {
+            canvasApi.removeCanvasGui();
         };
 
 

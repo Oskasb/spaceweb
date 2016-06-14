@@ -67,7 +67,7 @@ define([
                 if (logData.channels.indexOf(evt.args(e).channel) != -1) {
                     logMessage(evt.args(e)[logData.argument], logChannels[evt.args(e).channel]);
                 } else {
-                    console.log("Not logging", evt.args(e).channel, evt.args(e)[logData.argument])
+        //            console.log("Not logging", evt.args(e).channel, evt.args(e)[logData.argument])
                 }
             };
 
