@@ -60,8 +60,8 @@
             "config":{
               "callback":"radarMap",
               "element":{
-                "pos":[62, 65],
-                "size":[17, 17],
+                "pos":[45, 55],
+                "size":[25, 25],
                 "blendMode":"add_color"
               }
             }

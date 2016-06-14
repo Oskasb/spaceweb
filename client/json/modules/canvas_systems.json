@@ -9,15 +9,19 @@
           "size":{"height":128, "width":128},
           "zoom":100,
           "pos":{"top":0, "left":0},
-          "worldSection":{"probability":0.8, "color":[0.05,0.15,0.2,0.1], "borderColor":[0.1,0.15,0.2,0.1], "flicker":0.3},
-          "elementBorder":{"probability":0.8, "color":[0.1,0.3,0.4,0.13], "flicker":0.3, "margin":1, "width":6},
-          "raster":{"probability":0.03, "color":[0.7,0.9,0.8,0.1], "flicker":0.9},
+          "worldSection":{"probability":0.8, "color":[0.05,0.15,0.2,0.1], "borderColor":[0.1,0.15,0.2,0.1], "flicker":0.3,  "width":2},
+          "elementBorder":{"probability":0.8, "color":[0.6,0.3,0.1,0.13], "flicker":0.3, "margin":1, "width":2},
+          "raster":{"probability":0.01, "color":[0.7,0.9,0.8,0.1], "flicker":0.9, "width":15},
           "tpf":0.01,
+          "playerBlips":{
+            "on":true,
+            "color":[0.6,0.2,0.6,0.3]
+          },
           "playerNames":{
             "on":true,
-            "color":[0.1,0.4,0.4,0.3],
-            "font":"10px Russo One",
-            "top":4
+            "color":[0.6,0.2,0.2,0.3],
+            "font":"11px Russo One",
+            "top":6
           }
         }
       },{
