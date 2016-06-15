@@ -13,7 +13,7 @@
             "trackPing":false,
             "trackTraffic":false,
             "monitorServer":false,
-            "graphPoints":20
+            "graphPoints":50
         },
         "pipeline":{
             "jsonPipe":{

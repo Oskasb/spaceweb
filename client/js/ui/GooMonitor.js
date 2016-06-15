@@ -165,89 +165,35 @@ define([
 
             function clientTick(e) {
 
-                draw = false;
-
-
-                time += evt.args(e).tpf;
-                cooldown += evt.args(e).tpf;
-
-                if (cooldown > 0.2) {
-                    if (time > 1 || evt.args(e).tpf > 0.02) {
-
-                        cooldown = 0;
-
-                        calcVec.setDirect(-14, 19, 0);
-                        calcVec.addVector(cameraEntity.transformComponent.transform.translation);
-                        applyAnchor(calcVec, 'top_left');
-                        textStyle.posx = calcVec.data[0];
-                        textStyle.posy = calcVec.data[1];
-
-                        var text = ''+Math.round(evt.args(e).tpf*1000);
-                        evt.fire(evt.list().PARTICLE_TEXT, {text:text, textStyle:textStyle});
-                        time = 0;
-                    }
-                }
-
-
                 if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_SERVER')) {
-                    draw = true;
-                    //    drawGraph(gooTrafficGraph.getServerTime(), 20,  'PEA', -6);
-                    drawGraph(gooTrafficGraph.getServerIdle(), 20,  'CYAN', 0, 11);
-                    drawGraph(gooTrafficGraph.getServerBusy(), 100,'PINK', 0, 11);
-                    drawGraph(gooTrafficGraph.getServerPieces(), 0.05,'GREEN', 0, 22);
-                    drawGraph(gooTrafficGraph.getServerPlayers(), -0.1,'PURPLE', 0, 22);
+
+                    PipelineAPI.setCategoryData('STATUS', {SERVER_IDLE:gooTrafficGraph.getServerIdle()});
+                    PipelineAPI.setCategoryData('STATUS', {SERVER_BUSY:gooTrafficGraph.getServerBusy()});
+                    PipelineAPI.setCategoryData('STATUS', {SERVER_PIECES:gooTrafficGraph.getServerPieces()});
+                    PipelineAPI.setCategoryData('STATUS', {SERVER_PLAYERS:gooTrafficGraph.getServerPlayers()});
+
                 }
 
                 if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TRAFFIC')) {
-                    draw = true;
-                    drawGraph(gooTrafficGraph.getSends(), 0.2, 'ORANGE');
-                    drawGraph(gooTrafficGraph.getRecieves(), -0.2,  'PEA');
+                    PipelineAPI.setCategoryData('STATUS', {SEND_GRAPH:gooTrafficGraph.getSends()});
+                    PipelineAPI.setCategoryData('STATUS', {RECIEVE_GRAPH:gooTrafficGraph.getRecieves()});
+
                 }
 
                 if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TPF')) {
-                    draw = true;
-                    drawGraph(gooFpsGraph.progressBars, 1, 'YELLOW');
-                    calcVec.setDirect(-14, 19, 0);
-                    calcVec.addVector(cameraEntity.transformComponent.transform.translation);
-                    applyAnchor(calcVec, 'top_left');
-                    textStyle.posx = calcVec.data[0];
-                    textStyle.posy = calcVec.data[1];
-
-                    time += evt.args(e).tpf;
-
-                    if (time > 0.5) {
-
-                        var text = ''+Math.round(evt.args(e).tpf*1000);
-                        evt.fire(evt.list().PARTICLE_TEXT, {text:text, textStyle:textStyle});
-                        time = 0;
-                    }
+                    PipelineAPI.setCategoryData('STATUS', {FPS_GRAPH:gooFpsGraph.progressBars});
                 }
 
-                if (draw) {
 
-                    if (!linerendering) {
-                        enableLineRenderSys();
-                    }
-                    
-                    drawWorldBounds();
-                    frameGraph();
-                    
-                } else {
-                    if (linerendering) {
-                        diableLineRenderSys(); 
-                    }
-                    
-                }
-                
 
             }
 
-            evt.removeListener(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
-            evt.removeListener(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
+        //    evt.removeListener(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
+        //    evt.removeListener(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
             evt.removeListener(evt.list().CLIENT_TICK, clientTick);
 
-            evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
-            evt.on(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
+        //    evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
+        //    evt.on(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
             evt.on(evt.list().CLIENT_TICK, clientTick);
         }
 

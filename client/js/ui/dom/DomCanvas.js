@@ -7,7 +7,8 @@ define([
         'gui/CanvasGuiAPI',
         'ui/GameScreen',
         'ui/canvas/CanvasRadar',
-        'ui/canvas/CanvasInputVector'
+        'ui/canvas/CanvasInputVector',
+        'ui/canvas/CanvasGraph'
     ],
     function(
         evt,
@@ -15,7 +16,8 @@ define([
         CanvasGuiAPI,
         GameScreen,
         CanvasRadar,
-        CanvasInputVector
+        CanvasInputVector,
+        CanvasGraph
     ) {
 
         
@@ -71,6 +73,26 @@ define([
 
                 var tpfMonitorCallback = function(tpf) {
 
+
+                    if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_SERVER')) {
+                        CanvasGraph.drawGraph(PipelineAPI.readCachedConfigKey('STATUS', 'SERVER_IDLE'), ctx, configs.idleGraph, configs.idleGraph.topValue);
+                        CanvasGraph.drawGraph(PipelineAPI.readCachedConfigKey('STATUS', 'SERVER_BUSY'), ctx, configs.busyGraph, configs.busyGraph.topValue);
+                        CanvasGraph.drawGraph(PipelineAPI.readCachedConfigKey('STATUS', 'SERVER_PIECES'), ctx, configs.piecesGraph, configs.piecesGraph.topValue);
+                        CanvasGraph.drawGraph(PipelineAPI.readCachedConfigKey('STATUS', 'SERVER_PLAYERS'), ctx, configs.playersGraph, configs.playersGraph.topValue);
+                    }
+                    
+
+                    if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TRAFFIC')) {
+                        CanvasGraph.drawGraph(PipelineAPI.readCachedConfigKey('STATUS', 'SEND_GRAPH'), ctx, configs.sendGraph, configs.sendGraph.topValue);
+                        CanvasGraph.drawGraph(PipelineAPI.readCachedConfigKey('STATUS', 'RECIEVE_GRAPH'), ctx, configs.recieveGraph, configs.recieveGraph.topValue);
+                    }
+                    
+                    
+                    if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TPF')) {
+                        CanvasGraph.drawGraph(PipelineAPI.readCachedConfigKey('STATUS', 'FPS_GRAPH'), ctx, configs.tpfGraph, 1/configs.tpfGraph.topValue);
+                    }
+
+                    
                 };
 
 
