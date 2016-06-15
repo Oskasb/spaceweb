@@ -5,15 +5,17 @@ define([
         'Events',
         'PipelineAPI',
         'gui/CanvasGuiAPI',
-    'ui/GameScreen',
-        'ui/canvas/CanvasRadar'
+        'ui/GameScreen',
+        'ui/canvas/CanvasRadar',
+        'ui/canvas/CanvasInputVector'
     ],
     function(
         evt,
         PipelineAPI,
         CanvasGuiAPI,
         GameScreen,
-        CanvasRadar
+        CanvasRadar,
+        CanvasInputVector
     ) {
 
         
@@ -38,7 +40,7 @@ define([
             if (renderModel == 'canvas3d') {
                 parent = GameScreen.getElement();
             }
-            
+
 
             this.active = false;
 
@@ -56,20 +58,43 @@ define([
 
                 console.log("Radar: ", conf);
 
+                var callbacks = [];
 
 
                 var radarCallback = function(tpf) {
                     CanvasRadar.drawRadarContent(pieces, ctx, camera, configs);
                 };
 
+                var inputVectorCallback = function(tpf) {
+                    CanvasInputVector.drawInputVectors(pieces, ctx, camera, configs)
+                };
 
-                var canvasCallbacks = {
-                    radarMap:radarCallback
+                var tpfMonitorCallback = function(tpf) {
+
                 };
 
 
+                var canvasCallbacks = {
+                    radarMap:radarCallback,
+                    inputVector:inputVectorCallback,
+                    tpfMonitor:tpfMonitorCallback
+                };
+
+
+                var setupCallbacks = function() {
+                    for (var i = 0; i < canvasGuiConfig.callbacks.length; i++) {
+                        callbacks.push(canvasCallbacks[canvasGuiConfig.callbacks[i]])
+                    }
+                };
+
+                var callCallbacks = function(tpf) {
+                    for (var i = 0; i < callbacks.length; i++) {
+                        callbacks[i](tpf);
+                    }
+                };
+
                 var callbackMap = {
-                    processCallbacks:canvasCallbacks[canvasGuiConfig.callback]
+                    processCallbacks:callCallbacks
                 };
 
 
@@ -81,6 +106,8 @@ define([
                     ready = true;
                     console.log("Gui Ready", src, data, guiReady, guiError)
                 };
+
+                setupCallbacks();
 
                 if (!ready) {
 

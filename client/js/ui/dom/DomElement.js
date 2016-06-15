@@ -190,7 +190,7 @@ define([
 
         DomElement.prototype.applyStyleParams = function(params) {
             DomUtils.applyElementStyleParams(this.element, params);
-        }
+        };
 
         DomElement.prototype.applyTransform = function(transform) {
             DomUtils.applyElementTransform(this.element, transform);

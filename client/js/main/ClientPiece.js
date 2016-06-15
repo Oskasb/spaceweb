@@ -24,6 +24,8 @@ define([
 
 		var ClientPiece = function(serverState, pieceData, removeCallback) {
 
+            this.pieceData = pieceData;
+            
 			this.isOwnPlayer = false;
 			var piece = new GAME.Piece(serverState.type, serverState.playerId);
 			piece.serverState = serverState;
@@ -114,7 +116,7 @@ define([
 			var pieceModuleDataLoaded = function(src, data) {
 				inputSegmentRadial.applyConfigs(data);
 			};
-
+            this.inputSegmentRadial = inputSegmentRadial;
 			PipelineAPI.subscribeToCategoryKey('piece_data', 'controls', pieceModuleDataLoaded);
 		};
 		

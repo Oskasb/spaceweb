@@ -69,7 +69,7 @@
             }
           }
         },{
-          "id":"controls",
+          "id":"inputControls",
           "data":{
             "source":"currentState",
             "initState": [0, 0],

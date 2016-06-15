@@ -40,6 +40,7 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.PieceModule.prototype.setModuleState = function(state) {
+        if (state == undefined) return;
 		this.state.value = state;
 	};
 
@@ -75,7 +76,7 @@ if(typeof(GAME) == "undefined"){
 	};
 	
 	GAME.PieceModule.prototype.processInputState = function(controls, actionCallback) {
-		this.state.value = controls.inputState[this.data.source];
+		this.setModuleState(controls.inputState[this.data.source]);
 
 		if (typeof(controls.actions[this.data.applies.action]) != undefined) {
 			controls.actions[this.data.applies.action] = this.state.value;
@@ -109,7 +110,7 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.PieceControls.prototype.setControlState = function(moduleData, action, value) {
-	//	console.log("Set Control: ", moduleData.source, action, value)
+//		console.log("Set Control: ", moduleData.source, action, value)
 	};
 
 	GAME.PieceControls.prototype.applyControlConfig = function(configs) {
@@ -122,6 +123,8 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.PieceControls.prototype.applyInputVector = function(state) {
+        this.inputState.currentState[0] = state[0];
+        this.inputState.currentState[1] = state[1];
 	//	this.inputState.setSteeringX(Math.clamp((toX - fromX), -1, 1));
 	//	this.inputState.setSteeringY(Math.clamp((toY - fromY), -1, 1));
 
@@ -170,6 +173,7 @@ if(typeof(GAME) == "undefined"){
 		this.startSpatial = new MODEL.Spatial();
 		this.modules = [];
 		this.moduleStates = {};
+        this.moduleIndex = {};
 		this.serverState = {};
 		this.config = null;
 		
@@ -189,7 +193,8 @@ if(typeof(GAME) == "undefined"){
 				this.moduleStates[moduleConfigs[i].id] = [];
 			}
 			this.moduleStates[moduleConfigs[i].id].push(module.state);
-		}
+            this.moduleIndex[moduleConfigs[i].id] = module;
+        }
 	};
 
 	GAME.Piece.prototype.registerParentPiece = function(piece) {
@@ -222,9 +227,19 @@ if(typeof(GAME) == "undefined"){
 	GAME.Piece.prototype.setName = function(name) {
 		this.pieceControls.inputState.playerName = name;
 	};
-	
-	GAME.Piece.prototype.getModuleStates = function() {
-	//	return [];
+
+	GAME.Piece.prototype.readServerModuleState = function(moduleId) {
+		return this.serverState.modules[moduleId];
+	};
+
+
+    GAME.Piece.prototype.getModuleById = function(moduleId) {
+        return this.moduleIndex[moduleId];
+    };
+
+
+
+    GAME.Piece.prototype.getModuleStates = function() {
 		return this.moduleStates;
 	};
 
@@ -233,6 +248,7 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.Piece.prototype.makePacket = function() {
+
 		return {
 			id:"playerUpdate",
 			data:{

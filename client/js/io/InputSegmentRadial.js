@@ -25,6 +25,13 @@ define([
             this.lastSendTime = 0;
 
             this.active = false;
+            this.radians = 0;
+
+            this.line = {
+                w:0,
+                zrot:0
+
+            };
 
             this.offsetX = 20;
             this.offsetY = 20;
@@ -175,6 +182,7 @@ define([
             var segmentAngle = (MATH.TWO_PI / this.configs.radialSegments);
 
             var radians = ((line.zrot + Math.PI) * (this.configs.radialSegments) / MATH.TWO_PI);
+            
         //    if (radians > Math.PI) radians -= 2;
 
             var selection = MATH.moduloPositive(Math.clamp(Math.round(radians), 0 ,this.configs.radialSegments), this.configs.radialSegments) ;

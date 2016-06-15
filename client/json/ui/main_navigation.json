@@ -58,9 +58,9 @@
             "id":"canvas_radar",
             "renderModel":"canvas3d",
             "config":{
-              "callback":"radarMap",
+              "callbacks":["radarMap", "inputVector"],
               "element":{
-                "pos":[45, 55],
+                "pos":[45, 50],
                 "size":[25, 25],
                 "blendMode":"add_color"
               }
