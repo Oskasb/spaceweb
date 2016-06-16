@@ -75,8 +75,58 @@ define([
             }
 
         };
-        
-        
+
+        DomPanel.prototype.applyCanvas = function(elem, confData) {
+            var domCanvas = new DomCanvas(elem, confData.configId);
+            this.uiSystems.push(domCanvas);
+
+            var setupReady = function(data) {
+                console.log("Config for 3d canvas:", data);
+                domCanvas.initCanvasSystem(data);
+            };
+
+            var confLoaded = function(src, conf) {
+                for (var i = 0; i < conf.length; i++) {
+                    if (conf[i].id == confData.configId) {
+                        setupReady(conf[i].data);
+                        return;
+                    }
+                }
+                console.log("Config Missing for 3d canvas:", confData);
+            };
+
+            PipelineAPI.subscribeToCategoryKey('canvas2d', 'elements', confLoaded);
+        };
+
+
+        DomPanel.prototype.applyCanvas3d = function(elem, confData) {
+
+            var _this = this;
+            var domCanvas = new DomCanvas(elem, confData.configId);
+            this.uiSystems.push(domCanvas);
+
+            var setupReady = function(data) {
+                console.log("Config for 3d canvas:", data);
+                domCanvas.initCanvasSystem(data);
+            };
+
+            var confLoaded = function(src, conf) {
+                for (var i = 0; i < conf.length; i++) {
+                    if (conf[i].id == confData.configId) {
+                        setupReady(conf[i].data);
+                        return;
+                    }
+                }
+                console.log("Config Missing for 3d canvas:", confData);
+            };
+
+            PipelineAPI.subscribeToCategoryKey('canvas3d', 'elements', confLoaded);
+
+        };
+
+
+
+
         DomPanel.prototype.applyConfigs = function(parent, config) {
 
             var _this = this;
@@ -117,7 +167,6 @@ define([
 
                 if (conf.data.button) {
                     this.applyButton(this.elements[conf.data.parentId], elem, conf.data);
-                    
                 }
 
                 if (conf.data.dataField) {
@@ -126,11 +175,15 @@ define([
 
                 if (conf.data.dataLog) {
                     new DomDataLog(elem, conf.data.dataLog);
-                    
                 }
 
                 if (conf.data.canvas) {
-                    this.uiSystems.push(new DomCanvas(elem, conf.data.canvas))
+                    this.applyCanvas(elem, conf.data.canvas)
+                }
+
+                if (conf.data.canvas3d) {
+                    this.applyCanvas3d(elem, conf.data.canvas3d)
+
                 }
                 
                 if (conf.data.input) {

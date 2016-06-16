@@ -22,7 +22,7 @@ define([
 		) {
 
 
-		var CanvasGuiMain = function(parentDiv) {
+		var CanvasGuiMain = function() {
 		//	GameScreen.registerAppContainer(parentDiv);
 		//	this.inputState = new InputState();
 		//	this.pointerCursor = new PointerCursor(this.inputState);
@@ -42,8 +42,8 @@ define([
 			this.canvasCalls.registerResetCallback(reset);
 		};
 
-		CanvasGuiMain.prototype.initGui2d = function(callbackMap, uiResolution) {
-			this.canvasCalls = new CanvasCalls2d(GameScreen.getElement(), uiResolution, callbackMap);
+		CanvasGuiMain.prototype.initGui2d = function(parentDiv, callbackMap, uiResolution) {
+			this.canvasCalls = new CanvasCalls2d(parentDiv, uiResolution, callbackMap);
 			this.canvasGuiState = new CanvasGuiState(this.canvasCalls);
 			var reset = function() {
 				this.canvasGuiState.rebuildGuiLayers();

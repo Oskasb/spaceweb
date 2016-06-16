@@ -94,13 +94,14 @@ define([
 			return percent*this.canvasGui2d.scalePercentToY;
 		};
 
+        CanvasCalls2d.prototype.getPxFactor = function() {
+            return (this.canvasGui2d.resolution / 1024) * this.canvasGui2d.scalePxToX
+        };
 		CanvasCalls2d.prototype.pxToX = function(px) {
 			return this.getPxFactor() * px;
 		};
 
-		CanvasCalls2d.prototype.getPxFactor = function() {
-			return (this.canvasGui2d.resolution / 1024) * this.canvasGui2d.scalePxToX
-		};
+
 
 		var CALLS = {
 			CALLBACK:	{id:'CALLBACK'		},
@@ -304,7 +305,7 @@ define([
 		//	this.setAttenuateColor([0, 0, 0, 0.1]);
 			this.attenuateGui();
 			this.ctx.globalCompositeOperation = 'lighter';
-			UiCallbacks.getCallById('processCallbacks')(tpf);
+			UiCallbacks.getCallById('processCallbacks')(tpf, this.ctx);
 
 			this.drawDepthLayers();
 

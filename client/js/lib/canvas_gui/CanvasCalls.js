@@ -294,7 +294,7 @@ define([
 			this.ctx.globalCompositeOperation = 'source-over';
 			this.attenuateGui();
 			this.ctx.globalCompositeOperation = 'lighter';
-			UiCallbacks.getCallById('processCallbacks')(tpf);
+			UiCallbacks.getCallById('processCallbacks')(tpf, this.ctx);
 
 			this.drawDepthLayers();
 

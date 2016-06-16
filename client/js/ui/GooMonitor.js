@@ -184,16 +184,9 @@ define([
                     PipelineAPI.setCategoryData('STATUS', {FPS_GRAPH:gooFpsGraph.progressBars});
                 }
 
-
-
             }
 
-        //    evt.removeListener(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
-        //    evt.removeListener(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
             evt.removeListener(evt.list().CLIENT_TICK, clientTick);
-
-        //    evt.on(evt.list().DRAW_RELATIVE_POS_RAD, drawRelativePosRad);
-        //    evt.on(evt.list().DRAW_RELATIVE_LINE, drawRelativeLine);
             evt.on(evt.list().CLIENT_TICK, clientTick);
         }
 

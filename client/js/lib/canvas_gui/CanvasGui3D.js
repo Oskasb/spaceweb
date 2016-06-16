@@ -22,22 +22,22 @@ define([
 		PipelineAPI
 		) {
 
-        var guiConfig = {
-            element:{
-                pos:[70, 70],
-                size:[20, 20],
-                blendMode:'color_add'
-            }
-
-
-        };
 
 
         var CanvasGui3D = function(cameraEntity, resolution, canvasGuiConfig) {
 			console.log(cameraEntity)
 
+            this.guiConfig = {
+                element:{
+                    pos:[70, 70],
+                    size:[20, 20],
+                    blendMode:'color_add'
+                }
+            };
+
+
             if (canvasGuiConfig) {
-                guiConfig = canvasGuiConfig;
+                this.guiConfig = canvasGuiConfig;
             }
 
 			this.cameraEntity = cameraEntity;
@@ -76,9 +76,7 @@ define([
 			}.bind(this);
 
 		   PipelineAPI.subscribeToCategoryKey('setup', 'page', configUpdated);
-
-
-
+            
 		};
 
 		CanvasGui3D.prototype.setupParts = function() {
@@ -112,10 +110,10 @@ define([
 		};
 
 		CanvasGui3D.prototype.createQuadEntity = function(parent) {
-			var meshData = FullscreenUtil.quad;
-			var entity = parent._world.createEntity('canvas_gui_quad', meshData);
-			entity.addToWorld();
-			return entity;
+			this.meshData = FullscreenUtil.quad;
+            this.entity = parent._world.createEntity('canvas_gui_quad', this.meshData);
+            this.entity.addToWorld();
+			return this.entity;
 		};
 
 		CanvasGui3D.prototype.attachQuad = function(quad, parent, material) {
@@ -162,15 +160,15 @@ define([
 			this.left = Math.abs(this.camera._frustumLeft);
 
             if (this.top > this.left) {
-                this.aspectMarginLeft = this.left * (guiConfig.element.pos[1]+guiConfig.element.size[1])*0.01;
-                this.aspectMarginTop = this.top * (guiConfig.element.pos[0]+guiConfig.element.size[0])*0.01;
-                this.size = this.left * guiConfig.element.size[1]*0.01;
+                this.aspectMarginLeft = this.left * (this.guiConfig.element.pos[1]+this.guiConfig.element.size[1])*0.01;
+                this.aspectMarginTop = this.top * (this.guiConfig.element.pos[0]+this.guiConfig.element.size[0])*0.01;
+                this.size = this.left * this.guiConfig.element.size[1]*0.01;
                 this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*1.01);
                 this.scalePxToX =  this.top / this.size;
             } else {
-                this.aspectMarginLeft = this.left * (guiConfig.element.pos[1]+guiConfig.element.size[1])*0.01;
-                this.aspectMarginTop = this.top * (guiConfig.element.pos[0]+guiConfig.element.size[0])*0.01;
-                this.size = this.top * guiConfig.element.size[0]*0.01;
+                this.aspectMarginLeft = this.left * (this.guiConfig.element.pos[1]+this.guiConfig.element.size[1])*0.01;
+                this.aspectMarginTop = this.top * (this.guiConfig.element.pos[0]+this.guiConfig.element.size[0])*0.01;
+                this.size = this.top * this.guiConfig.element.size[0]*0.01;
                 this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*1.01);
                 this.scalePxToX = this.left / this.size;
             }

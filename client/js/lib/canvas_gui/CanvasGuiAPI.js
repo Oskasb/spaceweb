@@ -9,8 +9,8 @@ define([
 
 		var defaultResolution = 1024;
 
-		var CanvasGuiAPI = function(parentDiv, uiTxResolution) {
-			this.canvasGuiMain = new CanvasGuiMain(parentDiv);
+		var CanvasGuiAPI = function(uiTxResolution) {
+			this.canvasGuiMain = new CanvasGuiMain();
 			this.uiTxResolution = uiTxResolution || defaultResolution;
 		//	this.pointerCursor = this.canvasGuiMain.pointerCursor;
 		};
@@ -19,8 +19,8 @@ define([
 			this.canvasGuiMain.initGuiMain(cameraEntity, callbackMap, this.uiTxResolution, canvasGuiConfig);
 		};
 
-		CanvasGuiAPI.prototype.initDomCanvasGui = function(callbackMap) {
-			this.canvasGuiMain.initGui2d(callbackMap, this.uiTxResolution);
+		CanvasGuiAPI.prototype.initDomCanvasGui = function(parentDiv, callbackMap) {
+			this.canvasGuiMain.initGui2d(parentDiv, callbackMap, this.uiTxResolution);
 		};
 		
 		CanvasGuiAPI.prototype.setUiToStateId = function(state) {
