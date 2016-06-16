@@ -279,16 +279,8 @@ define([
 
 		//	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            if(Math.random() < 0.3) {
-                this.attenuateColor = this.toRgba([0.1 + Math.random()*0.08, 0.57 + Math.random()*0.07, 0.46 + Math.random()*0.11, 0.14 + Math.random()*0.02])
-            }
-
-        //    if(Math.random() < 0.6) {
-                this.ctx.fillStyle = this.attenuateColor;
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        //    }
-
-
+            this.ctx.fillStyle = this.attenuateColor;
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		};
 
 		var t = 0;
@@ -405,13 +397,13 @@ define([
 		var resetTimeout;
 		CanvasCalls2d.prototype.callResetCallbacks = function() {
 			this.updateParentLayout();
-			this.setAttenuateColor([0, 0, 0, 1]);
+		//	this.setAttenuateColor([0, 0, 0, 1]);
 			this.attenuateGui();
 			this.renderDepthLayers = [];
 			this.drawInstructions = [];
 			var rebuild = function() {
 				this.updateParentLayout();
-				this.setAttenuateColor([0, 0, 0, 0.2]);
+		//		this.setAttenuateColor([0, 0, 0, 0.2]);
 				this.resolution = this.canvasGui2d.resolution;
 				for (var i = 0; i < this.resetCallbacks.length; i++) {
 					this.resetCallbacks[i]();

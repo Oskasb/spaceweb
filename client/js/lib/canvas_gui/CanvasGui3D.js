@@ -72,7 +72,7 @@ define([
 
 			var configUpdated = function(url, config) {
 				this.handleConfigUpdate(url, config);
-                this.setBlendModeId(guiConfig.element.blendMode);
+                this.setBlendModeId(this.guiConfig.element.blendMode);
 			}.bind(this);
 
 		   PipelineAPI.subscribeToCategoryKey('setup', 'page', configUpdated);

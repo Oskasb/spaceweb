@@ -7,12 +7,7 @@
         "data": {
           "renderModel": "canvas2d",
           "config":{
-            "callbacks":["radarMap", "inputVector", "tpfMonitor"],
-            "element":{
-              "pos":[5, 6],
-              "size":[25, 25],
-              "blendMode":"add_color"
-            }
+            "callbacks":["radarMap", "tpfMonitor"]
           }
         }
       }
@@ -21,13 +16,13 @@
   "canvas3d": {
     "elements":[
       {
-        "id": "canvas_radar",
+        "id": "canvas_controls",
         "data": {
           "renderModel": "canvas3d",
           "config":{
-            "callbacks":["radarMap", "inputVector", "tpfMonitor"],
+            "callbacks":["inputVector"],
             "element":{
-              "pos":[5, 6],
+              "pos":[42, 40],
               "size":[25, 25],
               "blendMode":"add_color"
             }
@@ -39,18 +34,11 @@
           "renderModel": "canvas3d",
           "config": {
             "callbacks": [
-              "radarMap",
-              "tpfMonitor"
+              "radarMap"
             ],
             "element": {
-              "pos": [
-                -35,
-                -50
-              ],
-              "size": [
-                25,
-                25
-              ],
+              "pos": [42,-90],
+              "size": [25, 25],
               "blendMode": "add_color"
             }
           }

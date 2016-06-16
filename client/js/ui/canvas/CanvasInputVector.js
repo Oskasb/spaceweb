@@ -160,16 +160,41 @@ define([
         };
 
 
+        var drawRadialRaster = function(ctx, raster) {
+
+            ctx.strokeStyle = randomizedColor(raster.color, raster.flicker);
+
+            for (var i = 0; i < size.height/2; i++) {
+
+                if (Math.random() < raster.probability) {
+
+                    ctx.lineWidth = 6;
+                    ctx.beginPath();
+                    ctx.arc(
+                        size.width*0.5,
+                        size.height*0.5,
+                        Math.sqrt(raster.width*i)+i * 1.2,
+                        Math.PI*Math.random() + Math.PI * 0.6 * Math.random(),
+                        Math.random() * Math.PI + 0.6 * Math.random()
+                    );
+                    ctx.stroke();
+                    i++
+                }
+            }
+        };
+
         CanvasInputVector.drawInputVectors = function(gamePieces, ctx, camera, confData) {
 
             pos = confData.pos;
             size = confData.size;
 
 
+            drawRadialRaster(ctx, confData.raster);
+
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
 
-        //    drawElementBorders(ctx, confData.elementBorder);
+            drawElementBorders(ctx, confData.elementBorder);
         //    drawWorldBorders(ctx, confData.worldSection);
         //    drawRaster(ctx, confData.raster);
 
@@ -235,7 +260,7 @@ define([
                     tempRect.height = 2*seed;
                     
                     if (confData.playerNames.on && !gamePieces[index].isOwnPlayer) {
-
+/*
                         var controls = gamePieces[index].piece.readServerModuleState('inputControls');
 
                         for (var i = 0; i < controls.length; i++) {
@@ -254,7 +279,7 @@ define([
                             CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
                             ctx.stroke();
                         }
-
+*/
                     } else {
 
                         var controls = gamePieces[index].piece.readServerModuleState('inputControls');
@@ -285,6 +310,10 @@ define([
                             ctx.stroke();
                        }
 
+
+                    //    if (data.color) ctx.strokeStyle = toRgba(data.color);
+
+
                         ctx.lineWidth = confData.inputRadial.width;
                         ctx.strokeStyle = randomizedColor(confData.inputRadial.color, confData.inputRadial.flicker);
 
@@ -296,6 +325,40 @@ define([
                         ctx.beginPath();
                         CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
                         CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
+                        ctx.stroke();
+
+                        ctx.lineWidth = 5;
+                        ctx.beginPath();
+                        ctx.arc(
+                            tempRect.left,
+                            tempRect.top,
+                            radius*0.8,
+                            -angle + Math.PI * 0.4,
+                            Math.PI-angle - Math.PI * 0.4
+                        );
+                        ctx.stroke();
+
+                        ctx.strokeStyle = randomizedColor(confData.inputRadial.color, confData.inputRadial.flicker);
+                        ctx.lineWidth = 2;
+
+                        ctx.beginPath();
+                        ctx.arc(
+                            tempRect.left,
+                            tempRect.top,
+                            Math.sqrt(radius*7)+7,
+                            Math.PI-angle + Math.PI * 0.3 + Math.random()*0.2,
+                            -angle - Math.PI * 0.3 + Math.random()*0.2
+                        );
+                        ctx.stroke();
+                        ctx.lineWidth = 6;
+                        ctx.beginPath();
+                        ctx.arc(
+                            tempRect.left,
+                            tempRect.top,
+                            Math.sqrt(radius*1)+2,
+                            Math.PI-angle + Math.PI * 0.6 * Math.random(),
+                            -angle - Math.PI * 0.6 * Math.random()
+                        );
                         ctx.stroke();
 
 

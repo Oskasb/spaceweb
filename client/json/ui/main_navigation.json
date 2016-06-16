@@ -55,7 +55,7 @@
         "data":{
           "parentId":"rightRoot",
           "canvas3d":{
-            "configId": "canvas_radar"
+            "configId": "canvas_controls"
           }
         }
       }, {
