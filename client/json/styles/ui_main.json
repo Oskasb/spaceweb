@@ -101,6 +101,18 @@
       "display": "inline-block"
     },
 
+    "main_button_container_multi":{
+      "bottom":"0em",
+      "margin":"0em",
+      "padding": "0em",
+      "width": "116em",
+      "height": "58em",
+      "textAlign": "center",
+      "position": "relative",
+      "display": "inline-block"
+    },
+
+
     "data_list_container":{
       "width": "100%",
       "height": "auto",
@@ -128,6 +140,22 @@
       "position": "absolute",
       "display": "block",
       "paddingTop":"1.6em"
+    },
+
+    "panel_button_multi":{
+      "top": "0.12em",
+      "left": "0.12em",
+      "right": "0.12em",
+      "bottom": "0.12em",
+      "height": "auto",
+      "width": "auto",
+      "fontSize": "20em",
+      "textAlign": "center",
+      "position": "absolute",
+      "display": "inline-block",
+      "padding":"0.7em",
+      "paddingLeft": "0.2em",
+      "paddingRight": "0.2em"
     },
 
     "dev_panel_button":{

@@ -83,15 +83,38 @@
           "style":["main_button_container", "coloring_container_main_panel"]
         }
       },{
-        "id":"button1",
+        "id":"buttonContainer1_1",
         "data":{
           "parentId":"buttonContainer1",
-          "style":["panel_button", "coloring_button_main_panel"],
+          "style":["main_button_container_multi"]
+        }
+      },{
+        "id":"buttonContainer1_2",
+        "data":{
+          "parentId":"buttonContainer1",
+          "style":["main_button_container_multi", "coloring_container_main_panel"]
+        }
+      },{
+        "id":"button1_1",
+        "data":{
+          "parentId":"buttonContainer1_1",
+          "style":["panel_button_multi", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
-            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_2", "type":"toggle"}
+            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_1_1", "type":"toggle"}
           },
-          "text":"Action2"
+          "text":"Action1_1"
+        }
+      },{
+        "id":"button1_2",
+        "data":{
+          "parentId":"buttonContainer1_2",
+          "style":["panel_button_multi", "coloring_button_main_panel"],
+          "button":{
+            "id":"panel_button",
+            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_1_2", "type":"toggle"}
+          },
+          "text":"Action1_2"
         }
       },{
         "id":"buttonContainer2",
