@@ -96,9 +96,16 @@
       "padding": "0em",
       "width": "116em",
       "height": "116em",
-      "textAlign": "center",
       "position": "relative",
       "display": "inline-block"
+    },
+
+    "full_size_container":{
+      "width": "100%",
+      "height": "100%",
+      "textAlign": "center",
+      "position": "absolute",
+      "display": "block"
     },
 
     "main_button_container_multi":{

@@ -83,15 +83,21 @@
           "style":["main_button_container", "coloring_container_main_panel"]
         }
       },{
-        "id":"buttonContainer1_1",
+        "id":"multiButtonContainer1",
         "data":{
           "parentId":"buttonContainer1",
+          "style":["full_size_container"]
+        }
+      },{
+        "id":"buttonContainer1_1",
+        "data":{
+          "parentId":"multiButtonContainer1",
           "style":["main_button_container_multi"]
         }
       },{
         "id":"buttonContainer1_2",
         "data":{
-          "parentId":"buttonContainer1",
+          "parentId":"multiButtonContainer1",
           "style":["main_button_container_multi", "coloring_container_main_panel"]
         }
       },{

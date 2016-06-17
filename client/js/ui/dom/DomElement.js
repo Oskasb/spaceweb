@@ -58,9 +58,9 @@ define([
             this.pressed = false;
             var element;
             if (input) {
-                element = DomUtils.createTextInputElement(parentElem, count+'_'+Math.random(), input.varname, 'point');
+                element = DomUtils.createTextInputElement(parentElem, styleId+'_'+count, input.varname, 'point');
             } else {
-                element = DomUtils.createDivElement(parentElem, count+'_'+Math.random(), '', 'point');
+                element = DomUtils.createDivElement(parentElem, styleId+'_'+count, '', 'point');
             }
 
             this.element = element;
