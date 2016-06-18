@@ -4,20 +4,17 @@
 define([
         'Events',
         'PipelineAPI',
+        'PipelineObject',
         'ui/dom/DomElement'
     ],
     function(
         evt,
         PipelineAPI,
+        PipelineObject,
         DomElement
     ) {
 
         var dataTypeStyles = {
-            number:"coloring_data_type_number",
-            boolean:"coloring_data_type_bool_true",
-            string:"coloring_data_type_string",
-            false:"coloring_data_type_bool_false",
-            array:"coloring_data_type_array",
             default:"coloring_data_type_default"
         };
 
@@ -54,8 +51,9 @@ define([
 
             };
 
+            dataTypeStyles = new PipelineObject('data_types', 'style_map').readData();
             PipelineAPI.subscribeToCategoryKey(this.category, fieldData, callback);
-
+            
         };
 
         

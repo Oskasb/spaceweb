@@ -31,9 +31,10 @@ define([
 			this.pointerCursor = pointerCursor;
 			this.timeTracker = new TimeTracker();
 			this.gameMain = new GameMain();
-			var guiSetup = new GuiSetup();
+			this.guiSetup = new GuiSetup();
+            new UiMessenger();
 			// var inputReady = function() {
-			guiSetup.initMainGui();
+
 			//     evt.removeListener(evt.list().INPUT_READY, inputReady);
 			// };
 
@@ -43,11 +44,11 @@ define([
 
 
 		Client.prototype.initiateClient = function(socketMessages) {
+
+
+            this.guiSetup.initMainGui();
 			
-			
-			
-			
-            new UiMessenger();
+
 			var _this = this;
 			var messages = socketMessages.messages;
 			var ClientState = GAME.ENUMS.ClientStates.LOADING;

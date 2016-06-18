@@ -3,19 +3,21 @@
 define([
     'Events',
     'goo/math/Vector3',
-    'PipelineAPI'
+    'PipelineAPI',
+    'PipelineObject'
 
 ], function(
     evt,
     Vector3,
-    PipelineAPI
+    PipelineAPI,
+    PipelineObject
 ) {
 
     var camera;
-    var configs = [];
+    var configs = {};
     
     var SpaceFX = function() {
-
+        var pipeObj;
         this.camPos = new Vector3();
         this.posVec = new Vector3();
         this.velVec = new Vector3();
@@ -32,15 +34,11 @@ define([
 
         evt.on(evt.list().CAMERA_READY, cameraReady);
         
-        var fxConfig = function(src, data) {
-            configs = [];
-            for (var i = 0; i < data.length; i++) {
-                configs.push(data[i].effect_data);
-            }
-
+        var fxConfig = function() {
+            configs = pipeObj.buildConfig('effect_data');
         };
-        
-        PipelineAPI.subscribeToCategoryKey('effects','environment', fxConfig)
+
+        pipeObj = new PipelineObject('effects','environment', fxConfig);
     };
 
 
@@ -83,8 +81,8 @@ define([
 
         this.camPos.setVector(camera.transformComponent.transform.translation);
 
-        for (var i = 0; i < configs.length; i++) {
-            this.processConfFX(configs[i], time, tpf);
+        for (var key in configs) {
+            this.processConfFX(configs[key], time, tpf);
         }
 
     };

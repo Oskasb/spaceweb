@@ -5,14 +5,14 @@ define([
         'ui/dom/DomMessage',
         'ui/GameScreen',
         'Events',
-    'PipelineAPI',
+        'PipelineObject',
         'ui/dom/DomPopup'
     ],
     function(
         DomMessage,
         GameScreen,
         evt,
-        PipelineAPI,
+        PipelineObject,
         DomPopup
     ) {
         
@@ -40,9 +40,9 @@ define([
 
             function channelData(src, data) {
                 setup(data);
-            };
+            }
 
-            PipelineAPI.subscribeToCategoryKey('messages', 'channels', channelData)
+            new PipelineObject('messages', 'channels', channelData);
 
             evt.on(evt.list().MESSAGE_POPUP, createMessagePopup);
             

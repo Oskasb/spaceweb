@@ -36,6 +36,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 
 require([
     '3d/SceneController',
+    'application/DataLoader',
     'application/DevConfigurator',
     'application/SystemDetector',
     'application/ButtonEventDispatcher',
@@ -49,6 +50,7 @@ require([
     'ui/dom/DomProgress'
 ], function(
     SceneController,
+    DataLoader,
     DevConfigurator,
     SystemDetector,
     ButtonEventDispatcher,
@@ -73,22 +75,7 @@ require([
 
     var sceneController = new SceneController();
     
-    var path = './../../..';
 
-    var loadUrls = [
-        './../../../Shared/io/Message.js',
-        './../../../Shared/io/SocketMessages.js',
-        './../../../Shared/MATH.js'
-
-    ];
-
-    var sharedUrls = [
-        './../../../Shared/MODEL.js',
-        './../../../Shared/GAME.js'
-    ];
-
-
-    var jsonRegUrl = './client/json/config_urls.json';
     window.jsonConfigUrls = 'client/json/';
 
 
@@ -121,14 +108,35 @@ require([
         }
     };
 
-    var clientInitiated = false;
-    var filesLoadedOK = false;
+
+
+
+    function checkReady() {
+        console.log("Check Ready");
+        initClient();
+        if (particles && dataLoader.checkReady()) {
+            console.log("Check Ready");
+
+            
+            client.initiateClient(new SocketMessages());
+
+            evt.removeListener(evt.list().PARTICLES_READY, particlesReady);
+        }
+    }
+    
+
+    var dataLoader = new DataLoader();
+
+    dataLoader.loadData(dataPipelineSetup, checkReady);
+    
+
+
     var particles = false;
     var client;
-    var loadProgress = new DomProgress(GameScreen.getElement(), 'load_progress');
+    
 
     var initClient = function() {
-        if (clientInitiated) {
+        if (client) {
             console.log("Multi Inits requested, bailing");
             return;
         }
@@ -140,98 +148,11 @@ require([
     };
 
 
-    var setDebug = function(key, data) {
-        SYSTEM_SETUP.DEBUG = data;
-    };
-    
-    var sharedFilesLoaded = function() {
-
-        function pipelineError(src, e) {
-            evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Pipeline Error '+src+' '+e});
-        }
-        
-        
-        PipelineAPI.dataPipelineSetup(jsonRegUrl, dataPipelineSetup, pipelineError);
-
-
-
-        function pipelineCallback(started, remaining, loaded) {
-            var spread = 150;
-            evt.fire(evt.list().MONITOR_STATUS, {FILE_CACHE:loaded});
-
-            loadProgress.setProgress(loaded / started);
-
-
-            if (remaining == 0) {
-                if (clientInitiated) return;
-                filesLoadedOK = true;
-                initClient();
-                checkReady();
-                clientInitiated = true;
-            }
-
-        }
-
-        PipelineAPI.addProgressCallback(pipelineCallback);
-        PipelineAPI.subscribeToCategoryKey('setup', 'DEBUG', setDebug);
-    };
-
-
-
-
-    var loadJS = function(url, implementationCode, location){
-
-        var scriptTag = document.createElement('script');
-        scriptTag.src = url;
-        scriptTag.onload = implementationCode;
-
-        location.appendChild(scriptTag);
-    };
-
-    var count = 0;
-
-    var sharedLoaded = function() {
-        count++;
-        if (count == sharedUrls.length) {
-            PipelineAPI.addReadyCallback(sharedFilesLoaded);
-        }
-    };
-
-    var filesLoaded = function() {
-        count++;
-  //      console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
-
-        if (count == loadUrls.length) {
-            count = 0;
-            for (var i = 0; i < sharedUrls.length; i++) {
-                loadJS(sharedUrls[i], sharedLoaded, document.body);
-            }
-
-        }
-    };
-
-
-
-
-
-    for (var i = 0; i < loadUrls.length; i++) {
-        loadJS(loadUrls[i], filesLoaded, document.body);
-    }
-
     var particlesReady = function() {
+        console.log("particlesReady");
         particles = true;
         checkReady();
     };
-
-    function checkReady() {
-        if (particles && filesLoadedOK) {
-            loadProgress.removeProgress();
-            client.initiateClient(new SocketMessages());
-
-            evt.removeListener(evt.list().PARTICLES_READY, particlesReady);
-        }
-    }
-
 
 
     evt.on(evt.list().PARTICLES_READY, particlesReady);

@@ -59,19 +59,29 @@ define([
             if (!this.ready) {
 
                 if (this.renderModel == 'canvas3d') {
-                    var camera = PipelineAPI.readCachedConfigKey('GAME_DATA', 'CAMERA');
-                    this.canvasApi.init3dCanvasGui(camera, this.callbackMap, this.canvasGuiConfig);
+
+
+                    var _this = this;
+
+                    var cameraReady = function(src, camera) {
+                        _this.canvasApi.init3dCanvasGui(camera, _this.callbackMap, _this.canvasGuiConfig);
+                        _this.ctx = _this.canvasApi.getCanvasContext();
+                        _this.ready = true;
+                    };
+
+                    PipelineAPI.subscribeToCategoryKey('GAME_DATA', 'CAMERA', cameraReady);
+
                 } else {
                     console.log(parent);
                     this.canvasApi.initDomCanvasGui(parent.element, this.callbackMap);
                 }
 
-                this.ctx = this.canvasApi.getCanvasContext();
+
             }
 
             this.canvasApi.setGuiTextureResolution(this.configs.resolution);
             this.canvasApi.setGuiAttenuationRgba(this.configs.attenuation);
-            this.ready = true;
+
         };
 
         CanvasElement.prototype.updateCanvasElement = function(tpf) {

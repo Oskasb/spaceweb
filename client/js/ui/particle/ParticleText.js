@@ -4,11 +4,13 @@
 define([
         'Events',
         'PipelineAPI',
+        'PipelineObject',
         'goo/math/Vector3'
     ],
     function(
         evt,
         PipelineAPI,
+        PipelineObject,
         Vector3
     ) {
 
@@ -32,10 +34,7 @@ define([
             this.size = textStyle.size;
             this.printCount = 0;
         };
-
-
-
-
+        
         var ParticleText = function(simpleParticles) {
 
             this.simpleParticles = simpleParticles;
@@ -45,26 +44,20 @@ define([
 
             this.messages = [];
 
-            function applyTextParticleConfigs(key, data) {
-                for (var i = 0; i < data.length; i++) {
-                    particleConfigs[data[i].id] = data[i].effect_data;
-                }
-                letterConfig = particleConfigs['Particle_Letter']
+            var textConfPipe = new PipelineObject('effects', 'text_config');
+            var textParticlePipe = new PipelineObject('effects', 'text_particles');
+
+            function applyTextParticleConfigs() {
+                particleConfigs = textParticlePipe.buildConfig('effect_data');
             }
 
-
-
-            function applyTextConfigs(key, data) {
-                for (var i = 0; i < data.length; i++) {
-                    textConfig[data[i].id] = data[i].config_data;
-                }
+            function applyTextConfigs() {
+                textConfig = textConfPipe.buildConfig('config_data');
             }
 
-
-            PipelineAPI.subscribeToCategoryKey('effects', 'text_config', applyTextConfigs);
-            PipelineAPI.subscribeToCategoryKey('effects', 'text_particles', applyTextParticleConfigs);
-
-
+            textConfPipe.subscribe(applyTextConfigs);
+            textParticlePipe.subscribe(applyTextParticleConfigs);
+            
             var drawText = function(e) {
                 _this.writeText(evt.args(e).text, evt.args(e).textStyle);
             };
@@ -87,7 +80,7 @@ define([
 
             particleData.vel.setDirect(0, 1, 0);
 
-            letterConfig = particleConfigs[textMessage.effectData]
+            letterConfig = particleConfigs[textMessage.effectData];
 
             letterConfig.sprite = textMessage.text[textMessage.printCount];
 

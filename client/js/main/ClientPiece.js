@@ -5,12 +5,14 @@ define([
 	'Events',
 	'ui/GooPiece',
 	'io/InputSegmentRadial',
+    'PipelineObject',
 	'PipelineAPI'
 ],
 	function(
 		evt,
 		GooPiece,
 		InputSegmentRadial,
+        PipelineObject,
 		PipelineAPI
 		) {
 
@@ -117,7 +119,7 @@ define([
 				inputSegmentRadial.applyConfigs(data);
 			};
             this.inputSegmentRadial = inputSegmentRadial;
-			PipelineAPI.subscribeToCategoryKey('piece_data', 'controls', pieceModuleDataLoaded);
+			new PipelineObject('piece_data', 'controls', pieceModuleDataLoaded);
 		};
 		
 		ClientPiece.prototype.playerRemove = function() {

@@ -5,13 +5,15 @@ define([
         'Events',
         'ui/GameScreen',
         'ui/dom/DomUtils',
-        'PipelineAPI'
+        'PipelineAPI',
+    'PipelineObject'
     ],
     function(
         evt,
         GameScreen,
         DomUtils,
-        PipelineAPI
+        PipelineAPI,
+        PipelineObject
     ) {
 
         var count = 0;

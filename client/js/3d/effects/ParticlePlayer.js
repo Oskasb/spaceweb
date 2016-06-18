@@ -4,6 +4,7 @@ define([
     '3d/effects/SimpleParticles',
     'ui/particle/ParticleText',
     'PipelineAPI',
+        'PipelineObject',
         'goo/math/Vector3'
     ],
     function(
@@ -12,6 +13,7 @@ define([
         SimpleParticles,
         ParticleText,
         PipelineAPI,
+        PipelineObject,
         Vector3
     ) {
 
@@ -87,7 +89,7 @@ define([
                 checkReady()
             }
             
-            PipelineAPI.subscribeToCategoryKey('effects', 'particles', applyParticleConfigs);
+            new PipelineObject('effects', 'particles', applyParticleConfigs);
 
             function applyGameplayEffectConfigs(key, data) {
                 for (var i = 0; i < data.length; i++) {
@@ -97,7 +99,7 @@ define([
                 checkReady()
             }
 
-            PipelineAPI.subscribeToCategoryKey('effects', 'gameplay', applyGameplayEffectConfigs);
+            new PipelineObject('effects', 'gameplay', applyGameplayEffectConfigs);
 
 
             function applyCheapParticleConfigs(key, data) {
@@ -109,7 +111,7 @@ define([
                 checkReady()
             }
 
-            PipelineAPI.subscribeToCategoryKey('effects', 'cheap_particles', applyCheapParticleConfigs);
+            new PipelineObject('effects', 'cheap_particles', applyCheapParticleConfigs);
             
 
 

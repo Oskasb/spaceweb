@@ -4,12 +4,14 @@
 define([
 	'main/ClientPiece',
 	'Events',
-	'PipelineAPI'
+	'PipelineAPI',
+    'PipelineObject'
 ],
 	function(
 		ClientPiece,
 		evt,
-		PipelineAPI
+		PipelineAPI,
+        PipelineObject
 		) {
 
 
@@ -44,7 +46,7 @@ define([
 				_this.pieceDataUpdated(_this.pieceData);
 			};
 
-			PipelineAPI.subscribeToCategoryKey('piece_data', 'modules', pieceModuleDataLoaded);
+			new PipelineObject('piece_data', 'modules', pieceModuleDataLoaded);
 			
 		};
 

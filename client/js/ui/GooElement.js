@@ -3,11 +3,11 @@
 
 define([
         'Events',
-        'PipelineAPI'
+        'PipelineObject'
     ],
     function(
         evt,
-        PipelineAPI
+        PipelineObject
     ) {
 
         var count = 0;
@@ -16,9 +16,7 @@ define([
             count++;
 
             this.particles = [];
-
             this.callbacks = {};
-            
 
             this.spatial = spatial;
             var _this = this;
@@ -28,7 +26,7 @@ define([
                 _this.attachGameEffect(spatial, data.game_effect);
             };
 
-            PipelineAPI.subscribeToCategoryKey('goo_elements', gooElementId, elementCallback)
+            new PipelineObject('goo_elements', gooElementId, elementCallback)
         };
 
 

@@ -3,14 +3,14 @@
 
 define([
         'Events',
-        'PipelineAPI',
+        'PipelineObject',
         'gui/CanvasGuiAPI',
         'ui/GameScreen',
         'ui/canvas/CanvasElement'
     ],
     function(
         evt,
-        PipelineAPI,
+        PipelineObject,
         CanvasGuiAPI,
         GameScreen,
         CanvasElement
@@ -25,7 +25,7 @@ define([
 
         DomCanvas.prototype.initCanvasSystem = function(canvasParams) {
             
-            console.log("Canvas Params: ", canvasParams);
+        //    console.log("Canvas Params: ", canvasParams);
             
             var _this = this;
             this.canvasElement = new CanvasElement(canvasParams);
@@ -33,16 +33,8 @@ define([
             this.ready = false;
 
             var configLoaded = function(src, conf) {
-                console.log("Apply conf", conf)
-
-                for (var i = 0; i < conf.length; i++) {
-                    if (conf[i].id == _this.configId) {
-                        console.log("Match conf", conf[i].data)
-                        _this.canvasElement.applyElementConfig(_this.parent, conf[i].data);
-                        _this.ready = true; 
-                    }
-                }
-
+                _this.canvasElement.applyElementConfig(_this.parent, _this.pipelineObject.buildConfig()[_this.configId]);
+                _this.ready = true;
             };
 
             var clientTick = function(e) {
@@ -51,11 +43,11 @@ define([
 
 
             if (!this.active) {
-                PipelineAPI.subscribeToCategoryKey('canvas', 'systems', configLoaded);
+                this.pipelineObject = new PipelineObject('canvas', 'systems');
+                this.pipelineObject.subscribe(configLoaded);
                 evt.on(evt.list().CLIENT_TICK, clientTick);
             }
             this.active = true;
-            
             
         };
 
