@@ -217,6 +217,7 @@ if(typeof(MODEL) == "undefined"){
         this.yaw = 0;
 		this.throttle = 0;
 		this.trigger = false;
+		this.triggerShields = false;
 		this.playerName = "init";
 	};
 

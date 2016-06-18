@@ -25,6 +25,7 @@ ServerPlayer = function(clientId, client, simTime) {
 
 	this.piece.networkDirty = true;
 	this.piece.setName(clientId);
+	client.attachPlayer(this);
 };
 
 
@@ -47,7 +48,13 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 		this.piece.networkDirty = true;
 	}
 
-
+    if (data.shield) {
+        this.piece.setModuleState('shield', data.shield);
+        console.log("Apply shields")
+    //    this.setInputTrigger(true, fireActionCallback);
+    //    this.setInputTrigger(false);
+        return;
+    }
 
 
 //	console.log("handlers: ", JSON.stringify(actionHandlers))

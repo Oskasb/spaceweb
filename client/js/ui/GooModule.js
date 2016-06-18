@@ -172,6 +172,7 @@ define([
                 if (this.applies.emit_effect) {
 
                     if (this.module.state.value > 0) {
+                        console.log("emit", this.module)
                         this.populateEffectData(this.module.state.value);
                         evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:this.effectData.state});
                     }

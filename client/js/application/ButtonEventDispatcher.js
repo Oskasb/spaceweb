@@ -28,8 +28,6 @@ define([
             for (var key in data) {
                 evt.fire(evt.list().MESSAGE_UI, {channel: 'button_update', message: key +':'+ data[key]});
             }
-
-
             
             PipelineAPI.setCategoryData(category, data);
         };

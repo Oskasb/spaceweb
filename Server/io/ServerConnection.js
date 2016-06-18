@@ -34,7 +34,7 @@ ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removeP
 			}
 
 			if (messages[msg.id]) {
-				messages[msg.id].call(respond, msg.data, dataHub);
+				messages[msg.id].call(respond, msg.data, dataHub, ws.clientId);
 			} else {
 				console.log("undefined SocketMessage ", message);
 			}

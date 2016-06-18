@@ -99,8 +99,9 @@ ServerGameMain.prototype.playerDiconected = function(clientId) {
 };
 
 
-ServerGameMain.prototype.playerInput = function(data) {
-	var player =  this.serverWorld.getPlayer(data.playerId);
+ServerGameMain.prototype.playerInput = function(data, clientId) {
+    console.log(data, clientId)
+	var player = this.serverWorld.getPlayer(clientId);
 	player.processPlayerInputUpdate(data, this.actionHandlers);
 };
 

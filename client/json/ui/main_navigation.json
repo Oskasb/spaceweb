@@ -40,9 +40,9 @@
           "style":["panel_button", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
-            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_1", "type":"toggle"}
+            "event":{"category":"CONTROL_STATE", "key":"TOGGLE_SHIELD", "type":"toggle"}
           },
-          "text":"Action1"
+          "text":"SHIELD"
         }
       },{
         "id":"mapContainer",
@@ -55,7 +55,8 @@
         "data":{
           "parentId":"rightRoot",
           "canvas3d":{
-            "configId": "canvas_controls"
+            "configId": "canvas_controls",
+            "enableOnEvent":{"category":"HUD_STATUS", "key":"CANVAS_TOP_RIGHT", "type":"toggle"}
           }
         }
       }, {
@@ -75,6 +76,56 @@
         "id":"leftRoot",
         "data":{
           "style":["main_top_left", "coloring_panel_main"]
+        }
+      },{
+        "id":"IdContainer",
+        "data":{
+          "parentId":"leftRoot",
+          "style":["main_button_container", "coloring_container_main_panel"]
+        }
+      },{
+        "id":"multiContainerID",
+        "data":{
+          "parentId":"IdContainer",
+          "style":["full_size_container"]
+        }
+
+      }, {
+        "id": "idFieldContainer",
+        "data": {
+          "parentId": "multiContainerID",
+          "style": ["id_field_list_container", "coloring_container_main_panel"]
+        }
+      }, {
+        "id": "monitorText",
+        "data": {
+          "parentId": "idFieldContainer",
+          "style": ["ui_name_container", "coloring_ui_name_field"],
+          "dataLog":{
+            "style":"player_id_field",
+            "channels":["own_player_name"],
+            "argument":"message",
+            "entry_count":0,
+            "eventId":"MESSAGE_UI"
+          }
+        }
+
+      }, {
+        "id": "idButtonContainer",
+        "data": {
+          "parentId": "multiContainerID",
+          "style": ["id_button_container", "coloring_container_main_panel"]
+        }
+      },{
+        "id":"playerButton",
+        "data":{
+          "parentId":"idButtonContainer",
+          "style":["panel_button_multi", "coloring_button_main_panel"],
+          "button":{
+            "id":"panel_button",
+            "event":{"category":"MESSAGE_POPUP", "key":"PLAYER_PROFILE", "type":"toggle"}
+          },
+          "text":"PLAYER"
         }
       },{
         "id":"buttonContainer1",
@@ -107,9 +158,9 @@
           "style":["panel_button_multi", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
-            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_1_1", "type":"toggle"}
+            "event":{"category":"HUD_STATUS", "key":"CANVAS_TOP_LEFT", "type":"toggle"}
           },
-          "text":"Action1_1"
+          "text":"RADAR"
         }
       },{
         "id":"button1_2",
@@ -118,26 +169,9 @@
           "style":["panel_button_multi", "coloring_button_main_panel"],
           "button":{
             "id":"panel_button",
-            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_1_2", "type":"toggle"}
+            "event":{"category":"HUD_STATUS", "key":"CANVAS_TOP_RIGHT", "type":"toggle"}
           },
-          "text":"Action1_2"
-        }
-      },{
-        "id":"buttonContainer2",
-        "data":{
-          "parentId":"leftRoot",
-          "style":["main_button_container", "coloring_container_main_panel"]
-        }
-      },{
-        "id":"button2",
-        "data":{
-          "parentId":"buttonContainer2",
-          "style":["panel_button", "coloring_button_main_panel"],
-          "button":{
-            "id":"panel_button",
-            "event":{"category":"GAME_ACTION", "key":"PLAYER_ACTION_3", "type":"toggle"}
-          },
-          "text":"Action3"
+          "text":"INPUT"
         }
       },{
         "id":"buttonContainer3",
@@ -161,7 +195,8 @@
         "data": {
           "parentId": "leftRoot",
           "canvas3d": {
-            "configId": "canvas_radar_3d"
+            "configId": "canvas_radar_3d",
+            "enableOnEvent":{"category":"HUD_STATUS", "key":"CANVAS_TOP_LEFT", "type":"toggle"}
           }
         }
       }

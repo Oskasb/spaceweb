@@ -110,7 +110,7 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.PieceControls.prototype.setControlState = function(moduleData, action, value) {
-//		console.log("Set Control: ", moduleData.source, action, value)
+	//	console.log("Set Control: ", moduleData.source, action, value)
 	};
 
 	GAME.PieceControls.prototype.applyControlConfig = function(configs) {
@@ -198,7 +198,7 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.Piece.prototype.registerParentPiece = function(piece) {
-		this.parentPiece = piece;;
+		this.parentPiece = piece;
 	};
 
 	GAME.Piece.prototype.registerModuleFromServerState = function(module) {
@@ -224,8 +224,16 @@ if(typeof(GAME) == "undefined"){
 		this.state = state;
 	};
 
+
+    GAME.Piece.prototype.setModuleState = function(moduleId, value) {
+        if (this.getModuleById(moduleId)) {
+            this.getModuleById(moduleId).setModuleState(value);
+        }
+    };
+
 	GAME.Piece.prototype.setName = function(name) {
 		this.pieceControls.inputState.playerName = name;
+        this.setModuleState('nameplate', name);
 	};
 
 	GAME.Piece.prototype.readServerModuleState = function(moduleId) {

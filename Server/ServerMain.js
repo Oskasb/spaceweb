@@ -37,9 +37,9 @@ ServerMain = function() {
 		this.system = system
 	};
 
-	DataSource.prototype.fetch = function(method, args, data) {
+	DataSource.prototype.fetch = function(method, args, data, clientId) {
 		if (this.system[method]) {
-			return JSON.stringify({id:this.id, data:this.system[method](data)});
+			return JSON.stringify({id:this.id, data:this.system[method](data, clientId)});
 		} else {
 			return JSON.stringify({id:this.id, data:"No Data to fetch for "+this.id});
 		}

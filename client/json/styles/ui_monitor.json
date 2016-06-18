@@ -11,6 +11,15 @@
       "position": "relative"
     },
 
+    "player_id_field":{
+      "textAlign":"center",
+      "top":"0em",
+      "overflow":"hidden",
+      "display":"block",
+      "fontSize": "18em",
+      "width": "100%",
+      "position": "relative"
+    },
 
     "entry_data_field":{
       "left": "0em",

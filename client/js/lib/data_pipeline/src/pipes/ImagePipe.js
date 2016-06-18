@@ -36,7 +36,7 @@ define([
 
         ImagePipe.callUrlCallbacks = function(url, img) {
 
-            console.log(url, pollCallbacks)
+     //       console.log(url, pollCallbacks)
 
             for (var i = 0; i < pollCallbacks[url].length; i++) {
                 pollCallbacks[url][i](url, img);

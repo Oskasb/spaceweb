@@ -5,13 +5,16 @@ define([
         PipelineAPI
     ) {
 
-        var PipelineObject = function(category, key, onDataCallback) {
+        var PipelineObject = function(category, key, onDataCallback, defaultValue) {
             this.category = category;
             this.key = key;
             this.data = {};
             this.configs = {};
-            this.subscribe(onDataCallback);
 
+            if (defaultValue != undefined) {
+                this.setData(defaultValue);
+            }
+            this.subscribe(onDataCallback);
         };
 
         PipelineObject.prototype.subscribe = function(onDataCallback) {
@@ -47,7 +50,12 @@ define([
 
             return this.configs;
         };
-        
+
+        PipelineObject.prototype.setData = function(data) {
+            PipelineAPI.setCategoryKeyValue(this.category, this.key, data);
+        };
+
+
         PipelineObject.prototype.readData = function() {
             return PipelineAPI.readCachedConfigKey(this.category, this.key);
         };

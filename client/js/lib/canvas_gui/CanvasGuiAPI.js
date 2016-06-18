@@ -13,14 +13,19 @@ define([
 			this.canvasGuiMain = new CanvasGuiMain();
 			this.uiTxResolution = uiTxResolution || defaultResolution;
 		//	this.pointerCursor = this.canvasGuiMain.pointerCursor;
+
+			this.is2d = false;
+			this.is3d = false;
 		};
 
 		CanvasGuiAPI.prototype.init3dCanvasGui = function(cameraEntity, callbackMap, canvasGuiConfig) {
 			this.canvasGuiMain.initGuiMain(cameraEntity, callbackMap, this.uiTxResolution, canvasGuiConfig);
+			this.is3d = true;
 		};
 
 		CanvasGuiAPI.prototype.initDomCanvasGui = function(parentDiv, callbackMap) {
 			this.canvasGuiMain.initGui2d(parentDiv, callbackMap, this.uiTxResolution);
+			this.is2d = true;
 		};
 		
 		CanvasGuiAPI.prototype.setUiToStateId = function(state) {
@@ -67,10 +72,12 @@ define([
 			return this.getPointerCursor().getPointerState();
 		};
 
+		CanvasGuiAPI.prototype.toggleGuiEnabled = function(bool) {
+			this.canvasGuiMain.toggleEnabled(bool, this.is3d);
+		};
+
 		CanvasGuiAPI.prototype.removeCanvasGui = function() {
 			this.canvasGuiMain.removeGuiMain()
-			
-			
 		};
 		
 		return CanvasGuiAPI;

@@ -42,7 +42,6 @@ define([
                 this.canvasGuiConfig[key] = canvasParams.config[key];
             }
 
-
         };
 
 
@@ -84,6 +83,11 @@ define([
             this.canvasApi.setGuiTextureResolution(this.configs.resolution);
             this.canvasApi.setGuiAttenuationRgba(this.configs.attenuation);
 
+        };
+
+        CanvasElement.prototype.toggleEnabled = function(bool) {
+            this.ready = bool;
+            this.canvasApi.toggleGuiEnabled(bool);
         };
 
         CanvasElement.prototype.updateCanvasElement = function(tpf) {

@@ -44,6 +44,31 @@
           "remove_effect":"shell_detonate"
         }
       }
+
+    },{
+
+      "id":"shields",
+      "data":{
+        "source":"triggerShields",
+        "applies":{
+
+          "effect_data":{
+            "intensity":10.3,
+            "strength":35,
+            "lifeSpan":2.4
+          },
+          "transform":{
+            "rot":[3.14, 0, 0],
+            "pos":[20, 3, 0]
+          },
+
+          "state":true,
+          "type":"float",
+          "game_effect":"ship_shield",
+          "message":"shields up"
+        }
+      }
+
     },{
 
       "id":"cannon",
@@ -52,7 +77,7 @@
         "applies":{
           "transform":{
             "rot":[0, 0, 0],
-            "pos":[0, -3, 0]
+            "pos":[0, 3, 0]
           },
           "state":true,
           "type":"boolean",
@@ -115,25 +140,7 @@
 
     ]
   }
-},
-  {
-    "bullet_data": {
-      "modules": [
-        {
-          "id": "shape",
-          "data": {
-            "source": "trigger",
-            "applies": {
-              "state": true,
-              "style":"ship_engine",
-              "type": "boolean",
-              "message": "pew!"
-            }
-          }
-        }
-      ]
-    }
-  }]
+}]
 
 
 

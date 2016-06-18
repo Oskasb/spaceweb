@@ -21,6 +21,21 @@
                 }]
 
             },
+
+            {
+                "id":"ship_shield",
+                "effect_data":[{
+                    "effect":"ship_trail",
+                    "simulator":"FastAdditiveTrail",
+                    "density":1
+
+                },{
+                    "effect": "explosion_big",
+                    "simulator": "CheapParticles"
+                }]
+
+            },
+
             {
                 "id":"blue_star",
                 "effect_data":[{

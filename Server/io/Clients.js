@@ -15,9 +15,12 @@ Clients.prototype.registerConnection = function(socket) {
 	client.notifyDataFrame();
 };
 
-Clients.prototype.requestPlayer = function(data) {
-	console.log("Request Player", JSON.stringify(data));
-
+Clients.prototype.requestPlayer = function(data, clientId) {
+	console.log("Request Player", JSON.stringify(data), clientId);
+	if (data.name) {
+		this.getClientById(clientId).setPlayerName(data.name);
+	}
+	
 };
 
 Clients.prototype.broadcastToAllClients = function(data) {

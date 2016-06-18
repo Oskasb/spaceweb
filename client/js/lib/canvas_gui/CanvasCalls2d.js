@@ -370,9 +370,14 @@ define([
 			this.attenuateColor = this.toRgba(color);
 		};
 
-		
 
-		CanvasCalls2d.prototype.applyTextureResolution = function(res) {
+        CanvasCalls2d.prototype.toggleGui = function(bool) {
+             
+        };
+
+
+
+        CanvasCalls2d.prototype.applyTextureResolution = function(res) {
 			this.canvasGui2d.setCanvasGuiResolution(res);
 
 			if (this.resolution != res) {

@@ -21,7 +21,7 @@ define([
             };
 
             var pipedTx = function(src, data) {
-                console.log("pipedTx", src, data);
+    //            console.log("pipedTx", src, data);
 
                 var settings = {
                     minFilter:"NearestNeighborNoMipMaps",

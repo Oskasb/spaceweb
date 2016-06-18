@@ -8,6 +8,8 @@ if(typeof(MATH) == "undefined"){
 
 	MATH.TWO_PI = 2.0 * Math.PI;
 
+	
+	
 	MATH.moduloPositive = function (value, size) {
 		var wrappedValue = value % size;
 		wrappedValue += wrappedValue < 0 ? size : 0;

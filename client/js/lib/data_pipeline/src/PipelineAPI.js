@@ -78,6 +78,14 @@ define(['data_pipeline/data/ConfigCache'],
 			store[category] = data;
 			return ConfigCache.dataCombineToKey(category, 'local', store);
 		};
+
+		PipelineAPI.setCategoryKeyValue = function(category, key, value) {
+			var store = {};
+
+			store[category] = {};
+			store[category][key] = value;
+			return ConfigCache.dataCombineToKey(category, 'local', store);
+		};
 		
 		PipelineAPI.dataPipelineSetup = function(jsonIndexUrl, options, pipelineError) {
 			for (var key in options) {

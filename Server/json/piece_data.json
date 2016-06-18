@@ -16,10 +16,12 @@
           "applySteering":0,
           "applyThrottle":0,
           "applyForward":0,
+          "applyShields":0,
           "applyAppearance":"ship_hull",
           "fireCannon":false
         },
         "constants":{
+          "shieldEnergy":50,
           "radialSegments":32,
           "throttleSegments": 3,
           "velocityDrag":1.5,
@@ -42,6 +44,18 @@
               "state":true,
               "action":"applyAppearance",
               "message":"Hull On"
+            }
+          }
+        },{
+          "id":"shields",
+          "data":{
+            "source":"triggerShields",
+            "initState": 0,
+            "applies":{
+              "type":"float",
+              "state":true,
+              "action":"applyControl",
+              "drain":2
             }
           }
         },{

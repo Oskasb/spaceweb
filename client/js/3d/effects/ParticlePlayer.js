@@ -36,14 +36,10 @@ define([
             function playParticle(e) {
                 _this.playParticleEffect(evt.args(e));
             }
-
-
-
-
+            
             function playGameEffect(e) {
                 _this.playGameEffect(evt.args(e));
             }
-
 
             var allRdy = false;
             var sysRdy = false;
@@ -53,16 +49,15 @@ define([
 
             function checkReady() {
                 if (allRdy) return;
-                console.log("particles ready? ", sysRdy, confRdy, cheapRdy, fxRdy);
+       //         console.log("particles ready? ", sysRdy, confRdy, cheapRdy, fxRdy);
                 if (sysRdy && confRdy && cheapRdy && fxRdy) {
                     particlesReady();
                     allRdy = true;
                 }
-
             }
 
             function cheapParticlesReady(count) {
-                console.log("Cheap Ready", count);
+        //        console.log("Cheap Ready", count);
                 cheapRdy = true;
                 checkReady()
             }
@@ -104,7 +99,6 @@ define([
             }
 
             new PipelineObject('effects', 'gameplay', applyGameplayEffectConfigs);
-
 
 
             function applyCheapParticleConfigs(key, data) {

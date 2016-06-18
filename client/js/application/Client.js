@@ -113,12 +113,12 @@ define([
 
 			var count = 0;
 
-			var requestPlayer = function(name) {
-				console.log("Request Player", name);
+			var requestPlayer = function(e) {
+				console.log("Request Player", e);
                 
                 if (!name) name = 'NoName';
                 
-                evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Name: '+name});
+                evt.fire(evt.list().MESSAGE_UI, {channel:'own_player_name', message:name});
 				PipelineAPI.setCategoryData('REGISTRY', {PLAYER_NAME:name});
 
 				if (ClientState == GAME.ENUMS.ClientStates.CLIENT_REQUESTED) {

@@ -14,13 +14,14 @@ define([
 
         var autoSubmit;
 
-        var DomPopup = function(configId, closeCallback) {
+        var DomPopup = function(configId, submitCallback, onClose) {
             this.active = true;
             var _this = this;
             
-            this.selection = "Name_"+Math.floor(1+Math.random()*1000);
-            this.closeCallback = closeCallback;
-            
+            this.selection = "";
+            this.submitCallback = submitCallback;
+            this.closeCallback = onClose;
+
             this.input = null;
 
             var callback = function(key, data) {
@@ -40,7 +41,7 @@ define([
                     if (_this.input) {
                         _this.selection = _this.input;
                     }
-                    closeCallback(_this.selection);
+                    submitCallback(_this.selection);
                     _this.removePopup();
                 }, 7000 + 100);
             }
@@ -55,12 +56,12 @@ define([
             var dataSample;
 
             var submitCallback = function() {
-                _this.submitValue(dataSource.element.value);
+                _this.submitValue(dataSource.element.value.substring(0, 8));
             };
 
             var inputValueCallback = function() {
-                dataSample.setText(dataSource.element.value);
-                _this.inputChanged(dataSource.element.value);
+                dataSample.setText(dataSource.element.value.substring(0, 8));
+                _this.inputChanged(dataSource.element.value.substring(0, 8));
             };
 
             var parent = GameScreen.getElement()
@@ -118,7 +119,7 @@ define([
                 if (_this.input) {
                     _this.selection = _this.input;
                 }
-                _this.closeCallback(_this.selection);
+                _this.submitCallback(_this.selection);
                 _this.removePopup();
             }, 300);
 
@@ -131,6 +132,7 @@ define([
         DomPopup.prototype.removePopup = function() {
             clearTimeout(autoSubmit);
             this.active = false;
+            this.closeCallback(false);
             this.elements[this.config[0].id].removeElement();
             delete this;
         };

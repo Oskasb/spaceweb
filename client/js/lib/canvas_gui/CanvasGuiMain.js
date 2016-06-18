@@ -76,8 +76,7 @@ define([
 			this.pointerCursor.addGuiStateTransitionCallback(transitionId, callback)
 		};
 
-
-		
+        
 		CanvasGuiMain.prototype.setGuiAttenuationRgba = function(rgba) {
 			this.canvasCalls.setAttenuateColor(rgba);
 		};
@@ -90,7 +89,10 @@ define([
 		CanvasGuiMain.prototype.setGuiTextureScale = function(txScale) {
 			this.canvasCalls.applyTextureScale(txScale);
 		};
-
+        
+        CanvasGuiMain.prototype.toggleEnabled = function(bool) {
+            this.canvasCalls.toggleGui(bool);
+        };
 
         CanvasGuiMain.prototype.removeGuiMain = function() {
             this.canvasCalls.removeGuiElements();

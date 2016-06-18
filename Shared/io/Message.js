@@ -8,11 +8,11 @@ Message = function(key, config) {
     }
 };
 
-Message.prototype.call = function(respond, data, dataHub) {
+Message.prototype.call = function(respond, data, dataHub, clientId) {
     if (this.reflect) {
-        respond(dataHub.readSource(this.source, this.config, data));
+        respond(dataHub.readSource(this.source, this.config, data, clientId));
     } else {
-        dataHub.readSource(this.source, this.config, data)
+        dataHub.readSource(this.source, this.config, data, clientId)
     }
 };
 

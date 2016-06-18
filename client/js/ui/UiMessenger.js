@@ -15,7 +15,19 @@ define([
         PipelineObject,
         DomPopup
     ) {
+        var domPopups = {};
+
+        var requestName = function(name) {
+            console.log("Popup request name: ", name)
+            evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RequestProfileUpdate', data:{name:name}});
+        };
+
+        var popups = {
+            PLAYER_PROFILE:{configId:"select_name", callback:requestName}
+        };
+
         
+
         var UiMessenger = function() {
             var listening = false;
             var channels;
@@ -27,8 +39,21 @@ define([
                 message.animateToXYZ(chan.anim[0], chan.anim[1], chan.anim[2]);
             }
 
-            function createMessagePopup(e) {
-                var popup = new DomPopup(evt.args(e).configId, evt.args(e).callback);
+            function createMessagePopup(src, data) {
+                console.log("popup", src, data)
+                
+                var onClose = function(value) {
+                    console.log("Call Close", value);
+                    popups[src].pipelineObject.setData(value);
+                };
+                
+                if (data) {
+                    domPopups[src] = new DomPopup(popups[src].configId, popups[src].callback, onClose);
+                } else {
+                    if (domPopups[src]) {
+                        domPopups[src].removePopup();
+                    }
+                }
             }
 
             function setup(data) {
@@ -44,7 +69,13 @@ define([
 
             new PipelineObject('messages', 'channels', channelData);
 
-            evt.on(evt.list().MESSAGE_POPUP, createMessagePopup);
+
+            for (var key in popups) {
+                console.log("make popups", key)
+                popups[key].pipelineObject =  new PipelineObject('MESSAGE_POPUP', key, createMessagePopup, false);
+            };
+
+         //   evt.on(evt.list().MESSAGE_POPUP, createMessagePopup);
             
         };
         

@@ -23,6 +23,7 @@ define([
             connection_error:"fa2",
             undefined:"#aaf",
             system_status:"#f8F",
+            own_player_name:"#fbf",
             server_message:"#4f9"
         };
 

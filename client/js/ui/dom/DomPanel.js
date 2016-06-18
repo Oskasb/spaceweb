@@ -77,7 +77,7 @@ define([
         };
 
         DomPanel.prototype.applyCanvas = function(elem, confData) {
-            var domCanvas = new DomCanvas(elem, confData.configId);
+            var domCanvas = new DomCanvas(elem, confData);
             this.uiSystems.push(domCanvas);
 
             var setupReady = function(data) {
@@ -102,7 +102,7 @@ define([
         DomPanel.prototype.applyCanvas3d = function(elem, confData) {
 
             var _this = this;
-            var domCanvas = new DomCanvas(elem, confData.configId);
+            var domCanvas = new DomCanvas(elem, confData);
             this.uiSystems.push(domCanvas);
 
             var setupReady = function(data) {

@@ -70,7 +70,7 @@ define([
 
             var styles = PipelineAPI.getCachedConfigs()['styles'];
 
-            console.log(styles);
+        //    console.log(styles);
 
             var imageStore = [];
 
@@ -83,7 +83,7 @@ define([
                 }
             }
 
-            console.log("Image count: ", imageStore.length, imageStore)
+        //    console.log("Image count: ", imageStore.length, imageStore)
 
 
         };
@@ -94,7 +94,7 @@ define([
         
         DataLoader.prototype.setupPipelineCallback = function(loadStateChange) {
             function pipelineCallback(started, remaining, loaded) {
-                console.log("SRL", started, remaining, loaded);
+            //    console.log("SRL", started, remaining, loaded);
                 evt.fire(evt.list().MONITOR_STATUS, {FILE_CACHE:loaded});
 
                 loadProgress.setProgress(loaded / started);
@@ -150,8 +150,6 @@ define([
 
             var sharedFilesLoaded = function() {
 
-                console.log("Shared Ready", PipelineAPI.checkReadyState());
-
                 function pipelineError(src, e) {
                     console.log("Pipeline error Ready", src, e);
                     evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_error', message:'Pipeline Error '+src+' '+e});
@@ -184,7 +182,7 @@ define([
 
             var filesLoaded = function() {
                 count++;
-                console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
+        //        console.log("Pipeline Ready State:", PipelineAPI.checkReadyState());
                 if (count == loadUrls.length) {
                     count = 0;
                     for (var i = 0; i < sharedUrls.length; i++) {

@@ -126,7 +126,7 @@ define([
 
 		CanvasGui3D.prototype.setupMesh = function() {
 			this.texture = new Texture(this.canvas, null, this.canvas.width, this.canvas.height);
-			console.log("Setup gui TX: ", this.canvas.width, this.canvas.height)
+		//	console.log("Setup gui TX: ", this.canvas.width, this.canvas.height);
 			this.material.setTexture('DIFFUSE_MAP', this.texture);
 			this.texture.setNeedsUpdate();
 		};
@@ -277,10 +277,18 @@ define([
 			}
 		};
 
+        CanvasGui3D.prototype.toggle3dGui = function(bool) {
+
+            if (bool) {
+                this.uiQuad.show();
+            } else {
+                this.uiQuad.hide();
+            }
+        };
 
 
         CanvasGui3D.prototype.remove3dGuiHost = function() {
-            this.uiQuad.removeFromWold();
+            this.uiQuad.removeFromWorld();
             this.canvas.removeElement();
         };
 

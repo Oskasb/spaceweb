@@ -33,6 +33,7 @@ define([
 			piece.serverState = serverState;
 			this.piece = piece;
 			this.playerId = serverState.playerId;
+            this.name = this.playerId;
 
 			this.spatial = new MODEL.Spatial();
 			this.targetSpatial = new MODEL.Spatial();
@@ -47,24 +48,44 @@ define([
 			
 		};
 
+        ClientPiece.prototype.getPieceModuleKey = function() {
+            return this.playerId+'_MODULES'
+        };
+
 		ClientPiece.prototype.attachModules = function(modules) {
 
 			var serverState = this.piece.serverState;
-			var _this = this;
 			this.piece.modules = [];
 			this.piece.moduleIndex = {};
 
+
+
 			for (var i = 0; i < modules.length; i++) {
+
 
 				if (serverState.modules[modules[i].id]) {
 
 					for (var j = 0; j < serverState.modules[modules[i].id].length; j++) {
 
+                        var moduleState = serverState.modules[modules[i].id][j];
+                    /*    
+                        var data = {};
+                        data[modules[i].id] = {data: modules[i].data, state:moduleState};
+
+                        var moduleStateUpdated = function(src, data) {
+                            console.log("Module pipeObj Updated", src, data);
+                        };
+
+                        var pipeObjModule = new PipelineObject(this.getPieceModuleKey(), modules[i].id, moduleStateUpdated, data)
+                        this.modules.push(pipeObjModule);
+
+                     */
 						var moduleAppliedCallback = function(message) {
+                //            console.log("Mpdule applied msg: ", message)
 					//		_this.domPlayer.renderStateText(message);
 						};
 
-						var moduleState = serverState.modules[modules[i].id][j];
+
 
 						var module = new GAME.PieceModule(modules[i].id, modules[i].data, this);
 
@@ -87,9 +108,25 @@ define([
 			return this.piece.id;
 		};
 
-
+        ClientPiece.prototype.getPieceName = function() {
+            if (this.piece.readServerModuleState('nameplate')) {
+                var name = this.piece.readServerModuleState('nameplate')[0].value;
+                if (this.name != name) {
+                    if (this.isOwnPlayer) {
+                        evt.fire(evt.list().MESSAGE_UI, {channel:"own_player_name", message:name});
+                    }
+                    if (name.length > 10) {
+                        name = name.substring(0, 10);
+                    }
+                    this.name = name;
+                }
+                return name;
+            }
+        };
 
 		ClientPiece.prototype.updatePlayer = function(tpf) {
+            
+
 			this.piece.updatePieceFrame(tpf);
 
 			if (this.piece.state == GAME.ENUMS.PieceStates.TIME_OUT) {
@@ -131,8 +168,8 @@ define([
 		ClientPiece.prototype.setServerState = function(serverState) {
 
 			this.piece.processModules(serverState.modules);
-
 			this.piece.applyNetworkState(serverState);
+            this.getPieceName();
 			
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
 		//		this.domPlayer.renderStateText("Poof");

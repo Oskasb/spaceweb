@@ -4,6 +4,7 @@
 define([
         'Events',
         'PipelineObject',
+    'PipelineAPI',
         'gui/CanvasGuiAPI',
         'ui/GameScreen',
         'ui/canvas/CanvasElement'
@@ -11,21 +12,21 @@ define([
     function(
         evt,
         PipelineObject,
+        PipelineAPI,
         CanvasGuiAPI,
         GameScreen,
         CanvasElement
     ) {
 
 
-        var DomCanvas = function(parent, confId) {
-            this.configId = confId;
+        var DomCanvas = function(parent, conf) {
+            this.configId = conf.configId;
+            this.conf = conf;
             this.active = false;
             this.parent = parent;
         };
 
         DomCanvas.prototype.initCanvasSystem = function(canvasParams) {
-            
-        //    console.log("Canvas Params: ", canvasParams);
             
             var _this = this;
             this.canvasElement = new CanvasElement(canvasParams);
@@ -49,6 +50,18 @@ define([
             }
             this.active = true;
             
+            var toggleTriggered = function(src, data) {
+                _this.canvasElement.toggleEnabled(data);
+            };
+
+            if (this.conf.enableOnEvent) {
+                console.log("Enable event", this.conf);
+                var data = {};
+                data[this.conf.enableOnEvent.key] = false;
+                PipelineAPI.setCategoryData(this.conf.enableOnEvent.category, data);
+                PipelineAPI.subscribeToCategoryKey(this.conf.enableOnEvent.category, this.conf.enableOnEvent.key, toggleTriggered);
+            }
+                        
         };
 
         DomCanvas.prototype.removeUiSystem = function() {

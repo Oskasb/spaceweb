@@ -72,7 +72,7 @@ define([
 			};
 
 			var pipedSprites = function(src, data) {
-				console.log("pipedSprites", src, data);
+	//			console.log("pipedSprites", src, data);
 				textureCreator.loadTexture2D(src, {
 					minFilter:"NearestNeighborNoMipMaps",
 					wrapS: 'EdgeClamp',
@@ -83,7 +83,7 @@ define([
 			};
 
 			var pipedFontTx = function(src, data) {
-				console.log("pipedFontTx", src, data);
+	//			console.log("pipedFontTx", src, data);
 				textureCreator.loadTexture2D(src, {
 					minFilter:"NearestNeighborNoMipMaps",
 					wrapS: 'EdgeClamp',
@@ -105,12 +105,12 @@ define([
 
             var loadCount = 0;
             var startCount = 0;
-            
+
             var readyCB = function(id) {
                 loadIds.splice(loadIds.indexOf(id), 1);
 
                 loadCount++;
-                console.log("Load cheap", startCount, loadCount, id, loadIds);
+        //        console.log("Load cheap", startCount, loadCount, id, loadIds);
                 if (loadIds.length == 0) {
                     allLoaded(loadCount);
                 }

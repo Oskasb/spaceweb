@@ -289,7 +289,7 @@ define([
                         ctx.font = confData.playerNames.font;
                         ctx.textAlign = "center";
                         ctx.fillText(
-                            gamePieces[index].playerId,
+                            gamePieces[index].name,
                             tempRect.left,
                             tempRect.top - 4
                         );

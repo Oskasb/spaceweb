@@ -17,6 +17,10 @@ Client = function(seed, socket, clients) {
 
 };
 
+Client.prototype.setPlayerName = function(name) {
+    this.player.piece.setName(name);
+};
+
 Client.prototype.setState = function(state) {
     console.log("Set Client state: ", state);
     this.state = this.clientStates[state];

@@ -40,6 +40,7 @@ require([
     'application/DevConfigurator',
     'application/SystemDetector',
     'application/ButtonEventDispatcher',
+    'application/ControlStateDispatcher',
     'application/Client',
     'application/StatusMonitor',
     'ui/GameScreen',
@@ -54,6 +55,7 @@ require([
     DevConfigurator,
     SystemDetector,
     ButtonEventDispatcher,
+    ControlStateDispatcher,
     Client,
     StatusMonitor,
     GameScreen,
@@ -68,7 +70,7 @@ require([
     new SystemDetector();
     new ButtonEventDispatcher();
     new DevConfigurator();
-
+    new ControlStateDispatcher();
 
     GameScreen.registerAppContainer(document.getElementById('game_window'));
     

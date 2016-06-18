@@ -6,12 +6,12 @@ DataHub = function() {
 };
 
 
-DataHub.prototype.readSource = function(sourceId, config, data) {
+DataHub.prototype.readSource = function(sourceId, config, data, clientId) {
 
 	if (!this.sources[sourceId]) {
 		 console.log("No Set Source", sourceId)
 	} else {
-		return this.sources[sourceId].fetch(config.method, config.args, data);
+		return this.sources[sourceId].fetch(config.method, config.args, data, clientId);
 	}
 
 
