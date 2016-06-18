@@ -43,7 +43,7 @@ define([
 		};
 
 
-		Client.prototype.initiateClient = function(socketMessages) {
+		Client.prototype.initiateClient = function(socketMessages,connectionReady) {
 
 
             this.guiSetup.initMainGui();
@@ -137,7 +137,7 @@ define([
                 if (ClientState == GAME.ENUMS.ClientStates.READY) {
                     count++;
 
-                    var clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')
+                    var clientId = PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID');
                     if (clientId == 'CLIENT_ID') {
                         evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'Request ID'});
                         clientReady();
@@ -149,7 +149,7 @@ define([
                     evt.fire(evt.list().MESSAGE_UI, {channel:'system_status', message:'ID: '+PipelineAPI.readCachedConfigKey('REGISTRY', 'CLIENT_ID')});
                     setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
 
-
+                    connectionReady();
                     evt.on(evt.list().CURSOR_PRESS, requestPlayer);
                 //    evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
                 }

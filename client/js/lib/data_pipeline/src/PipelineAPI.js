@@ -73,7 +73,7 @@ define(['data_pipeline/data/ConfigCache'],
 		};
 
 		PipelineAPI.setCategoryData = function(category, data) {
-			var store = {}
+			var store = {};
 
 			store[category] = data;
 			return ConfigCache.dataCombineToKey(category, 'local', store);

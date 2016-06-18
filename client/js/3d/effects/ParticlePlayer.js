@@ -61,6 +61,12 @@ define([
 
             }
 
+            function cheapParticlesReady(count) {
+                console.log("Cheap Ready", count);
+                cheapRdy = true;
+                checkReady()
+            }
+
             function systemsReady() {
                 sysRdy = true;
                 checkReady()
@@ -77,9 +83,7 @@ define([
                 evt.on(evt.list().GAME_EFFECT, playGameEffect);
                 evt.on(evt.list().PLAY_PARTICLE, playParticle);
             }
-
-
-
+            
 
             function applyParticleConfigs(key, data) {
                 for (var i = 0; i < data.length; i++) {
@@ -102,19 +106,16 @@ define([
             new PipelineObject('effects', 'gameplay', applyGameplayEffectConfigs);
 
 
+
             function applyCheapParticleConfigs(key, data) {
                 for (var i = 0; i < data.length; i++) {
                     cheapParticleConfigs[data[i].id] = data[i].effect_data;
                 }
-                simpleParticles.applyCheapParticleConfigs(cheapParticleConfigs);
-                cheapRdy = true;
-                checkReady()
+                simpleParticles.applyCheapParticleConfigs(cheapParticleConfigs, cheapParticlesReady);
             }
 
             new PipelineObject('effects', 'cheap_particles', applyCheapParticleConfigs);
             
-
-
         }
 
         ParticlePlayer.prototype.getCheapEffectData = function(key) {

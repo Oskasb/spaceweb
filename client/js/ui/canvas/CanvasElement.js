@@ -74,6 +74,8 @@ define([
                 } else {
                     console.log(parent);
                     this.canvasApi.initDomCanvasGui(parent.element, this.callbackMap);
+                    this.ctx = this.canvasApi.getCanvasContext();
+                    this.ready = true;
                 }
 
 

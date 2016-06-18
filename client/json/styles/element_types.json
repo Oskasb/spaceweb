@@ -33,16 +33,22 @@
     },
 
     "main_button_active":{
-      "color":"rgb(235, 255, 255)",
-      "border": "0.1em solid rgb(125, 185, 255)",
-      "backgroundColor":"rgb(152, 201, 235)"
+      "color":"rgb(235, 245, 255)",
+      "border": "0.1em solid rgb(225, 245, 255)",
+      "backgroundColor":"rgb(152, 201, 235)",
+      "transform": "translate3d(0em, 0em, 0em) scale3d(1, 1, 1)"
     },
 
     "coloring_button_main_panel":{
       "color":"rgb(65, 95, 145)",
       "border": "0.1em solid rgb(125, 185, 245)",
       "borderRadius":"0.14em",
-      "backgroundColor":"rgb(100, 135, 185)"
+      "backgroundColor":"rgb(100, 135, 185)",
+        "transitionProperty":"transform",
+        "transitionDuration":"0.3s",
+        "transitionTimingFunction":"cubic-bezier(0.21, 4.01, 0.36, 0.29)",
+        "transitionDelay":0,
+      "transform": "translate3d(0em, 0em, 0em) scale3d(1, 1, 1)"
     },
 
     "coloring_button_dev_panel":{
@@ -54,20 +60,23 @@
 
     "main_button_hover":{
       "color":"rgb(235, 245, 255)",
-      "border": "0.1em solid rgb(255, 255, 255)",
-      "backgroundColor":"rgb(172, 221, 255)"
+      "border": "0.1em solid rgb(155, 185, 255)",
+      "backgroundColor":"rgb(172, 221, 255)",
+      "transform": "translate3d(0em, -1px, 0em) scale3d(1.02, 1.02, 1)"
     },
 
     "main_button_press":{
-      "color":"rgb(255, 255, 255)",
-      "border": "0.1em solid rgb(255, 255, 255)",
-      "backgroundColor":"rgb(182, 241, 255)"
+      "color":"rgb(115, 185, 245)",
+      "border": "0.1em solid rgb(55, 55, 125)",
+      "backgroundColor":"rgb(182, 241, 255)",
+      "transform": "translate3d(0em, 1px, 0em) scale3d(0.98, 0.98, 1)"
     },
 
     "dev_button_hover":{
       "color":"rgb(175, 205, 255)",
       "border": "0.1em solid rgb(255, 255, 255)",
-      "backgroundColor":"rgb(155, 175, 225)"
+      "backgroundColor":"rgb(155, 175, 225)",
+      "transform": "translate3d(0em, -0.5px, 0em) scale3d(1.1, 1.1, 1)"
     },
 
     "dev_button_press":{

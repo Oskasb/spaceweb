@@ -71,69 +71,12 @@ require([
 
 
     GameScreen.registerAppContainer(document.getElementById('game_window'));
-
-
-    var sceneController = new SceneController();
     
-
-    window.jsonConfigUrls = 'client/json/';
-
+    var sceneController = new SceneController();
+    var dataLoader = new DataLoader();
+    var client;
 
     console.log(window.location.href);
-    evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
-    var pipelineOn = false;
-
-    if (window.location.href == 'http://127.0.0.1:5000/' || window.location.href ==  'http://localhost:5000/' || window.location.href ==  'http://192.168.0.100:5000/') {
-        pipelineOn = true;
-    }
-
-    var dataPipelineSetup = {
-        "jsonPipe":{
-            "polling":{
-                "enabled":pipelineOn,
-                "frequency":10
-            }
-        },
-        "svgPipe":{
-            "polling":{
-                "enabled":false,
-                "frequency":2
-            }
-        },
-        "imagePipe":{
-            "polling":{
-                "enabled":false,
-                "frequency":2
-            }
-        }
-    };
-
-
-
-
-    function checkReady() {
-        console.log("Check Ready");
-        initClient();
-        if (particles && dataLoader.checkReady()) {
-            console.log("Check Ready");
-
-            
-            client.initiateClient(new SocketMessages());
-
-            evt.removeListener(evt.list().PARTICLES_READY, particlesReady);
-        }
-    }
-    
-
-    var dataLoader = new DataLoader();
-
-    dataLoader.loadData(dataPipelineSetup, checkReady);
-    
-
-
-    var particles = false;
-    var client;
-    
 
     var initClient = function() {
         if (client) {
@@ -147,15 +90,36 @@ require([
         sceneController.setup3dScene(clientTick);
     };
 
+    function connectionReady() {
+        dataLoader.notifyCompleted();
+    }
 
-    var particlesReady = function() {
-        console.log("particlesReady");
-        particles = true;
-        checkReady();
+
+    function connectClient() {
+        client.initiateClient(new SocketMessages(), connectionReady);
+    }
+
+
+
+
+    var loadStateChange = function(state) {
+        console.log('loadStateChange', state)
+        if (state == dataLoader.getStates().IMAGES) {
+            initClient();
+            dataLoader.preloadImages();
+        }
+
+        if (state == dataLoader.getStates().COMPLETED) {
+            connectClient();
+
+        }
+
     };
 
+    dataLoader.setupPipelineCallback(loadStateChange);
 
-    evt.on(evt.list().PARTICLES_READY, particlesReady);
+    dataLoader.loadData();
+
 
 
 });

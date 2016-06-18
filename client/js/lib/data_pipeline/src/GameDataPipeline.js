@@ -25,6 +25,7 @@ define([
 		};
 
 		GameDataPipeline.loadImageFromUrl = function(url, dataUpdated, fail) {
+			ImagePipe.registerPollCallback(url, dataUpdated);
 			ImagePipe.loadImage(url, dataUpdated, fail)
 		};
 

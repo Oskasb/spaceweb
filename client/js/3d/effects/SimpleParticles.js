@@ -7,7 +7,8 @@ define([
 		'particle_system/defaults/FontRendererConfigs',
 		'particle_system/defaults/FontSimulators',
 		'3d/effects/CheapParticles',
-		'goo/renderer/TextureCreator'
+		'goo/renderer/TextureCreator',
+	'PipelineAPI'
 	],
 	function(
 		evt,
@@ -18,7 +19,8 @@ define([
 		FontRendererConfigs,
 		FontSimulators,
 		CheapParticles,
-		TextureCreator
+		TextureCreator,
+		PipelineAPI
 	) {
 
 		var particlesAPI;
@@ -51,13 +53,13 @@ define([
 				}
 			}.bind(this);
 
-			var fontTxLoaded = function() {
+			var fontTxLoaded = function(fontTexture) {
 				this.particlesAPI.createParticleSystems(FontSimulators, FontRendererConfigs, DefaultSpriteAtlas.atlases[1], fontTexture);
 				fontsRdy = true;
 				checkReady();
 			}.bind(this);
 
-			var txLoaded = function() {
+			var txLoaded = function(texture) {
 				this.particlesAPI.createParticleSystems(DefaultSimulators, DefaultRendererConfigs, DefaultSpriteAtlas.atlases[0], texture);
 				spritesRdy = true;
 				checkReady();
@@ -65,30 +67,60 @@ define([
 
 			var textureCreator = new TextureCreator();
 
-			var texture = textureCreator.loadTexture2D(atlases[DefaultSpriteAtlas.atlases[0].id].textureUrl.value, {
-				minFilter:"NearestNeighborNoMipMaps",
-				wrapS: 'EdgeClamp',
-				wrapT: 'EdgeClamp'
-			}, function() {
-				txLoaded();
-			});
+			var pipelineError = function(src, err) {
+				console.log("FX texture error", src, err);
+			};
 
+			var pipedSprites = function(src, data) {
+				console.log("pipedSprites", src, data);
+				textureCreator.loadTexture2D(src, {
+					minFilter:"NearestNeighborNoMipMaps",
+					wrapS: 'EdgeClamp',
+					wrapT: 'EdgeClamp'
+				}, function(texture) {
+					txLoaded(texture);
+				});
+			};
 
-			var fontTexture  = textureCreator.loadTexture2D(atlases[DefaultSpriteAtlas.atlases[1].id].textureUrl.value, {
-				minFilter:"NearestNeighborNoMipMaps",
-				wrapS: 'EdgeClamp',
-				wrapT: 'EdgeClamp'
-			}, function() {
-				fontTxLoaded();
-			});
+			var pipedFontTx = function(src, data) {
+				console.log("pipedFontTx", src, data);
+				textureCreator.loadTexture2D(src, {
+					minFilter:"NearestNeighborNoMipMaps",
+					wrapS: 'EdgeClamp',
+					wrapT: 'EdgeClamp'
+				}, function(fontTexture) {
+					fontTxLoaded(fontTexture);
+				});
+			};
+
+			PipelineAPI.cacheImageFromUrl(atlases[DefaultSpriteAtlas.atlases[0].id].textureUrl.value, pipedSprites, pipelineError);
+			PipelineAPI.cacheImageFromUrl(atlases[DefaultSpriteAtlas.atlases[1].id].textureUrl.value, pipedFontTx, pipelineError);
 
 		};
 
 
-		SimpleParticles.prototype.applyCheapParticleConfigs = function(cheapParticleConfigs) {
+		SimpleParticles.prototype.applyCheapParticleConfigs = function(cheapParticleConfigs, allLoaded) {
+
+            var loadIds = [];
+
+            var loadCount = 0;
+            var startCount = 0;
+            
+            var readyCB = function(id) {
+                loadIds.splice(loadIds.indexOf(id), 1);
+
+                loadCount++;
+                console.log("Load cheap", startCount, loadCount, id, loadIds);
+                if (loadIds.length == 0) {
+                    allLoaded(loadCount);
+                }
+            };
+
 
 			for (var key in cheapParticleConfigs) {
-				this.cheapParticles.createSystem(key, cheapParticleConfigs[key]);
+                loadIds.push(key);
+                startCount ++;
+				this.cheapParticles.createSystem(key, cheapParticleConfigs[key], readyCB);
 			}
 		};
 
@@ -100,7 +132,6 @@ define([
 		SimpleParticles.prototype.spawnCheap = function(simulatorId, position, normal, effectData) {
 			this.cheapParticles.spawn(simulatorId, position, normal, effectData)
 		};
-
 
 
         var lastFancyParticles = 0;

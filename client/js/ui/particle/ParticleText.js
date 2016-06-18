@@ -81,9 +81,7 @@ define([
             particleData.vel.setDirect(0, 1, 0);
 
             letterConfig = particleConfigs[textMessage.effectData];
-
             letterConfig.sprite = textMessage.text[textMessage.printCount];
-
             letterConfig.size[0] = textMessage.size*textMessage.config.size;
             letterConfig.size[1] = textMessage.size*textMessage.config.size;
 

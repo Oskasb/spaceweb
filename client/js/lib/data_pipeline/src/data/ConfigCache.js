@@ -285,6 +285,7 @@ define([
 		ConfigCache.cacheSvgFromUrl = function(url, success, fail) {
 			ConfigCache.notifyUrlReadRequest(url);
 			var onLoaded = function(remoteUrl, svgData) {
+				ConfigCache.notifyUrlReceived(remoteUrl);
 				success(remoteUrl, svgData)
 			};
 
@@ -294,6 +295,7 @@ define([
 		ConfigCache.cacheImageFromUrl = function(url, success, fail) {
 			ConfigCache.notifyUrlReadRequest(url);
 			var onLoaded = function(remoteUrl, svgData) {
+				ConfigCache.notifyUrlReceived(remoteUrl);
 				success(remoteUrl, svgData)
 			};
 

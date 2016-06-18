@@ -27,9 +27,23 @@ define([
 		};
 
 		ImagePipe.registerPollCallback = function(url, onUpdateCallback) {
-			pollCallbacks[url] = onUpdateCallback;
+			if (!pollCallbacks[url]) {
+				pollCallbacks[url] = [];
+			}
+			pollCallbacks[url].push(onUpdateCallback);
 			pollIndex.push(url);
 		};
+
+        ImagePipe.callUrlCallbacks = function(url, img) {
+
+            console.log(url, pollCallbacks)
+
+            for (var i = 0; i < pollCallbacks[url].length; i++) {
+                pollCallbacks[url][i](url, img);
+            }
+
+            loadedData[url] = img;
+        };
 
 		ImagePipe.storeData = function(url, svg, success) {
 			loadedData[url] = svg;
@@ -37,9 +51,10 @@ define([
 		};
 
 		ImagePipe.loadImage = function(url, dataUpdated, fail) {
+
 			var onLoaded = function(img, fileUrl) {
-				ImagePipe.storeData(fileUrl, img, dataUpdated);
-				ImagePipe.registerPollCallback(fileUrl, dataUpdated);
+				ImagePipe.callUrlCallbacks(fileUrl, img);
+
 			};
 
 			var onWorkerOk = function(resUrl, res) {
@@ -64,6 +79,7 @@ define([
 				var pollFail = function(err) {
 					console.error("Image Polling failed", err);
 				};
+
 				ImagePipe.loadImage(pollIndex[lastPolledIndex], pollCallbacks[pollIndex[lastPolledIndex]], pollFail, false)
 				pollCountdown = pollDelay;
 			}

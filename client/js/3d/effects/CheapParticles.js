@@ -4,7 +4,9 @@ define([
 	'goo/renderer/MeshData',
 	'goo/renderer/Shader',
 	'goo/renderer/Material',
-	'goo/renderer/TextureCreator'
+	'goo/renderer/TextureCreator',
+	'PipelineAPI',
+    'PipelineTexture'
 ],
 function(
 	Vector3,
@@ -12,7 +14,9 @@ function(
 	MeshData,
 	Shader,
 	Material,
-	TextureCreator
+	TextureCreator,
+	PipelineAPI,
+    PipelineTexture
 ) {
 
 	var path = "./client/assets/images/effects/";
@@ -20,7 +24,6 @@ function(
 	function CheapParticles(goo) {
 		this.goo = goo;
 		this.simulators = {};
-		this.groups = {};
 		this.materialCount = 0;
 	}
 
@@ -37,19 +40,12 @@ function(
 
 
 
-	function Simulator(goo, particleSettings, id) {
+
+
+	function Simulator(goo, particleSettings, id, texture) {
 		this.id = id;
-
-		this.ready = false;
-
-		var cb = function() {
-			this.ready = true;
-		}.bind(this);
-
-		var texture = new TextureCreator().loadTexture2D(path+particleSettings.texture, {
-			wrapS: 'EdgeClamp',
-			wrapT: 'EdgeClamp'
-		}, cb);
+        
+        this.ready = true;
 
 		this.particleSettings = particleSettings;
 		particleSettings.poolCount = particleSettings.poolCount !== undefined ? particleSettings.poolCount : 500;
@@ -258,12 +254,29 @@ function(
 	};
 
 
-	CheapParticles.prototype.createSystem = function(id, particleSettings) {
+	CheapParticles.prototype.createSystem = function(id, particleSettings, readyCB) {
 		if (this.simulators[id]) {
 			this.disableSimulator(this.simulators[id]);
 		}
-		this.simulators[id] = new Simulator(this.goo, particleSettings, id);
-		this.simulators[id].isEnabled = false;
+
+        var txReady = function(sId, settings, texture) {
+            this.simulators[sId] = new Simulator(this.goo, settings, sId, texture);
+            this.simulators[sId].isEnabled = false;
+            readyCB(sId)
+        }.bind(this);
+
+        function prepTexture(simId, pSettings, onReady) {
+
+            var txLoaded = function(tx) {
+                onReady(simId, pSettings, tx);
+            };
+
+            new PipelineTexture(path+pSettings.texture, txLoaded);
+
+        }
+
+
+        prepTexture(id, particleSettings, txReady)
 	};
 
 	CheapParticles.prototype.spawn = function(id, position, normal, effectData) {
