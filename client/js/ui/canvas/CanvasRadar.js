@@ -165,15 +165,10 @@ define([
             pos = confData.pos;
             size = confData.size;
 
-
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
 
-            drawWorldBorders(ctx, confData.worldSection);
 
-            drawElementBorders(ctx, confData.elementBorder);
-
-            drawRaster(ctx, confData.raster);
 
             var curveCount = 0;
 
@@ -217,6 +212,13 @@ define([
             rangeY = yMax - yMin;
             var playerX = pos.top + size.height*0.5;
             var playerY = pos.left + size.width*0.5;
+
+            drawWorldBorders(ctx, confData.worldSection);
+
+            drawElementBorders(ctx, confData.elementBorder);
+
+            drawRaster(ctx, confData.raster);
+
 
             /*
              if (!wait) {

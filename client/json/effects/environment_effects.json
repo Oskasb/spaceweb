@@ -5,14 +5,6 @@
       {
         "id":"hyper_space",
         "effect_data":[{
-          "game_effect":"space_dust",
-          "volume":[25, 25, 35],
-          "distance": 45,
-          "speed":[1, 1, 0],
-          "colorMin":[0.2, 0.1, 0.8],
-          "colorMax":[1, 0.2, 1],
-          "frequency":0
-        },{
           "game_effect":"hyper_space_sparks",
           "volume":[42, 42, 53],
           "distance": 34,
