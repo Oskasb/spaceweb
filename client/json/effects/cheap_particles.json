@@ -10,14 +10,14 @@
           "size": [0, 0],
           "rotation": [0, 360],
           "gravity": 0,
-          "count": 2,
+          "count": 1,
           "spread": 1,
-          "strength": 1,
-          "lifespan": [0.1, 0.4],
-          "poolCount": 100,
-          "growth": [42, 124],
+          "strength": 2,
+          "lifespan": [0.1, 3.6],
+          "poolCount": 400,
+          "growth": [2, 124],
           "spin": [0,0 ],
-          "acceleration": 1.005
+          "acceleration": 0.6
         }
       },{
         "id": "engine_jet_fire",

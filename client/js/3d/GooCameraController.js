@@ -91,8 +91,8 @@ define(['Events',
 
     //    calcVec.addVector(playerSpatial.pos);
 
-        cameraEntity.transformComponent.transform.translation.data[0] = lastPos.data[0];
-        cameraEntity.transformComponent.transform.translation.data[1] = lastPos.data[1];
+        cameraEntity.transformComponent.transform.translation.data[0] = playerSpatial.pos.data[0];
+        cameraEntity.transformComponent.transform.translation.data[1] = playerSpatial.pos.data[1];
         cameraEntity.transformComponent.setUpdated();
         lastPos.setVector(playerSpatial.pos);
 	};

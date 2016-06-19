@@ -122,7 +122,7 @@
                 "pos":[0, -0.6, 0 ]
               },
               "game_effect":"hyper_drive",
-              "emit_effect":"hyper_sparks"
+              "emit_effect":"hyper_space_sparks"
             }
           }
 
