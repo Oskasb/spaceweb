@@ -71,12 +71,6 @@ define(['Events',
         evt.on(evt.list().CLIENT_TICK, updateCamera);
     };
 
-    var on = false;
-
-    function controlledPieceUpdated(e) {
-        on=true;
-        playerSpatial = evt.args(e).spatial;
-    };
 
 
     var lastPos = new Vector3(0, 0, 0);
@@ -91,7 +85,7 @@ define(['Events',
         calcVec.subVector(lastPos);
 
 
-        calcVec.mulDirect(0.7, 0.7, 0);
+        calcVec.mulDirect(0.95, 0.95, 0);
 
         lastPos.subVector(calcVec);
 
@@ -104,6 +98,14 @@ define(['Events',
 	};
 
     evt.on(evt.list().ENGINE_READY, setupGooCamera);
+
+    var on = false;
+
+    function controlledPieceUpdated(e) {
+        on=true;
+        playerSpatial = evt.args(e).spatial;
+    };
+
 
     evt.on(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
 

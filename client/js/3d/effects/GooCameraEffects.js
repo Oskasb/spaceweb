@@ -13,13 +13,18 @@ define([
     ) {
 
 
+        var playerSpatial;
+
         var effectIndex  = {
-            hyper_drive:{vector:new Vector3(0, 0, 220)},
-            shield:{vector:new Vector3(0, 0, 70)}
+            hyper_drive:{vector:new Vector3(0, 0, 230), rotfactor:1},
+            shield:{vector:new Vector3(0, 0, 70), rotfactor:0}
         };
 
         var GooCameraEffects = function() {
 
+            this.fxRotFactor = 0.95;
+            this.defaultRotfactor = 0;
+            this.defaultCamAngles = new Vector3(0,0, 0);
             this.cameraDefault = new Vector3(0, 0, 120);
             this.effectVector = new Vector3(0, 0, 100);
             this.calcVec = new Vector3(0, 0, 0);
@@ -27,6 +32,9 @@ define([
             var camReady = function(e) {
                 this.camera = evt.args(e).camera;
                 this.cameraDefault.setVector(this.camera.transformComponent.transform.translation);
+                this.camera.transformComponent.transform.rotation.toAngles(this.defaultCamAngle);
+                this.defaultCamAngleZ = this.defaultCamAngles.data[2];
+                console.log("Cam to angles", this.defaultRotZ);
                 this.setupCameraEffects();
             }.bind(this);
 
@@ -58,9 +66,9 @@ define([
         GooCameraEffects.prototype.applyEffectState = function(effect, onOff) {
             console.log("FX", effect, onOff)
             if (onOff) {
-                this.setEffectVector(effect.vector)
+                this.setEffectVector(effect.vector, effect.rotfactor)
             } else {
-                this.setEffectVector(this.cameraDefault)
+                this.setEffectVector(this.cameraDefault, this.defaultRotfactor)
             }
 
         };
@@ -70,16 +78,27 @@ define([
             this.effectVector.addVector(vector);
         };
 
-        GooCameraEffects.prototype.setEffectVector = function(vector) {
+        GooCameraEffects.prototype.setEffectVector = function(vector, rotFactor) {
+            this.fxRotFactor = rotFactor;
             this.effectVector.setVector(vector);
         };
 
         GooCameraEffects.prototype.tickCameraEffects = function(tpf) {
 
+            if (!on) return;
+
+        //    var rotZ = playerSpatial.rot[0]+Math.PI;
+
+       //     var camZ = this.camera.transformComponent.transform.rotation.toAngles(this.calcVec).data[2];
+
+       //     camZ = MATH.radialLerp(camZ, rotZ, this.fxRotFactor*tpf);
+
+       //     this.camera.transformComponent.transform.rotation.fromAngles(0, 0, camZ);
+
             this.calcVec.setVector(this.effectVector);
             this.calcVec.subVector(this.camera.transformComponent.transform.translation);
 
-            this.calcVec.mulDirect(1, 1, 0.03);
+            this.calcVec.mulDirect(1, 1, 1*tpf);
 
             this.camera.transformComponent.transform.translation.addVector(this.calcVec);
 
@@ -87,6 +106,15 @@ define([
 
         };
 
+        var on = false;
+
+        function controlledPieceUpdated(e) {
+            on=true;
+            playerSpatial = evt.args(e).spatial;
+        };
+
+
+        evt.on(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
 
 
         return GooCameraEffects;
