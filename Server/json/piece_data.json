@@ -83,7 +83,7 @@
               },
               "animate":{
                 "rotation":-10,
-                "spread":1,
+                "spread":2,
                 "size":0.4,
                 "oscillate":0.1,
                 "speed":8,

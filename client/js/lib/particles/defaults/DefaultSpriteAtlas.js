@@ -29,8 +29,8 @@ define({
 				"tiles":[[5, 0]]
 			},
 			{
-				"id":"0_1",
-				"tiles":[[0, 1]]
+				"id":"spin_shield",
+				"tiles":[[9, 0]]
 			},
 			{
 				"id":"0_2",

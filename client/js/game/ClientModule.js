@@ -48,10 +48,8 @@ define([
         
         ClientModule.prototype.sampleModuleFrame = function () {
             if (this.state.value != this.lastValue) {
-                console.log("Module state", this.state.value);
                 this.lastValue = this.state.value;
             }
-
             this.gooModule.updateGooModule();
         };
 
