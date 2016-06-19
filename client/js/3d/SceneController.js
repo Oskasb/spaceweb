@@ -5,6 +5,7 @@ define([
     '3d/GooController',
     '3d/GooEntityFactory',
     '3d/effects/ParticlePlayer',
+    '3d/effects/GooCameraEffects',
     '3d/effects/SpaceFX',
     'Events'
 
@@ -12,6 +13,7 @@ define([
     GooController,
     GooEntityFactory,
     ParticlePlayer,
+    GooCameraEffects,
     SpaceFX,
     evt
 ) {
@@ -21,6 +23,8 @@ define([
     var particlePlayer;
     var spaceFX;
 
+    new GooCameraEffects();
+    
     var SceneController = function() {
         gooController = new GooController();
         spaceFX = new SpaceFX();

@@ -19,6 +19,7 @@ define([
                 rot:new MATH.Vec3(0, 0, 0)
             };
 
+            var _this = this;
             console.log(module.data)
 
             this.particles = [];
@@ -66,7 +67,13 @@ define([
                 };
 
                 var getPosition = function() {
-                    return piece.spatial.pos.data;
+
+                    if  (_this.applies.transform) {
+                        return _this.tempSpatial.pos.data;
+                    } else {
+                        return piece.spatial.pos.data;
+                    }
+
                 };
 
 
@@ -108,12 +115,16 @@ define([
                         getPosition = function(particle, tpf) {
 
                             time += tpf;
-                            pos[0] = piece.spatial.pos.data[0];
-                            pos[1] = piece.spatial.pos.data[1];
-                            pos[2] = piece.spatial.pos.data[2];
+
+                         //   pos[0] = _this.tempSpatial.rot.data[0];
+                         //   pos[1] = _this.tempSpatial.rot.data[1];
+//
+                            pos[0] = _this.tempSpatial.pos.data[0];
+                            pos[1] = _this.tempSpatial.pos.data[1];
+                            pos[2] = _this.tempSpatial.pos.data[2];
 
                             pos[0] = pos[0] + posX() + Math.cos(time*spread+diffuse())*size;
-                            pos[1] = pos[1] + posY() + Math.sin(time*spread)*size*diffuse();
+                            pos[1] = pos[1] + posY() + Math.sin(time*spread)*size+diffuse();
                             return pos;
                         };
                     }
@@ -127,6 +138,11 @@ define([
                 };
 
                 this.attachGameEffect(piece.spatial, this.applies.game_effect, particleUpdate)
+            }
+
+
+            if (this.applies.transform) {
+                this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot)
             }
 
             if (this.applies.spawn_effect) {
@@ -180,16 +196,20 @@ define([
         };
 
 
-        GooModule.prototype.readWorldTransform = function() {
+        GooModule.prototype.readWorldTransform = function(pos, rot) {
 
             this.entity.transformComponent.updateWorldTransform();
-            this.tempSpatial.rot.setXYZ(0, -1, 0);
-
-            this.tempSpatial.pos.data[0] = this.entity.transformComponent.worldTransform.translation.data[0];
-            this.tempSpatial.pos.data[1] = this.entity.transformComponent.worldTransform.translation.data[1];
-            this.tempSpatial.pos.data[2] = this.entity.transformComponent.worldTransform.translation.data[2];
+            this.tempSpatial.rot.setXYZ(rot[0], rot[1], rot[2]);
 
             this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
+
+            this.tempSpatial.pos.setXYZ(pos[0], pos[1], pos[2]);
+
+            this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.pos);
+
+            this.tempSpatial.pos.data[0] += this.entity.transformComponent.worldTransform.translation.data[0];
+            this.tempSpatial.pos.data[1] += this.entity.transformComponent.worldTransform.translation.data[1];
+            this.tempSpatial.pos.data[2] += this.entity.transformComponent.worldTransform.translation.data[2];
 
         };
 
@@ -199,13 +219,13 @@ define([
             if (this.applies) {
 
                 if (this.applies.transform) {
-                    this.readWorldTransform()
+                    this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot)
                 } else {
-
+                    this.tempSpatial.pos.setVec(this.piece.spatial.pos);
+                    this.tempSpatial.rot.setXYZ(0, 0, this.piece.spatial.rot);
                 }
                 
-
-                    if (this.module.on) {
+                   if (this.module.on) {
                         
                         if (this.gameEffect.started) {
                             if (this.gameEffect.paused) {
@@ -214,10 +234,11 @@ define([
                         }
                         
                         if (this.module.state.value > 0 && this.applies.emit_effect) {
-                            if (typeof(this.module.state.value) == 'number') {
+                            if (typeof(this.module.state.value) == 'number') {                              
                                 this.populateEffectData(this.module.state.value);
                             } else {
-                                this.populateEffectData(Math.random());
+                                var intensity = this.applies.effect_data.intensity || 0.5;
+                                this.populateEffectData(Math.random()*intensity);
                             }
                             
                             evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:this.effectData.state});

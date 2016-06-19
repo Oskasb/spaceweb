@@ -65,7 +65,7 @@ define([
 			var serverState = this.piece.serverState;
 
 			for (var i = 0; i < modules.length; i++) {
-                this.clientModules.push(new ClientModule(this.gooPiece, modules[i], serverState.modules[modules[i].id]));
+                this.clientModules.push(new ClientModule(this, modules[i], serverState.modules[modules[i].id]));
 			}
 
 		};

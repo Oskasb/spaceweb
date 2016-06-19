@@ -157,6 +157,14 @@ define({
 				"tiles":[[6, 1]]
 			},
 			{
+				"id":"hyper_trail",
+				"tiles":[[6, 3]]
+			},
+            {
+                "id":"shine_trail",
+                "tiles":[[5, 3]]
+            },
+			{
 				"id":"spin_wave",
 				"tiles":[[7, 1]]
 			},

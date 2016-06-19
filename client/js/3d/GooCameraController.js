@@ -18,8 +18,10 @@ define(['Events',
 
     var camScript;
     var cameraEntity;
+    var playerSpatial;
     var goo;
     var camera;
+    var calcVec = new Vector3();
 
 	var GooCameraController = function() {
 
@@ -59,21 +61,46 @@ define(['Events',
         cameraEntity.setComponent(cameraComponent);
         cameraEntity.addToWorld();
 
-        cameraEntity.transformComponent.transform.translation.setDirect(0, 0, 150);
+        cameraEntity.transformComponent.transform.translation.setDirect(0, 0, 120);
         cameraEntity.transformComponent.setUpdated();
 
         evt.fire(evt.list().CAMERA_READY, {goo:goo, camera:cameraEntity});
+
+
+
+        evt.on(evt.list().CLIENT_TICK, updateCamera);
+    };
+
+    var on = false;
+
+    function controlledPieceUpdated(e) {
+        on=true;
+        playerSpatial = evt.args(e).spatial;
     };
 
 
-    function controlledPieceUpdated(e) {
-        cameraEntity.transformComponent.transform.translation.setDirect(evt.args(e).spatial.posX(), evt.args(e).spatial.posY(), 120);
-        cameraEntity.transformComponent.setUpdated();
-    }
-
+    var lastPos = new Vector3(0, 0, 0);
 
 	var updateCamera = function() {
-		camScript.updateCam(cameraEntity)
+        if (!on) return;
+
+
+
+        calcVec.setVector(playerSpatial.pos);
+
+        calcVec.subVector(lastPos);
+
+
+        calcVec.mulDirect(0.1, 0.1, 0);
+
+        lastPos.subVector(calcVec);
+
+    //    calcVec.addVector(playerSpatial.pos);
+
+        cameraEntity.transformComponent.transform.translation.data[0] = lastPos.data[0];
+        cameraEntity.transformComponent.transform.translation.data[1] = lastPos.data[1];
+        cameraEntity.transformComponent.setUpdated();
+        lastPos.setVector(playerSpatial.pos);
 	};
 
     evt.on(evt.list().ENGINE_READY, setupGooCamera);

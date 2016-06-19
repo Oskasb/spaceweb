@@ -16,7 +16,7 @@ define(function() {
 		CONNECTION_CLOSED:{type:'CONNECTION_CLOSED', args:{data:{}}},
 
 		SEND_SERVER_REQUEST:{type:'SEND_SERVER_REQUEST', args:{data:{}}},
-		
+		NOTIFY_MODULE_ONOFF:{type:'NOTIFY_MODULE_ONOFF', args:{}},
 		
 		MESSAGE_UI:{type:'MESSAGE_UI', args:{}},
 		MESSAGE_POPUP:{type:'MESSAGE_POPUP', args:{}},

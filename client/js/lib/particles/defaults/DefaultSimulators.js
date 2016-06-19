@@ -1,14 +1,13 @@
 define({
 	"simulators":[
-		/*
+		
 		{
 			"id": "AdditiveParticleAndTrail",
 			"atlas":"defaultSpriteAtlas",
 			"renderers": [
-				"ParticleRenderer",
 				"TrailRenderer"
 			],
-			"poolCount": 60,
+			"poolCount": 50,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",
@@ -16,14 +15,14 @@ define({
 				"texts": ["AdditiveBlending", "SubtractiveBlending", "MultiplyBlending", "NoBlending", "CustomBlending"]
 			},
 			"alphakill": {
-				"value": 0,
+				"value": 0.01,
 				"type": "number",
 				"min": 0.0,
 				"max": 1.0
 
 			}
 		},
-	*/
+	
 		{
 			"id": "AdditiveParticle",
 			"atlas":"defaultSpriteAtlas",

@@ -39,6 +39,10 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 	if (data.fire) {
 		this.setInputTrigger(true, fireActionCallback);
 		this.setInputTrigger(false);
+
+		this.piece.setModuleState('hyper_drive', false);
+		this.piece.processModuleStates();
+
 		return;
 	}
 
@@ -50,8 +54,24 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 
     for (var key in data) {
         if (key == 'shield') {
-            console.log("Apply shields", data.shield)
+            console.log("Apply shields", data.shield);
             this.piece.setModuleState(key, data[key]);
+
+            if (data[key] == true) {
+                this.piece.setModuleState('hyper_drive', false);
+				this.piece.processModuleStates();
+            }
+
+            this.piece.networkDirty = true;
+        }
+
+        if (key == 'hyper_drive') {
+            console.log("Apply hyperDrive", data.hyper_drive);
+            this.piece.setModuleState(key, data[key]);
+            if (data[key] == true) {
+                this.piece.setModuleState('shield', false);
+            }
+			this.piece.processModuleStates();
             this.piece.networkDirty = true;
         }
     }

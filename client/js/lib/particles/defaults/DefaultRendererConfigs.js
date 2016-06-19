@@ -18,7 +18,7 @@ define({
 			"id":"FastTrailRenderer",
 			"script":"TrailRenderer",
 			"settings": {
-				"segmentCount": 3,
+				"segmentCount": 4,
 				"width": {
 					"value": 1,
 					"type": "number"
@@ -33,13 +33,13 @@ define({
 			"id":"TrailRenderer",
 			"script":"TrailRenderer",
 			"settings": {
-				"segmentCount": 5,
+				"segmentCount": 12,
 				"width": {
 					"value": 1,
 					"type": "number"
 				},
 				"updateSpeed": {
-					"value": 5,
+					"value": 8,
 					"type": "number"
 				}
 			}
