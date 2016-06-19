@@ -57,6 +57,14 @@
 
             },
             {
+                "id":"hyper_space_sparks",
+                "effect_data":[{
+                    "effect":"space_sparks",
+                    "simulator":"CheapParticles"
+                }]
+
+            },
+            {
                 "id":"space_spark",
                 "effect_data":[{
                     "effect":"space_sparks",

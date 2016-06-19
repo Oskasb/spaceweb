@@ -4,20 +4,20 @@
       {
         "id": "space_sparks",
         "effect_data":{
-          "texture":"speck.png",
+          "texture":"star.png",
           "blending":"additive",
           "color":[1, 0.8, 1, 1],
-          "size": [0, 2],
+          "size": [0, 0],
           "rotation": [0, 360],
           "gravity": 0,
           "count": 2,
           "spread": 1,
-          "strength": 6,
-          "lifespan": [1, 4],
+          "strength": 1,
+          "lifespan": [0.1, 0.4],
           "poolCount": 100,
-          "growth": [2,4],
+          "growth": [42, 124],
           "spin": [0,0 ],
-          "acceleration": 0.99
+          "acceleration": 1.005
         }
       },{
         "id": "engine_jet_fire",
@@ -119,16 +119,16 @@
           "texture": "energybullet.png",
           "color": [  0.6,   0.8,  0.9, 1 ],
           "blending": "additive",
-          "size": [ 0, 1 ],
-          "growth": [1, 1.5 ],
+          "size": [ 0, 0 ],
+          "growth": [0.5, 1 ],
           "rotation": [0, 360 ],
           "spin": [ -150,150 ],
           "gravity": 0,
-          "count": 2,
+          "count": 1,
           "spread": 1,
-          "strength": 0,
-          "acceleration": 0.96,
-          "lifespan": [1,4],
+          "strength": 4,
+          "acceleration": 1.02,
+          "lifespan": [0.1,0.4],
           "poolCount": 110
         }
 
@@ -144,11 +144,11 @@
           "rotation": [ 0, 360 ],
           "spin": [0, 0],
           "gravity": 0,
-          "count": 2,
+          "count": 1,
           "spread": 1,
-          "strength": 0,
-          "acceleration": 0.96,
-          "lifespan": [5,7],
+          "strength": 1,
+          "acceleration": 0.99,
+          "lifespan": [3,7],
           "poolCount": 120
         }
 

@@ -15,6 +15,10 @@ define([
 
     var camera;
     var configs = {};
+
+    var effectIndex  = {
+        hyper_drive:'hyper_space'
+    };
     
     var SpaceFX = function() {
         var pipeObj;
@@ -98,9 +102,47 @@ define([
         }
 
         evt.on(evt.list().CLIENT_TICK, clientTick);
+
+
+
+        var moduleTodggled = function(e) {
+            this.handleToggledModule(evt.args(e))
+        }.bind(this);
+
+
+        evt.on(evt.list().NOTIFY_MODULE_ONOFF, moduleTodggled);
+        
     };
 
 
+    SpaceFX.prototype.handleToggledModule = function(args) {
+        if (effectIndex[args.id]) {
+
+            if (args.on) {
+                if (configs[effectIndex[args.id]]) {
+
+                    for (var i = 0; i < configs[effectIndex[args.id]].length; i++) {
+                        configs[effectIndex[args.id]][i].frequency = 0.3;
+                    }
+
+
+                } else {
+                    console.log("No SpaceFX for ", args.id);
+                }
+            } else {
+                if (configs[effectIndex[args.id]]) {
+                    for (var i = 0; i < configs[effectIndex[args.id]].length; i++) {
+                        configs[effectIndex[args.id]][i].frequency = 0;
+                    }
+
+                } else {
+                    console.log("No SpaceFX for ", args.id);
+                }
+            }
+
+        }
+    };
+    
 
     SpaceFX.prototype.setupSpaceFxScene = function() {
         this.enableSpaceFx();

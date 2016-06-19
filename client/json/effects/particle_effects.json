@@ -382,7 +382,7 @@
                     "rotation":[0,7],
                     "spin":"oneToZero",
                     "spinspeed":[-55, 55],
-                    "lifespan":[0.01, 1.2],
+                    "lifespan":[0.01, 0.4],
                     "sprite":"dot_seq",
                     "loopcount":15,
                     "trailsprite":"tail",

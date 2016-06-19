@@ -91,7 +91,7 @@ define(['Events',
         calcVec.subVector(lastPos);
 
 
-        calcVec.mulDirect(0.1, 0.1, 0);
+        calcVec.mulDirect(0.7, 0.7, 0);
 
         lastPos.subVector(calcVec);
 
