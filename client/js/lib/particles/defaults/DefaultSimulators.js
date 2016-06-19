@@ -38,9 +38,9 @@ define({
 				"texts": ["AdditiveBlending", "SubtractiveBlending", "MultiplyBlending", "NoBlending", "CustomBlending"]
 			},
 			"alphakill": {
-				"value": 0,
+				"value": 0.01,
 				"type": "number",
-				"min": 0.0,
+				"min": 0.05,
 				"max": 1.0
 
 			}
@@ -59,7 +59,7 @@ define({
 				"texts": ["AdditiveBlending", "SubtractiveBlending", "MultiplyBlending", "NoBlending", "CustomBlending"]
 			},
 			"alphakill": {
-				"value": 0,
+				"value": 0.01,
 				"type": "number",
 				"min": 0.0,
 				"max": 1.0
@@ -103,7 +103,7 @@ define({
 				"texts": ["AdditiveBlending", "SubtractiveBlending", "MultiplyBlending", "NoBlending", "CustomBlending"]
 			},
 			"alphakill": {
-				"value": 0,
+				"value": 0.01,
 				"type": "number",
 				"min": 0.0,
 				"max": 1.0

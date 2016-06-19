@@ -24,6 +24,10 @@ ServerWorld.prototype.pieceConfigsUpdated = function(config) {
 	this.pieceConfigs = config;
 	for (var key in this.players) {
 		this.players[key].applyPieceConfig(config.player_ship);
+
+		this.players[key].client.sendToClient({id:'clientConnected', data:{clientId:this.players[key].client.id, pieceData:config}});
+		this.players[key].client.notifyDataFrame();
+		
 	}
 };
 
@@ -51,7 +55,7 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, d
 
 	var apply = cannonModuleData.applies;
 	this.pieceCount++;
-	var bullet = new GAME.Piece('bullet', 'bullet_'+this.pieceCount, now, apply.lifeTime);
+	var bullet = new GAME.Piece('cannon_bullet', 'bullet_'+this.pieceCount, now, apply.lifeTime);
     bullet.registerParentPiece(sourcePiece);
 	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
 //	bullet.temporal.timeDelta = dt;

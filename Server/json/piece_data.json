@@ -10,7 +10,14 @@
       },
       "controls":{
         "input": {
-          "pointer":"InputSegmentRadial"
+          "pointer":"InputSegmentRadial",
+          "data":{
+            "radialSegments":32,
+            "distanceSegments":3,
+            "radius":150,
+            "width":20,
+            "streamTimeout":0.2
+          }
         },
         "actions": {
           "applySteering":0,
@@ -43,19 +50,47 @@
               "type":"string",
               "state":true,
               "action":"applyAppearance",
-              "message":"Hull On"
+              "message":"Hull On",
+              "roll":{
+                "source":"spatialRotVel",
+                "frames":11,
+                "width":50,
+                "clamp":5,
+                "gain":-54
+              },
+              "game_effect":"s11_piece"
             }
           }
         },{
-          "id":"shields",
+          "id":"shield",
           "data":{
-            "source":"triggerShields",
+            "source":"triggerShield",
             "initState": 0,
             "applies":{
-              "type":"float",
+              "type":"toggle",
               "state":true,
               "action":"applyControl",
-              "drain":2
+              "drain":2,
+              "flicker":0.4,
+              "effect_data":{
+                "intensity":0.1,
+                "strength":1.2,
+                "lifeSpan":0.15
+              },
+              "transform":{
+                "rot":[0, 0, 0],
+                "pos":[0, -0.5, 3]
+              },
+              "animate":{
+                "rotation":-10,
+                "spread":1,
+                "size":0.4,
+                "oscillate":0.1,
+                "speed":8,
+                "diffusion":0.4
+              },
+              "game_effect":"ship_shield",
+              "emit_effect":"spawn_pulse"
             }
           }
         },{
@@ -67,8 +102,12 @@
               "type":"boolean",
               "state":true,
               "action":"fireCannon",
-              "exitVelocity":50,
-              "lifeTime":0.9
+              "exitVelocity":55,
+              "lifeTime":0.6,
+              "transform":{
+                "rot":[0, 0, 0],
+                "pos":[0, 3, 0]
+              }
             }
           }
         },{
@@ -79,7 +118,20 @@
             "applies":{
               "type":"float",
               "state":true,
-              "action":"applyForward"
+              "action":"applyForward",
+              "state_factor":30,
+              "emit_effect":"ship_engine",
+              "effect_data":{
+                "intensity":0.3,
+                "strength":15,
+                "lifeSpan":0.4
+              },
+              "transform":{
+                "rot":[-3.14, 0, 0],
+                "pos":[0, 3, 0]
+              },
+              "threshold":0.2,
+              "message":"wroom"
             }
           }
         },{
@@ -133,7 +185,12 @@
             "applies":{
               "type":"string",
               "state":true,
-              "action":"applyAppearance"
+              "action":"applyAppearance",
+              "style":"cannon_bullet",
+              "message":"Load Bullet",
+              "game_effect":"bullet_trail",
+              "spawn_effect":"muzzle_flash_cannon",
+              "remove_effect":"shell_detonate"
             }
           }
         }

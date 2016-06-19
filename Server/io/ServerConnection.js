@@ -23,7 +23,7 @@ ServerConnection.prototype.setupSocket = function(wss, dataHub, clients, removeP
 			ws.send(msg)
 		};
 
-		clients.registerConnection(ws);
+		clients.registerConnection(ws, dataHub);
 
 		ws.on("message", function(message) {
 			if (typeof(message) != 'string') {

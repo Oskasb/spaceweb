@@ -6,14 +6,16 @@ define([
 	'ui/GooPiece',
 	'io/InputSegmentRadial',
     'PipelineObject',
-	'PipelineAPI'
+	'PipelineAPI',
+    'game/ClientModule'
 ],
 	function(
 		evt,
 		GooPiece,
 		InputSegmentRadial,
         PipelineObject,
-		PipelineAPI
+		PipelineAPI,
+        ClientModule
 		) {
 
 		var textStyle = {
@@ -24,10 +26,12 @@ define([
 			textConfig:'text_config'
 		};
 
-		var ClientPiece = function(serverState, pieceData, removeCallback) {
+		var ClientPiece = function(serverState, removeCallback) {
 
-            this.pieceData = pieceData;
-            
+            var _this = this;
+
+            this.clientModules = [];
+
 			this.isOwnPlayer = false;
 			var piece = new GAME.Piece(serverState.type, serverState.playerId);
 			piece.serverState = serverState;
@@ -44,64 +48,33 @@ define([
 			
 			this.removeCallback = removeCallback;
 			this.setServerState(serverState);
-			this.attachModules(pieceData.modules);
-			
+
+            var applyPieceData = function(src, data) {
+                console.log("Attach pieceData", src, data)
+                _this.pieceData = data;
+                _this.attachModules(data.modules);
+            };
+            
+            this.pipelineObject = new PipelineObject('PIECE_DATA', piece.type, applyPieceData);
 		};
 
-        ClientPiece.prototype.getPieceModuleKey = function() {
-            return this.playerId+'_MODULES'
-        };
+
 
 		ClientPiece.prototype.attachModules = function(modules) {
 
 			var serverState = this.piece.serverState;
-			this.piece.modules = [];
-			this.piece.moduleIndex = {};
-
-
 
 			for (var i = 0; i < modules.length; i++) {
-
-
-				if (serverState.modules[modules[i].id]) {
-
-					for (var j = 0; j < serverState.modules[modules[i].id].length; j++) {
-
-                        var moduleState = serverState.modules[modules[i].id][j];
-                    /*    
-                        var data = {};
-                        data[modules[i].id] = {data: modules[i].data, state:moduleState};
-
-                        var moduleStateUpdated = function(src, data) {
-                            console.log("Module pipeObj Updated", src, data);
-                        };
-
-                        var pipeObjModule = new PipelineObject(this.getPieceModuleKey(), modules[i].id, moduleStateUpdated, data)
-                        this.modules.push(pipeObjModule);
-
-                     */
-						var moduleAppliedCallback = function(message) {
-                //            console.log("Mpdule applied msg: ", message)
-					//		_this.domPlayer.renderStateText(message);
-						};
-
-
-
-						var module = new GAME.PieceModule(modules[i].id, modules[i].data, this);
-
-						module.setModuleState(moduleState.value);
-						module.setAppliyCallback(moduleAppliedCallback);
-						this.gooPiece.attachModule(module);
-						this.piece.registerModuleFromServerState(module);
-					}
-
-				}
+                this.clientModules.push(new ClientModule(this.gooPiece, modules[i], serverState.modules[modules[i].id]));
 			}
+
 		};
 
 		ClientPiece.prototype.detachModules = function() {
-			this.piece.modules = [];
-			this.piece.moduleIndex = {};
+            
+            for (var i= 0; i < this.clientModules.length; i++) {
+                this.clientModules[i].removeClientModule()
+            }
 		};
 
 		ClientPiece.prototype.getPieceId = function() {
@@ -125,7 +98,8 @@ define([
         };
 
 		ClientPiece.prototype.updatePlayer = function(tpf) {
-            
+
+            this.sampleClientModules(this.piece.serverState.modules);
 
 			this.piece.updatePieceFrame(tpf);
 
@@ -140,6 +114,8 @@ define([
 				evt.fire(evt.list().CONTROLLED_PIECE_UPDATED, this.piece)
 			}
 
+
+
 		};
 
 		ClientPiece.prototype.setIsOwnPlayer = function(bool) {
@@ -153,22 +129,32 @@ define([
 			inputSegmentRadial.registerControlledPiece(this.piece);
 
 			var pieceModuleDataLoaded = function(src, data) {
-				inputSegmentRadial.applyConfigs(data);
+				inputSegmentRadial.applyConfigs(data.controls.input);
 			};
             this.inputSegmentRadial = inputSegmentRadial;
-			new PipelineObject('piece_data', 'controls', pieceModuleDataLoaded);
+			new PipelineObject('PIECE_DATA', this.piece.type, pieceModuleDataLoaded);
 		};
 		
 		ClientPiece.prototype.playerRemove = function() {
+            this.pipelineObject.removePipelineObject();
 			this.detachModules();
 			this.gooPiece.removeGooPiece();
 			this.removeCallback(this.piece.id);
 		};
 
+        ClientPiece.prototype.sampleClientModules = function(serverModules) {
+            for (var i = 0; i < this.clientModules.length; i++) {
+                this.clientModules[i].applyModuleServerState(serverModules);
+                this.clientModules[i].sampleModuleFrame();
+            }
+        };
+
 		ClientPiece.prototype.setServerState = function(serverState) {
 
 			this.piece.processModules(serverState.modules);
+
 			this.piece.applyNetworkState(serverState);
+
             this.getPieceName();
 			
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {

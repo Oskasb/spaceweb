@@ -19,7 +19,7 @@ ServerPlayer = function(clientId, client, simTime) {
 		client.broadcastToAll(piecePacket);
 	};
 	
-	piece = new GAME.Piece('player', this.id, simTime, Number.MAX_VALUE, broadcast);
+	piece = new GAME.Piece('player_ship', this.id, simTime, Number.MAX_VALUE, broadcast);
 	this.piece = piece;
 	this.piece.teleportRandom();
 
@@ -48,18 +48,16 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 		this.piece.networkDirty = true;
 	}
 
-    if (data.shield) {
-        this.piece.setModuleState('shield', data.shield);
-        console.log("Apply shields")
-    //    this.setInputTrigger(true, fireActionCallback);
-    //    this.setInputTrigger(false);
-        return;
+    for (var key in data) {
+        if (key == 'shield') {
+            console.log("Apply shields", data.shield)
+            this.piece.setModuleState(key, data[key]);
+            this.piece.networkDirty = true;
+        }
     }
 
 
 //	console.log("handlers: ", JSON.stringify(actionHandlers))
-
-
 
 
 };

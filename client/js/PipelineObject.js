@@ -19,7 +19,7 @@ define([
 
         PipelineObject.prototype.subscribe = function(onDataCallback) {
 
-            var pipelineData = function(src, data) {
+            var dataCallback = function(src, data) {
                 if (data == src && data) {
                     console.log("No data at source", this.category, src, data)
                 } else {
@@ -30,7 +30,9 @@ define([
                 }
             }.bind(this);
 
-            PipelineAPI.subscribeToCategoryKey(this.category, this.key, pipelineData);
+            this.dataCallback = dataCallback;
+
+            PipelineAPI.subscribeToCategoryKey(this.category, this.key, dataCallback);
         };
         
         PipelineObject.prototype.buildConfig = function(dataName) {
@@ -58,6 +60,10 @@ define([
 
         PipelineObject.prototype.readData = function() {
             return PipelineAPI.readCachedConfigKey(this.category, this.key);
+        };
+
+        PipelineObject.prototype.removePipelineObject = function() {
+            return PipelineAPI.removeCategoryKeySubscriber(this.category, this.key, this.dataCallback);
         };
 
         return PipelineObject

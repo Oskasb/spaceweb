@@ -170,6 +170,24 @@ define([
 
 		};
 
+
+		ConfigCache.unsubscribeCategoryKey = function(category, key, callback) {
+			if (!categories[category]) {
+				console.log("No Category to unsubscribe from", category)
+			}
+
+			if (!categories[category].subscription[key]) {
+				categories[category].subscription[key] = [];
+				console.log("Category nas no key to unsubscribe from", category, key)
+			}
+
+			categories[category].subscription[key].splice(categories[category].subscription[key].indexOf(callback), 1);
+			
+		};
+		
+		
+		
+
 		ConfigCache.registerCategoryUpdatedCallback = function(category, callback) {
 			if (!categories[category]) {
 				ConfigCache.addCategory(category);

@@ -273,7 +273,7 @@ define([
                 
                 var seed = (Math.random()+1)*0.8;
 
-                if (gamePieces[index].piece.type == 'player') {
+                if (gamePieces[index].piece.type == 'player_ship') {
                     tempRect.left 	= left - confData.playerBlips.size*seed;
                     tempRect.top 	= top - confData.playerBlips.size*seed;
                     tempRect.width 	= 2*seed*confData.playerBlips.size;

@@ -40,11 +40,20 @@ if(typeof(GAME) == "undefined"){
 	};
 
 	GAME.PieceModule.prototype.setModuleState = function(state) {
-        if (state == undefined) return;
+
+      if (this.id == 'shield')  {
+      //    console.log("Set Shield module state: ", state)
+      }
+
+        if (state == undefined) {
+            return;
+            
+        };
+
 		this.state.value = state;
 	};
 
-	GAME.PieceModule.prototype.setAppliyCallback = function(callback) {
+	GAME.PieceModule.prototype.setApplyCallback = function(callback) {
 		this.appliedCallback = callback;
 	};
 
@@ -53,6 +62,13 @@ if(typeof(GAME) == "undefined"){
 
 
 		switch (this.data.applies.type) {
+            case "toggle":
+         //       console.log("Toggle type", this);
+                if (this.state.value == this.data.applies.state) {
+            //        this.appliedCallback(this.data.applies.message)
+                }
+                break;
+
 			case "boolean":
 				if (this.state.value == this.data.applies.state) {
 					this.appliedCallback(this.data.applies.message)
@@ -76,6 +92,14 @@ if(typeof(GAME) == "undefined"){
 	};
 	
 	GAME.PieceModule.prototype.processInputState = function(controls, actionCallback) {
+
+        if (this.data.applies.type == 'toggle') {
+            // module controls itself...
+        //    console.log(controls.inputState[this.data.source])
+        //    if (this.id == 'shield')  console.log("Process Shield state: ", this.state.value)
+            return;
+        }
+
 		this.setModuleState(controls.inputState[this.data.source]);
 
 		if (typeof(controls.actions[this.data.applies.action]) != undefined) {
@@ -201,6 +225,8 @@ if(typeof(GAME) == "undefined"){
 		this.parentPiece = piece;
 	};
 
+
+
 	GAME.Piece.prototype.registerModuleFromServerState = function(module) {
 		this.modules.push(module);
 	};
@@ -227,7 +253,10 @@ if(typeof(GAME) == "undefined"){
 
     GAME.Piece.prototype.setModuleState = function(moduleId, value) {
         if (this.getModuleById(moduleId)) {
+            console.log("Set Mod State: ", moduleId, value)
             this.getModuleById(moduleId).setModuleState(value);
+        } else {
+            console.log("No module gotten ", moduleId, this.moduleIndex)
         }
     };
 

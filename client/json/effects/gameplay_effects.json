@@ -25,13 +25,15 @@
             {
                 "id":"ship_shield",
                 "effect_data":[{
-                    "effect":"ship_trail",
-                    "simulator":"FastAdditiveTrail",
+                    "effect":"ship_shield",
+                    "simulator":"AdditiveParticle",
                     "density":1
 
                 },{
-                    "effect": "explosion_big",
-                    "simulator": "CheapParticles"
+                  "effect":"ship_shield_flare",
+                  "simulator":"AdditiveParticle",
+                  "density":1
+
                 }]
 
             },
@@ -226,7 +228,7 @@
                 "id":"spawn_pulse",
                 "effect_data":[{
                     "effect":"spawn_shockwave",
-                    "simulator":"AdditiveParticle",
+                    "simulator":"CheapParticles",
                     "density":1
 
                 }]

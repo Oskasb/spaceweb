@@ -29,12 +29,10 @@
       "styles/ships.json",
       "styles/effects.json",
 
-      "modules/piece_modules.json",
       "modules/canvas_systems.json",
       "modules/canvas3d_elements.json",
 
       "system_setup.json"
-
     ]
   }
 }]

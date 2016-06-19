@@ -3,23 +3,24 @@
 
 define([
         '3d/GooEntityFactory',
+        '3d/effects/GooGameEffect',
         'Events'
     ],
     function(
         GooEntityFactory,
+        GooGameEffect,
         evt
     ) {
 
         var GooModule = function(module, piece, gooParent) {
-
-
-
-
+            
             this.tempSpatial = {
                 pos:new MATH.Vec3(0, 0, 0),
                 rot:new MATH.Vec3(0, 0, 0)
             };
-            
+
+            console.log(module.data)
+
             this.particles = [];
             this.piece = piece;
             this.module = module;
@@ -28,6 +29,7 @@ define([
             this.animate = this.applies.animate;
             this.animationState = {};
 
+            this.gameEffect = new GooGameEffect();
 
             this.effectData = {
                 params:{},
@@ -57,10 +59,74 @@ define([
                 }
             }
 
-
-
             if (this.applies.game_effect) {
-                this.attachGameEffect(piece.spatial, this.applies.game_effect)
+
+                var getRotation = function() {
+                    return piece.spatial.rot[0]
+                };
+
+                var getPosition = function() {
+                    return piece.spatial.pos.data;
+                };
+
+
+
+                if (this.applies.animate) {
+
+                    var spread = this.applies.animate.spread * (Math.random()-0.5) || 0;
+                    var diffusion = this.applies.animate.diffusion || 0;
+                    var speed = this.applies.animate.speed || 1;
+                    var size = this.applies.animate.size || 1;
+
+                    var diffuse = function() {
+                        return 1 - (Math.random()*diffusion)
+                    };
+
+                    if (this.applies.animate.rotation) {
+                        var rot = this.applies.animate.rotation;
+                        getRotation = function(particle, tpf) {
+                            return particle.rotation + (rot*tpf * (1-spread) + tpf*(1-diffuse()));
+                        };
+                    }
+                    
+                    
+                    var pos = [0, 0, 0];
+
+                    if (this.applies.animate.oscillate) {
+
+                        var osc = this.applies.animate.oscillate;
+                        var time = 0;
+                        
+                        var posX = function() {
+                            return Math.sin(1-spread * time * speed*diffuse())*osc*size;
+                        };
+
+                        var posY = function() {
+                            return Math.cos(1-spread * time * speed)*diffuse()*osc*size;
+                        };
+                        
+                        getPosition = function(particle, tpf) {
+
+                            time += tpf;
+                            pos[0] = piece.spatial.pos.data[0];
+                            pos[1] = piece.spatial.pos.data[1];
+                            pos[2] = piece.spatial.pos.data[2];
+
+                            pos[0] = pos[0] + posX() + Math.cos(time*spread+diffuse())*size;
+                            pos[1] = pos[1] + posY() + Math.sin(time*spread)*size*diffuse();
+                            return pos;
+                        };
+                    }
+                };
+
+                var particleUpdate = function(particle, tpf) {
+                    particle.lifeSpan = piece.temporal.lifeTime;
+                    particle.position.setArray(getPosition(particle, tpf));
+                    particle.rotation = getRotation(particle, tpf);
+                    particle.progress = 0.5 + Math.clamp(piece.spatial.rotVel[0]*2, -0.49, 0.49);
+                };
+
+                this.attachGameEffect(piece.spatial, this.applies.game_effect, particleUpdate)
             }
 
             if (this.applies.spawn_effect) {
@@ -70,34 +136,11 @@ define([
            //     }, 100);
 
             }
-
         };
 
 
-        GooModule.prototype.attachGameEffect = function(spatial, game_effect) {
-
-            var onParticleDead = function(particle) {
-                this.particles.splice(this.particles.indexOf(particle), 1);
-            }.bind(this);
-
-            var onParticleAdded = function(particle) {
-                this.particles.push(particle);
-            }.bind(this);
-
-            var particleUpdate = function(particle) {
-                particle.lifeSpan = this.piece.temporal.lifeTime;
-                particle.position.setArray(spatial.pos.data);
-                particle.rotation = spatial.rot[0];
-                particle.progress = 0.5 + Math.clamp(spatial.rotVel[0]*2, -0.49, 0.49);
-            }.bind(this);
-
-            this.callbacks = {
-                particleUpdate:particleUpdate,
-                onParticleAdded:onParticleAdded,
-                onParticleDead:onParticleDead
-            };
-
-            evt.fire(evt.list().GAME_EFFECT, {effect:game_effect, pos:spatial.pos, vel:spatial.vel, callbacks:this.callbacks});
+        GooModule.prototype.attachGameEffect = function(spatial, game_effect, particleUpdate) {
+            this.gameEffect.attachGameEffect(spatial, game_effect, particleUpdate)
         };
 
 
@@ -105,18 +148,12 @@ define([
 
 
             if (this.applies.remove_effect) {
-
                 this.tempSpatial.rot.setXYZ(0, 0, 0);
-
                 evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.remove_effect, pos:this.piece.spatial.pos, vel:this.tempSpatial.rot});
             }
 
-            this.callbacks.particleUpdate = null;
+            this.gameEffect.removeGooEffect();
 
-            for (var i = 0; i < this.particles.length; i++) {
-                this.particles[i].lifeSpan = 0.2;
-                this.particles[i].lifeSpanTotal = 0.2;
-            }
             this.entity.removeFromWorld();
         };
 
@@ -166,22 +203,40 @@ define([
                 } else {
 
                 }
-
-
                 
-                if (this.applies.emit_effect) {
 
-                    if (this.module.state.value > 0) {
-                        console.log("emit", this.module)
-                        this.populateEffectData(this.module.state.value);
-                        evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:this.effectData.state});
+                    if (this.module.on) {
+                        
+                        if (this.gameEffect.started) {
+                            if (this.gameEffect.paused) {
+                                this.gameEffect.startGooEffect();
+                            }
+                        }
+                        
+                        if (this.module.state.value > 0 && this.applies.emit_effect) {
+                            if (typeof(this.module.state.value) == 'number') {
+                                this.populateEffectData(this.module.state.value);
+                            } else {
+                                this.populateEffectData(Math.random());
+                            }
+                            
+                            evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:this.effectData.state});
+                        }
+                        
+                    } else {
+                        if (this.gameEffect.started) {
+                            if (!this.gameEffect.paused) {
+                                this.gameEffect.pauseGooEffect();
+                            }
+                        }
                     }
+                        
+
+
 
                     //         evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:{strength:this.module.state.value*2, count:1}});
-
                 }
-
-            }
+            
         };
 
 

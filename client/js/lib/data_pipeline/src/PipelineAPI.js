@@ -35,6 +35,10 @@ define(['data_pipeline/data/ConfigCache'],
 			ConfigCache.subscribeToCategoryKey(category, key, onDataCallback)
 		};
 
+		PipelineAPI.removeCategoryKeySubscriber = function(category, key, onDataCallback) {
+			ConfigCache.unsubscribeCategoryKey(category, key, onDataCallback)
+		};
+		
 		PipelineAPI.cloneLoadedGooEntity = function(entityName, callback) {
 			ConfigCache.cloneCachedEntity(entityName, callback);
 		};

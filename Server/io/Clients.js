@@ -6,12 +6,12 @@ Clients = function() {
 	
 };
 
-Clients.prototype.registerConnection = function(socket) {
+Clients.prototype.registerConnection = function(socket, dataHub) {
 	this.clientCount++;
 	var client = new Client(this.clientCount, socket, this);
 	client.setState(client.clientStates.CONNECTED);
 	this.clients[client.id] = client;
-	client.sendToClient({id:'clientConnected', data:{clientId:client.id}});
+	client.sendToClient({id:'clientConnected', data:{clientId:client.id, pieceData:dataHub.configs.piece_data}});
 	client.notifyDataFrame();
 };
 

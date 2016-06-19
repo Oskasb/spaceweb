@@ -14,7 +14,6 @@ define([
 
 		var GooPiece = function(piece) {
 
-			this.modules = [];
 			this.id = piece.id;
 			this.piece = piece;
 			this.vel = [];
@@ -23,41 +22,17 @@ define([
 			this.rotVel = [];
 			this.entity = GooEntityFactory.buildRootEntity();
 
-			if (SYSTEM_SETUP.ios) {
-				GooEntityFactory.attachPrimitive(this.entity);
-			}
-
 		};
 
 		GooPiece.prototype.attachModule = function(module) {
-			//	var parent = this.domHull.element;
-			if (module.data.parent) {
-				//		parent = this[module.data.parent].element;
-			}
-			//	var domModule = new DomModule(module, parent, this.piece);
-			//	this.modules.push(domModule);
-
-			var gooModule = new GooModule(module, this.piece, this.entity);
-			this.modules.push(gooModule);
+			return new GooModule(module, this.piece, this.entity);
 		};
 
 
-		GooPiece.prototype.removeModules = function() {
-			for (var i = 0; i < this.modules.length; i++) {
-				this.modules[i].removeModule();
-			}
-		};
-		
 		GooPiece.prototype.removeGooPiece = function() {
 			this.entity.removeFromWorld();
-			this.removeModules();
 		};
 
-		GooPiece.prototype.updateModules = function() {
-			for (var i = 0; i < this.modules.length; i++) {
-				this.modules[i].updateGooModule();
-			}
-		};
 
 		GooPiece.prototype.sampleSpatial = function(spatial) {
 
@@ -76,7 +51,6 @@ define([
 		GooPiece.prototype.updateGooPiece = function() {
 
 			this.sampleSpatial(this.piece.spatial);
-			this.updateModules();
 
 		//	this.domRoot.translateCnvXYZ(GameScreen.percentToX(this.pos[0]), GameScreen.percentToY(this.pos[1]), 0);
 		//	this.domHull.rotateXYZ(0, 0, 1, this.rot[0]);

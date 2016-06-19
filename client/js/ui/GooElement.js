@@ -3,11 +3,13 @@
 
 define([
         'Events',
-        'PipelineObject'
+        'PipelineObject',
+        '3d/effects/GooGameEffect'
     ],
     function(
         evt,
-        PipelineObject
+        PipelineObject,
+        GooGameEffect
     ) {
 
         var count = 0;
@@ -15,45 +17,34 @@ define([
         var GooElement = function(spatial, gooElementId) {
             count++;
 
-            this.particles = [];
-            this.callbacks = {};
 
             this.spatial = spatial;
             var _this = this;
 
+
+            this.gameEffect = new GooGameEffect();
+            
             var elementCallback = function(key, data) {
                 _this.removeElement();
-                _this.attachGameEffect(spatial, data.game_effect);
+
+                var particleUpdate = function(particle) {
+                    particle.lifeSpan = 1;
+                    particle.position.setArray(spatial.pos.data);
+                    particle.rotation = spatial.rot[0];
+                    //        particle.progress = 0.5 + Math.clamp(spatial.rotVel[0]*2, -0.49, 0.49);
+                };
+                
+                _this.attachGameEffect(spatial, data.game_effect, particleUpdate);
             };
 
             new PipelineObject('goo_elements', gooElementId, elementCallback)
         };
 
 
-        GooElement.prototype.attachGameEffect = function(spatial, game_effect) {
+        GooElement.prototype.attachGameEffect = function(spatial, game_effect, particleUpdate) {
 
-            var onParticleDead = function(particle) {
-                this.particles.splice(this.particles.indexOf(particle), 1);
-            }.bind(this);
-
-            var onParticleAdded = function(particle) {
-                this.particles.push(particle);
-            }.bind(this);
-
-            var particleUpdate = function(particle) {
-                particle.lifeSpan = 1;
-                particle.position.setArray(spatial.pos.data);
-                particle.rotation = spatial.rot[0];
-        //        particle.progress = 0.5 + Math.clamp(spatial.rotVel[0]*2, -0.49, 0.49);
-            }.bind(this);
-
-            this.callbacks = {
-                particleUpdate:particleUpdate,
-                onParticleAdded:onParticleAdded,
-                onParticleDead:onParticleDead
-            };
-
-            evt.fire(evt.list().GAME_EFFECT, {effect:game_effect, pos:spatial.pos, vel:spatial.vel, callbacks:this.callbacks});
+            this.gameEffect.attachGameEffect(spatial, game_effect, particleUpdate);
+            
         };
 
 
@@ -103,12 +94,7 @@ define([
 
 
         GooElement.prototype.removeElement = function() {
-            this.callbacks.particleUpdate = null;
-
-            for (var i = 0; i < this.particles.length; i++) {
-                this.particles[i].lifeSpan = 1;
-                this.particles[i].lifeSpanTotal = 1
-            }
+            this.gameEffect.removeGooEffect();
         };
 
         return GooElement;

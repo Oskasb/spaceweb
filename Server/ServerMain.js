@@ -22,7 +22,10 @@ ServerMain = function() {
 	}
 
 	function pieceData(config) {
+        console.log("---- >Data Handler pieceData", config.id);
+        _this.dataHub.setConfig(config)
 		_this.serverGameMain.applyPieceConfigs(config);
+		
 	}
 	
 	this.dataHandlers = {

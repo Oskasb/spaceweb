@@ -28,6 +28,7 @@ define([
 		ClientRegistry.prototype.clientConnected = function(data) {
             console.log("Connected Data: ", data)
             this.data.CLIENT_ID = data.clientId;
+			PipelineAPI.setCategoryData('PIECE_DATA', data.pieceData);
 			PipelineAPI.setCategoryData('REGISTRY', this.data)
 		};
 

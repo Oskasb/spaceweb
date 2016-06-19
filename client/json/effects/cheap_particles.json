@@ -170,7 +170,26 @@
           "lifespan": [ 0.5,  2.2 ],
           "poolCount": 70
         }
+      },{
+        "id": "spawn_shockwave",
+        "effect_data":{
+          "texture": "shockwave_2.png",
+          "color": [ 0, 0.5, 1, 1],
+          "blending": "additive",
+          "size": [ 74, 225],
+          "growth": [  150,  350 ],
+          "rotation": [ 0,360],
+          "spin": [ -30, 30],
+          "gravity": 0,
+          "count": 1,
+          "spread": 0,
+          "strength": 20,
+          "lifespan": [ 0.01, 0.14],
+          "poolCount": 50,
+          "acceleration": 0.999
+        }
       },
+
       {
         "id": "shockwave",
         "effect_data":{

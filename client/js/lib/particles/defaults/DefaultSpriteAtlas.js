@@ -25,8 +25,8 @@ define({
 				"tiles":[[0, 0]]
 			},
 			{
-				"id":"0_0",
-				"tiles":[[0, 0]]
+				"id":"double_arc",
+				"tiles":[[5, 0]]
 			},
 			{
 				"id":"0_1",

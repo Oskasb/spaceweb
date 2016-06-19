@@ -35,26 +35,7 @@ define([
 			};
 
 			evt.on(evt.list().CONNECTION_CLOSED, removeAllPieces);
-
-			this.pieceData = {}; 
-			var _this = this;
-			
-			
-			
-			var pieceModuleDataLoaded = function(src, data) {
-				_this.pieceData[src]=data;
-				_this.pieceDataUpdated(_this.pieceData);
-			};
-
-			new PipelineObject('piece_data', 'modules', pieceModuleDataLoaded);
-			
-		};
-
-		GameMain.prototype.pieceDataUpdated = function(pieceData) {
-			for (var index in this.pieces) {
-				this.pieces[index].attachModules(pieceData.modules);
-			}
-			
+            
 		};
 
 		GameMain.prototype.registerPlayer = function(data) {
@@ -67,9 +48,9 @@ define([
                 }, 20)
         	};
 
-			this.pieces[data.playerId] = new ClientPiece(data, this.pieceData, removeCallback);
+			this.pieces[data.playerId] = new ClientPiece(data, removeCallback);
 
-            if (data.type != 'player') {
+            if (data.type != 'player_ship') {
                 return this.pieces[data.playerId];
             }
 

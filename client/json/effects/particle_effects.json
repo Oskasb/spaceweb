@@ -31,6 +31,60 @@
                 }
             },
             {
+                "id":"ship_shield",
+                "effect_data":{
+                    "color0":[0.1,0.5, 0.6],
+                    "color1":[0.1,0.2, 0.4],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":2,
+                    "opacity":[0.3, 0.4],
+                    "alpha":"oneToZero",
+                    "size":[7, 8],
+                    "growthFactor":[1, 1],
+                    "growth":"posToNeg",
+                    "stretch":0.0001,
+                    "strength":0,
+                    "spread":0.7,
+                    "acceleration":0.997,
+                    "gravity":0,
+                    "rotation":[-23,-13],
+                    "spin":"posToNeg",
+                    "spinspeed":[-45, 45],
+                    "lifespan":[2, 2],
+                    "sprite":"double_arc"
+                }
+            },
+            {
+                "id":"ship_shield_flare",
+                "effect_data":{
+                    "color0":[0.1,0.4, 0.5],
+                    "color1":[0.1,0.2, 0.5],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[0.3, 0.4],
+                    "alpha":"oneToZero",
+                    "size":[6, 7],
+                    "growthFactor":[1, 1],
+                    "growth":"posToNeg",
+                    "stretch":0.0001,
+                    "strength":0,
+                    "spread":0.7,
+                    "acceleration":0.997,
+                    "gravity":0,
+                    "rotation":[2,3],
+                    "spin":"posToNeg",
+                    "spinspeed":[-45, 45],
+                    "lifespan":[2, 2],
+                    "sprite":"spinfield",
+                    "loopcount":15,
+                    "trailsprite":"tail",
+                    "trailwidth":0.1
+                }
+            },
+
+            {
                 "id":"ship_trail",
                 "effect_data":{
                     "color0":[1,0.4, 0.2],

@@ -30,7 +30,7 @@ define([
                 height: '50%',
                 top: '25%',
                 textAlign: 'center',
-                fontSize: '100px',
+                fontSize: '60em',
                 zIndex: 100,
                 color: 'rgba(255, 155, 45, 1)',
                 transition: 'all 1.6s ease-in-out'
@@ -42,7 +42,7 @@ define([
 
 			var cStyle = {
 				width: '100%',
-				height: '40px',
+				height: '30em',
 				bottom: '0%',
 			    backgroundColor: 'rgb(120, 50, 12)',
 				transformOrigin: "0% 0%",
@@ -71,15 +71,16 @@ define([
             var countStyle = {
                 width: '100%',
                 height: '100%',
+                top: "auto",
                 left: '0%',
                 textAlign: 'center',
-                fontSize: '37px',
+                fontSize: '25em',
                 zIndex: 100,
                 color: 'rgb(255, 255, 195)'
 
             };
 
-            this.progCounter = DomUtils.createDivElement(this.progContainer, 'pcounter', '-', 'point');
+            this.progCounter = DomUtils.createDivElement(this.progContainer, 'pcounter', 'Relaod to wake Server', 'point');
 
             DomUtils.applyElementStyleParams(this.progCounter, countStyle);
 
