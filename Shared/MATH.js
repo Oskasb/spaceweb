@@ -8,7 +8,21 @@ if(typeof(MATH) == "undefined"){
 
 	MATH.TWO_PI = 2.0 * Math.PI;
 
+	MATH.interpolateFromTo = function(start, end, fraction) {
+		return start + (end-start)*fraction;
+	};
 	
+	MATH.getInterpolatedInCurveAboveIndex = function(value, curve, index) {
+		return curve[index][1] + (value - curve[index][0]) / (curve[index+1][0] - curve[index][0])*(curve[index+1][1]-curve[index][1]);
+	};
+
+	MATH.valueFromCurve = function(value, curve) {
+		for (var i = 0; i < curve.length; i++) {
+			if (!curve[i+1]) return 0;
+			if (curve[i+1][0] > value) return MATH.getInterpolatedInCurveAboveIndex(value, curve, i)
+		}
+		return 0;
+	};
 	
 	MATH.moduloPositive = function (value, size) {
 		var wrappedValue = value % size;

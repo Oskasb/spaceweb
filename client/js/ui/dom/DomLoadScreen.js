@@ -237,7 +237,7 @@ define([
 
                 setTimeout(function() {
                     DomUtils.removeElement(_this.root);
-                }, 1500)
+                }, 1500);
 
                 DomUtils.removeElement(_this.pipeMessage);
                 DomUtils.removeElement(_this.progMessage);

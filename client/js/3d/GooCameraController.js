@@ -104,8 +104,7 @@ define(['Events',
     function controlledPieceUpdated(e) {
         on=true;
         playerSpatial = evt.args(e).spatial;
-    };
-
+    }
 
     evt.on(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
 

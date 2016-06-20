@@ -14,6 +14,8 @@ define([
 ) {
 
     var camera;
+    var goo;
+    var backgrounds = {};
     var configs = {};
 
     var effectIndex  = {
@@ -22,6 +24,14 @@ define([
     
     var SpaceFX = function() {
         var pipeObj;
+        var bkPipe;
+        this.time = 0;
+
+        this.baseColor = [0.05, 0.0, 0.09, 0.2];
+        this.flashColor = [0.04, 0.02, 0.12, 0.2];
+        this.flashTime = 0.8;
+        this.flashTime = 0;
+
         this.camPos = new Vector3();
         this.posVec = new Vector3();
         this.velVec = new Vector3();
@@ -30,19 +40,30 @@ define([
         this.effectData = {
             color:this.colorVec.data
         };
-        
+
+        function engineReady(e) {
+            goo = evt.args(e).goo;
+            evt.removeListener(evt.list().ENGINE_READY, engineReady);
+        }
+
         function cameraReady(e) {
             camera = evt.args(e).camera;
             evt.removeListener(evt.list().CAMERA_READY, cameraReady);
         }
 
         evt.on(evt.list().CAMERA_READY, cameraReady);
-        
+        evt.on(evt.list().ENGINE_READY, engineReady);
+
         var fxConfig = function() {
             configs = pipeObj.buildConfig('effect_data');
         };
 
+        var backgroundCfg = function() {
+            backgrounds = bkPipe.buildConfig('data');
+        };
+
         pipeObj = new PipelineObject('effects','environment', fxConfig);
+        bkPipe = new PipelineObject('effects','background', backgroundCfg);
     };
 
 
@@ -76,10 +97,32 @@ define([
                 this.spawnConfigureSpaceFX(conf[i], time);
             }
         }
+
+        this.processBackground(tpf);
+
     };
 
+    SpaceFX.prototype.processBackground = function(tpf) {
+        this.time += tpf;
+        this.baseColor;
+        this.flashColor;
+        this.flashTime;
 
+        goo.renderer.setClearColor(
+            MATH.interpolateFromTo(this.baseColor[0], this.flashColor[0], 0.4 + Math.sin(this.time)*0.4    +Math.random()*0.2),
+            MATH.interpolateFromTo(this.baseColor[1], this.flashColor[1], 0.4 + Math.cos(this.time)*0.4    +Math.random()*0.2),
+            MATH.interpolateFromTo(this.baseColor[2], this.flashColor[2], 0.4 + Math.sin(this.time*1.2)*0.4+Math.random()*0.2),
+            this.baseColor[3]
+        );
+    };
 
+    SpaceFX.prototype.applyBackgroundFx = function(conf) {
+
+        this.baseColor = conf.baseColor;
+        this.flashColor = conf.flashColor;
+        this.flashTime = conf.flashTime;
+
+    };
 
     SpaceFX.prototype.updateSpaceFX = function(time, tpf) {
 
@@ -129,7 +172,20 @@ define([
                 } else {
                     console.log("No SpaceFX for ", args.id);
                 }
+
+                if (backgrounds[effectIndex[args.id]]) {
+                    this.applyBackgroundFx(backgrounds[effectIndex[args.id]])
+                } else {
+                    if (backgrounds.default) {
+                        this.applyBackgroundFx(backgrounds.default)
+                    }
+                }
             } else {
+
+                if (backgrounds.default) {
+                    this.applyBackgroundFx(backgrounds.default)
+                }
+
                 if (configs[effectIndex[args.id]]) {
                     for (var i = 0; i < configs[effectIndex[args.id]].length; i++) {
                         configs[effectIndex[args.id]][i].frequency = 0;
