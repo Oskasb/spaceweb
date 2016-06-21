@@ -119,10 +119,10 @@ define([
         if (this.time < this.adsr[0]) {
 
 
-            console.log(MATH.calcFraction(0, this.adsr[0], this.time))
+    //        console.log(MATH.calcFraction(0, this.adsr[0], this.time))
             MATH.blendArray(MATH.calcFraction(0, this.adsr[0], this.time), this.sourceColor, this.flashColor, this.currentColor);
         } else {
-            console.log(MATH.calcFraction(this.adsr[0], this.flashTime, this.time))
+    //        console.log(MATH.calcFraction(this.adsr[0], this.flashTime, this.time))
     //        MATH.blendArray(MATH.calcFraction(0, this.flashTime, this.time), this.currentColor, this.baseColor, this.sourceColor);
             MATH.blendArray(MATH.calcFraction(this.adsr[0], this.flashTime, this.time), this.flashColor, this.baseColor, this.currentColor);
         }

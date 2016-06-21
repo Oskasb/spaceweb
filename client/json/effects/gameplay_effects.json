@@ -27,12 +27,12 @@
                 "effect_data":[{
                     "effect":"ship_shield",
                     "simulator":"AdditiveParticle",
-                    "density":1
+                    "density":2
 
                 },{
                   "effect":"ship_shield_flare",
                   "simulator":"AdditiveParticle",
-                  "density":1
+                  "density":2
 
                 }]
 

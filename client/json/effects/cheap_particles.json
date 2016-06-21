@@ -10,12 +10,12 @@
           "size": [10, 30],
           "rotation": [0, 360],
           "gravity": 0,
-          "count": 1,
+          "count": 2,
           "spread": 1,
           "strength": 0.5,
           "lifespan": [0.2, 2.2],
           "poolCount": 400,
-          "growth": [2, 124],
+          "growth": [62, 124],
           "spin": [0,0 ],
           "acceleration": 0.85
         }

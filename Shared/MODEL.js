@@ -44,8 +44,8 @@ if(typeof(MODEL) == "undefined"){
     };
     
     MODEL.Spatial.prototype.interpolatePositions = function(start, target, fraction) {
-        this.pos.interpolateFromTo(start.pos, target.pos, fraction);
-        this.vel.interpolateFromTo(start.vel, target.vel, fraction);
+        this.pos = this.pos.interpolateFromTo(start.pos, target.pos, fraction);
+        this.vel = this.vel.interpolateFromTo(start.vel, target.vel, fraction);
     };
 
 	MODEL.Spatial.prototype.interpolateRotational = function(start, target, fraction) {
@@ -163,6 +163,7 @@ if(typeof(MODEL) == "undefined"){
         this.currentTime = creationTime;
 		this.creationTime = creationTime;
         this.lastUpdate = creationTime;
+        this.packetAge = 0;
 		this.timeDelta = 1;
 		this.fraction = 1;
         this.tickDelta = 0;
@@ -175,6 +176,7 @@ if(typeof(MODEL) == "undefined"){
         this.lastUpdate =     sendData.lastUpdate;
         this.stepTime =       sendData.stepTime;
         this.networkTime =    sendData.networkTime;
+        this.packetAge = 0;
     };
 
     MODEL.Temporal.prototype.getSendTemporal = function() {
@@ -191,6 +193,7 @@ if(typeof(MODEL) == "undefined"){
 
     
     MODEL.Temporal.prototype.incrementTpf = function(tpf) {
+        this.packetAge += tpf;
         this.tickDelta = tpf;
         this.currentTime += tpf;
     };
@@ -199,8 +202,12 @@ if(typeof(MODEL) == "undefined"){
         return this.currentTime - this.creationTime;
 	};
 
+    MODEL.Temporal.prototype.getPacketAge = function() {
+        return this.packetAge;
+    };
+
     MODEL.Temporal.prototype.getFraction = function() {
-        return this.currentTime / this.networkTime
+        return this.packetAge / this.networkTime
     };
 
 	MODEL.Temporal.prototype.predictUpdate = function(time) {

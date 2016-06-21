@@ -371,18 +371,18 @@ if(typeof(GAME) == "undefined"){
 */	//
 	//	console.log(this.rotDiff, this.posDiff);
 
-		if (this.posDiff*this.temporal.currentTime > this.temporal.stepTime*0.1) {
+	//	if (this.posDiff*this.temporal.currentTime > this.temporal.stepTime*0.1) {
 			this.spatial.interpolatePositions(this.spatial, this.targetSpatial, tpf);
-		}
+	//	}
 
 		this.spatial.interpolateRotational(this.spatial, this.targetSpatial, tpf);
 
 	//	if (this.pieceControls.inputState.throttle != 0) {
-			this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tpf*0.5));
+			this.spatial.vel.scale(1 - (this.pieceControls.constants.velocityDrag*tpf*0.1));
 	//		this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tpf*0.5));
 	//	}
 
-		this.spatial.getVelVec().setVec(this.targetSpatial.getVelVec());
+	//	this.spatial.getVelVec().setVec(this.targetSpatial.getVelVec());
 		this.spatial.update(tpf);
 
 		// this.updateServerSpatial(tpf);
