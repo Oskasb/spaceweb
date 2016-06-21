@@ -19,7 +19,8 @@ define([
     var configs = {};
 
     var effectIndex  = {
-        hyper_drive:'hyper_space'
+        hyper_drive:'hyper_space',
+        shield:'shield'
     };
     
     var SpaceFX = function() {
@@ -27,10 +28,14 @@ define([
         var bkPipe;
         this.time = 0;
 
+        this.targetColor = [0, 0, 0, 0];
+        this.sourceColor = [0, 0, 0, 0];
         this.baseColor = [0.05, 0.0, 0.09, 0.2];
         this.flashColor = [0.04, 0.02, 0.12, 0.2];
+        this.currentColor = [0.05, 0.0, 0.09, 0.2];
         this.flashTime = 0.8;
-        this.flashTime = 0;
+        this.flashCurve = [[0, 0], [1,1]];
+        this.adsr = [0.2, 0.3, 1],
 
         this.camPos = new Vector3();
         this.posVec = new Vector3();
@@ -98,30 +103,52 @@ define([
             }
         }
 
-        this.processBackground(tpf);
+        if (this.time < this.flashTime) {
+            this.processBackground(tpf);
+        }
 
     };
 
     SpaceFX.prototype.processBackground = function(tpf) {
         this.time += tpf;
-        this.baseColor;
-        this.flashColor;
-        this.flashTime;
+
+    //    var blend = MATH.calcFraction(0, this.flashTime, this.time)
+
+    //    console.log(blend);
+
+        if (this.time < this.adsr[0]) {
+
+
+            console.log(MATH.calcFraction(0, this.adsr[0], this.time))
+            MATH.blendArray(MATH.calcFraction(0, this.adsr[0], this.time), this.sourceColor, this.flashColor, this.currentColor);
+        } else {
+            console.log(MATH.calcFraction(this.adsr[0], this.flashTime, this.time))
+    //        MATH.blendArray(MATH.calcFraction(0, this.flashTime, this.time), this.currentColor, this.baseColor, this.sourceColor);
+            MATH.blendArray(MATH.calcFraction(this.adsr[0], this.flashTime, this.time), this.flashColor, this.baseColor, this.currentColor);
+        }
 
         goo.renderer.setClearColor(
-            MATH.interpolateFromTo(this.baseColor[0], this.flashColor[0], 0.4 + Math.sin(this.time)*0.4    +Math.random()*0.2),
-            MATH.interpolateFromTo(this.baseColor[1], this.flashColor[1], 0.4 + Math.cos(this.time)*0.4    +Math.random()*0.2),
-            MATH.interpolateFromTo(this.baseColor[2], this.flashColor[2], 0.4 + Math.sin(this.time*1.2)*0.4+Math.random()*0.2),
-            this.baseColor[3]
+            this.currentColor[0],
+            this.currentColor[1],
+            this.currentColor[2],
+            this.currentColor[3]
         );
     };
 
     SpaceFX.prototype.applyBackgroundFx = function(conf) {
 
+        this.time = 0;
+
+        this.sourceColor[0] = this.currentColor[0];
+        this.sourceColor[1] = this.currentColor[1];
+        this.sourceColor[2] = this.currentColor[2];
+        this.sourceColor[3] = this.currentColor[3];
+
         this.baseColor = conf.baseColor;
         this.flashColor = conf.flashColor;
         this.flashTime = conf.flashTime;
 
+        this.adsr = conf.adsr;
     };
 
     SpaceFX.prototype.updateSpaceFX = function(time, tpf) {

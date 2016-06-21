@@ -4,17 +4,28 @@
       {
         "id":"default",
         "data":{
-          "flashColor":[0.05, 0.0, 0.09, 0.21],
-          "baseColor":[0.04, 0.02, 0.12, 0.1],
-          "flashTime":0.2
+          "flashColor":[0.06, 0.0, 0.2, 0.05],
+          "baseColor":[0.02, 0.03, 0.15, 0.1],
+          "adsr":[0.9, 0.3, 1],
+          "flashTime":3
         }
       },
       {
         "id":"hyper_space",
         "data":{
-          "flashColor":[0.06, 0.07, 0.1, 0.1],
-          "baseColor":[0.01, 0.0, 0.22, 0.1],
-          "flashTime":0.4
+          "flashColor":[0.0, 0.0, 0.4, 0.1],
+          "baseColor":[0.08, 0.0, 0.26, 0.01],
+          "adsr":[0.8, 0.3, 1],
+          "flashTime":2
+        }
+      },
+      {
+        "id":"shield",
+        "data":{
+          "flashColor":[0.0, 0.01, 0.03, 0.1],
+          "baseColor":[0.0, 0.01, 0.04, 0.01],
+          "adsr":[1.8, 0.3, 1],
+          "flashTime":5
         }
       }
     ],

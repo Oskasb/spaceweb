@@ -6,10 +6,17 @@ if(typeof(MATH) == "undefined"){
 
 (function(MATH){
 
+	var blend = 0;
+	var i = 0;
+
 	MATH.TWO_PI = 2.0 * Math.PI;
 
 	MATH.interpolateFromTo = function(start, end, fraction) {
 		return start + (end-start)*fraction;
+	};
+
+	MATH.calcFraction = function(start, end, current) {
+		return (current-start) / (end-start);
 	};
 	
 	MATH.getInterpolatedInCurveAboveIndex = function(value, curve, index) {
@@ -17,12 +24,29 @@ if(typeof(MATH) == "undefined"){
 	};
 
 	MATH.valueFromCurve = function(value, curve) {
-		for (var i = 0; i < curve.length; i++) {
-			if (!curve[i+1]) return 0;
+		for (i = 0; i < curve.length; i++) {
+			if (!curve[i+1]) {
+				console.log("Curve out end value", curve[curve.length-1][1]);
+				return curve[curve.length-1][1];
+
+			}
 			if (curve[i+1][0] > value) return MATH.getInterpolatedInCurveAboveIndex(value, curve, i)
 		}
-		return 0;
+		console.log("Curve out of bounds");
+		return curve[curve.length-1][1];
 	};
+
+	MATH.blendArray = function(frac, from, to, store) {
+		for (i = 0; i < store.length; i++) {
+			store[i] = (1-frac)*from[i] + frac*to[i];
+		}
+	};
+	
+	MATH.curveBlendArray = function(value, curve, from, to, store) {
+		blend = MATH.valueFromCurve(value, curve);
+		MATH.blendArray(blend, from, to, store);
+	};
+	
 	
 	MATH.moduloPositive = function (value, size) {
 		var wrappedValue = value % size;
