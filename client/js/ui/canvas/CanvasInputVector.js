@@ -189,7 +189,6 @@ define([
             ctx.lineWidth = width;
             ctx.strokeStyle = toRgba(color);
 
-            ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.arc(
                 tempRect.left,
@@ -292,18 +291,19 @@ define([
                 entCount += 1;
 
                 var spat = gamePieces[index].piece.spatial;
-                var age = gamePieces[index].piece.temporal.getAge();
+                var target = gamePieces[index].piece.targetSpatial;
+                var age = gamePieces[index].piece.temporal.getPacketAge();
+                var networkTime = gamePieces[index].piece.temporal.networkTime;
 
-                var top  = vectorToCanvasX(spat.pos);
-                var left = vectorToCanvasY(spat.pos);
-                
-                var seed = (Math.random()+1)*0.8;
+                var top  = vectorToCanvasX(camera.transformComponent.transform.translation);
+                var left = vectorToCanvasY(camera.transformComponent.transform.translation);
+
 
                 if (gamePieces[index].piece.type == 'player_ship') {
-                    tempRect.left 	= left -1*seed;
-                    tempRect.top 	= top -1*seed;
-                    tempRect.width 	= 2*seed;
-                    tempRect.height = 2*seed;
+                    tempRect.left 	= left -1;
+                    tempRect.top 	= top -1;
+                    tempRect.width 	= 2;
+                    tempRect.height = 2;
                     
                     if (confData.playerNames.on && !gamePieces[index].isOwnPlayer) {
 /*
@@ -356,27 +356,37 @@ define([
                             CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
                             ctx.stroke();
 
-                       //     drawControlVectorArc(ctx,  -angle*controls[i].value[0]  + 0.5*Math.PI+2, -angle*controls[i].value[0]  + 0.5*Math.PI-2 , radius, confData.serverRadial.color, confData.serverRadial.width);
+                         //   angle -= Math.PI*0.5;
 
-                       }
+                            drawControlVectorArc(ctx,  -angle*controls[i].value[0]  -0.1, -angle*controls[i].value[0]  +0.1 , radius, confData.serverRadial.color, confData.serverRadial.width);
 
+                            var timeFraction = -Math.PI*0.5 + ((age / networkTime)) * MATH.TWO_PI
+
+                            drawControlVectorArc(ctx,  timeFraction, timeFraction + confData.serverRadial.timeSize, confData.serverRadial.clockRadius, confData.serverRadial.timeColor, confData.serverRadial.timeWidth);
+
+
+                        }
 
                     //    if (data.color) ctx.strokeStyle = toRgba(data.color);
                         var angle = gamePieces[index].inputSegmentRadial.line.zrot;
+
                         radius = confData.inputRadial.range * gamePieces[index].inputSegmentRadial.line.w * size.width * 0.01;
 
-                        var angFrom = angle + Math.min(gamePieces[index].piece.spatial.rotVel[0], 0);
-                        var angTo = angle + Math.max(gamePieces[index].piece.spatial.rotVel[0], 0);
+                      tempRect.left =     vectorToCanvasX(spat.pos);
+                      tempRect.top 	=     vectorToCanvasY(spat.pos);
 
-                        plotRotationState(ctx, angle, gamePieces[index].piece.spatial.rotVel[0], radius*0.9, confData.inputRadial.spatialColor, 5);
-
-
-
-                        angFrom = angle + Math.min(gamePieces[index].piece.targetSpatial.rotVel[0], 0); // - Math.PI*0.5;
-                        angTo = angle + Math.max(gamePieces[index].piece.targetSpatial.rotVel[0], 0); // - Math.PI*0.5;
+                        angle = spat.rot[0]+Math.PI*0.5;
 
 
-                        plotRotationState(ctx, angle, gamePieces[index].piece.targetSpatial.rotVel[0], radius * 0.8, confData.inputRadial.targetColor, 3);
+                        plotRotationState(ctx, angle, spat.rotVel[0], radius*0.6, confData.inputRadial.spatialColor, 3);
+
+
+                        tempRect.left 	= vectorToCanvasX(target.pos);
+                        tempRect.top 	= vectorToCanvasY(target.pos);
+
+                        angle = target.rot[0]+Math.PI*0.5;;
+
+                        plotRotationState(ctx, angle, target.rotVel[0], radius * 0.4, confData.inputRadial.targetColor, 3);
 
 
                         

@@ -20,10 +20,12 @@
 
             "spatialColor":[0.0, 1, 0.1, 1],
 
-            "targetColor":[0.4, 0.1, 1, 1],
+            "targetColor":[0.6, 0.0, 0.9, 1],
+
             "width":3,
             "range":0.11,
             "flicker":0.5,
+
             "thrColor":[0.9,0.2,0.0,0.7],
             "font":"9px Russo One",
             "top":0.93,
@@ -33,6 +35,10 @@
           "serverRadial":{
             "on":true,
             "color":[0.7,0.3,0.0,0.4],
+            "clockRadius":52,
+            "timeColor":[0.0, 0.7, 1, 0.3],
+            "timeSize":0.21,
+            "timeWidth":15,
             "width":3,
             "range":0.27,
             "flicker":0.2
