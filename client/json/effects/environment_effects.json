@@ -5,7 +5,7 @@
         "id":"default",
         "data":{
           "flashColor":[0.06, 0.0, 0.2, 0.05],
-          "baseColor":[0.02, 0.03, 0.15, 0.1],
+          "baseColor":[0.0, 0.0, 0.11, 0.1],
           "adsr":[0.9, 0.3, 1],
           "flashTime":3
         }
@@ -35,8 +35,8 @@
         "id":"hyper_space",
         "effect_data":[{
           "game_effect":"hyper_space_sparks",
-          "volume":[92, 92, 103],
-          "distance": 164,
+          "volume":[6, 6, 155],
+          "distance": 95,
           "speed":[10.5, 10.5, 10.5],
           "colorMin":[0.8, 0.0, 1],
           "colorMax":[1, 0.8, 1],
@@ -48,20 +48,20 @@
         "id":"stars",
         "effect_data":[{
           "game_effect":"space_dust",
-          "volume":[35, 35, 15],
-          "distance": 125,
-          "speed":[2, 2, 0],
-          "colorMin":[0.5, 0.6, 0.8],
-          "colorMax":[1, 1, 1],
-          "frequency":0.02
+          "volume":[10, 10, 2],
+          "distance": 15,
+          "speed":[1, 1, 0],
+          "colorMin":[0.2, 0.2, 0.3],
+          "colorMax":[0.4, 0.6, 1],
+          "frequency":0.04
         }]
       },
       {
         "id":"sparks",
         "effect_data":[{
           "game_effect":"space_spark",
-          "volume":[31, 41, 64],
-          "distance": 125,
+          "volume":[8, 8, 35],
+          "distance": 95,
           "speed":[0, 0, 0],
           "colorMin":[0.9, 0.7, 0.8],
           "colorMax":[1, 1, 1],
@@ -73,8 +73,8 @@
         "id":"blue_star",
         "effect_data":[{
           "game_effect":"space_cloud",
-          "volume":[250, 250, 210],
-          "distance": 430,
+          "volume":[8, 8, 610],
+          "distance": 530,
           "speed":[0, 0, 0],
           "colorMin":[0.6, 0.6, 0.7],
           "colorMax":[1, 1, 1],

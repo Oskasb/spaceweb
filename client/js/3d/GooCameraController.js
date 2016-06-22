@@ -92,11 +92,12 @@ define(['Events',
         forVec.scale(6);
 
 
-        calcVec.mulDirect(20, 20, 0);
+        calcVec.mulDirect(40, 40, 0);
+        calcVec.addVector(forVec);
 
-        lastPos.interpolateFromTo(lastPos, calcVec, evt.args(e).tpf);
+        lastPos.interpolateFromTo(lastPos, calcVec, 0.02);
 
-        lastPos.addVec(forVec);
+
 
     //    calcVec.addVector(playerSpatial.pos);
 

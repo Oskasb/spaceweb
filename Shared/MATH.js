@@ -54,6 +54,15 @@ if(typeof(MATH) == "undefined"){
 		return wrappedValue;
 	};
 
+    MATH.nearestAngle = function(angle) {
+        if (angle > Math.PI) {
+            angle -= MATH.TWO_PI;
+        } else if (angle < 0) {
+            angle += MATH.TWO_PI;
+        }
+        return angle;
+    };
+
 	MATH.lineDistance = function(fromX, fromY, toX, toY) {
 		return Math.sqrt((fromX - toX)*(fromX - toX) + (fromY - toY)*(fromY - toY));
 	};

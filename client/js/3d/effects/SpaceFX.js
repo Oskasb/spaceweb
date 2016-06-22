@@ -17,6 +17,7 @@ define([
     var goo;
     var backgrounds = {};
     var configs = {};
+    var modulationSpatial;
 
     var effectIndex  = {
         hyper_drive:'hyper_space',
@@ -26,6 +27,7 @@ define([
     var SpaceFX = function() {
         var pipeObj;
         var bkPipe;
+
         this.time = 0;
 
         this.targetColor = [0, 0, 0, 0];
@@ -35,8 +37,9 @@ define([
         this.currentColor = [0.05, 0.0, 0.09, 0.2];
         this.flashTime = 0.8;
         this.flashCurve = [[0, 0], [1,1]];
-        this.adsr = [0.2, 0.3, 1],
+        this.adsr = [0.2, 0.3, 1];
 
+        this.calcVec = new Vector3();
         this.camPos = new Vector3();
         this.posVec = new Vector3();
         this.velVec = new Vector3();
@@ -46,10 +49,12 @@ define([
             color:this.colorVec.data
         };
 
-        function engineReady(e) {
+        var engineReady = function(e) {
             goo = evt.args(e).goo;
+            modulationSpatial = new MODEL.Spatial();
+            this.enableSpaceFx();
             evt.removeListener(evt.list().ENGINE_READY, engineReady);
-        }
+        }.bind(this);
 
         function cameraReady(e) {
             camera = evt.args(e).camera;
@@ -69,11 +74,25 @@ define([
 
         pipeObj = new PipelineObject('effects','environment', fxConfig);
         bkPipe = new PipelineObject('effects','background', backgroundCfg);
+
+        function controlledPieceUpdated(e) {
+            modulationSpatial = evt.args(e).spatial;
+        }
+
+        evt.on(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
+
     };
 
 
+    SpaceFX.prototype.applyVolumeVector = function(confData, vec3) {
+
+        var d = confData[2]*Math.random();
+
+        vec3.addDirect(confData[0]*(Math.random()-0.5)*d, confData[1]*(Math.random()-0.5)*d, d);
+    };
+    
     SpaceFX.prototype.applyFXVector = function(confData, vec3) {
-        vec3.addDirect(confData[0]*(Math.random()-0.5), confData[1]*(Math.random()-0.5), confData[2]*Math.random());
+                vec3.addDirect(confData[0]*(Math.random()-0.5), confData[1]*(Math.random()-0.5), confData[2]*Math.random());
     };
 
     SpaceFX.prototype.updateColorFX = function(confMin, confMax, vec3) {
@@ -86,9 +105,27 @@ define([
 
     SpaceFX.prototype.spawnConfigureSpaceFX = function(conf, time) {
 
+
+
+
+
         this.posVec.setVector(this.camPos);
+    //
         this.posVec.data[2] -= conf.distance;
-        this.applyFXVector(conf.volume, this.posVec);
+
+        this.applyVolumeVector(conf.volume, this.posVec);
+
+
+        this.calcVec.setVector(modulationSpatial.vel);
+
+
+        var distFactor = (this.camPos.data[2]-this.posVec.data[2]) * 0.006;
+
+        this.calcVec.mulDirect(distFactor, distFactor, 0);
+
+        this.posVec.addVector(this.calcVec);
+
+
         this.applyFXVector(conf.speed, this.velVec);
         this.updateColorFX(conf.colorMin, conf.colorMax, this.colorVec);
 
@@ -173,12 +210,9 @@ define([
 
         evt.on(evt.list().CLIENT_TICK, clientTick);
 
-
-
         var moduleTodggled = function(e) {
             this.handleToggledModule(evt.args(e))
         }.bind(this);
-
 
         evt.on(evt.list().NOTIFY_MODULE_ONOFF, moduleTodggled);
         

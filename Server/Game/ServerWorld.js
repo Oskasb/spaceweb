@@ -59,13 +59,13 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, d
     bullet.registerParentPiece(sourcePiece);
 	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
 //	bullet.temporal.timeDelta = dt;
-  //  bullet.spatial.setSpatial(sourcePiece.spatial);
-    bullet.spatial.pos.setVec(sourcePiece.spatial.pos);
+    bullet.spatial.setSpatial(sourcePiece.spatial);
+//    bullet.spatial.pos.setVec(sourcePiece.spatial.pos);
 
     bullet.setState(GAME.ENUMS.PieceStates.SPAWN);
 
     bullet.spatial.rotVel[0] = 0;
-    bullet.spatial.rot[0] = sourcePiece.spatial.rot[0];
+ //   bullet.spatial.rot[0] = sourcePiece.spatial.rot[0];
 
     bullet.pieceControls.actions.applyForward = apply.exitVelocity;
     bullet.applyForwardControl(MODEL.ReferenceTime);
@@ -112,7 +112,7 @@ ServerWorld.prototype.broadcastPieceState = function(piece) {
 
 ServerWorld.prototype.updateWorldPiece = function(piece, currentTime) {
 	piece.processTemporalState(currentTime);
-	piece.spatial.update(piece.temporal.stepTime);
+	piece.spatial.updateSpatial(piece.temporal.stepTime);
 
 /*
     if (piece.networkDirty) {

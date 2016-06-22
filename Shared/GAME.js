@@ -383,7 +383,7 @@ if(typeof(GAME) == "undefined"){
 	//	}
 
 	//	this.spatial.getVelVec().setVec(this.targetSpatial.getVelVec());
-		this.spatial.update(tpf);
+		this.spatial.updateSpatial(tpf);
 
 		// this.updateServerSpatial(tpf);
 	};
@@ -439,7 +439,7 @@ if(typeof(GAME) == "undefined"){
 			this.spatial.rotVel[0] *= (1 - (this.pieceControls.constants.radialDrag*tickDelta));
 	//	}
 
-		this.spatial.update(tickDelta);
+		this.spatial.updateSpatial(tickDelta);
 	};
 
 	GAME.Piece.prototype.processTemporalState = function(currentTime) {
@@ -497,8 +497,8 @@ if(typeof(GAME) == "undefined"){
 			this.spatial.setSendData(networkState.spatial);
 			this.startSpatial.setSendData(networkState.spatial);
 		} else {
-			this.posDiff = this.spatial.comparePositional(this.targetSpatial);
-			this.rotDiff = this.spatial.compareRotational(this.targetSpatial);
+	//		this.posDiff = this.spatial.comparePositional(this.targetSpatial);
+	//		this.rotDiff = this.spatial.compareRotational(this.targetSpatial);
 		}
 
 	};

@@ -53,7 +53,6 @@ if(typeof(MODEL) == "undefined"){
 		this.rotVel[0] = MATH.radialLerp(start.rotVel[0], target.rotVel[0], fraction);
 	};
 	
-	
 	MODEL.Spatial.prototype.setSendData = function(sendData) {
         this.pos.setXYZ(sendData.pos[0] , sendData.pos[1], sendData.pos[2]);
         this.vel.setXYZ(sendData.vel[0] , sendData.vel[1], sendData.vel[2]);
@@ -135,11 +134,11 @@ if(typeof(MODEL) == "undefined"){
 		this.vel.addVec(velVec);
 	};
 
-	MODEL.Spatial.prototype.update = function(tpf) {
+	MODEL.Spatial.prototype.updateSpatial = function(tpf) {
         calcVec.setVec(this.vel);
         calcVec.scale(tpf);
 		this.pos.addVec(calcVec);
-		this.rot[0] += this.rotVel[0] * tpf * Math.PI;
+		this.rot[0] = MATH.angleInsideCircle(this.rot[0] + this.rotVel[0] * tpf);
 	};
 
 	MODEL.Spatial.prototype.isWithin = function(xMin, xMax, yMin, yMax) {

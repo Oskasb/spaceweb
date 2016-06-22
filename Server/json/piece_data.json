@@ -32,9 +32,9 @@
           "radialSegments":32,
           "throttleSegments": 3,
           "velocityDrag":1.1,
-          "radialDrag":2.45,
-          "radialVelocityClamp":0.8,
-          "radialLerpFactor":2,
+          "radialDrag":0.45,
+          "radialVelocityClamp":1.8,
+          "radialLerpFactor":1,
           "throttleLimit": 0.2,
           "throttleAmplitude": 30
         }

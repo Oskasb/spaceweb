@@ -146,7 +146,7 @@ define([
             for (var i = 0; i < this.clientModules.length; i++) {
                 this.clientModules[i].applyModuleServerState(serverModules);
                 this.clientModules[i].sampleModuleFrame();
-            }
+            } 
         };
 
 		ClientPiece.prototype.setServerState = function(serverState) {

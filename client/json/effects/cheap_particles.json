@@ -120,7 +120,7 @@
           "color": [  0.6,   0.8,  0.9, 1 ],
           "blending": "additive",
           "size": [ 0, 0 ],
-          "growth": [0.5, 1 ],
+          "growth": [22, 66],
           "rotation": [0, 360 ],
           "spin": [ -150,150 ],
           "gravity": 0,
@@ -128,7 +128,7 @@
           "spread": 1,
           "strength": 4,
           "acceleration": 1.02,
-          "lifespan": [0.1,0.4],
+          "lifespan": [0.2,0.6],
           "poolCount": 110
         }
 

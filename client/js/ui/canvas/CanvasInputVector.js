@@ -183,6 +183,52 @@ define([
             }
         };
 
+
+        var drawControlVectorArc = function(ctx, direction, angle, radius, color, width) {
+
+            ctx.lineWidth = width;
+            ctx.strokeStyle = toRgba(color);
+
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(
+                tempRect.left,
+                tempRect.top,
+                radius,
+                direction,
+                angle
+            );
+            ctx.stroke();
+
+        };
+
+
+        var plotRotationState = function(ctx, direction, angle, radius, color, width) {
+
+            ctx.lineWidth = width;
+            ctx.strokeStyle = randomizedColor(color, 0.5);
+
+            direction -= Math.PI*0.5;
+
+            var addx = radius * Math.cos(direction);
+            var addy = radius * Math.sin(direction);
+
+            ctx.beginPath();
+            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
+            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
+            ctx.stroke();
+
+            var ang1 = -angle + Math.PI * 0.4;
+            var ang2 = Math.PI-angle - Math.PI * 0.4;
+
+            var ang1 = direction - Math.PI*0.5 + Math.max(angle , 0);
+
+            var ang2 = direction - Math.PI*0.5 + Math.min(angle , 0);
+
+            drawControlVectorArc(ctx, -ang1, -ang2, radius, color, width);
+
+        };
+7
         CanvasInputVector.drawInputVectors = function(gamePieces, ctx, camera, confData) {
 
             pos = confData.pos;
@@ -297,6 +343,7 @@ define([
                             );
 
                             ctx.lineWidth = confData.serverRadial.width;
+
                             ctx.strokeStyle = randomizedColor(confData.serverRadial.color, confData.serverRadial.flicker);
 
                             var angle = MATH.TWO_PI / gamePieces[index].inputSegmentRadial.configs.radialSegments;
@@ -308,58 +355,31 @@ define([
                             CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
                             CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
                             ctx.stroke();
+
+                       //     drawControlVectorArc(ctx,  -angle*controls[i].value[0]  + 0.5*Math.PI+2, -angle*controls[i].value[0]  + 0.5*Math.PI-2 , radius, confData.serverRadial.color, confData.serverRadial.width);
+
                        }
 
 
                     //    if (data.color) ctx.strokeStyle = toRgba(data.color);
-
-
-                        ctx.lineWidth = confData.inputRadial.width;
-                        ctx.strokeStyle = randomizedColor(confData.inputRadial.color, confData.inputRadial.flicker);
-
-                        angle = gamePieces[index].inputSegmentRadial.line.zrot - Math.PI * 0.5;
+                        var angle = gamePieces[index].inputSegmentRadial.line.zrot;
                         radius = confData.inputRadial.range * gamePieces[index].inputSegmentRadial.line.w * size.width * 0.01;
-                        addx = radius * Math.cos(angle);
-                        addy = radius * Math.sin(angle);
 
-                        ctx.beginPath();
-                        CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
-                        CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
-                        ctx.stroke();
+                        var angFrom = angle + Math.min(gamePieces[index].piece.spatial.rotVel[0], 0);
+                        var angTo = angle + Math.max(gamePieces[index].piece.spatial.rotVel[0], 0);
 
-                        ctx.lineWidth = 5;
-                        ctx.beginPath();
-                        ctx.arc(
-                            tempRect.left,
-                            tempRect.top,
-                            radius*0.8,
-                            -angle + Math.PI * 0.4,
-                            Math.PI-angle - Math.PI * 0.4
-                        );
-                        ctx.stroke();
+                        plotRotationState(ctx, angle, gamePieces[index].piece.spatial.rotVel[0], radius*0.9, confData.inputRadial.spatialColor, 5);
 
-                        ctx.strokeStyle = randomizedColor(confData.inputRadial.color, confData.inputRadial.flicker);
-                        ctx.lineWidth = 2;
 
-                        ctx.beginPath();
-                        ctx.arc(
-                            tempRect.left,
-                            tempRect.top,
-                            Math.sqrt(radius*7)+7,
-                            Math.PI-angle + Math.PI * 0.3 + Math.random()*0.2,
-                            -angle - Math.PI * 0.3 + Math.random()*0.2
-                        );
-                        ctx.stroke();
-                        ctx.lineWidth = 6;
-                        ctx.beginPath();
-                        ctx.arc(
-                            tempRect.left,
-                            tempRect.top,
-                            Math.sqrt(radius*1)+2,
-                            Math.PI-angle + Math.PI * 0.6 * Math.random(),
-                            -angle - Math.PI * 0.6 * Math.random()
-                        );
-                        ctx.stroke();
+
+                        angFrom = angle + Math.min(gamePieces[index].piece.targetSpatial.rotVel[0], 0); // - Math.PI*0.5;
+                        angTo = angle + Math.max(gamePieces[index].piece.targetSpatial.rotVel[0], 0); // - Math.PI*0.5;
+
+
+                        plotRotationState(ctx, angle, gamePieces[index].piece.targetSpatial.rotVel[0], radius * 0.8, confData.inputRadial.targetColor, 3);
+
+
+                        
 
 
                     }
