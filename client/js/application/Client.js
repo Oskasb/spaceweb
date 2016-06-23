@@ -173,8 +173,29 @@ define([
 			evt.on(evt.list().CLIENT_READY, clientReady);
 		};
 
+        var aggDiff = 0;
+
 		Client.prototype.tick = function(tpf) {
 			frame++;
+
+			var exactTpf = this.timeTracker.trackFrameTime(frame);
+
+            if (exactTpf < 0.01) {
+                console.log("superTiny TPF")
+                return;
+            }
+
+		//	console.log(tpf - exactTpf, tpf, this.timeTracker.tpf);
+
+            aggDiff += tpf-exactTpf;
+
+            if (Math.abs(tpf-exactTpf) < 0.01) {
+                tpf = exactTpf;
+
+            } else {
+                console.log("Big DT", tpf, exactTpf, aggDiff);
+            }
+
 			evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:tpf});
 			this.gameMain.tickClientGame(tpf);
 		};

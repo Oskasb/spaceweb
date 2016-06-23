@@ -19,7 +19,7 @@ define([
 
             this.on = true;
             
-            console.log("ClientModule", moduleData, serverState);
+    //        console.log("ClientModule", moduleData, serverState);
             this.gooModule = clientPiece.gooPiece.attachModule(this);
         };
 

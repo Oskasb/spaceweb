@@ -50,7 +50,7 @@ define([
 			this.setServerState(serverState);
 
             var applyPieceData = function(src, data) {
-                console.log("Attach pieceData", src, data)
+       //         console.log("Attach pieceData", src, data)
                 _this.pieceData = data;
                 _this.attachModules(data.modules);
             };

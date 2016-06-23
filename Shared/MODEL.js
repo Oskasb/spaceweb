@@ -42,10 +42,13 @@ if(typeof(MODEL) == "undefined"){
         return Math.abs(this.rot[0] - spatial.rot[0]) +
             Math.abs(this.rotVel[0] - spatial.rotVel[0])
     };
-    
+
+	MODEL.Spatial.prototype.interpolateVelocity = function(start, target, fraction) {
+		this.vel = this.vel.interpolateFromTo(start.vel, target.vel, fraction);
+	};
+	
     MODEL.Spatial.prototype.interpolatePositions = function(start, target, fraction) {
         this.pos = this.pos.interpolateFromTo(start.pos, target.pos, fraction);
-        this.vel = this.vel.interpolateFromTo(start.vel, target.vel, fraction);
     };
 
 	MODEL.Spatial.prototype.interpolateRotational = function(start, target, fraction) {

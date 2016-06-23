@@ -19,8 +19,13 @@
             "color":[1,0.0,0.0,1],
 
             "spatialColor":[0.0, 1, 0.1, 1],
+            "spatialWidth": 1,
 
-            "targetColor":[0.6, 0.0, 0.9, 1],
+            "extrapColor":[0.2, 0.3, 1, 1],
+            "extrapWidth": 1,
+
+            "targetColor":[1, 0.0, 0.3, 1],
+            "targetWidth": 2,
 
             "width":3,
             "range":0.11,
@@ -35,10 +40,10 @@
           "serverRadial":{
             "on":true,
             "color":[0.7,0.3,0.0,0.4],
-            "clockRadius":52,
-            "timeColor":[0.0, 0.7, 1, 0.3],
-            "timeSize":0.21,
-            "timeWidth":15,
+            "clockRadius":48,
+            "timeColor":[0.5, 0.6, 1, 1],
+            "timeSize":0.09,
+            "timeWidth":8,
             "width":3,
             "range":0.27,
             "flicker":0.2

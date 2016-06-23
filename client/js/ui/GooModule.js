@@ -20,7 +20,7 @@ define([
             };
 
             var _this = this;
-            console.log(module.data)
+    //        console.log(module.data)
 
             this.particles = [];
             this.piece = piece;

@@ -1,10 +1,12 @@
 "use strict";
 
 define([
-        'gui/functions/CustomGraphCallbacks'
+        'gui/functions/CustomGraphCallbacks',
+    'goo/math/Vector3'
     ],
     function(
-        CustomGraphCallbacks
+        CustomGraphCallbacks,
+        Vector3
     ) {
 
 
@@ -14,6 +16,9 @@ define([
         var centerX;
         var centerY;
 
+        var calcVec = new Vector3(0, 0, 0);
+        var calcVec2 = new Vector3(0, 0, 0);
+        
         var toRgba = function(color) {
             var r = ""+Math.floor(color[0]*255);
             var g = ""+Math.floor(color[1]*255);
@@ -36,7 +41,8 @@ define([
         var path = [];
         var wait = false;
         var zLine = zLine;
-
+        var tmpColor = [0, 0, 0, 0];
+        
 
         var pos = {
             top: 0,
@@ -69,11 +75,11 @@ define([
         };
 
         var vectorToCanvasX = function(vec) {
-            return ((vectorToX(vec) - centerX)*size.height/rangeX)  +  pos.top  + size.height* 0.5 ;
+            return (((vectorToX(vec) - centerX)*size.height/rangeX)  +  pos.top  + size.height* 0.5) ;
         };
 
         var vectorToCanvasY = function(vec) {
-            return ((vectorToY(vec) - centerY)*size.width/rangeY)  +  pos.left + size.width * 0.5;
+            return (((vectorToY(vec) - centerY)*size.width/rangeY)  +  pos.left + size.width * 0.5);
         };
 
         var randomizedColor = function(color, flicker) {
@@ -230,6 +236,8 @@ define([
 7
         CanvasInputVector.drawInputVectors = function(gamePieces, ctx, camera, confData) {
 
+            calcVec.setVector(camera.transformComponent.transform.translation);
+            
             pos = confData.pos;
             size = confData.size;
 
@@ -244,9 +252,9 @@ define([
         //    drawRaster(ctx, confData.raster);
 
             var curveCount = 0;
-
-            centerX = vectorToX(camera.transformComponent.transform.translation);
-            centerY = vectorToY(camera.transformComponent.transform.translation);
+                        
+            centerX = vectorToX(calcVec);
+            centerY = vectorToY(calcVec);
 
 
 
@@ -292,11 +300,14 @@ define([
 
                 var spat = gamePieces[index].piece.spatial;
                 var target = gamePieces[index].piece.targetSpatial;
+                var extrap = gamePieces[index].piece.extrapolateSpatial;
                 var age = gamePieces[index].piece.temporal.getPacketAge();
                 var networkTime = gamePieces[index].piece.temporal.networkTime;
 
-                var top  = vectorToCanvasX(camera.transformComponent.transform.translation);
-                var left = vectorToCanvasY(camera.transformComponent.transform.translation);
+                
+                
+                var top  = vectorToCanvasX(calcVec);
+                var left = vectorToCanvasY(calcVec);
 
 
                 if (gamePieces[index].piece.type == 'player_ship') {
@@ -360,9 +371,25 @@ define([
 
                             drawControlVectorArc(ctx,  -angle*controls[i].value[0]  -0.1, -angle*controls[i].value[0]  +0.1 , radius, confData.serverRadial.color, confData.serverRadial.width);
 
-                            var timeFraction = -Math.PI*0.5 + ((age / networkTime)) * MATH.TWO_PI
+                            var idealTimeSlice = 1 / networkTime;
 
-                            drawControlVectorArc(ctx,  timeFraction, timeFraction + confData.serverRadial.timeSize, confData.serverRadial.clockRadius, confData.serverRadial.timeColor, confData.serverRadial.timeWidth);
+                            var timeProgress = age * idealTimeSlice;
+
+                            var overdue = Math.floor(timeProgress);
+
+                            tmpColor[0] = overdue; // confData.serverRadial.timeColor[0];
+                            tmpColor[1] = confData.serverRadial.timeColor[1] * (1-timeProgress);
+                            tmpColor[2] = confData.serverRadial.timeColor[2]; // * 1/(1+timeProgress);
+                            tmpColor[3] = Math.floor(timeProgress) + confData.serverRadial.timeColor[3] * 1/(1+timeProgress);
+
+
+                            var timeAngle = - Math.PI * 0.5 + (timeProgress) * MATH.TWO_PI;
+
+                            radius = confData.serverRadial.clockRadius;
+
+                            radius -= Math.sqrt(overdue*radius*0.05);
+
+                            drawControlVectorArc(ctx,  timeAngle, timeAngle + confData.serverRadial.timeSize * idealTimeSlice, radius, tmpColor, confData.serverRadial.timeWidth);
 
 
                         }
@@ -372,24 +399,56 @@ define([
 
                         radius = confData.inputRadial.range * gamePieces[index].inputSegmentRadial.line.w * size.width * 0.01;
 
-                      tempRect.left =     vectorToCanvasX(spat.pos);
-                      tempRect.top 	=     vectorToCanvasY(spat.pos);
+                        tempRect.top 	= vectorToCanvasX(spat.pos);
+                        tempRect.left   = vectorToCanvasY(spat.pos);
+
 
                         angle = spat.rot[0]+Math.PI*0.5;
 
 
-                        plotRotationState(ctx, angle, spat.rotVel[0], radius*0.6, confData.inputRadial.spatialColor, 3);
+                        plotRotationState(ctx, angle, spat.rotVel[0], Math.sqrt(radius*20)*0.6, confData.inputRadial.spatialColor, confData.inputRadial.spatialWidth);
+
+                        ctx.fillStyle = toRgba(confData.inputRadial.spatialColor);
+
+                        ctx.fillRect(
+                            tempRect.left-2,
+                            tempRect.top-2,
+                            tempRect.height*2,
+                            tempRect.width*2
+                        );
 
 
-                        tempRect.left 	= vectorToCanvasX(target.pos);
-                        tempRect.top 	= vectorToCanvasY(target.pos);
+                        tempRect.top 	= vectorToCanvasX(target.pos);
+                        tempRect.left 	= vectorToCanvasY(target.pos);
+
 
                         angle = target.rot[0]+Math.PI*0.5;;
 
-                        plotRotationState(ctx, angle, target.rotVel[0], radius * 0.4, confData.inputRadial.targetColor, 3);
+                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 0.4, confData.inputRadial.targetColor, confData.inputRadial.targetWidth);
+                        ctx.fillStyle = toRgba(confData.inputRadial.targetColor);
+
+                        ctx.fillRect(
+                            tempRect.left-2,
+                            tempRect.top-2,
+                            tempRect.height*2,
+                            tempRect.width*2
+                        );
 
 
-                        
+                        tempRect.top 	= vectorToCanvasX(extrap.pos);
+                        tempRect.left 	= vectorToCanvasY(extrap.pos);
+
+                        angle = extrap.rot[0]+Math.PI*0.5;;
+
+                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 0.4, confData.inputRadial.extrapColor, confData.inputRadial.targetWidth);
+                        ctx.fillStyle = toRgba(confData.inputRadial.extrapColor);
+
+                        ctx.fillRect(
+                            tempRect.left-2,
+                            tempRect.top-2,
+                            tempRect.height*2,
+                            tempRect.width*2
+                        );
 
 
                     }

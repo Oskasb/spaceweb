@@ -3,7 +3,7 @@ define(['Events'], function(evt) {
 	var TimeTracker = function() {
 		this.startTime = performance.now();
 		this.lastFrameTime = 0;
-		this.frameTime = 0;
+		this.frameTime = 1;
 		this.currentTime = this.startTime;
 		this.pingTime = 0;
 		this.pingResponseTime = 0;
@@ -39,20 +39,15 @@ define(['Events'], function(evt) {
 
 	};
 
-	TimeTracker.prototype.trackFrameTime = function(frame, time) {
+	TimeTracker.prototype.trackFrameTime = function(frame) {
 		this.frameTime = performance.now(); // new Date().getTime();
-		if (!this.frameTime) this.frameTime = new Date().getTime();
+
 		this.processFrameDuration(this.frameTime - this.lastFrameTime);
 
 		this.lastFrameTime = this.frameTime;
-
-
-		if (SYSTEM_SETUP.DEBUG.trackPing) {
-			if (this.frameTime - this.pingTime > this.pingInterval) {
-				this.pingSend(frame)
-			}
-		}
-
+		
+		return this.tpf;
+		
 	};
 
 	TimeTracker.prototype.pingSend = function(frame) {
