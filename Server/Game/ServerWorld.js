@@ -7,6 +7,8 @@ ServerWorld = function() {
 	this.pieceCount = 0;
 	this.pieceConfigs;
 
+	this.calcVec = new MATH.Vec3(0, 0, 0);
+
     var _this = this;
     var broadcast = function(piece) {
         _this.broadcastPieceState(piece);
@@ -60,19 +62,29 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, d
 	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
 //	bullet.temporal.timeDelta = dt;
     bullet.spatial.setSpatial(sourcePiece.spatial);
-//    bullet.spatial.pos.setVec(sourcePiece.spatial.pos);
+
+    this.calcVec.setVec(sourcePiece.spatial.vel);
+    this.calcVec.scale(sourcePiece.temporal.stepTime * 3);
+
+    bullet.spatial.pos.addVec(this.calcVec);
+
+	this.calcVec.setArray(apply.transform.pos);
+
+	this.calcVec.rotateZ(sourcePiece.spatial.rot[0]);
+
+	bullet.spatial.pos.addVec(this.calcVec);
 
     bullet.setState(GAME.ENUMS.PieceStates.SPAWN);
 
     bullet.spatial.rotVel[0] = 0;
- //   bullet.spatial.rot[0] = sourcePiece.spatial.rot[0];
+    bullet.spatial.rot[0] += sourcePiece.spatial.rotVel[0] * sourcePiece.temporal.stepTime * 3;
 
     bullet.pieceControls.actions.applyForward = apply.exitVelocity;
     bullet.applyForwardControl(MODEL.ReferenceTime);
     this.broadcastPieceState(bullet);
 
     bullet.setState(GAME.ENUMS.PieceStates.MOVING);
-    bullet.spatial.vel.addVec(sourcePiece.spatial.vel);
+  //  bullet.spatial.vel.addVec(sourcePiece.spatial.vel);
 
 	this.pieces.push(bullet);
 };

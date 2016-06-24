@@ -143,6 +143,13 @@ if(typeof(MATH) == "undefined"){
 		array[2] = this.data[2];
 	};
 
+	MATH.Vec3.prototype.setArray = function(data) {
+		this.data[0] = data[0];
+		this.data[1] = data[1];
+		this.data[2] = data[2];
+		return this;
+	};
+
 	MATH.Vec3.prototype.setVec = function(vec3) {
 		this.data[0] = vec3.data[0];
 		this.data[1] = vec3.data[1];
@@ -157,6 +164,13 @@ if(typeof(MATH) == "undefined"){
 		return this;
 	};
 
+	MATH.Vec3.prototype.addXYZ = function(x, y, z) {
+		this.data[0] += x;
+		this.data[1] += y;
+		this.data[2] += z;
+		return this;
+	};
+	
 	MATH.Vec3.prototype.subVec = function(vec3) {
 		this.data[0] -= vec3.data[0];
 		this.data[1] -= vec3.data[1];
@@ -171,6 +185,14 @@ if(typeof(MATH) == "undefined"){
 		return this;
 	};
 
+	MATH.Vec3.prototype.rotateZ = function(angZ) {
+		var cs = Math.cos(angZ);
+		var sn = Math.sin(angZ);
+		this.setXYZ(this.data[0] * cs - this.data[1] * sn, this.data[0] * sn + this.data[1] * cs);
+		return this;		
+	};
+	
+	
 
 
 

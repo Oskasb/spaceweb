@@ -108,6 +108,11 @@ if(typeof(MODEL) == "undefined"){
         return vec3;
 	};
 
+    MODEL.Spatial.prototype.getOffsetVector = function(vec3, store) {
+        vec3.setXYZ(Math.cos(this.rot[0] -Math.PI*0.5), Math.sin(this.rot[0] -Math.PI*0.5), 0);
+        return store;
+    };
+    
 
 	MODEL.Spatial.prototype.setPosXYZ = function(x, y, z) {
 		this.pos.setXYZ(x, y, z);

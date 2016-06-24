@@ -286,8 +286,8 @@ define([
             PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", debugLoaded);
             evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'Cam'});
 
-    //        evt.on(evt.list().DRAW_LINE_BETWEEN, drawLineBetween);
-    //        evt.on(evt.list().DRAW_POINT_AT, drawPointAt);
+            evt.on(evt.list().DRAW_LINE_BETWEEN, drawLineBetween);
+            evt.on(evt.list().DRAW_POINT_AT, drawPointAt);
 
             PipelineAPI.subscribeToCategoryKey('STATUS', 'MON_SPATIAL', monitorSpatial);
         }

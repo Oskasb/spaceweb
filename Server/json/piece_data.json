@@ -2,7 +2,6 @@
   "id":"piece_data",
   "pieces":{
     "player_ship":{
-      "style":"ship_hull",
       "shape":{
         "hull": {
           "size":[60, 90]
@@ -24,7 +23,6 @@
           "applyThrottle":0,
           "applyForward":0,
           "applyShields":0,
-          "applyAppearance":"ship_hull",
           "fireCannon":false
         },
         "constants":{
@@ -46,7 +44,6 @@
             "source":"initiate",
             "initState": true,
             "applies":{
-              "style":"ship_hull",
               "type":"string",
               "state":true,
               "action":"applyAppearance",
@@ -124,22 +121,53 @@
               "emit_effect":"hyper_space_sparks"
             }
           }
+        }, {
+          "id":"lazer_cannon",
+          "data":{
+            "initState": true,
+            "applies":{
+              "type":"string",
+              "action":"fireCannon",
+              "exitVelocity":95,
+              "lifeTime":0.4,
 
+              "transform":{
+                "rot":[0, 0, 0],
+                "pos":[1.7, -1.1, 1]
+              },
+              "roll":{
+                "source":"spatialRotVel",
+                "frames":9,
+                "width":50,
+                "clamp":5,
+                "gain":-54
+              },
+              "game_effect":"cannon_lazer_module"
+            }
+          }
         },{
           "id":"cannon",
           "data":{
-            "source":"trigger",
-            "initState": false,
+
+            "initState": true,
             "applies":{
               "type":"boolean",
-              "state":true,
               "action":"fireCannon",
-              "exitVelocity":55,
-              "lifeTime":0.6,
+              "exitVelocity":95,
+              "lifeTime":0.4,
+
               "transform":{
                 "rot":[0, 0, 0],
-                "pos":[4, 5, 0]
-              }
+                "pos":[-1.7, -1.1, 1]
+              },
+              "roll":{
+                "source":"spatialRotVel",
+                "frames":9,
+                "width":50,
+                "clamp":5,
+                "gain":-54
+              },
+              "game_effect":"cannon_lazer_module"
             }
           }
         },{
@@ -160,7 +188,7 @@
               },
               "transform":{
                 "rot":[0, 1, 0],
-                "pos":[0, 1.4, 0]
+                "pos":[0, 2.8, 0]
               },
               "threshold":0.2,
               "message":"wroom"

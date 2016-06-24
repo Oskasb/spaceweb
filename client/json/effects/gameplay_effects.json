@@ -21,7 +21,13 @@
                 }]
 
             },
-
+            {
+                "id":"cannon_lazer_module",
+                "effect_data":[{
+                    "effect":"cannon_lazer_particle",
+                    "simulator":"StandardParticle"
+                }]
+            },
             {
                 "id":"ship_shield",
                 "effect_data":[{
@@ -30,9 +36,9 @@
                     "density":2
 
                 },{
-                  "effect":"ship_shield_flare",
-                  "simulator":"AdditiveParticle",
-                  "density":2
+                    "effect":"ship_shield_flare",
+                    "simulator":"AdditiveParticle",
+                    "density":2
 
                 }]
 
@@ -203,9 +209,9 @@
             {
                 "id":"fire_cannon",
                 "effect_data":[{
-                        "effect":"firework_blue",
-                        "simulator":"AdditiveParticle",
-                        "density":1
+                    "effect":"firework_blue",
+                    "simulator":"AdditiveParticle",
+                    "density":1
 
                 }]
 
@@ -224,36 +230,36 @@
                 }]
 
             },
-          {
-            "id":"hyper_drive",
-            "effect_data":[{
-              "effect":"tail_hyper",
-              "simulator":"AdditiveParticleAndTrail",
-              "density":1
-            },
-                {
-                    "effect":"fast_tail_hyper",
-                    "simulator":"FastAdditiveTrail",
+            {
+                "id":"hyper_drive",
+                "effect_data":[{
+                    "effect":"tail_hyper",
+                    "simulator":"AdditiveParticleAndTrail",
                     "density":1
                 },
-                {
-              "effect":"hyper_flare",
-              "simulator":"AdditiveParticle",
-              "density":1
+                    {
+                        "effect":"fast_tail_hyper",
+                        "simulator":"FastAdditiveTrail",
+                        "density":1
+                    },
+                    {
+                        "effect":"hyper_flare",
+                        "simulator":"AdditiveParticle",
+                        "density":1
 
-            }]
+                    }]
 
-          },
-          {
-            "id":"hyper_sparks",
-            "effect_data":[{
-              "effect":"firework_blue",
-              "simulator":"AdditiveParticle",
-              "density":1
+            },
+            {
+                "id":"hyper_sparks",
+                "effect_data":[{
+                    "effect":"firework_blue",
+                    "simulator":"AdditiveParticle",
+                    "density":1
 
-            }]
+                }]
 
-          },
+            },
             {
                 "id":"muzzle_flash_cannon",
                 "effect_data":[{
@@ -285,9 +291,9 @@
             {
                 "id":"ship_trails",
                 "effect_data":[{
-                        "effect":"ship_trail",
-                        "simulator":"AdditiveParticleAndTrail",
-                        "density":1
+                    "effect":"ship_trail",
+                    "simulator":"AdditiveParticleAndTrail",
+                    "density":1
 
                 }]
 

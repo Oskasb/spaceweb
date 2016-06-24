@@ -31,6 +31,75 @@
                 }
             },
             {
+                "id":"cannon_lazer_particle",
+                "effect_data":{
+                    "color0":[1,1, 1],
+                    "color1":[1,1, 1],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "count":1,
+                    "alpha":"oneToZero",
+                    "size":[2.1, 2.1],
+                    "sprite":"cannon_lazer_frames",
+                    "loopcount":1
+                }
+            },
+            {
+                "id":"cannon_auto_particle",
+                "effect_data":{
+                    "color0":[1,1, 1],
+                    "color1":[1,1, 1],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[0.7, 1],
+                    "alpha":"oneToZero",
+                    "size":[4, 4],
+                    "growthFactor":[1.01, 0.7],
+                    "growth":"posToNeg",
+                    "stretch":0.0001,
+                    "strength":0,
+                    "spread":0.7,
+                    "acceleration":0.997,
+                    "gravity":0,
+                    "rotation":[0,7],
+                    "spin":"posToNeg",
+                    "spinspeed":[-45, 45],
+                    "lifespan":[2, 2],
+                    "sprite":"cannon_auto_frames",
+                    "loopcount":1,
+                    "trailsprite":"tail",
+                    "trailwidth":0.4
+                }
+            },
+            {
+                "id":"cannon_plasma_particle",
+                "effect_data":{
+                    "color0":[1,1, 1],
+                    "color1":[1,1, 1],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[0.7, 1],
+                    "alpha":"oneToZero",
+                    "size":[4, 4],
+                    "growthFactor":[1.01, 0.7],
+                    "growth":"posToNeg",
+                    "stretch":0.0001,
+                    "strength":0,
+                    "spread":0.7,
+                    "acceleration":0.997,
+                    "gravity":0,
+                    "rotation":[0,7],
+                    "spin":"posToNeg",
+                    "spinspeed":[-45, 45],
+                    "lifespan":[2, 2],
+                    "sprite":"cannon_plasma_frames",
+                    "loopcount":1,
+                    "trailsprite":"tail",
+                    "trailwidth":0.4
+                }
+            },
+            {
                 "id":"ship_shield",
                 "effect_data":{
                     "color0":[0.2,0.1, 0.3],

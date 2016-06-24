@@ -43,7 +43,6 @@ define([
             this.paused = false;
             this.callbacks.particleUpdate = this.onEnabledUpdate;
             evt.fire(evt.list().GAME_EFFECT, {effect:this.game_effect, pos:this.spatial.pos, vel:this.spatial.vel, callbacks:this.callbacks});
-
         };
 
         GooGameEffect.prototype.setEffectIntensity = function(intensity) {
