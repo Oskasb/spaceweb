@@ -24,6 +24,7 @@ define(function() {
 
 
 		CLIENT_TICK:{type:'CLIENT_TICK', args:{data:{}}},
+        CAMERA_TICK:{type:'CAMERA_TICK', args:{data:{}}},
 		SERVER_MESSAGE:{type:'SERVER_MESSAGE', args:{data:{}}},
 
 		CURSOR_MOVE:{type:'CURSOR_MOVE', args:{data:{}}},

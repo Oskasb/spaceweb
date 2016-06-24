@@ -92,7 +92,7 @@ define(['Events',
         forVec.scale(6);
 
 
-        calcVec.mulDirect(40, 40, 0);
+    //    calcVec.mulDirect(40, 40, 0);
         calcVec.addVector(forVec);
 
         lastPos.interpolateFromTo(lastPos, calcVec, 0.02);
@@ -101,8 +101,8 @@ define(['Events',
 
     //    calcVec.addVector(playerSpatial.pos);
 
-        cameraEntity.transformComponent.transform.translation.data[0] = lastPos.data[0];
-        cameraEntity.transformComponent.transform.translation.data[1] = lastPos.data[1];
+        cameraEntity.transformComponent.transform.translation.data[0] = playerPiece.spatial.pos.data[0];
+        cameraEntity.transformComponent.transform.translation.data[1] = playerPiece.spatial.pos.data[1];
         cameraEntity.transformComponent.setUpdated();
         lastPos.setVec(playerPiece.spatial.pos);
 	};
@@ -111,9 +111,14 @@ define(['Events',
 
     var on = false;
 
+    
+    
     var controlledPieceUpdated = function(e) {
         on=true;
         playerPiece = evt.args(e);
+    //    updateCamera(e)
+        evt.on(evt.list().CAMERA_TICK, updateCamera);
+        evt.removeListener(evt.list().CLIENT_TICK, updateCamera);
     };
 
     evt.once(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);

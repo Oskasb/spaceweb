@@ -195,10 +195,10 @@ define([
             } else {
                 console.log("Big DT", tpf, exactTpf, aggDiff);
             }
-
+            
             evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:tpf});
-			this.gameMain.tickClientGame(tpf);
-
+            this.gameMain.tickClientGame(tpf);
+            evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
 		};
         
 		return Client;

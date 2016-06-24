@@ -48,12 +48,9 @@
               "state":true,
               "action":"applyAppearance",
               "message":"Hull On",
-              "roll":{
-                "source":"spatialRotVel",
-                "frames":11,
-                "width":50,
-                "clamp":5,
-                "gain":-54
+              "transform":{
+                "rot":[0, 0, 0],
+                "pos":[0, 0.1, 0]
               },
               "game_effect":"s11_piece"
             }
@@ -133,16 +130,10 @@
 
               "transform":{
                 "rot":[0, 0, 0],
-                "pos":[1.7, -1.1, 1]
+                "pos":[2.2, -1.7, 1]
               },
-              "roll":{
-                "source":"spatialRotVel",
-                "frames":9,
-                "width":50,
-                "clamp":5,
-                "gain":-54
-              },
-              "game_effect":"cannon_lazer_module"
+
+              "game_effect":"cannon_plasma_module"
             }
           }
         },{
@@ -158,16 +149,10 @@
 
               "transform":{
                 "rot":[0, 0, 0],
-                "pos":[-1.7, -1.1, 1]
+                "pos":[-2.2, -1.7, 1]
               },
-              "roll":{
-                "source":"spatialRotVel",
-                "frames":9,
-                "width":50,
-                "clamp":5,
-                "gain":-54
-              },
-              "game_effect":"cannon_lazer_module"
+
+              "game_effect":"cannon_plasma_module"
             }
           }
         },{

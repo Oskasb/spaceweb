@@ -100,7 +100,7 @@ define([
 
 		ClientPiece.prototype.updatePlayer = function(tpf) {
 
-            this.sampleClientModules(this.piece.serverState.modules);
+            
 
 			this.piece.updatePieceFrame(tpf);
 
@@ -117,6 +117,9 @@ define([
 			if (this.isOwnPlayer) {
 				evt.fire(evt.list().CONTROLLED_PIECE_UPDATED, this.piece)
 			}
+
+            this.sampleClientModules(this.piece.serverState.modules);
+            
 		};
 
 		ClientPiece.prototype.setIsOwnPlayer = function(bool) {

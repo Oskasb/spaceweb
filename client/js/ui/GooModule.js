@@ -71,6 +71,7 @@ define([
                 var getPosition = function() {
 
                     if  (_this.applies.transform) {
+                        // _this.readWorldTransform(_this.applies.transform.pos, _this.applies.transform.rot);
                         return _this.tempSpatial.pos.data;
                     } else {
                         return piece.spatial.pos.data;
@@ -222,7 +223,7 @@ define([
             if (this.applies) {
 
                 if (this.applies.transform) {
-                    this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot)
+                    this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot);
                 } else {
                     this.tempSpatial.pos.setVec(this.piece.spatial.pos);
                     this.tempSpatial.rot.setXYZ(0, 0, this.piece.spatial.rot);

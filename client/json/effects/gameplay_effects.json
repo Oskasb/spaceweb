@@ -29,6 +29,20 @@
                 }]
             },
             {
+                "id":"cannon_plasma_module",
+                "effect_data":[{
+                    "effect":"cannon_plasma_particle",
+                    "simulator":"StandardParticle"
+                }]
+            },
+            {
+                "id":"cannon_auto_module",
+                "effect_data":[{
+                    "effect":"cannon_auto_particle",
+                    "simulator":"StandardParticle"
+                }]
+            },
+            {
                 "id":"ship_shield",
                 "effect_data":[{
                     "effect":"ship_shield",
