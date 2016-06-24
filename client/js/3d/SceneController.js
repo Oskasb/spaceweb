@@ -33,17 +33,17 @@ define([
             GooEntityFactory.setGoo(evt.args(e).goo);
             world = evt.args(e).goo.world;
             particlePlayer = new ParticlePlayer(evt.args(e).goo);
-            evt.removeListener(evt.list().ENGINE_READY, rendererReady);
+    //        evt.removeListener(evt.list().ENGINE_READY, rendererReady);
         }
 
         function drawReady() {
             gooController.registerGooUpdateCallback(particlePlayer.simpleParticles.update);
             tickListen();
-            evt.removeListener(evt.list().PARTICLES_READY, drawReady);
+    //        evt.removeListener(evt.list().PARTICLES_READY, drawReady);
         }
 
-        evt.on(evt.list().ENGINE_READY, rendererReady);
-        evt.on(evt.list().PARTICLES_READY, drawReady);
+        evt.once(evt.list().ENGINE_READY, rendererReady);
+        evt.once(evt.list().PARTICLES_READY, drawReady);
 
     };
 

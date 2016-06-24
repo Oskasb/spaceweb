@@ -108,13 +108,13 @@ define([
 
         var on = false;
 
-        function controlledPieceUpdated(e) {
+        var controlledPieceUpdated = function(e) {
             on=true;
             playerSpatial = evt.args(e).spatial;
         };
 
 
-        evt.on(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
+        evt.once(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
 
 
         return GooCameraEffects;

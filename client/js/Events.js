@@ -1,15 +1,14 @@
 define(["EventList"], function(eventList) {
 
-    var element = document.createElement('div');
     var events = {};
-
     var listeners = {};
-
+    var onceListeners = 0;
 
     var eventException = function(message) {
         this.name = "EventArgumentException";
         this.message = message;
     };
+
     eventException.prototype = Error.prototype;
 
     var list = function() {
@@ -79,13 +78,48 @@ define(["EventList"], function(eventList) {
     };
 
 
-    var spliceListener = function(listener, callback) {
-        var asynchifySplice = function(list, cb) {
+
+    var registerOnceListener = function(event, callback) {
+        setupEvent(event);
+
+        var remove = function() {
+            removeListener(event, singleShot);
+        };
+
+
+        var singleShot = function(args) {
+
+            remove();
+
+            if (onceListeners < 0) {
+                console.log("overdose singleshots", event);
+            }
+
+            onceListeners--;
+            fireEvent(list().MONITOR_STATUS, {LISTENERS_ONCE:onceListeners});
+
+        //    setTimeout(function() {
+                callback(args);
+        //    },0);
+        };
+
+
+        onceListeners++;
+
+        registerListener(event, singleShot);
+    //    listeners[event.type].push(sincelShot);
+        fireEvent(list().MONITOR_STATUS, {LISTENERS_ONCE:onceListeners});
+    };
+
+
+    var spliceListener = function(listeners, callback) {
+        var asynchifySplice = function(listnrs, cb) {
             setTimeout(function() {
-                list.splice(list.indexOf(cb), 1);
+                listener = listnrs.splice(listnrs.indexOf(cb), 1)[0];
+                fireEvent(list().MONITOR_STATUS, {EVENT_LISTENERS:getListenerCount()});
             }, 0)
         };
-        asynchifySplice(listener, callback);
+        asynchifySplice(listeners, callback);
     };
 
     var firedCount = 0;
@@ -94,6 +128,7 @@ define(["EventList"], function(eventList) {
 
     var getFiredCount = function() {
         fireEvent(list().MONITOR_STATUS, {FIRED_EVENTS:firedCount});
+        fireEvent(list().MONITOR_STATUS, {LISTENERS_ONCE:onceListeners});
         firedCount = 0;
     };
 
@@ -119,9 +154,12 @@ define(["EventList"], function(eventList) {
             return;
         }
 
-        if (listeners[event.type].indexOf(callback) == -1) return;
+        if (listeners[event.type].indexOf(callback) == -1) {
+        //    console.log("Listener already removed", event.type, callback)
+            return;
+        }
+
         spliceListener(listeners[event.type], callback);
-        fireEvent(list().MONITOR_STATUS, {EVENT_LISTENERS:getListenerCount()});
     };
 
 
@@ -131,6 +169,7 @@ define(["EventList"], function(eventList) {
         getEventCount:getEventCount,
         removeListener:removeListener,
         on:registerListener,
+        once:registerOnceListener,
         args:eventArgs,
         fire:fireEvent,
         list:list

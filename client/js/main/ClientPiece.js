@@ -92,34 +92,21 @@ define([
                 return name;
             }
         };
-
-        ClientPiece.prototype.drawDebugLines = function(piece) {
-
-                evt.fire(evt.list().DRAW_POINT_AT, {pos:piece.frameCurrentSpatial.pos, color:"RED"});
-                evt.fire(evt.list().DRAW_POINT_AT, {pos:piece.frameNextSpatial.pos, color:"CYAN"});
-                evt.fire(evt.list().DRAW_LINE_BETWEEN, {from:piece.frameCurrentSpatial.pos, to:piece.spatial.pos, color:"RED"});
-                evt.fire(evt.list().DRAW_LINE_BETWEEN, {from:piece.spatial.pos, to:piece.frameNextSpatial.pos, color:"CYAN"});
-                evt.fire(evt.list().DRAW_POINT_AT, {pos:piece.spatial.pos, color:"GREEN"});
-        };
-
+        
         ClientPiece.prototype.calculateClientPosition = function(piece) {
-            piece.spatial.interpolateRotational(piece.spatial, piece.serverSpatial, piece.temporal.tpf);
+    //        piece.spatial.interpolateRotational(piece.spatial, piece.serverSpatial, piece.temporal.tpf);
             piece.spatial.interpolateFraction(piece.frameCurrentSpatial, piece.frameNextSpatial, piece.temporal.getPacketTimeFraction());
         };
 
 		ClientPiece.prototype.updatePlayer = function(tpf) {
 
             this.sampleClientModules(this.piece.serverState.modules);
-            
-			var debug = true;
+
 			this.piece.updatePieceFrame(tpf);
 
             this.calculateClientPosition(this.piece);
-            
-            if (debug) {
-                this.drawDebugLines(this.piece);
-            }
-            
+
+
 			if (this.piece.state == GAME.ENUMS.PieceStates.TIME_OUT) {
 				this.playerRemove();
 				return;

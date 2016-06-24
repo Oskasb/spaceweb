@@ -24,6 +24,8 @@ define([
         var gooFpsGraph;
         var gooTrafficGraph;
 
+        var calcVec9;
+
         var calcVec = new Vector3();
         var calcVec2 = new Vector3();
         var calcVec3 = new Vector3();
@@ -122,7 +124,7 @@ define([
             vec.data[0] += anchors[anchorKey][0];
             vec.data[1] += anchors[anchorKey][1];
             vec.data[2] += anchors[anchorKey][2];
-        };
+        }
 
         function drawRelativePosRad(e) {
             calcVec3.setDirect(evt.args(e).x, evt.args(e).y, 0);
@@ -146,49 +148,83 @@ define([
             gooTrafficGraph.enableTrafficTracker(trackFrames);
 
 
-            //	this.physicsDebugRenderSystem.passive = !this.debugOn;
-            //	this.lineRenderSystem.passive = !this.debugOn;
-            //    window.lineRenderSystem = lineRenderSystem;
-
-            var textStyle = {
-                posx: 20,
-                posy: 20,
-                size: 0.5,
-                particleConfig:'tpf_Letter',
-                textConfig:'text_config'
+            var monServer = function(src, bool) {
+                PipelineAPI.setCategoryData('STATUS', {SERVER_IDLE:gooTrafficGraph.getServerIdle()});
+                PipelineAPI.setCategoryData('STATUS', {SERVER_BUSY:gooTrafficGraph.getServerBusy()});
+                PipelineAPI.setCategoryData('STATUS', {SERVER_PIECES:gooTrafficGraph.getServerPieces()});
+                PipelineAPI.setCategoryData('STATUS', {SERVER_PLAYERS:gooTrafficGraph.getServerPlayers()});
             };
 
-            var time = 0;
-            var cooldown = 0;
 
-            var draw = false;
+            var monTraffic = function(src, bool) {
+                PipelineAPI.setCategoryData('STATUS', {SEND_GRAPH:gooTrafficGraph.getSends()});
+                PipelineAPI.setCategoryData('STATUS', {RECIEVE_GRAPH:gooTrafficGraph.getRecieves()});
+            };
 
-            function clientTick(e) {
+            var monTpf = function(src, bool) {
+                PipelineAPI.setCategoryData('STATUS', {FPS_GRAPH:gooFpsGraph.progressBars});
+            };
 
-                if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_SERVER')) {
 
-                    PipelineAPI.setCategoryData('STATUS', {SERVER_IDLE:gooTrafficGraph.getServerIdle()});
-                    PipelineAPI.setCategoryData('STATUS', {SERVER_BUSY:gooTrafficGraph.getServerBusy()});
-                    PipelineAPI.setCategoryData('STATUS', {SERVER_PIECES:gooTrafficGraph.getServerPieces()});
-                    PipelineAPI.setCategoryData('STATUS', {SERVER_PLAYERS:gooTrafficGraph.getServerPlayers()});
+            PipelineAPI.subscribeToCategoryKey('STATUS', 'MON_SERVER', monServer);
+            PipelineAPI.subscribeToCategoryKey('STATUS', 'MON_TRAFFIC', monTraffic);
+            PipelineAPI.subscribeToCategoryKey('STATUS', 'MON_TPF', monTpf);
 
-                }
 
-                if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TRAFFIC')) {
-                    PipelineAPI.setCategoryData('STATUS', {SEND_GRAPH:gooTrafficGraph.getSends()});
-                    PipelineAPI.setCategoryData('STATUS', {RECIEVE_GRAPH:gooTrafficGraph.getRecieves()});
-
-                }
-
-                if (PipelineAPI.readCachedConfigKey('STATUS', 'MON_TPF')) {
-                    PipelineAPI.setCategoryData('STATUS', {FPS_GRAPH:gooFpsGraph.progressBars});
-                }
-
-            }
-
-            evt.removeListener(evt.list().CLIENT_TICK, clientTick);
-            evt.on(evt.list().CLIENT_TICK, clientTick);
         }
+        var pieces;
+
+
+
+        var renderPiece = function(piece) {
+            drawCross(piece.frameCurrentSpatial.pos, "RED");
+            drawCross(piece.frameNextSpatial.pos, "CYAN");
+            drawLine(piece.frameCurrentSpatial.pos, piece.spatial.pos, "RED");
+
+            piece.frameCurrentSpatial.getForwardVector(calcVec9);
+            calcVec9.scale(5);
+            calcVec9.addVec(piece.frameCurrentSpatial.pos);
+
+            drawLine(piece.frameCurrentSpatial.pos, calcVec9, "RED");
+
+            drawLine(piece.spatial.pos, piece.frameNextSpatial.pos, "CYAN");
+
+            piece.frameNextSpatial.getForwardVector(calcVec9);
+            calcVec9.scale(5);
+            calcVec9.addVec(piece.frameNextSpatial.pos);
+
+
+            drawLine(piece.frameNextSpatial.pos, calcVec9, "CYAN");
+
+            drawCross(piece.spatial.pos, "GREEN");
+
+            piece.spatial.getForwardVector(calcVec9);
+            calcVec9.scale(8);
+            calcVec9.addVec(piece.spatial.pos);
+
+            drawLine(piece.spatial.pos, calcVec9, "GREEN");
+
+
+        };
+
+        var clientTickPieceMonitor = function() {
+            for (var key in pieces) {
+                renderPiece(pieces[key].piece);
+            }
+        };
+
+        var monitorSpatial = function(src, bool) {
+            pieces = PipelineAPI.readCachedConfigKey('GAME_DATA', 'PIECES');
+
+            if (bool) {
+                evt.on(evt.list().CLIENT_TICK, clientTickPieceMonitor);
+                enableLineRenderSys();
+            } else {
+                evt.removeListener(evt.list().CLIENT_TICK, clientTickPieceMonitor);
+                diableLineRenderSys();
+            }
+        };
+
 
         var goo;
         var linerendering = false;
@@ -214,10 +250,10 @@ define([
         }
 
         function enableLineRenderSys() {
-            if (linerendering) return;
             if (lineRenderSystem.passive == true) {
                 lineRenderSystem.passive = false
             } else {
+                if (linerendering) return;
                 goo.setRenderSystem(lineRenderSystem);
             }
             linerendering = true;
@@ -231,6 +267,8 @@ define([
 
         function handleCameraReady(e) {
             //    return
+            calcVec9 = new MATH.Vec3(0, 0, 0);
+
             world = evt.args(e).goo.world;
             cameraEntity = evt.args(e).camera;
 
@@ -248,15 +286,15 @@ define([
             PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", debugLoaded);
             evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'Cam'});
 
+    //        evt.on(evt.list().DRAW_LINE_BETWEEN, drawLineBetween);
+    //        evt.on(evt.list().DRAW_POINT_AT, drawPointAt);
 
-            evt.on(evt.list().DRAW_LINE_BETWEEN, drawLineBetween);
-            evt.on(evt.list().DRAW_POINT_AT, drawPointAt);
-
+            PipelineAPI.subscribeToCategoryKey('STATUS', 'MON_SPATIAL', monitorSpatial);
         }
 
         evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'No Cam'});
 
-        evt.on(evt.list().CAMERA_READY, handleCameraReady);
+        evt.once(evt.list().CAMERA_READY, handleCameraReady);
 
         return GooMonitor;
 

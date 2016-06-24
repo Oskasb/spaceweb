@@ -389,12 +389,28 @@
           "parentId": "monitorContainer4",
           "style": ["data_list_container"],
           "dataField":{
-            "dataKeys":["EVENT_TYPES","EVENT_LISTENERS", "FIRED_EVENTS"],
+            "dataKeys":["EVENT_TYPES","EVENT_LISTENERS", "FIRED_EVENTS", "LISTENERS_ONCE"],
             "dataCategory":"STATUS"
           }
         }
+      },{
+        "id":"buttonContainerSpat",
+        "data":{
+          "parentId":"panelRoot",
+          "style":["dev_button_container", "coloring_container_dev_panel"]
+        }
+      },{
+        "id":"button",
+        "data":{
+          "parentId":"buttonContainerSpat",
+          "style":["dev_panel_button", "coloring_button_dev_panel"],
+          "button":{
+            "id":"dev_panel_button",
+            "event":{"category":"STATUS", "key":"MON_SPATIAL", "type":"toggle"}
+          },
+          "text":"SPATIAL"
+        }
       }
-
     ]
 
   }

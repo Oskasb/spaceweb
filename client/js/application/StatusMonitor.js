@@ -38,6 +38,7 @@ define([
                 evt.fire(evt.list().MONITOR_STATUS, {MON_SERVER:DEBUG.monitorServer});
                 evt.fire(evt.list().MONITOR_STATUS, {MON_TRAFFIC:DEBUG.trackTraffic});
                 evt.fire(evt.list().MONITOR_STATUS, {MON_TPF:DEBUG.trackTpf});
+                evt.fire(evt.list().MONITOR_STATUS, {MON_SPATIAL:DEBUG.monitorSpatial});
                 evt.fire(evt.list().MONITOR_STATUS, {PIPELINE:PipelineAPI.getPipelineOptions('jsonPipe').polling.enabled});
             }
 

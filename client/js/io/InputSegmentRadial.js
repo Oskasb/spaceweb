@@ -16,9 +16,7 @@ define([
     ) {
 
         var InputSegmentRadial = function() {
-
-        //    this.root = new DomElement(GameScreen.getElement(), 'segment_pointer');
-
+            
             this.currentState = [0, 0];
             this.lastSensState = [0, 0];
             this.dirty = true;

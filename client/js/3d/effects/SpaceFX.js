@@ -53,16 +53,16 @@ define([
             goo = evt.args(e).goo;
             modulationSpatial = new MODEL.Spatial();
             this.enableSpaceFx();
-            evt.removeListener(evt.list().ENGINE_READY, engineReady);
+        //    evt.removeListener(evt.list().ENGINE_READY, engineReady);
         }.bind(this);
 
         function cameraReady(e) {
             camera = evt.args(e).camera;
-            evt.removeListener(evt.list().CAMERA_READY, cameraReady);
+        //    evt.removeListener(evt.list().CAMERA_READY, cameraReady);
         }
 
-        evt.on(evt.list().CAMERA_READY, cameraReady);
-        evt.on(evt.list().ENGINE_READY, engineReady);
+        evt.once(evt.list().CAMERA_READY, cameraReady);
+        evt.once(evt.list().ENGINE_READY, engineReady);
 
         var fxConfig = function() {
             configs = pipeObj.buildConfig('effect_data');
@@ -75,11 +75,11 @@ define([
         pipeObj = new PipelineObject('effects','environment', fxConfig);
         bkPipe = new PipelineObject('effects','background', backgroundCfg);
 
-        function controlledPieceUpdated(e) {
+        var controlledPieceUpdated = function(e) {
             modulationSpatial = evt.args(e).spatial;
-        }
+        };
 
-        evt.on(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
+        evt.once(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
 
     };
 

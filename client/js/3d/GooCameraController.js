@@ -111,12 +111,12 @@ define(['Events',
 
     var on = false;
 
-    function controlledPieceUpdated(e) {
+    var controlledPieceUpdated = function(e) {
         on=true;
         playerPiece = evt.args(e);
-    }
+    };
 
-    evt.on(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
+    evt.once(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
 
 
 	return GooCameraController

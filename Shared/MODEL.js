@@ -105,6 +105,7 @@ if(typeof(MODEL) == "undefined"){
 
 	MODEL.Spatial.prototype.getForwardVector = function(vec3) {
 		vec3.setXYZ(Math.cos(this.rot[0] -Math.PI*0.5), Math.sin(this.rot[0] -Math.PI*0.5), 0);
+        return vec3;
 	};
 
 

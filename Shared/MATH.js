@@ -47,7 +47,6 @@ if(typeof(MATH) == "undefined"){
 		MATH.blendArray(from, to, blend, store);
 	};
 	
-	
 	MATH.moduloPositive = function (value, size) {
 		var wrappedValue = value % size;
 		wrappedValue += wrappedValue < 0 ? size : 0;

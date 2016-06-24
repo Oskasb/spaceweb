@@ -13,6 +13,7 @@
             "trackPing":false,
             "trackTraffic":false,
             "monitorServer":false,
+            "monitorSpatial":false,
             "graphPoints":50
         },
         "pipeline":{
