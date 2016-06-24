@@ -137,7 +137,7 @@ define([
                     particle.lifeSpan = piece.temporal.lifeTime;
                     particle.position.setArray(getPosition(particle, tpf));
                     particle.rotation = getRotation(particle, tpf);
-                    particle.progress = 0.5 + Math.clamp(piece.spatial.rotVel[0]*2, -0.49, 0.49);
+                    particle.progress = 0.5 + Math.clamp(piece.spatial.rotVel[0], -0.49, 0.49);
                 };
 
                 this.attachGameEffect(piece.spatial, this.applies.game_effect, particleUpdate)

@@ -71,18 +71,14 @@ define(['Events',
         forVec = new MATH.Vec3(0, 0, 0);
         evt.on(evt.list().CLIENT_TICK, updateCamera);
 
-
     };
-
 
 
     var lastPos;
 
 
-
 	var updateCamera = function(e) {
         if (!on) return;
-
 
         playerPiece.spatial.getForwardVector(forVec);
 
@@ -91,13 +87,10 @@ define(['Events',
     //    calcVec.subVector(lastPos);
         forVec.scale(6);
 
-
     //    calcVec.mulDirect(40, 40, 0);
         calcVec.addVector(forVec);
 
         lastPos.interpolateFromTo(lastPos, calcVec, 0.02);
-
-
 
     //    calcVec.addVector(playerSpatial.pos);
 
@@ -111,14 +104,13 @@ define(['Events',
 
     var on = false;
 
-    
-    
+
     var controlledPieceUpdated = function(e) {
         on=true;
         playerPiece = evt.args(e);
     //    updateCamera(e)
-        evt.on(evt.list().CAMERA_TICK, updateCamera);
-        evt.removeListener(evt.list().CLIENT_TICK, updateCamera);
+    //    evt.on(evt.list().CAMERA_TICK, updateCamera);
+    //    evt.removeListener(evt.list().CLIENT_TICK, updateCamera);
     };
 
     evt.once(evt.list().CONTROLLED_PIECE_UPDATED, controlledPieceUpdated);
