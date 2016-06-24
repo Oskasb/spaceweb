@@ -298,17 +298,18 @@ define([
             for (var index in gamePieces) {
                 entCount += 1;
 
-                var spat = gamePieces[index].piece.spatial;
-                var target = gamePieces[index].piece.targetSpatial;
-                var extrap = gamePieces[index].piece.extrapolateSpatial;
-                var age = gamePieces[index].piece.temporal.getPacketAge();
-                var networkTime = gamePieces[index].piece.temporal.networkTime;
-
+                var tmp = gamePieces[index].piece.temporal
                 
+                var spat = gamePieces[index].piece.spatial;
+                var target = gamePieces[index].piece.frameCurrentSpatial;
+                var extrap = gamePieces[index].piece.frameNextSpatial;
+                
+                var idealTimeSlice = tmp.getIdealTimeSlice();
+                var timeProgress = tmp.getPacketTimeFraction();
+                var overdue = tmp.getOverdue();
                 
                 var top  = vectorToCanvasX(calcVec);
                 var left = vectorToCanvasY(calcVec);
-
 
                 if (gamePieces[index].piece.type == 'player_ship') {
                     tempRect.left 	= left -1;
@@ -371,11 +372,7 @@ define([
 
                             drawControlVectorArc(ctx,  -angle*controls[i].value[0]  -0.1, -angle*controls[i].value[0]  +0.1 , radius, confData.serverRadial.color, confData.serverRadial.width);
 
-                            var idealTimeSlice = 1 / networkTime;
 
-                            var timeProgress = age * idealTimeSlice;
-
-                            var overdue = Math.floor(timeProgress);
 
                             tmpColor[0] = overdue; // confData.serverRadial.timeColor[0];
                             tmpColor[1] = confData.serverRadial.timeColor[1] * (1-timeProgress);
@@ -387,7 +384,7 @@ define([
 
                             radius = confData.serverRadial.clockRadius;
 
-                            radius -= Math.sqrt(overdue*radius*0.05);
+                            radius -= Math.sqrt(overdue*radius*0.2);
 
                             drawControlVectorArc(ctx,  timeAngle, timeAngle + confData.serverRadial.timeSize * idealTimeSlice, radius, tmpColor, confData.serverRadial.timeWidth);
 
@@ -406,7 +403,7 @@ define([
                         angle = spat.rot[0]+Math.PI*0.5;
 
 
-                        plotRotationState(ctx, angle, spat.rotVel[0], Math.sqrt(radius*20)*0.6, confData.inputRadial.spatialColor, confData.inputRadial.spatialWidth);
+                        plotRotationState(ctx, angle, spat.rotVel[0], Math.sqrt(radius*20)*1.4, confData.inputRadial.spatialColor, confData.inputRadial.spatialWidth);
 
                         ctx.fillStyle = toRgba(confData.inputRadial.spatialColor);
 
@@ -424,7 +421,7 @@ define([
 
                         angle = target.rot[0]+Math.PI*0.5;;
 
-                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 0.4, confData.inputRadial.targetColor, confData.inputRadial.targetWidth);
+                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 1.2, confData.inputRadial.targetColor, confData.inputRadial.targetWidth);
                         ctx.fillStyle = toRgba(confData.inputRadial.targetColor);
 
                         ctx.fillRect(
@@ -440,7 +437,7 @@ define([
 
                         angle = extrap.rot[0]+Math.PI*0.5;;
 
-                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 0.4, confData.inputRadial.extrapColor, confData.inputRadial.targetWidth);
+                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 1.0, confData.inputRadial.extrapColor, confData.inputRadial.targetWidth);
                         ctx.fillStyle = toRgba(confData.inputRadial.extrapColor);
 
                         ctx.fillRect(

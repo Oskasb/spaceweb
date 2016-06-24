@@ -193,21 +193,41 @@ define([
         var goo;
         var linerendering = false;
 
+
+        function drawLine(from, to, color) {
+            lineRenderSystem.drawLine(from, to, lineRenderSystem[color] || lineRenderSystem.WHITE);
+        }
+
+        function drawCross(vec3, color) {
+            lineRenderSystem.drawCross(vec3, lineRenderSystem[color] || lineRenderSystem.WHITE, 1);
+        }
+
+        function drawLineBetween(e) {
+            enableLineRenderSys();
+            drawLine(evt.args(e).from, evt.args(e).to, evt.args(e).color)
+        }
+
+
+        function drawPointAt(e) {
+            enableLineRenderSys();
+            drawCross(evt.args(e).pos, evt.args(e).color)
+        }
+
         function enableLineRenderSys() {
-            linerendering = true;
+            if (linerendering) return;
             if (lineRenderSystem.passive == true) {
                 lineRenderSystem.passive = false
             } else {
                 goo.setRenderSystem(lineRenderSystem);
             }
-        };
-        
+            linerendering = true;
+        }
 
         function diableLineRenderSys() {
+            if (!linerendering) return;
             linerendering = false;
             lineRenderSystem.passive = true;
-        };
-
+        }
 
         function handleCameraReady(e) {
             //    return
@@ -218,8 +238,7 @@ define([
             gooTrafficGraph = new GooTrafficGraph();
             lineRenderSystem = new LineRenderSystem(world);
             goo = evt.args(e).goo
-            
-            
+
 
             function debugLoaded(key, setupData) {
                 trackersEnable(setupData);
@@ -228,6 +247,11 @@ define([
             PipelineAPI.setCategoryData('GAME_DATA', {CAMERA:cameraEntity});
             PipelineAPI.subscribeToCategoryKey("setup", "DEBUG", debugLoaded);
             evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'Cam'});
+
+
+            evt.on(evt.list().DRAW_LINE_BETWEEN, drawLineBetween);
+            evt.on(evt.list().DRAW_POINT_AT, drawPointAt);
+
         }
 
         evt.fire(evt.list().MONITOR_STATUS, {CAMERA:'No Cam'});

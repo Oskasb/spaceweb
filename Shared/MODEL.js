@@ -43,17 +43,28 @@ if(typeof(MODEL) == "undefined"){
             Math.abs(this.rotVel[0] - spatial.rotVel[0])
     };
 
+    MODEL.Spatial.prototype.interpolateFraction = function(start, target, fraction) {
+        this.interpolatePositions( start, target, fraction);
+        this.interpolateVelocity(  start, target, Math.min(fraction, 1));
+        this.interpolateRotational(start, target, Math.min(fraction, 1));
+        this.interpolateRotVel(start, target, Math.min(fraction, 1));
+    };
+    
 	MODEL.Spatial.prototype.interpolateVelocity = function(start, target, fraction) {
 		this.vel = this.vel.interpolateFromTo(start.vel, target.vel, fraction);
 	};
-	
+
+    MODEL.Spatial.prototype.interpolateRotVel = function(start, target, fraction) {
+        this.rotVel[0] = MATH.radialLerp(start.rotVel[0], target.rotVel[0], fraction);
+    };
+
+
     MODEL.Spatial.prototype.interpolatePositions = function(start, target, fraction) {
         this.pos = this.pos.interpolateFromTo(start.pos, target.pos, fraction);
     };
 
 	MODEL.Spatial.prototype.interpolateRotational = function(start, target, fraction) {
 		this.rot[0] = MATH.radialLerp(start.rot[0], target.rot[0], fraction);
-		this.rotVel[0] = MATH.radialLerp(start.rotVel[0], target.rotVel[0], fraction);
 	};
 	
 	MODEL.Spatial.prototype.setSendData = function(sendData) {
@@ -208,8 +219,16 @@ if(typeof(MODEL) == "undefined"){
         return this.packetAge;
     };
 
-    MODEL.Temporal.prototype.getFraction = function() {
-        return this.packetAge / this.networkTime
+    MODEL.Temporal.prototype.getIdealTimeSlice = function() {
+        return 1 / Math.min(this.networkTime, this.lifeTime)
+    };
+
+    MODEL.Temporal.prototype.getPacketTimeFraction = function() {
+        return this.getPacketAge() * this.getIdealTimeSlice()
+    };
+
+    MODEL.Temporal.prototype.getOverdue = function() {
+        return Math.floor(this.packetAge / this.networkTime)
     };
 
 	MODEL.Temporal.prototype.predictUpdate = function(time) {

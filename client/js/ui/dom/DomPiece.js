@@ -140,7 +140,7 @@ define([
 
 
 		DomPiece.prototype.renderDebugElements = function() {
-			this.sampleSpatial(this.piece.targetSpatial);
+	//		this.sampleSpatial(this.piece.targetSpatial);
 			this.inputVector.renderBetween(0, 0, this.vel[0]*5, this.vel[1]*5);
 			this.rotVelVector.renderRadial(50, this.rot[0]);
 			this.trafficPredictor.setProgress(this.piece.temporal.getFraction());

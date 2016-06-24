@@ -34,20 +34,18 @@ define([
 
 			this.isOwnPlayer = false;
 			var piece = new GAME.Piece(serverState.type, serverState.playerId);
-			piece.serverState = serverState;
+	//		piece.serverState = serverState;
 			this.piece = piece;
 			this.playerId = serverState.playerId;
             this.name = this.playerId;
 
-			this.spatial = new MODEL.Spatial();
-			this.targetSpatial = new MODEL.Spatial();
-			this.startSpatial = new MODEL.Spatial();
-			this.temporal = new MODEL.Temporal();
+
 
 			this.gooPiece = new GooPiece(this.piece);
 			
 			this.removeCallback = removeCallback;
 			this.setServerState(serverState);
+            this.piece.updateNetworkState(serverState);
 
             var applyPieceData = function(src, data) {
        //         console.log("Attach pieceData", src, data)
@@ -56,9 +54,8 @@ define([
             };
             
             this.pipelineObject = new PipelineObject('PIECE_DATA', piece.type, applyPieceData);
+            this.notifyServerState(serverState)
 		};
-
-
 
 		ClientPiece.prototype.attachModules = function(modules) {
 
@@ -67,7 +64,6 @@ define([
 			for (var i = 0; i < modules.length; i++) {
                 this.clientModules.push(new ClientModule(this, modules[i], serverState.modules[modules[i].id]));
 			}
-
 		};
 
 		ClientPiece.prototype.detachModules = function() {
@@ -97,12 +93,33 @@ define([
             }
         };
 
+        ClientPiece.prototype.drawDebugLines = function(piece) {
+
+                evt.fire(evt.list().DRAW_POINT_AT, {pos:piece.frameCurrentSpatial.pos, color:"RED"});
+                evt.fire(evt.list().DRAW_POINT_AT, {pos:piece.frameNextSpatial.pos, color:"CYAN"});
+                evt.fire(evt.list().DRAW_LINE_BETWEEN, {from:piece.frameCurrentSpatial.pos, to:piece.spatial.pos, color:"RED"});
+                evt.fire(evt.list().DRAW_LINE_BETWEEN, {from:piece.spatial.pos, to:piece.frameNextSpatial.pos, color:"CYAN"});
+                evt.fire(evt.list().DRAW_POINT_AT, {pos:piece.spatial.pos, color:"GREEN"});
+        };
+
+        ClientPiece.prototype.calculateClientPosition = function(piece) {
+            piece.spatial.interpolateRotational(piece.spatial, piece.serverSpatial, piece.temporal.tpf);
+            piece.spatial.interpolateFraction(piece.frameCurrentSpatial, piece.frameNextSpatial, piece.temporal.getPacketTimeFraction());
+        };
+
 		ClientPiece.prototype.updatePlayer = function(tpf) {
 
             this.sampleClientModules(this.piece.serverState.modules);
-
+            
+			var debug = true;
 			this.piece.updatePieceFrame(tpf);
 
+            this.calculateClientPosition(this.piece);
+            
+            if (debug) {
+                this.drawDebugLines(this.piece);
+            }
+            
 			if (this.piece.state == GAME.ENUMS.PieceStates.TIME_OUT) {
 				this.playerRemove();
 				return;
@@ -113,9 +130,6 @@ define([
 			if (this.isOwnPlayer) {
 				evt.fire(evt.list().CONTROLLED_PIECE_UPDATED, this.piece)
 			}
-
-
-
 		};
 
 		ClientPiece.prototype.setIsOwnPlayer = function(bool) {
@@ -151,11 +165,14 @@ define([
 
 		ClientPiece.prototype.setServerState = function(serverState) {
 
-			this.piece.processModules(serverState.modules);
+            this.piece.processModules(serverState.modules);
 
-			this.piece.applyNetworkState(serverState);
+            this.piece.applyNetworkState(serverState);
 
             this.getPieceName();
+        };
+        
+        ClientPiece.prototype.notifyServerState = function(serverState) {
 			
 			if (serverState.state == GAME.ENUMS.PieceStates.REMOVED) {
 		//		this.domPlayer.renderStateText("Poof");

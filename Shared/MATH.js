@@ -36,7 +36,7 @@ if(typeof(MATH) == "undefined"){
 		return curve[curve.length-1][1];
 	};
 
-	MATH.blendArray = function(frac, from, to, store) {
+	MATH.blendArray = function(from, to, frac, store) {
 		for (i = 0; i < store.length; i++) {
 			store[i] = (1-frac)*from[i] + frac*to[i];
 		}
@@ -44,7 +44,7 @@ if(typeof(MATH) == "undefined"){
 	
 	MATH.curveBlendArray = function(value, curve, from, to, store) {
 		blend = MATH.valueFromCurve(value, curve);
-		MATH.blendArray(blend, from, to, store);
+		MATH.blendArray(from, to, blend, store);
 	};
 	
 	

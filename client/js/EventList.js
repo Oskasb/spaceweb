@@ -48,6 +48,9 @@ define(function() {
 
 		DRAW_RELATIVE_POS_RAD:{type:'DRAW_RELATIVE_POS_RAD', args:{}},
 
+		DRAW_LINE_BETWEEN:{type:'DRAW_LINE_BETWEEN', args:{}},
+		DRAW_POINT_AT:{type:'DRAW_POINT_AT', args:{}},
+
 		CAMERA_READY:{type:'CAMERA_READY', args:{}},
         CLIENT_READY:{type:'CLIENT_READY', args:{}}
     }

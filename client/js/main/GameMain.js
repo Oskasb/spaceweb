@@ -76,6 +76,7 @@ define([
 			if (this.pieces[data.playerId]) {
 
 				this.pieces[data.playerId].setServerState(data);
+				this.pieces[data.playerId].notifyServerState(data);
 			} else {
 			//	console.log("Register New Player from update", data.playerId, this.pieces);
 				this.registerPlayer(data);
