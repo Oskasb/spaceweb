@@ -2,11 +2,6 @@
   "id":"piece_data",
   "pieces":{
     "player_ship":{
-      "shape":{
-        "hull": {
-          "size":[60, 90]
-        }
-      },
       "controls":{
         "input": {
           "pointer":"InputSegmentRadial",
@@ -37,6 +32,17 @@
           "throttleAmplitude": 30
         }
       },
+      "attachment_points":[
+        {"id":"hull",   "transform":{"rot":[0, 0, 0], "pos":[0, 0.1, 0]}},
+        {"id":"shield",   "transform":{"rot":[0, 0, 0], "pos":[0, 0.1, 0]}},
+        {"id":"hyper_drive",  "transform":{  "rot":[0, 1, 0],"pos":[0, -0.6, 0 ]}},
+        {"id":"shield",   "transform":{"rot":[0, 0, 0], "pos":[0, 0.1, 0]}},
+        {"id":"lazer_cannon", "transform":{ "rot":[0, 0, 0],"pos":[2.2, -1.7, 1]}},
+        {"id":"plasma_cannon","transform":{ "rot":[0, 0, 0],"pos":[-2.2, -1.7, 1]}},
+        {"id":"engine",       "transform":{ "rot":[0, 1, 0],"pos":[0, 2.8, 0]}},
+        {"id":"inputControls"},
+        {"id":"nameplate"}
+      ],
       "modules":[
         {
           "id":"hull",
@@ -137,7 +143,7 @@
             }
           }
         },{
-          "id":"cannon",
+          "id":"plasma_cannon",
           "data":{
 
             "initState": true,
@@ -206,11 +212,6 @@
       ]
     },
     "cannon_bullet":{
-      "shape":{
-        "hull": {
-          "size":[20, 20]
-        }
-      },
       "controls":{
         "actions": {
           "applyForward":1,
@@ -221,6 +222,9 @@
           "radialDrag":1
         }
       },
+      "attachment_points":[
+        {"id":"bullet_shell",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+      ],
       "modules":[
         {
           "id":"bullet_shell",
