@@ -240,35 +240,47 @@ define([
 			}
 		};
 
-		TrailRenderer.prototype.updateBufferData = function(index, i, tile, pos, col, trailVector, coldata, particle) {
-			tile[(index * this.segmentCount * 8)+ i * 8 + 0] = particle.trailOffsetX; //offset u
-			tile[(index * this.segmentCount * 8)+ i * 8 + 1] = particle.trailOffsetY; //offset w
-			tile[(index * this.segmentCount * 8)+ i * 8 + 2] = this.scaleX; //scale u
-			tile[(index * this.segmentCount * 8)+ i * 8 + 3] = this.scaleY; //scale w
-			tile[(index * this.segmentCount * 8)+ i * 8 + 4] = particle.trailOffsetX; //offset u
-			tile[(index * this.segmentCount * 8)+ i * 8 + 5] = particle.trailOffsetY; //offset w
-			tile[(index * this.segmentCount * 8)+ i * 8 + 6] = this.scaleX; //scale u
-			tile[(index * this.segmentCount * 8)+ i * 8 + 7] = this.scaleY; //scale w
+		TrailRenderer.prototype.updateTileBuffer = function(index, i, tile, particle) {
+			tile[(index * this.segmentCount * 8) + i * 8    ] = particle.trailOffsetX; //offset u
+			tile[(index * this.segmentCount * 8) + i * 8 + 1] = particle.trailOffsetY; //offset w
+			tile[(index * this.segmentCount * 8) + i * 8 + 2] = this.scaleX; //scale u
+			tile[(index * this.segmentCount * 8) + i * 8 + 3] = this.scaleY; //scale w
+			tile[(index * this.segmentCount * 8) + i * 8 + 4] = particle.trailOffsetX; //offset u
+			tile[(index * this.segmentCount * 8) + i * 8 + 5] = particle.trailOffsetY; //offset w
+			tile[(index * this.segmentCount * 8) + i * 8 + 6] = this.scaleX; //scale u
+			tile[(index * this.segmentCount * 8) + i * 8 + 7] = this.scaleY; //scale w
+		};
 
-
-			pos[(index * this.segmentCount * 6) + 6 * i + 0] = trailVector.data[0] - trailDirection.data[0];
+		TrailRenderer.prototype.updatePosBuffer = function(index, i, pos, trailVector) {
+			pos[(index * this.segmentCount * 6) + 6 * i    ] = trailVector.data[0] - trailDirection.data[0];
 			pos[(index * this.segmentCount * 6) + 6 * i + 1] = trailVector.data[1] - trailDirection.data[1];
 			pos[(index * this.segmentCount * 6) + 6 * i + 2] = trailVector.data[2] - trailDirection.data[2];
 
 			pos[(index * this.segmentCount * 6) + 6 * i + 3] = trailVector.data[0] + trailDirection.data[0];
 			pos[(index * this.segmentCount * 6) + 6 * i + 4] = trailVector.data[1] + trailDirection.data[1];
 			pos[(index * this.segmentCount * 6) + 6 * i + 5] = trailVector.data[2] + trailDirection.data[2];
+		};
 
-			col[(index * this.segmentCount * 8) + 8 * i + 0] = coldata[0];
+		TrailRenderer.prototype.updateColBuffer = function(index, i, col, coldata) {
+			col[(index * this.segmentCount * 8) + 8 * i    ] = coldata[0];
 			col[(index * this.segmentCount * 8) + 8 * i + 1] = coldata[1];
 			col[(index * this.segmentCount * 8) + 8 * i + 2] = coldata[2];
 			col[(index * this.segmentCount * 8) + 8 * i + 4] = coldata[0];
 			col[(index * this.segmentCount * 8) + 8 * i + 5] = coldata[1];
 			col[(index * this.segmentCount * 8) + 8 * i + 6] = coldata[2];
+		};
 
-			var alpha = particle.color.data[3] * (this.segmentCount - i) / this.segmentCount; //   i === 0 || i === this.segmentCount - 1 ? 0 : particle.color.data[3];
-			col[(index * this.segmentCount * 8) + 8 * i + 3] = alpha;
-			col[(index * this.segmentCount * 8) + 8 * i + 7] = alpha;
+        TrailRenderer.prototype.updateColAlpha = function(index, i, col, particle) {
+            var alpha = particle.color.data[3] * (this.segmentCount - i) / this.segmentCount; //   i === 0 || i === this.segmentCount - 1 ? 0 : particle.color.data[3];
+            col[(index * this.segmentCount * 8) + 8 * i + 3] = alpha;
+            col[(index * this.segmentCount * 8) + 8 * i + 7] = alpha;
+        };
+
+		TrailRenderer.prototype.updateBufferData = function(index, i, tile, pos, col, trailVector, coldata, particle) {
+			this.updateTileBuffer(index, i, tile, particle);
+			this.updatePosBuffer(index, i, pos, trailVector);
+			this.updateColBuffer(index, i, col, coldata);
+            this.updateColAlpha(index, i, col, particle);
 		};
 
 		TrailRenderer.prototype.updateInterpolate = function(trailData, particle, camPos, index) {
