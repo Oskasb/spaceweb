@@ -504,18 +504,7 @@ define([
 		destination.data[3] = this.data[3];
 		return this;
 	};
-
-	// #ifdef DEBUG
-	Vector.addPostChecks(Vector4.prototype, [
-		'add', 'sub', 'mul', 'div', 'dot', 'dotVector',
-		'lerp',
-		'setDirect', 'setArray', 'setVector',
-		'addDirect', 'addVector',
-		'subDirect', 'subVector',
-		'mulDirect', 'mulVector',
-		'scale'
-	]);
-	// #endif
+	
 
 	return Vector4;
 });

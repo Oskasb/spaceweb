@@ -905,14 +905,7 @@ define([
 		return new Matrix3x3().copy(this);
 	};
 
-	// #ifdef DEBUG
-	Matrix.addPostChecks(Matrix3x3.prototype, [
-		'add', 'sub', 'mul', 'div', 'combine', 'transpose', 'invert',
-		'isOrthogonal', 'determinant', 'applyPost', 'applyPre',
-		'fromAngles', 'rotateX', 'rotateY', 'rotateZ', 'fromAngleNormalAxis', 'lookAt',
-		'copyQuaternion', 'copy'
-	]);
-	// #endif
+
 
 	return Matrix3x3;
 });

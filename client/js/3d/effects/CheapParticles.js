@@ -38,7 +38,7 @@ function(
 		this.dead = true;
 	};
 
-
+    var calcVec = new Vector3();
 
 
 
@@ -202,8 +202,50 @@ function(
 		}
 	};
 
+    Simulator.prototype.resetParticle = function(particle, pos, i) {
+        particle.dead = true;
+        particle.position.setDirect(0, 0, 0);
+        pos[3 * i + 0] = 0;
+        pos[3 * i + 1] = -1000;
+        pos[3 * i + 2] = 0;
+        this.aliveParticles--;
+    };
+
+	Simulator.prototype.updateParticle = function(tpf, i, acceleration, pos, col, alpha, data) {
+
+        var particle = this.particles[i];
+
+        if (particle.dead) {
+            return;
+        }
+
+        particle.lifeSpan -= tpf;
+
+        if (particle.lifeSpan <= 0) {
+            this.resetParticle(particle, pos, i);
+            return;
+        }
+
+        calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
+        particle.position.addVector(calcVec);
+        //	var damping = 0.999;
+        particle.velocity.mulDirect(acceleration, acceleration, acceleration);
+        particle.velocity.addDirect(0, particle.gravity * tpf, 0);
+        particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
+
+        pos[3 * i + 0] = particle.position.data[0];
+        pos[3 * i + 1] = particle.position.data[1];
+        pos[3 * i + 2] = particle.position.data[2];
+
+        col[4 * i + 3] = particle.alpha;
+
+        data[4 * i + 0] += data[4 * i + 1] * tpf;
+        data[4 * i + 2] += data[4 * i + 3] * tpf;
+    };
+
+
 	Simulator.prototype.update = function(tpf) {
-		var calcVec = new Vector3();
+
 		var pos = this.meshData.getAttributeBuffer(MeshData.POSITION);
 		var col = this.meshData.getAttributeBuffer(MeshData.COLOR);
 		var data = this.meshData.getAttributeBuffer('DATA');
@@ -211,38 +253,8 @@ function(
 		var alpha = this.inheritColor ? 1.0 : this.particleSettings.color[3];
 		var acceleration = this.particleSettings.acceleration;
 		for (var i = 0, l = this.particles.length; i < l; i++) {
-			var particle = this.particles[i];
 
-			if (particle.dead) {
-				continue;
-			}
-
-			particle.lifeSpan -= tpf;
-			if (particle.lifeSpan <= 0) {
-				particle.dead = true;
-				particle.position.setDirect(0, 0, 0);
-				pos[3 * i + 0] = 0;
-				pos[3 * i + 1] = -1000;
-				pos[3 * i + 2] = 0;
-				this.aliveParticles--;
-				continue;
-			}
-
-			calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
-			particle.position.addVector(calcVec);
-		//	var damping = 0.999;
-			particle.velocity.mulDirect(acceleration, acceleration, acceleration);
-			particle.velocity.addDirect(0, particle.gravity * tpf, 0);
-			particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
-
-			pos[3 * i + 0] = particle.position.data[0];
-			pos[3 * i + 1] = particle.position.data[1];
-			pos[3 * i + 2] = particle.position.data[2];
-
-			col[4 * i + 3] = particle.alpha;
-
-			data[4 * i + 0] += data[4 * i + 1] * tpf;
-			data[4 * i + 2] += data[4 * i + 3] * tpf;
+            this.updateParticle(tpf, i, acceleration, pos, col, alpha, data);
 
 			lastAlive = i;
 		}

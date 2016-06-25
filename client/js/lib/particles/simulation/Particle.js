@@ -9,6 +9,11 @@ function (
 ) {
 	"use strict";
 
+	var defaultColorCurve = [[0, 1], [1, 0]];
+    var defaultAlphaCurve = [[0, 1], [1, 0]];
+    var defaultGrowthCurve = [[0, 1], [1, 1]];
+    var defaultSpinCurve =  [[0, 0], [1, 0]];
+
 	function Particle(idx) {
 		this.calcVec = new Vector3();
 		this.upVector = new Vector3();
@@ -20,6 +25,35 @@ function (
 		this.color0 	= new Vector3();
 		this.color1 	= new Vector3();
 
+        this.colorBlend = 0;
+        this.colorCurve = defaultColorCurve;
+
+        this.opacity = 1;
+        this.alpha = defaultAlphaCurve;
+
+        this.size = 1;
+        this.growthFactor = 1;
+        this.growth = defaultGrowthCurve;
+
+        this.acceleration = 1;
+        this.gravity = 0;
+        this.rotation = 0;
+        this.spinspeed = 0;
+        this.spin = defaultSpinCurve;
+
+        this.lifeSpan = 0;
+        this.lifeSpanTotal = 0;
+        this.progress = 0;
+        this.frameOffset = 0;
+        this.frameCount = 0;
+
+        this.tileIndex = 0;
+        this.offsetX = 0;
+        this.offsetY = 0;
+
+        this.dead = true;
+        this.requestKill = false;
+
 		this.id = Particle.ID++;
 		this.reset();
 	}
@@ -27,29 +61,29 @@ function (
 	Particle.ID = 0;
 
 	Particle.prototype.reset = function () {
-		this.position.set(0, 0, 0);
-		this.velocity.set(0, 0, 0);
-		this.color.set(1, 1, 1, 1);
-		this.color0.set(1, 1, 1);
-		this.color1.set(1, 1, 1);
+		this.position.setDirect(0, 0, 0);
+		this.velocity.setDirect(0, 0, 0);
+		this.color.setDirect(1, 1, 1, 1);
+		this.color0.setDirect(1, 1, 1);
+		this.color1.setDirect(1, 1, 1);
 
-		this.upVector.set(0, 1, 0);
+		this.upVector.setDirect(0, 1, 0);
 
 		this.colorBlend = 0;
-		this.colorCurve = [[0, 1], [1, 0]];
+		this.colorCurve = defaultColorCurve;
 
 		this.opacity = 1;
-		this.alpha = [[0, 0], [1, 1]];
+		this.alpha = defaultAlphaCurve;
 
 		this.size = 1;
 		this.growthFactor = 1;
-		this.growth = [[0, 1], [1, 1]];
+		this.growth = defaultGrowthCurve;
 
 		this.acceleration = 1;
 		this.gravity = 0;
 		this.rotation = 0;
 		this.spinspeed = 0;
-		this.spin = [[0, 0], [1, 0]];
+		this.spin = defaultSpinCurve;
 
 		this.lifeSpan = 0;
 		this.lifeSpanTotal = 0;

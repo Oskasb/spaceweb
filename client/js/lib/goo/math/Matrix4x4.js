@@ -869,13 +869,7 @@ define([
 		return new Matrix4x4().copy(this);
 	};
 
-	// #ifdef DEBUG
-	Matrix.addPostChecks(Matrix4x4.prototype, [
-		'add', 'sub', 'mul', 'div', 'combine', 'transpose', 'invert',
-		'isOrthogonal', 'determinant', 'applyPre',
-		'copy'
-	]);
-	// #endif
+
 
 	return Matrix4x4;
 });

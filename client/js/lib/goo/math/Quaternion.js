@@ -719,14 +719,7 @@ define([
 		return new Quaternion(this);
 	};
 
-	// #ifdef DEBUG
-	Vector.addPostChecks(Quaternion.prototype, [
-		'add', 'sub', 'mul',
-		'slerp', 'fromRotationMatrix', 'fromVectorToVector', 'normalize',
-		'magnitude', 'magnitudeSquared', 'fromAngleAxis', 'fromAngleNormalAxis',
-		'setDirect', 'setVector'
-	]);
-	// #endif
+
 
 	return Quaternion;
 });

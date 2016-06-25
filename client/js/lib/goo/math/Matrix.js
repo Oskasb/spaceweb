@@ -35,11 +35,7 @@ define([
 					},
 					set: function (value) {
 						this.data[index] = value;
-						// #ifdef DEBUG
-						if (isNaN(this.data[index])) {
-							throw new Error('Tried setting NaN to matrix component ' + alias);
-						}
-						// #endif
+
 					}
 				});
 			});
@@ -50,11 +46,7 @@ define([
 				},
 				set: function (value) {
 					this.data[index] = value;
-					// #ifdef DEBUG
-					if (isNaN(this.data[index])) {
-						throw new Error('Tried setting NaN to matrix component ' + index);
-					}
-					// #endif
+
 				}
 			});
 		});

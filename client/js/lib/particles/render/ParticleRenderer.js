@@ -162,38 +162,55 @@ function (
 
 	};
 
-	ParticleRenderer.prototype.updateParticleBufferData = function (tpf, particle) {
-		var j, i, l;
+	var j, i, l;
+
+	ParticleRenderer.prototype.updateParticleTileBuffer = function (particle) {
+		for (j = 0; j < 4; j++) {
+			this.tile[(4 * 4 * i    ) + 4 * j] = particle.offsetX;
+			this.tile[(4 * 4 * i + 1) + 4 * j] = particle.offsetY;
+			this.tile[(4 * 4 * i + 2) + 4 * j] = particle.scaleX;
+			this.tile[(4 * 4 * i + 3) + 4 * j] = particle.scaleY;
+		}
+	};
+
+	ParticleRenderer.prototype.updateParticleColorBuffer = function (particle) {
+        var coldata = particle.color.data;
+		for (j = 0; j < 4; j++) {
+            this.col[(4 * 4 * i    ) + 4 * j] = coldata[0];
+            this.col[(4 * 4 * i + 1) + 4 * j] = coldata[1];
+            this.col[(4 * 4 * i + 2) + 4 * j] = coldata[2];
+            this.col[(4 * 4 * i + 3) + 4 * j] = coldata[3];
+		}
+	};
+
+    ParticleRenderer.prototype.updateParticlePositionBuffer = function (particle) {
+        var posdata = particle.position.data;
+        for (j = 0; j < 4; j++) {
+            this.pos[(4 * 3 * i    ) + 3 * j] = posdata[0];
+            this.pos[(4 * 3 * i + 1) + 3 * j] = posdata[1];
+            this.pos[(4 * 3 * i + 2) + 3 * j] = posdata[2];
+        }
+    };
+
+    ParticleRenderer.prototype.updateParticleDataBuffer = function (particle) {
+        for (j = 0; j < 4; j++) {
+            this.data[(4 * 2 * i    ) + 2 * j] = particle.size;
+            this.data[(4 * 2 * i + 1) + 2 * j] = particle.rotation;
+        }
+    };
+
+    ParticleRenderer.prototype.updateParticleBufferData = function (tpf, particle) {
+
 		i = this.renderedCount;
 
 		particle.setTileInfo(this.sprites[particle.sprite], this.scaleX, this.scaleY);
 		particle.updateAtlasOffsets();
 		//	if (this.isTiled) {
 
-
-		for (j = 0; j < 4; j++) {
-			this.tile[(4 * 4 * i + 0) + 4 * j] = particle.offsetX;
-			this.tile[(4 * 4 * i + 1) + 4 * j] = particle.offsetY;
-			this.tile[(4 * 4 * i + 2) + 4 * j] = particle.scaleX;
-			this.tile[(4 * 4 * i + 3) + 4 * j] = particle.scaleY;
-		}
-		//	}
-
-		var posdata = particle.position.data;
-		var coldata = particle.color.data;
-		for (j = 0; j < 4; j++) {
-			this.pos[(4 * 3 * i + 0) + 3 * j] = posdata[0];
-			this.pos[(4 * 3 * i + 1) + 3 * j] = posdata[1];
-			this.pos[(4 * 3 * i + 2) + 3 * j] = posdata[2];
-
-			this.col[(4 * 4 * i + 0) + 4 * j] = coldata[0];
-			this.col[(4 * 4 * i + 1) + 4 * j] = coldata[1];
-			this.col[(4 * 4 * i + 2) + 4 * j] = coldata[2];
-			this.col[(4 * 4 * i + 3) + 4 * j] = coldata[3];
-
-			this.data[(4 * 2 * i + 0) + 2 * j] = particle.size;
-			this.data[(4 * 2 * i + 1) + 2 * j] = particle.rotation;
-		}
+		this.updateParticleTileBuffer(particle);
+        this.updateParticleColorBuffer(particle);
+        this.updateParticlePositionBuffer(particle);
+        this.updateParticleDataBuffer(particle);
 
 		this.lastAlive = i + 1;
 	};

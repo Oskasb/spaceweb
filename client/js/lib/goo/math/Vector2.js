@@ -453,17 +453,7 @@ define([
 		return this;
 	};
 
-	// #ifdef DEBUG
-	Vector.addPostChecks(Vector2.prototype, [
-		'add', 'sub', 'mul', 'div', 'invert', 'dot', 'dotVector',
-		'reflect',
-		'setDirect', 'setArray', 'setVector',
-		'addDirect', 'addVector',
-		'subDirect', 'subVector',
-		'mulDirect', 'mulVector',
-		'scale'
-	]);
-	// #endif
+
 
 	return Vector2;
 });

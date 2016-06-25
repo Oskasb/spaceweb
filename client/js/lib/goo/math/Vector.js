@@ -29,11 +29,6 @@ define([
 					},
 					set: function (value) {
 						this.data[index] = value;
-						// #ifdef DEBUG
-						if (isNaN(this.data[index])) {
-							throw new Error('Tried setting NaN to vector component ' + alias);
-						}
-						// #endif
 					}
 				});
 			});
@@ -44,27 +39,12 @@ define([
 				},
 				set: function (value) {
 					this.data[index] = value;
-					// #ifdef DEBUG
-					if (isNaN(this.data[index])) {
-						throw new Error('Tried setting NaN to vector component ' + index);
-					}
-					// #endif
 				}
 			});
 		});
 	};
 
-	// #ifdef DEBUG
-	/**
-	 * Throws an error if any of the vector's components are NaN
-	 */
-	Vector.prototype.checkIntegrity = function () {
-		for (var i = 0; i < this.data.length; i++) {
-			if (isNaN(this.data[i])) {
-				throw new Error('Vector contains NaN at index ' + i);
-			}
-		}
-	};
+
 
 	/**
 	 * Replaces the supplied method of object and wraps it in a integrity check
