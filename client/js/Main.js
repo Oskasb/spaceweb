@@ -86,10 +86,9 @@ require([
             return;
         }
         client = new Client(new PointerCursor());
-        var clientTick = function(tpf) {
-            client.tick(tpf)
-        };
-        sceneController.setup3dScene(clientTick);
+
+        client.setupSimulation(sceneController);
+        
     };
 
     function connectionReady() {

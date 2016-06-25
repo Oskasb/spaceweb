@@ -85,19 +85,21 @@ define(['Events',
         calcVec.setVector(playerPiece.spatial.vel);
 
     //    calcVec.subVector(lastPos);
-        forVec.scale(6);
+        forVec.scale(3);
 
     //    calcVec.mulDirect(40, 40, 0);
         calcVec.addVector(forVec);
+        calcVec.addVector(playerPiece.spatial.pos);
+    //    lastPos.addVec(playerPiece.spatial.pos);
 
-        lastPos.interpolateFromTo(lastPos, calcVec, 0.02);
+    //    lastPos.interpolateFromTo(lastPos, calcVec, 0.02);
 
-    //    calcVec.addVector(playerSpatial.pos);
+    //    calcVec.addVector(playerPiece.spatial.pos);
 
-        cameraEntity.transformComponent.transform.translation.data[0] = playerPiece.spatial.pos.data[0];
-        cameraEntity.transformComponent.transform.translation.data[1] = playerPiece.spatial.pos.data[1];
+        cameraEntity.transformComponent.transform.translation.data[0] = calcVec.data[0];
+        cameraEntity.transformComponent.transform.translation.data[1] = calcVec.data[1];
         cameraEntity.transformComponent.setUpdated();
-        lastPos.setVec(playerPiece.spatial.pos);
+    //    lastPos.setVec(playerPiece.spatial.pos);
 	};
 
     evt.on(evt.list().ENGINE_READY, setupGooCamera);

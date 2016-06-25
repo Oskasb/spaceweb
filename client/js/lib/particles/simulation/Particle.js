@@ -104,37 +104,54 @@ function (
 	}
 
 
-	Particle.prototype.joinSimulation = function (simParams, ratio) {
-		var simD = simParams.data;
-
-		this.direction.x = (Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.x;
-		this.direction.y = (Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.y;
-		this.direction.z = (Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.z;
+	Particle.prototype.setParticleVectors = function (simD, simParams, ratio) {
+		this.direction.setDirect(
+			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.data[0],
+			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.data[1],
+			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.data[2]
+		);
 
 		this.direction.normalize();
 
-		this.velocity.x = simD.strength*this.direction.x;
-		this.velocity.y = simD.strength*this.direction.y;
-		this.velocity.z = simD.strength*this.direction.z;
+		this.velocity.setDirect(
+			simD.strength*this.direction.data[0],
+			simD.strength*this.direction.data[1],
+			simD.strength*this.direction.data[2]
+		);
 
-		this.position.x = simParams.position.x + this.velocity.x * simD.stretch * ratio ;
-		this.position.y = simParams.position.y + this.velocity.y * simD.stretch * ratio ;
-		this.position.z = simParams.position.z + this.velocity.z * simD.stretch * ratio ;
+		this.position.setDirect(
+			simParams.position.data[0] + this.velocity.data[0] * simD.stretch * ratio,
+			simParams.position.data[1] + this.velocity.data[1] * simD.stretch * ratio,
+			simParams.position.data[2] + this.velocity.data[2] * simD.stretch * ratio
+		);
+
+	};
+
+	Particle.prototype.setParticleColors = function (simD) {
+
+		this.color1.setArray(simD.color1);
+
+		this.color0.setDirect(
+			simD.color0[0] *(1-simD.colorRandom)+simD.colorRandom*Math.random(),
+			simD.color0[1] *(1-simD.colorRandom)+simD.colorRandom*Math.random(),
+			simD.color0[2] *(1-simD.colorRandom)+simD.colorRandom*Math.random()
+		);
+
+		this.color.data[0] = this.color0[0];
+		this.color.data[1] = this.color0[1];
+		this.color.data[2] = this.color0[2];
+	};
+
+	Particle.prototype.joinSimulation = function (simParams, ratio) {
+		var simD = simParams.data;
+
+		this.setParticleVectors(simD, simParams, ratio);
+		this.setParticleColors(simD);
 
 		this.sprite = simD.sprite;
 		this.trailSprite = simD.trailsprite;
 		this.trailWidth = simD.trailwidth;
 		this.loopcount = simD.loopcount;
-
-		this.color1.setArray(simD.color1);
-
-		this.color0.data[0] = simD.color0[0] *(1-simD.colorRandom)+simD.colorRandom*Math.random();
-		this.color0.data[1] = simD.color0[1] *(1-simD.colorRandom)+simD.colorRandom*Math.random();
-		this.color0.data[2] = simD.color0[2] *(1-simD.colorRandom)+simD.colorRandom*Math.random();
-
-		this.color.data[0] = this.color0[0];
-		this.color.data[1] = this.color0[1];
-		this.color.data[2] = this.color0[2];
 
 		this.colorCurve = simD.colorCurve;
 		this.opacity = randomBetween(simD.opacity[0], simD.opacity[1]);

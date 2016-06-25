@@ -17,6 +17,17 @@ DataHub.prototype.readSource = function(sourceId, config, data, clientId) {
 
 };
 
+DataHub.prototype.getConfig = function(configName) {
+	console.log("get conf", this.configs[configName])
+	return this.configs[configName];
+};
+
+DataHub.prototype.getConfigs = function() {
+
+	return this.configs;
+};
+
+
 DataHub.prototype.setConfig = function(config) {
 
 	// var config = JSON.parse(jsonConfig);
@@ -24,7 +35,7 @@ DataHub.prototype.setConfig = function(config) {
 		for (var key in config) {
 			if (!this.configs[config.id]) {
 				this.configs[config.id] = {};
-				console.log("set config key", key)
+				console.log("set config key", config.id)
 			}
 
 			if (typeof(config[key]) != 'string') {

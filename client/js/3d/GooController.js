@@ -68,14 +68,24 @@ define([
         goo.renderer.setClearColor(0.05, 0.0, 0.09, 0.21);
 
         document.getElementById('game_window').appendChild(goo.renderer.domElement);
-        goo.startGameLoop();
+        goo.startGameLoop(clientTickCallback);
 
         var setupGooScene = function() {
             evt.fire(evt.list().ENGINE_READY, {goo:goo});
         };
 
         setupGooScene();
-        this.registerGooUpdateCallback(clientTickCallback);
+
+        var camEvt = {
+            camTpf:0
+        };
+        
+        var cameraTickEvent = function(tpf) {
+            camEvt.camTpf = tpf;
+            evt.fire(evt.list().CAMERA_TICK, camEvt);
+        };
+        
+    //    this.registerGooUpdateCallback(cameraTickEvent);
         //	this.cameraController.setCameraPosition(0, 0, 0);
 
         var notifyRezize = function() {

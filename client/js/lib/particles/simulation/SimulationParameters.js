@@ -28,26 +28,31 @@ define(function() {
 		this.data = this.configureData(simParams, effectData, particleDensity);
 	};
 
+
+	SimulationParameters.prototype.addSimParam = function(data, simParam, effectData) {
+
+			var value;
+
+			if (effectData[simParam.param]) {
+				value = effectData[simParam.param];
+			} else {
+				value = simParam.value
+			}
+
+			if (simParam.type == "curve" && typeof(value) == 'string') {
+				data[simParam.param] = curves[value];
+			} else {
+				data[simParam.param] = value;
+			}
+	};
+
+
 	SimulationParameters.prototype.configureData = function(simParams, effectData, particleDensity) {
 		var data = {};
 
 		for (var i = 0; i < simParams.length; i++) {
-
-			var value;
-
-			if (effectData[simParams[i].param]) {
-				value = effectData[simParams[i].param];
-			} else {
-				value = simParams[i].value
-			}
-
-			if (simParams[i].type == "curve" && typeof(value) == 'string') {
-                data[simParams[i].param] = curves[value];
-			} else {
-				data[simParams[i].param] = value;
-			}
+			this.addSimParam(data, simParams[i], effectData)
 		}
-
 
 		data.effectCount = Math.ceil(data.count * particleDensity);
 		return data;

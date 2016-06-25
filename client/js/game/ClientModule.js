@@ -21,6 +21,7 @@ define([
             
     //        console.log("ClientModule", moduleData, serverState);
             this.gooModule = clientPiece.gooPiece.attachModule(this);
+            this.gooModule.activateGooModule();
         };
 
         ClientModule.prototype.applyModuleServerState = function (serverState) {

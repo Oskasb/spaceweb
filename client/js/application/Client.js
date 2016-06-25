@@ -33,6 +33,10 @@ define([
 			this.gameMain = new GameMain();
 			this.guiSetup = new GuiSetup();
             new UiMessenger();
+            this.connection = new Connection();
+
+            this.handlers = {};
+
 			// var inputReady = function() {
 
 			//     evt.removeListener(evt.list().INPUT_READY, inputReady);
@@ -40,39 +44,45 @@ define([
 
 			//  evt.on(evt.list().INPUT_READY, inputReady)
 
+            this.handlers.clientRegistry = new ClientRegistry();
+            this.handlers.gameMain = this.gameMain;
+            this.handlers.timeTracker = this.timeTracker;
+            this.handlers.clientWorld = new ClientWorld();
+
 		};
+
+        Client.prototype.handleServerMessage = function(res) {
+            var message = this.socketMessages.getMessageById(res.id);
+            if (message) {
+                this.handlers[message.target][res.id](res.data);
+            } else {
+                if (res.id == 'server_status') {
+                } else {
+                    evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
+                    console.log("unhandled message response:", res);
+                }
+            }
+        };
 
 
 		Client.prototype.initiateClient = function(socketMessages,connectionReady) {
 
 
             this.guiSetup.initMainGui();
-			
+            var connection = this.connection;
 
 			var _this = this;
-			var messages = socketMessages.messages;
+            this.socketMessages = socketMessages;
+
 			var ClientState = GAME.ENUMS.ClientStates.LOADING;
 
 			var handleServerMessage = function(e) {
-
 				var res = evt.args(e);
-				var message = socketMessages.getMessageById(res.id)
-				if (message) {
-					_this[message.target][res.id](res.data);
-				} else {
-                    if (res.id == 'server_status') {
-                    } else {
-                        evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
-                        console.log("unhandled message response:", res);
-                    }
-				}
+                _this.handleServerMessage(res);
 			};
 			
-			var clientRegistry = new ClientRegistry();
-			this.clientRegistry = clientRegistry;
-			var connection = new Connection(socketMessages);
-			this.clientWorld = new ClientWorld();
-			
+
+
 			var connectedCallback = function() {
                 evt.fire(evt.list().MESSAGE_UI, {channel:'connection_status', message:'Connection Open'});
 				evt.fire(evt.list().CLIENT_READY, {});
@@ -175,13 +185,53 @@ define([
 
         var aggDiff = 0;
 
-		Client.prototype.tick = function(tpf) {
+        var tickEvent = {frame:0, tpf:1};
+
+
+        Client.prototype.setupSimulation = function(sceneController) {
+            var _this = this;
+
+            var clientTick = function(tpf) {
+                _this.tick(tpf)
+            };
+
+            sceneController.setup3dScene(clientTick);
+        };
+
+        Client.prototype.processResponseStack = function(responseStack) {
+            if (responseStack.length) {
+                this.handleServerMessage(responseStack.shift());
+            }
+
+            if (responseStack.length) {
+                this.handleServerMessage(responseStack.shift());
+            }
+
+            if (responseStack.length > 3) {
+                this.handleServerMessage(responseStack.shift());
+                this.handleServerMessage(responseStack.shift());
+            }
+
+            if (responseStack.length > 5) {
+                this.handleServerMessage(responseStack.shift());
+                this.handleServerMessage(responseStack.shift());
+                this.handleServerMessage(responseStack.shift());
+            }
+
+        };
+
+        
+        Client.prototype.tick = function(tpf) {
 			frame++;
+
+            var responseStack = this.connection.processTick();
+
+            this.processResponseStack(responseStack);
 
 			var exactTpf = this.timeTracker.trackFrameTime(frame);
 
             if (exactTpf < 0.01) {
-                console.log("superTiny TPF")
+                console.log("superTiny TPF");
                 return;
             }
 
@@ -195,12 +245,15 @@ define([
             } else {
         //        console.log("Big DT", tpf, exactTpf, aggDiff);
             }
-            
-            evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:tpf});
+            tickEvent.frame = frame;
+            tickEvent.tpf = tpf;
+
+            evt.fire(evt.list().CLIENT_TICK, tickEvent);
+
             this.gameMain.tickClientGame(tpf);
-            evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
+        //    evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
 		};
-        
+
 		return Client;
 
 	});

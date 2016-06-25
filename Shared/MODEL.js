@@ -68,8 +68,8 @@ if(typeof(MODEL) == "undefined"){
 	};
 	
 	MODEL.Spatial.prototype.setSendData = function(sendData) {
-        this.pos.setXYZ(sendData.pos[0] , sendData.pos[1], sendData.pos[2]);
-        this.vel.setXYZ(sendData.vel[0] , sendData.vel[1], sendData.vel[2]);
+        this.pos.setArray(sendData.pos);
+        this.vel.setArray(sendData.vel);
         this.rot[0] = sendData.rot[0];
         this.rotVel[0] = sendData.rotVel[0];
     };

@@ -22,16 +22,25 @@ ServerMain = function() {
 	}
 
 	function pieceData(config) {
-        console.log("---- >Data Handler pieceData", config.id);
+
         _this.dataHub.setConfig(config)
-		_this.serverGameMain.applyPieceConfigs(config);
-		
+    //    console.log("---- >Data Handler pieceData", _this.dataHub.getConfig(config.id));
+		_this.serverGameMain.applyPieceConfigs(_this.dataHub.getConfig(config.id));
 	}
-	
+
+	function gameData(config) {
+		console.log("---- >Data Handler moduleData", config.id);
+		_this.dataHub.setConfig(config)
+		_this.serverGameMain.applyGameConfigs(_this.dataHub.getConfigs());
+	}
+
+
+
 	this.dataHandlers = {
 		server_setup:serverSetup,
 		config_files:configFiles,
-		piece_data:pieceData
+        PIECE_DATA:pieceData,
+        MODULE_DATA:gameData
 	};
 
 

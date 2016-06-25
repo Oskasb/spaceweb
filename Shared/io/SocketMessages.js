@@ -11,6 +11,7 @@
             playerUpdate:{source:'', method:'', target:'gameMain', reflect:false},
 
             clientConnected:{source:'Clients', method:'registerConnection', target:'clientRegistry', reflect:true},
+            updateGameData:{source:'', method:'', target:'clientRegistry', reflect:false},
 
             RegisterClient:{source:'Clients', method:'registerClient', target:'clientRegistry', reflect:true},
             RequestPlayer:{source:'Clients', method:'requestPlayer', target:'clientRegistry', reflect:true},

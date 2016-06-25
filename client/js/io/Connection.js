@@ -9,14 +9,10 @@ define(['Events'
 		) {
 
 		var socket;
-		var messages;
 		var frameStack = [];
 
 
-		var Connection = function(socketMessage) {
-			this.socketMessages = socketMessage;
-			messages = this.socketMessages.messages
-		};
+		var Connection = function() {};
 
 
 		Connection.prototype.setupSocket = function(connectedCallback, errorCallback, disconnectedCallback) {
@@ -62,12 +58,7 @@ define(['Events'
 
 		};
 
-
 		var responseStack = [];
-
-		function processResponseStackEntry(stackEntry) {
-			evt.fire(evt.list().SERVER_MESSAGE, stackEntry);
-		}
 
 		function processStackedMessage(messageData) {
 			var resBuffer = JSON.parse(messageData);
@@ -86,39 +77,15 @@ define(['Events'
 			}
 		}
 
-
-		function processTick() {
+		Connection.prototype.processTick = function() {
 
 			for (var i = 0; i < frameStack.length; i++) {
 				processStackedMessage(frameStack[i]);
 			}
 
-
-			if (responseStack.length) {
-				processResponseStackEntry(responseStack.shift());
-			}
-
-			if (responseStack.length > 2) {
-				processResponseStackEntry(responseStack.shift());
-			}
-
-			if (responseStack.length > 3) {
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-			}
-
-			if (responseStack.length > 5) {
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-				processResponseStackEntry(responseStack.shift());
-			}
-
 			frameStack = [];
-		}
-
-
-		evt.on(evt.list().CLIENT_TICK, processTick);
-
+			return responseStack;
+		};
+		
 		return Connection;
-
 	});

@@ -157,13 +157,23 @@ define([
             particleData.vel.data[1] = args.vel.data[1];
             particleData.vel.data[2] = args.vel.data[2];
 
-
             for (var i = 0; i < effectConfigs[args.effect].length; i++) {
 
                 if (effectConfigs[args.effect][i].simulator == "CheapParticles") {
-                    this.simpleParticles.spawnCheap(effectConfigs[args.effect][i].effect, particleData.pos, particleData.vel, args.params);
+                    this.simpleParticles.spawnCheap(
+                        effectConfigs[args.effect][i].effect,
+                        particleData.pos,
+                        particleData.vel,
+                        args.params);
                 } else {
-                    this.spawnGameEffects(this.getEffectData(args.effect, i), particleData, this.setupParticleData(i, args.effect, args.params), args.callbacks, this.getEffectData(args.effect, i).density);
+                    this.simpleParticles.spawn(
+                        this.getEffectData(args.effect, i).simulator,
+                        particleData.pos,
+                        particleData.vel,
+                        this.setupParticleData(i, args.effect, args.params),
+                        args.callbacks,
+                        this.getEffectData(args.effect, i).density
+                    );
                 }
             }
         };

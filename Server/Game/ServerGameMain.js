@@ -13,14 +13,18 @@ ServerGameMain = function(clients, serverWorld) {
 	this.timeDelta = 0;
 	this.clients = clients;
 	this.pieceConfigs = {};
-
+	this.gameConfigs = {};
 	this.healthData = [];
 };
 
-
-ServerGameMain.prototype.applyPieceConfigs = function(config) {
-	this.pieceConfigs = config.pieces;
+ServerGameMain.prototype.applyPieceConfigs = function(pieceConfigs) {
+	this.pieceConfigs = pieceConfigs;
 	this.serverWorld.pieceConfigsUpdated(this.pieceConfigs);
+};
+
+ServerGameMain.prototype.applyGameConfigs = function(gameConfigs) {
+	this.gameConfigs = gameConfigs;
+	this.serverWorld.notifyConfigsUpdated(this.gameConfigs);
 };
 
 
@@ -66,7 +70,7 @@ ServerGameMain.prototype.initGame = function() {
 	var _this = this;
 
 	function fireCannon(piece, action, value, moduleData) {
-        _this.serverWorld.addBullet(piece, moduleData, _this.getNow());
+        _this.serverWorld.addBullet(piece, moduleData, _this.getNow(), _this.pieceConfigs.cannon_bullet);
 	}
 
     function applyControl(piece, action, value, moduleData) {

@@ -5,7 +5,6 @@ ServerWorld = function() {
 	this.stars = [];
 	this.actionHandlers;
 	this.pieceCount = 0;
-	this.pieceConfigs;
 
 	this.calcVec = new MATH.Vec3(0, 0, 0);
 
@@ -22,14 +21,22 @@ ServerWorld.prototype.initWorld = function(clients) {
 	this.spawnStars();
 };
 
-ServerWorld.prototype.pieceConfigsUpdated = function(config) {
-	this.pieceConfigs = config;
-	for (var key in this.players) {
-		this.players[key].applyPieceConfig(config.player_ship);
+ServerWorld.prototype.notifyConfigsUpdated = function(config) {
+    console.log("Module data updated...", config)
 
-		this.players[key].client.sendToClient({id:'clientConnected', data:{clientId:this.players[key].client.id, pieceData:config}});
+    for (var key in this.players) {
+    //    this.players[key].applyPieceConfig(config[this.players[key].piece.type]);
+        this.players[key].client.sendToClient({id:'updateGameData', data:{clientId:this.players[key].client.id, gameData:config}});
+        this.players[key].client.notifyDataFrame();
+    }
+
+};
+
+ServerWorld.prototype.pieceConfigsUpdated = function(config) {
+	for (var key in this.players) {
+		this.players[key].applyPieceConfig(config[this.players[key].piece.type]);
+	//	this.players[key].client.sendToClient({id:'clientConnected', data:{clientId:this.players[key].client.id, pieceData:config}});
 		this.players[key].client.notifyDataFrame();
-		
 	}
 };
 
@@ -52,14 +59,14 @@ ServerWorld.prototype.applyControlModule = function(sourcePiece, moduleData, act
 };
 
 
-ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, dt, tpf) {
+ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, bulletConfig) {
     var _this = this;
 
 	var apply = cannonModuleData.applies;
 	this.pieceCount++;
 	var bullet = new GAME.Piece('cannon_bullet', 'bullet_'+this.pieceCount, now, apply.lifeTime);
     bullet.registerParentPiece(sourcePiece);
-	bullet.applyConfig(this.pieceConfigs.cannon_bullet);
+	bullet.applyConfig(bulletConfig);
 //	bullet.temporal.timeDelta = dt;
     bullet.spatial.setSpatial(sourcePiece.spatial);
 

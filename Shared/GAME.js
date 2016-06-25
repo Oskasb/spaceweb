@@ -278,6 +278,7 @@ if(typeof(GAME) == "undefined"){
 
 	
 	GAME.Piece.prototype.applyConfig = function(pieceConfigs) {
+    //    console.log("Piece configs", pieceConfigs)
 		this.config = pieceConfigs;
 		this.pieceControls.applyControlConfig(pieceConfigs.controls);
 		if (pieceConfigs.modules) this.attachModules(pieceConfigs.modules);

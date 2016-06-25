@@ -97,7 +97,9 @@ if(typeof(MATH) == "undefined"){
 		return _value < _min ? min : _value > _max ? max : value;
 	};
 
-	
+    MATH.clamp = function(value, min, max) {
+        return value < min ? min : value > max ? max : value;
+    };
 
 	MATH.Vec3 = function(x,y,z){
 		this.data = new Float32Array([x,y,z]);

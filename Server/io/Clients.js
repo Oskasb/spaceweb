@@ -12,6 +12,7 @@ Clients.prototype.registerConnection = function(socket, dataHub) {
 	client.setState(client.clientStates.CONNECTED);
 	this.clients[client.id] = client;
 	client.sendToClient({id:'clientConnected', data:{clientId:client.id, pieceData:dataHub.configs.piece_data}});
+	client.sendToClient({id:'updateGameData', data:{clientId:client.id, gameData:dataHub.configs}});
 	client.notifyDataFrame();
 };
 

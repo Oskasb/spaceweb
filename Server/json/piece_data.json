@@ -1,5 +1,5 @@
 [{
-  "id":"piece_data",
+  "id":"PIECE_DATA",
   "pieces":{
     "player_ship":{
       "controls":{

@@ -741,11 +741,12 @@ define([
 	 * The method that actually starts the game loop
 	 * @private
 	 */
-	GooRunner.prototype._startGameLoop = function () {
+	GooRunner.prototype._startGameLoop = function (clientTickCallback) {
 
 		var _this = this;
 
 		function tick(time) {
+            clientTickCallback((time - _this.start) / 1000.0);
 			_this._updateFrame(time);
 			_this.animationId = window.requestAnimationFrame(tick)
 		}
@@ -760,9 +761,9 @@ define([
 	/**
 	 * Starts the game loop (done through requestAnimationFrame).
 	 */
-	GooRunner.prototype.startGameLoop = function () {
+	GooRunner.prototype.startGameLoop = function (clientTickCallback) {
 		this.manuallyPaused = false;
-		this._startGameLoop();
+		this._startGameLoop(clientTickCallback);
 	};
 
 	/**

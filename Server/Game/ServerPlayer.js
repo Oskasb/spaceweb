@@ -82,12 +82,12 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 
 };
 
-ServerPlayer.prototype.applyPieceConfig = function(configs) {
+ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
     if(!this.piece) {
         console.log('Bad Server Player');
         return
     }
-	this.piece.applyConfig(configs);
+	this.piece.applyConfig(pieceTypeConfigs);
 };
 
 ServerPlayer.prototype.makePacket = function() {

@@ -44,7 +44,7 @@ define([
                 if (this.applies.effect_data) {
                     this.setupEffectData(this.applies.effect_data, this.applies.state_factor || 1);
                 }
-
+/*
                 if (this.applies.transform) {
                     //    this.entity = GooEntityFactory.buildRootEntity();
                     this.entity = GooEntityFactory.addChildEntity(gooParent);
@@ -56,8 +56,12 @@ define([
                         GooEntityFactory.rotateEntity(this.entity, this.applies.transform.rot);
                     }
                 } else {
+
                     this.entity = gooParent;
+
                 }
+                */
+                this.entity = gooParent;
             }
 
             
@@ -140,7 +144,7 @@ define([
                     particle.progress = 0.5 + Math.clamp(piece.spatial.rotVel[0], -0.49, 0.49);
                 };
 
-                this.attachGameEffect(piece.spatial, this.applies.game_effect, particleUpdate)
+                this.attachModuleEffect(piece.spatial, this.applies.game_effect, particleUpdate)
             }
 
 
@@ -158,8 +162,16 @@ define([
         };
 
 
-        GooModule.prototype.attachGameEffect = function(spatial, game_effect, particleUpdate) {
-            this.gameEffect.attachGameEffect(spatial, game_effect, particleUpdate)
+        GooModule.prototype.attachModuleEffect = function(spatial, game_effect, particleUpdate) {
+
+            this.gameEffect.attachGameEffect(spatial, game_effect, particleUpdate);
+            this.effectAttached = true;
+        };
+
+        GooModule.prototype.activateGooModule = function() {
+            if (this.effectAttached) {
+                this.gameEffect.startGooEffect()
+            }
         };
 
 
@@ -199,21 +211,24 @@ define([
         };
 
 
-        GooModule.prototype.readWorldTransform = function(pos, rot) {
+        GooModule.prototype.readWorldTransform = function(pos, rot, rotVel) {
 
             this.entity.transformComponent.updateWorldTransform();
-            this.tempSpatial.rot.setXYZ(rot[0], rot[1], rot[2]);
+            this.tempSpatial.rot.setArray(rot);
 
             this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
 
-            this.tempSpatial.pos.setXYZ(pos[0], pos[1], pos[2]);
+            this.tempSpatial.pos.setArray(pos);
+
+            this.tempSpatial.pos.data[0] *= (1-Math.abs(MATH.clamp(rotVel, -0.6, 0.6)*0.2));
 
             this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.pos);
 
-            this.tempSpatial.pos.data[0] = this.entity.transformComponent.worldTransform.translation.data[0];
-            this.tempSpatial.pos.data[1] = this.entity.transformComponent.worldTransform.translation.data[1];
-            this.tempSpatial.pos.data[2] = this.entity.transformComponent.worldTransform.translation.data[2];
+            this.tempSpatial.pos.data[0] += this.entity.transformComponent.worldTransform.translation.data[0];
+            this.tempSpatial.pos.data[1] += this.entity.transformComponent.worldTransform.translation.data[1];
+            this.tempSpatial.pos.data[2] += this.entity.transformComponent.worldTransform.translation.data[2];
 
+            //
     //        evt.fire(evt.list().DRAW_POINT_AT, {pos:this.entity.transformComponent.worldTransform.translation, color:"YELLOW"})
         };
 
@@ -223,7 +238,7 @@ define([
             if (this.applies) {
 
                 if (this.applies.transform) {
-                    this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot);
+                    this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot,  this.piece.spatial.rotVel[0]);
                 } else {
                     this.tempSpatial.pos.setVec(this.piece.spatial.pos);
                     this.tempSpatial.rot.setXYZ(0, 0, this.piece.spatial.rot);

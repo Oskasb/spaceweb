@@ -205,11 +205,33 @@ function(
     Simulator.prototype.resetParticle = function(particle, pos, i) {
         particle.dead = true;
         particle.position.setDirect(0, 0, 0);
-        pos[3 * i + 0] = 0;
+        pos[3 * i    ] = 0;
         pos[3 * i + 1] = -1000;
         pos[3 * i + 2] = 0;
         this.aliveParticles--;
     };
+
+	Simulator.prototype.updateParticleBuffers = function(particle, tpf, i, pos, col, data) {
+
+		pos[3 * i    ] = particle.position.data[0];
+		pos[3 * i + 1] = particle.position.data[1];
+		pos[3 * i + 2] = particle.position.data[2];
+
+		col[4 * i + 3] = particle.alpha;
+
+		data[4 * i    ] += data[4 * i + 1] * tpf;
+		data[4 * i + 2] += data[4 * i + 3] * tpf;
+	};
+
+	Simulator.prototype.updateParticleFrame = function(particle, tpf, acceleration, alpha) {
+		
+		calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
+		particle.position.addVector(calcVec);
+		particle.velocity.mulDirect(acceleration, acceleration, acceleration);
+		particle.velocity.addDirect(0, particle.gravity * tpf, 0);
+		particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
+	};
+
 
 	Simulator.prototype.updateParticle = function(tpf, i, acceleration, pos, col, alpha, data) {
 
@@ -226,21 +248,8 @@ function(
             return;
         }
 
-        calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
-        particle.position.addVector(calcVec);
-        //	var damping = 0.999;
-        particle.velocity.mulDirect(acceleration, acceleration, acceleration);
-        particle.velocity.addDirect(0, particle.gravity * tpf, 0);
-        particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
-
-        pos[3 * i + 0] = particle.position.data[0];
-        pos[3 * i + 1] = particle.position.data[1];
-        pos[3 * i + 2] = particle.position.data[2];
-
-        col[4 * i + 3] = particle.alpha;
-
-        data[4 * i + 0] += data[4 * i + 1] * tpf;
-        data[4 * i + 2] += data[4 * i + 3] * tpf;
+		this.updateParticleFrame(particle, tpf, acceleration, alpha);
+		this.updateParticleBuffers(particle, tpf, i, pos, col, data);
     };
 
 

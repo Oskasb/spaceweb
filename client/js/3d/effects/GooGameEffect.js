@@ -34,8 +34,6 @@ define([
                 this.callbacks.particleUpdate = particleUpdate;
                 this.callbacks.onParticleAdded = onParticleAdded;
                 this.callbacks.onParticleDead = onParticleDead;
-
-            this.startGooEffect()
         };
 
         GooGameEffect.prototype.startGooEffect = function() {
