@@ -58,15 +58,33 @@ ServerWorld.prototype.applyControlModule = function(sourcePiece, moduleData, act
 
 };
 
+ServerWorld.prototype.attachModules = function(conf, gameConfigs) {
 
-ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, bulletConfig) {
+    for (var i = 0; i < conf.attachment_points.length; i++) {
+        conf.modules.push(gameConfigs.MODULE_DATA[conf.attachment_points[i].module])
+    }
+
+};
+
+
+ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, bulletConfig, gameConfigs) {
     var _this = this;
 
 	var apply = cannonModuleData.applies;
 	this.pieceCount++;
 	var bullet = new GAME.Piece('cannon_bullet', 'bullet_'+this.pieceCount, now, apply.lifeTime);
     bullet.registerParentPiece(sourcePiece);
-	bullet.applyConfig(bulletConfig);
+
+    var conf = {};
+
+    for (var key in bulletConfig) {
+        conf[key] = bulletConfig[key];
+    }
+    conf.modules = [];
+
+    this.attachModules(conf, gameConfigs);
+
+	bullet.applyConfig(conf);
 //	bullet.temporal.timeDelta = dt;
     bullet.spatial.setSpatial(sourcePiece.spatial);
 

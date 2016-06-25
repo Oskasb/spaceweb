@@ -260,8 +260,8 @@ if(typeof(GAME) == "undefined"){
 		this.modules = [];
 		this.moduleStates = {};
 		for (var i = 0; i < moduleConfigs.length; i++) {
-			var module = new GAME.PieceModule(moduleConfigs[i].id, moduleConfigs[i].data, this);
-			module.setModuleState(moduleConfigs[i].data.initState);
+			var module = new GAME.PieceModule(moduleConfigs[i].id, moduleConfigs[i], this);
+			module.setModuleState(moduleConfigs[i].initState);
 			this.modules.push(module);
 			if (!this.moduleStates[moduleConfigs[i].id]) {
 				this.moduleStates[moduleConfigs[i].id] = [];

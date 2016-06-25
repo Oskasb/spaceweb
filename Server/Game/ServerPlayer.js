@@ -1,4 +1,4 @@
-ServerPlayer = function(clientId, client, simTime) {
+ServerPlayer = function(pieceType, clientId, client, simTime) {
 
 	if (!client) {
 		console.log("Bad Client!", clientId);
@@ -8,6 +8,8 @@ ServerPlayer = function(clientId, client, simTime) {
 	this.id = clientId;
 	this.client = client;
 	this.clientId = clientId;
+
+	this.configs = {};
 
 	var piece;
 
@@ -19,7 +21,7 @@ ServerPlayer = function(clientId, client, simTime) {
 		client.broadcastToAll(piecePacket);
 	};
 	
-	piece = new GAME.Piece('player_ship', this.id, simTime, Number.MAX_VALUE, broadcast);
+	piece = new GAME.Piece(pieceType, this.id, simTime, Number.MAX_VALUE, broadcast);
 	this.piece = piece;
 	this.piece.teleportRandom();
 
@@ -78,16 +80,29 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 
 
 //	console.log("handlers: ", JSON.stringify(actionHandlers))
-
-
 };
 
-ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
+ServerPlayer.prototype.attachModule = function(attachmentPoint, moduleConfigs) {
+	this.configs.modules.push(moduleConfigs[attachmentPoint.module]);
+};
+
+ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs, gameConfigs) {
     if(!this.piece) {
         console.log('Bad Server Player');
         return
     }
-	this.piece.applyConfig(pieceTypeConfigs);
+
+	for (var key in pieceTypeConfigs) {
+		this.configs[key] = pieceTypeConfigs[key];
+	}
+
+	this.configs.modules = [];
+
+	for (var i = 0; i < this.configs.attachment_points.length; i++) {
+		this.attachModule(this.configs.attachment_points[i], gameConfigs.MODULE_DATA);
+	}
+
+	this.piece.applyConfig(this.configs);
 };
 
 ServerPlayer.prototype.makePacket = function() {

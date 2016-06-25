@@ -70,7 +70,7 @@ ServerGameMain.prototype.initGame = function() {
 	var _this = this;
 
 	function fireCannon(piece, action, value, moduleData) {
-        _this.serverWorld.addBullet(piece, moduleData, _this.getNow(), _this.pieceConfigs.cannon_bullet);
+        _this.serverWorld.addBullet(piece, moduleData, _this.getNow(), _this.pieceConfigs.cannon_bullet, _this.gameConfigs);
 	}
 
     function applyControl(piece, action, value, moduleData) {
@@ -88,7 +88,7 @@ ServerGameMain.prototype.initGame = function() {
 
 
 ServerGameMain.prototype.addPlayer = function(player) {
-	player.applyPieceConfig(this.pieceConfigs.player_ship);
+	player.applyPieceConfig(this.pieceConfigs[player.piece.type], this.gameConfigs);
 	this.serverWorld.addPlayer(player);
 };
 
@@ -121,7 +121,7 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 			if (player) {
 				console.log("Player already registered", data.clientId);
 			} else {
-				player = new ServerPlayer(data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
+				player = new ServerPlayer('player_ship', data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
 			}
 			player.piece.setName(data.name);
 			

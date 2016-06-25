@@ -3,26 +3,43 @@
 
 
 define([
-        'Events'
+        'Events',
+    'PipelineObject'
     ],
     function(
-        evt
+        evt,
+        PipelineObject
     ) {
 
-        var ClientModule = function(clientPiece, moduleData, serverState) {
+        var ClientModule = function(clientPiece, moduleId, serverState) {
 
             this.clientPiece = clientPiece;
-            this.id = moduleData.id;
-            this.data = moduleData.data;
+            this.id = moduleId;
             this.state = serverState[0];
+            this.on = false;
             this.lastValue = null;
-
-            this.on = true;
             
-    //        console.log("ClientModule", moduleData, serverState);
-            this.gooModule = clientPiece.gooPiece.attachModule(this);
-            this.gooModule.activateGooModule();
+            var applyModuleData = function(src, data) {
+            //    console.log("Module data", src, data);
+                this.data = data;
+                
+                if (this.on) {
+                    console.log("Module already on", this);
+                    return;
+                }
+
+                this.gooModule = clientPiece.gooPiece.attachModule(this);
+                this.gooModule.activateGooModule();
+                clientPiece.registerModule(this);
+                this.on = true;
+            //    moduleReadyCb(this);
+            }.bind(this);
+
+            this.pipeObj = new PipelineObject('MODULE_DATA', this.id, applyModuleData)
         };
+
+
+
 
         ClientModule.prototype.applyModuleServerState = function (serverState) {
 
@@ -58,7 +75,7 @@ define([
         };
 
         ClientModule.prototype.removeClientModule = function () {
-
+            this.pipeObj.removePipelineObject();
             this.gooModule.removeModule();
                         
         };

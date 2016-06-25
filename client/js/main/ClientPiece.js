@@ -7,7 +7,8 @@ define([
 	'io/InputSegmentRadial',
     'PipelineObject',
 	'PipelineAPI',
-    'game/ClientModule'
+    'game/ClientModule',
+        'game/AttachmentPoint'
 ],
 	function(
 		evt,
@@ -15,7 +16,8 @@ define([
 		InputSegmentRadial,
         PipelineObject,
 		PipelineAPI,
-        ClientModule
+        ClientModule,
+        AttachmentPoint
 		) {
 
 		var textStyle = {
@@ -31,6 +33,7 @@ define([
             var _this = this;
 
             this.clientModules = [];
+            this.attachmentPoints = [];
 
 			this.isOwnPlayer = false;
 			var piece = new GAME.Piece(serverState.type, serverState.playerId);
@@ -50,21 +53,35 @@ define([
             var applyPieceData = function(src, data) {
        //         console.log("Attach pieceData", src, data)
                 _this.pieceData = data;
-                _this.attachModules(data.modules);
+                _this.addAttachmentPoints(data.attachment_points)
+                //       _this.attachModules(data.modules);
             };
             
             this.pipelineObject = new PipelineObject('PIECE_DATA', piece.type, applyPieceData);
             this.notifyServerState(serverState)
 		};
 
-		ClientPiece.prototype.attachModules = function(modules) {
+        ClientPiece.prototype.addAttachmentPoints = function(attachmentPoints) {
+            console.log("Attachments", attachmentPoints);
+            for (var i = 0; i < attachmentPoints.length; i++) {
+                var ap = new AttachmentPoint(attachmentPoints[i]);
+                if (ap.data.module) {
+                    this.attachModule(ap.data.module);
+                }
+                this.attachmentPoints.push(ap)
+            }
+        };
 
-			var serverState = this.piece.serverState;
+        ClientPiece.prototype.registerModule = function(module) {
+            this.clientModules.push(module);
+        };
 
-			for (var i = 0; i < modules.length; i++) {
-                this.clientModules.push(new ClientModule(this, modules[i], serverState.modules[modules[i].id]));
-			}
-		};
+        ClientPiece.prototype.attachModule = function(moduleId) {
+            var serverState = this.piece.serverState;
+            new ClientModule(this, moduleId, serverState.modules[moduleId]);
+        };
+        
+
 
 		ClientPiece.prototype.detachModules = function() {
             

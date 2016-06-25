@@ -1,10 +1,9 @@
 [{
   "id":"MODULE_DATA",
   "modules":{
-    "data":[
-      {
+
+    "hull":{
         "id":"hull",
-        "data":{
           "source":"initiate",
           "initState": true,
           "applies":{
@@ -18,10 +17,12 @@
             },
             "game_effect":"s11_piece"
           }
-        }
-      },{
+
+      },
+
+    "shield":{
         "id":"shield",
-        "data":{
+
           "initState": false,
           "applies":{
             "type":"toggle",
@@ -53,10 +54,11 @@
             },
             "game_effect":"ship_shield"
           }
-        }
-      },{
+
+      },
+
+    "hyper_drive":{
         "id":"hyper_drive",
-        "data":{
           "initState":false,
           "applies":{
             "type":"toggle",
@@ -81,10 +83,11 @@
             "game_effect":"hyper_drive",
             "emit_effect":"hyper_space_sparks"
           }
-        }
-      }, {
+
+      },
+    "lazer_cannon":{
         "id":"lazer_cannon",
-        "data":{
+
           "initState": true,
           "applies":{
             "type":"string",
@@ -99,10 +102,11 @@
 
             "game_effect":"cannon_lazer_module"
           }
-        }
-      },{
+
+      },
+    "plasma_cannon":{
         "id":"plasma_cannon",
-        "data":{
+
           "initState": true,
           "applies":{
             "type":"boolean",
@@ -115,10 +119,11 @@
             },
             "game_effect":"cannon_plasma_module"
           }
-        }
-      },{
+
+      },
+    "engine":{
         "id":"engine",
-        "data":{
+
           "source":"throttle",
           "initState": 0,
           "applies":{
@@ -139,10 +144,11 @@
             "threshold":0.2,
             "message":"wroom"
           }
-        }
-      },{
+
+      },
+    "inputControls":{
         "id":"inputControls",
-        "data":{
+
           "source":"currentState",
           "initState": [0, 0],
           "applies":{
@@ -150,10 +156,11 @@
             "state":true,
             "action":"applyControl"
           }
-        }
-      },{
+
+      },
+    "nameplate":{
         "id":"nameplate",
-        "data":{
+
           "source":"playerName",
           "initState":"noName",
           "applies":{
@@ -162,10 +169,11 @@
             "action":"applyControl",
             "message":"Name On"
           }
-        }
-      },{
+
+      },
+    "bullet_shell":{
         "id":"bullet_shell",
-        "data":{
+
           "source":"initiate",
           "initState": true,
           "applies":{
@@ -179,8 +187,7 @@
             "remove_effect":"shell_detonate"
           }
         }
-      }
-    ]
+
 
   }
 }]
