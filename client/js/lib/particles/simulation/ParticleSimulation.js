@@ -125,13 +125,16 @@ define([
 
 	};
 
+    ParticleSimulation.prototype.renderParticleUpdate = function(renderer, tpf, particle) {
+        renderer.updateParticle(tpf, particle)
+    };
+
 	ParticleSimulation.prototype.renderParticle = function(tpf, particle) {
 
 		for (var i = 0; i < this.renderers.length; i++) {
-			if (typeof(this.renderers[i].updateParticle) == 'function') {
-				this.renderers[i].updateParticle(tpf, particle)
-			}
-
+		//	if (typeof(this.renderers[i].updateParticle) == 'function') {
+            this.renderParticleUpdate(this.renderers[i], tpf, particle);
+		//	}
 		}
 
 	};

@@ -850,11 +850,7 @@ define([
 	 * @param {boolean} [clear=false] true/false to clear or not clear all types, or an object in the form <code>{color:true/false, depth:true/false, stencil:true/false}
 	 */
 	Renderer.prototype.render = function (renderList, camera, lights, renderTarget, clear, overrideMaterials) {
-		if (overrideMaterials) {
-			this._overrideMaterials = (overrideMaterials instanceof Array) ? overrideMaterials : [overrideMaterials];
-		} else {
-			this._overrideMaterials = [];
-		}
+
 		if (!camera) {
 			return;
 		} else if (Renderer.mainCamera === null) {
@@ -863,11 +859,9 @@ define([
 
 		this.setRenderTarget(renderTarget);
 
-		if (clear === undefined || clear === null || clear === true) {
-			this.clear();
-		} else if (typeof clear === 'object') {
-			this.clear(clear.color, clear.depth, clear.stencil);
-		}
+
+        this.clear();
+
 
 		this.rendererRecord.shaderCache.forEach(function (shader) {
 			shader.startFrame();
@@ -880,8 +874,7 @@ define([
 		renderInfo.lights = lights;
 		renderInfo.shadowHandler = this.shadowHandler;
 		renderInfo.renderer = this;
-
-		if (Array.isArray(renderList)) {
+        
 			this.renderQueue.sort(renderList, camera);
 
 			for (var i = 0; i < renderList.length; i++) {
@@ -892,15 +885,7 @@ define([
 				renderInfo.fill(renderable);
 				this.renderMesh(renderInfo);
 			}
-		} else {
-			renderInfo.fill(renderList);
-			this.renderMesh(renderInfo);
-		}
 
-		// TODO: shouldnt we check for generateMipmaps setting on rendertarget?
-		if (renderTarget && renderTarget.generateMipmaps && Util.isPowerOfTwo(renderTarget.width) && Util.isPowerOfTwo(renderTarget.height)) {
-			this.updateRenderTargetMipmap(renderTarget);
-		}
 	};
 
 	/*
@@ -1967,11 +1952,15 @@ define([
 		}
 	};
 
+	Renderer.prototype.newVertexAttributeHashKey = function (attribIndex, attribute, hashKey) {
+			this.context.vertexAttribPointer(attribIndex, attribute.count, this.getGLDataType(attribute.type), attribute.normalized, attribute.stride, attribute.offset);
+			this.rendererRecord.attributeCache[attribIndex] = attribute.hashKey;
+	};
+
 	Renderer.prototype.bindVertexAttribute = function (attribIndex, attribute) {
 		var hashKey = this.rendererRecord.attributeCache[attribIndex];
 		if (hashKey !== attribute.hashKey) {
-			this.context.vertexAttribPointer(attribIndex, attribute.count, this.getGLDataType(attribute.type), attribute.normalized, attribute.stride, attribute.offset);
-			this.rendererRecord.attributeCache[attribIndex] = attribute.hashKey;
+			this.newVertexAttributeHashKey (attribIndex, attribute);
 		}
 	};
 
