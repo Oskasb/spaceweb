@@ -851,6 +851,12 @@ define([
 	 */
 	Renderer.prototype.render = function (renderList, camera, lights, renderTarget, clear, overrideMaterials) {
 
+        if (clear === undefined || clear === null || clear === true) {
+            this.clear();
+        } else if (typeof clear === 'object') {
+            this.clear(clear.color, clear.depth, clear.stencil);
+        }
+
 		if (!camera) {
 			return;
 		} else if (Renderer.mainCamera === null) {
@@ -858,9 +864,6 @@ define([
 		}
 
 		this.setRenderTarget(renderTarget);
-
-
-        this.clear();
 
 
 		this.rendererRecord.shaderCache.forEach(function (shader) {
@@ -874,17 +877,19 @@ define([
 		renderInfo.lights = lights;
 		renderInfo.shadowHandler = this.shadowHandler;
 		renderInfo.renderer = this;
-        
-			this.renderQueue.sort(renderList, camera);
 
-			for (var i = 0; i < renderList.length; i++) {
-				var renderable = renderList[i];
-				if (renderable.isSkybox && this._overrideMaterials.length > 0) {
-					continue;
-				}
-				renderInfo.fill(renderable);
-				this.renderMesh(renderInfo);
-			}
+
+            this.renderQueue.sort(renderList, camera);
+
+            for (var i = 0; i < renderList.length; i++) {
+                var renderable = renderList[i];
+                if (renderable.isSkybox && this._overrideMaterials.length > 0) {
+                    continue;
+                }
+                renderInfo.fill(renderable);
+                this.renderMesh(renderInfo);
+            }
+
 
 	};
 
