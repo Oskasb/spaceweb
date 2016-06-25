@@ -83,23 +83,31 @@ define(["EventList"], function(eventList) {
         setupEvent(event);
 
         var remove = function() {
-            removeListener(event, singleShot);
-        };
-
-
-        var singleShot = function(args) {
-
-            remove();
-
+            asynchifySplice(listeners[event.type], singleShot);
+            onceListeners--;
             if (onceListeners < 0) {
                 console.log("overdose singleshots", event);
             }
+        };
 
-            onceListeners--;
+        var call = function(args) {
+            callback(args);
+        };
+
+        var singleShot = function(args) {
+
+            call(args);
+            remove();
+
+            call = function() {
+        //        console.log("multiple calls to once call...", args)
+            };
+
+            remove = function() {
+        //        console.log("multiple removes to once call...", event, args)
+            };
+
             fireEvent(list().MONITOR_STATUS, {LISTENERS_ONCE:onceListeners});
-
-        //    setTimeout(function() {
-                callback(args);
         //    },0);
         };
 
@@ -111,15 +119,15 @@ define(["EventList"], function(eventList) {
         fireEvent(list().MONITOR_STATUS, {LISTENERS_ONCE:onceListeners});
     };
 
+    var asynchifySplice = function(listnrs, cb) {
+        setTimeout(function() {
+            spliceListener(listnrs, cb)
+        }, 0)
+    };
 
-    var spliceListener = function(listeners, callback) {
-        var asynchifySplice = function(listnrs, cb) {
-            setTimeout(function() {
-                listener = listnrs.splice(listnrs.indexOf(cb), 1)[0];
-                fireEvent(list().MONITOR_STATUS, {EVENT_LISTENERS:getListenerCount()});
-            }, 0)
-        };
-        asynchifySplice(listeners, callback);
+    var spliceListener = function(listeners, cb) {
+        listeners.splice(listeners.indexOf(cb), 1);
+        fireEvent(list().MONITOR_STATUS, {EVENT_LISTENERS:getListenerCount()});
     };
 
     var firedCount = 0;
@@ -159,7 +167,7 @@ define(["EventList"], function(eventList) {
             return;
         }
 
-        spliceListener(listeners[event.type], callback);
+        asynchifySplice(listeners[event.type], callback);
     };
 
 

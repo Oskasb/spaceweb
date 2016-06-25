@@ -81,7 +81,7 @@ define([
             this.uiSystems.push(domCanvas);
 
             var setupReady = function(data) {
-                console.log("Config for 3d canvas:", data);
+    //            console.log("Config for 3d canvas:", data);
                 domCanvas.initCanvasSystem(data);
             };
 
@@ -106,7 +106,6 @@ define([
             this.uiSystems.push(domCanvas);
 
             var setupReady = function(data) {
-                console.log("Config for 3d canvas:", data);
                 domCanvas.initCanvasSystem(data);
             };
 

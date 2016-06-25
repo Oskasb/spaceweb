@@ -193,7 +193,7 @@ define([
                 tpf = exactTpf;
 
             } else {
-                console.log("Big DT", tpf, exactTpf, aggDiff);
+        //        console.log("Big DT", tpf, exactTpf, aggDiff);
             }
             
             evt.fire(evt.list().CLIENT_TICK, {frame:frame, tpf:tpf});

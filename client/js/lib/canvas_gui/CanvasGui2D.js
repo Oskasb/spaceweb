@@ -10,7 +10,7 @@ define([
 		) {
 
 	    var CanvasGui2D = function(parentDiv, resolution) {
-			console.log(parentDiv);
+	//		console.log(parentDiv);
 			this.parentDiv = parentDiv;
 
 			this.config = {

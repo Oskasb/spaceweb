@@ -11,12 +11,12 @@ define([
     ) {
 
         var requestShields = function(src, data) {
-            console.log("request shields", src, data);
+    //        console.log("request shields", src, data);
             evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{shield:data}})
         };
 
         var requestHyperDrive = function(src, data) {
-            console.log("request hyperdrive", src, data);
+    //        console.log("request hyperdrive", src, data);
             evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{hyper_drive:data}})
         };
 
@@ -49,7 +49,7 @@ define([
 
         ControlStateDispatcher.prototype.moduleToggled = function(args) {
             if (!modules[args.id]) {
-                console.log("No module toggle handle for ", args.id)
+        //        console.log("No module toggle handle for ", args.id)
                 return;
             }
 

@@ -34,7 +34,7 @@ define([
                 this.cameraDefault.setVector(this.camera.transformComponent.transform.translation);
                 this.camera.transformComponent.transform.rotation.toAngles(this.defaultCamAngle);
                 this.defaultCamAngleZ = this.defaultCamAngles.data[2];
-                console.log("Cam to angles", this.defaultRotZ);
+        //        console.log("Cam to angles", this.defaultRotZ);
                 this.setupCameraEffects();
             }.bind(this);
 
@@ -49,7 +49,7 @@ define([
         GooCameraEffects.prototype.setupCameraEffects = function() {
 
             var moduleTodggled = function(e) {
-                console.log("Mod Toggle", e)
+    //            console.log("Mod Toggle", e)
                 this.handleToggledModule(evt.args(e))
             }.bind(this);
 
@@ -64,7 +64,7 @@ define([
         };
 
         GooCameraEffects.prototype.applyEffectState = function(effect, onOff) {
-            console.log("FX", effect, onOff)
+    //        console.log("FX", effect, onOff)
             if (onOff) {
                 this.setEffectVector(effect.vector, effect.rotfactor)
             } else {

@@ -18,7 +18,7 @@ define([
         var domPopups = {};
 
         var requestName = function(name) {
-            console.log("Popup request name: ", name)
+    //        console.log("Popup request name: ", name)
             evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'RequestProfileUpdate', data:{name:name}});
         };
 

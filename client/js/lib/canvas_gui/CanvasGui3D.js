@@ -25,7 +25,7 @@ define([
 
 
         var CanvasGui3D = function(cameraEntity, resolution, canvasGuiConfig) {
-			console.log(cameraEntity)
+			//		console.log(cameraEntity)
 
             this.guiConfig = {
                 element:{

@@ -71,7 +71,7 @@ define([
                     PipelineAPI.subscribeToCategoryKey('GAME_DATA', 'CAMERA', cameraReady);
 
                 } else {
-                    console.log(parent);
+        //            console.log(parent);
                     this.canvasApi.initDomCanvasGui(parent.element, this.callbackMap);
                     this.ctx = this.canvasApi.getCanvasContext();
                     this.ready = true;

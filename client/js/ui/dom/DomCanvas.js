@@ -55,7 +55,7 @@ define([
             };
 
             if (this.conf.enableOnEvent) {
-                console.log("Enable event", this.conf);
+    //            console.log("Enable event", this.conf);
                 var data = {};
                 data[this.conf.enableOnEvent.key] = false;
                 PipelineAPI.setCategoryData(this.conf.enableOnEvent.category, data);
