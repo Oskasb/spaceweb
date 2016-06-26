@@ -16,6 +16,21 @@
       "attachment_points":[
         {"name":"Plasma Blob" , "module":"plasma_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
       ]
-    }
-  }
+    },
+  "clay_blob_piece":{
+    "size":5,
+    "controls":{
+      "actions": {
+        "applyForward":1,
+        "timeoutEvent": "EXPLODE"
+      },
+      "constants":{
+        "velocityDrag":0.5,
+        "radialDrag":1
+      }
+    },
+    "attachment_points":[
+      {"name":"Clay Blob" , "module":"clay_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+    ]
+  }}
 }]

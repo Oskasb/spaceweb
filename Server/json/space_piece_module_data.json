@@ -3,7 +3,7 @@
   "modules":{
     "plasma_blob_module":{
       "id":"plasma_blob_module",
-
+      "size":3,
       "source":"initiate",
       "initState": true,
       "applies":{
@@ -21,6 +21,22 @@
           "acceleration":0.6
         },
         "emit_effect":"plasma_green_splatter",
+        "remove_effect":"shell_detonate"
+      }
+    },
+    "clay_blob_module":{
+      "id":"clay_blob_module",
+      "size":5,
+      "source":"initiate",
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyAppearance",
+        "game_effect":"clay_blob_effect",
+        "effect_data":{
+          "intensity":0.2
+        },
         "remove_effect":"shell_detonate"
       }
     }

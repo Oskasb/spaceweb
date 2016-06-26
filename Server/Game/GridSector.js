@@ -1,4 +1,4 @@
-GridSector = function(minX, minY, size, row, column, gridIndex, serverWorld) {
+GridSector = function(minX, minY, size, row, column, gridIndex, serverWorld, sectorConfigs) {
 
     this.serverWorld = serverWorld;
 
@@ -26,6 +26,7 @@ GridSector = function(minX, minY, size, row, column, gridIndex, serverWorld) {
 
 
 
+    this.configsUpdated(sectorConfigs);
 };
 
 
@@ -44,14 +45,24 @@ GridSector.prototype.makeHidePacket = function(piece) {
 
 GridSector.prototype.activateSector = function() {
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < this.sectorConfig.spawn.length; i++) {
+        this.spawnSelection(this.sectorConfig.spawn[i])
+    }
+};
+
+GridSector.prototype.spawnSelection = function(spawnData) {
+
+    var amount = spawnData.min + Math.floor(Math.random()* spawnData.max);
+
+    for (var i = 0; i < amount; i++) {
         var posx = this.sectorData.minX + Math.random() * this.sectorData.size;
         var posy = this.sectorData.minY + Math.random() * this.sectorData.size;
-        var piece = this.serverWorld.createWorldPiece('plasma_blob_piece', posx, posy);
+        var piece = this.serverWorld.createWorldPiece(spawnData.pieceType, posx, posy);
         this.activeSectorPieces.push(piece)
     }
 
 };
+
 
 GridSector.prototype.deactivateSector = function() {
 
@@ -190,7 +201,27 @@ GridSector.prototype.sectorBasedBroadcast = function(packet, recipients) {
 
 GridSector.prototype.configsUpdated = function(sectorConfigs) {
 
-    this.sectorConfig = sectorConfigs.data[Math.floor(Math.random()*sectorConfigs.data.length)]
+    var data = sectorConfigs.data;
+
+    var selection = Math.random();
+
+    var useData = data[0];
+
+
+
+    for (var i = 0; i < data.length; i++) {
+
+        if (data[i].weight > selection) {
+            useData = data[i];
+            i = data.length+1;
+        } else {
+            selection -= data[i].weight;
+        }
+    }
+
+    console.log(useData.id);
+
+    this.sectorConfig = useData;
     this.sectorData.sectorConfig = this.sectorConfig;
 };
 

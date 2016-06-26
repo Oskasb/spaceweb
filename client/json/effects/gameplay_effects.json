@@ -6,7 +6,7 @@
                 "id":"s11_piece",
                 "effect_data":[{
                     "effect":"s11_hull",
-                    "simulator":"StandardParticle",
+                    "simulator":"OpaqueParticle",
                     "density":1
                 }]
             },
@@ -25,21 +25,21 @@
                 "id":"cannon_lazer_module",
                 "effect_data":[{
                     "effect":"cannon_lazer_particle",
-                    "simulator":"StandardParticle"
+                    "simulator":"OpaqueParticle"
                 }]
             },
             {
                 "id":"cannon_plasma_module",
                 "effect_data":[{
                     "effect":"cannon_plasma_particle",
-                    "simulator":"StandardParticle"
+                    "simulator":"OpaqueParticle"
                 }]
             },
             {
                 "id":"cannon_auto_module",
                 "effect_data":[{
                     "effect":"cannon_auto_particle",
-                    "simulator":"StandardParticle"
+                    "simulator":"OpaqueParticle"
                 }]
             },
             {
@@ -273,6 +273,24 @@
                 "effect_data":[{
                     "effect":"flare_green_plasma",
                     "simulator":"AdditiveParticle",
+                    "density":1
+
+                }]
+            },
+            {
+                "id":"clay_blob_effect",
+                "effect_data":[{
+                    "effect":"clay_blob_steady_particles",
+                    "simulator":"OpaqueParticle",
+                    "density":1
+
+                }]
+            },
+            {
+                "id":"clay_blob_splatter",
+                "effect_data":[{
+                    "effect":"clay_blob_splatter_particles",
+                    "simulator":"OpaqueParticle",
                     "density":1
 
                 }]

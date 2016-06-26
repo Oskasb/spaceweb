@@ -1,6 +1,6 @@
 [{
   "dataType":"WORLD_GRID",
   "world":{
-      "gridData":{"minX":-2000, "minY":-2000, "rows":100, "columns":100, "sectorSize":100}
+      "gridData":{"minX":-2000, "minY":-2000, "rows":100, "columns":100, "sectorSize":60}
   }
 }]

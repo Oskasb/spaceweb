@@ -705,6 +705,46 @@
                     "trailwidth":1
                 }
             },
+
+            {
+                "id":"clay_blob_steady_particles",
+                "effect_data":{
+                    "color0":[0.7, 0.6, 0.6],
+                    "color1":[0.98, 0.9, 0.9],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0.2,
+                    "count":1,
+                    "opacity":[1, 1],
+                    "alpha":"oneToZero",
+                    "size":[1, 5],
+                    "growthFactor":[1.01, 0.7],
+                    "growth":"posToNeg",
+                    "rotation":[0,7],
+                    "spin":"posToNeg",
+                    "lifespan":[2, 2],
+                    "sprite":"space_rock"
+                }
+            },
+            {
+                "id":"clay_blob_splatter_particles",
+                "effect_data":{
+                    "color0":[0.1, 0.2, 0.4],
+                    "color1":[0.3, 0.7, 0.1],
+                    "colorCurve":"zeroToOne",
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[0, 1],
+                    "alpha":"oneToZero",
+                    "size":[0.2, 2.6],
+                    "strength":226,
+                    "spread":0.95,
+                    "acceleration":0.61,
+                    "lifespan":[0.06, 0.14],
+                    "loopcount":1,
+                    "sprite":"explosion"
+                }
+            },
+
             {
                 "id":"dust_speck",
                 "effect_data":{

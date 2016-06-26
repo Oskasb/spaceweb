@@ -2,8 +2,45 @@
   "dataType":"GRID_SECTORS",
   "sectors":{
     "data":[
-      {"id":"default" , "spawn":{"pieceType":"space_rock", "min":1, "max":5}},
-      {"id":"crowded" , "spawn":{"pieceType":"space_rock", "min":5, "max":25}}
+      {"id":"sparse",
+        "weight":0.5,
+        "spawn":[
+          {"pieceType":"plasma_blob_piece", "min":0, "max":1},
+          {"pieceType":"clay_blob_piece", "min":0, "max":1}
+      ]},
+
+      {"id":"average",
+        "weight":0.2,
+        "spawn":[
+          {"pieceType":"plasma_blob_piece", "min":0, "max":3},
+          {"pieceType":"clay_blob_piece", "min":0, "max":3}
+        ]},
+
+      {"id":"dense",
+        "weight":0.1,
+        "spawn":[
+          {"pieceType":"plasma_blob_piece", "min":2, "max":5},
+          {"pieceType":"clay_blob_piece", "min":2, "max":5}
+        ]},
+
+      {"id":"crowded",
+        "weight":0.1,
+        "spawn":[
+          {"pieceType":"plasma_blob_piece", "min":5, "max":8},
+          {"pieceType":"clay_blob_piece", "min":5, "max":8}
+      ]},
+      {"id":"plasmatic",
+        "weight":0.1,
+        "spawn":[
+          {"pieceType":"plasma_blob_piece", "min":7, "max":15},
+          {"pieceType":"clay_blob_piece", "min":0, "max":1}
+        ]},
+      {"id":"rockness",
+        "weight":0.1,
+        "spawn":[
+          {"pieceType":"plasma_blob_piece", "min":0, "max":1},
+          {"pieceType":"clay_blob_piece", "min":8, "max":15}
+        ]}
     ]
 
   }

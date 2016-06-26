@@ -148,6 +148,11 @@ define({
 				"id":"s11_center",
 				"tiles":[[5, 11]]
 			},
+
+			{
+				"id":"space_rock",
+				"tiles":[[0, 10]]
+			},
 			{
 				"id":"flaredot",
 				"tiles":[[4, 0]]

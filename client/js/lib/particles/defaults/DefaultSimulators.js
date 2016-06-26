@@ -50,7 +50,7 @@ define({
 			"renderers": [
 				"ParticleRenderer"
 			],
-			"poolCount": 200,
+			"poolCount": 300,
 			"blending": {
 				"value": "CustomBlending",
 				"type": "option",
@@ -59,6 +59,27 @@ define({
 			},
 			"alphakill": {
 				"value": 0.01,
+				"type": "number",
+				"min": 0.0,
+				"max": 1.0
+
+			}
+		},
+		{
+			"id": "OpaqueParticle",
+			"atlas":"defaultSpriteAtlas",
+			"renderers": [
+				"ParticleRenderer"
+			],
+			"poolCount": 300,
+			"blending": {
+				"value": "NoBlending",
+				"type": "option",
+				"values": ["AdditiveBlending", "SubtractiveBlending", "MultiplyBlending", "NoBlending", "CustomBlending"],
+				"texts": ["AdditiveBlending", "SubtractiveBlending", "MultiplyBlending", "NoBlending", "CustomBlending"]
+			},
+			"alphakill": {
+				"value": 0.3,
 				"type": "number",
 				"min": 0.0,
 				"max": 1.0

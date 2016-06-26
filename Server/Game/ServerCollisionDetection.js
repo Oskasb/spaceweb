@@ -25,7 +25,14 @@ ServerCollisionDetection.prototype.checkIntersection = function(pieceA, pieceB, 
 
 ServerCollisionDetection.prototype.fastPieceAgainstSlowPiece = function(fastPiece, slowPiece,  storePos, storeNorm) {
 
+    if (fastPiece.spatial.getVelVec().getLengthSquared() < 0.01) {
+        return false;
+    }
+
     this.calcVec.setVec(fastPiece.spatial.getVelVec());
+
+
+
     this.calcVec2.setVec(fastPiece.spatial.getPosVec());
     this.calcVec3.setVec(slowPiece.spatial.getPosVec());
 
