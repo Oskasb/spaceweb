@@ -211,8 +211,18 @@ if(typeof(MATH) == "undefined"){
 
     MATH.Vec3.prototype.dotVec = function(vec3) {
         return this.data[0] * vec3.data[0] + this.data[1] * vec3.data[1] + this.data[2] * vec3.data[2];
+
     };
 
+	MATH.Vec3.prototype.crossVec = function(vec3) {
+		this.setXYZ(
+            vec3.data[2] * this.data[1] - vec3.data[1] * this.data[2],
+		    vec3.data[0] * this.data[2] - vec3.data[2] * this.data[0],
+		    vec3.data[1] * this.data[0] - vec3.data[0] * this.data[1]
+        )
+	};
+	
+	
     MATH.Vec3.prototype.mulVec = function(vec3) {
         this.data[0] *= vec3.data[0];
         this.data[1] *= vec3.data[1];
@@ -232,7 +242,9 @@ if(typeof(MATH) == "undefined"){
 		return x * x + y * y + z * z;
 	};
 
-
+	MATH.Vec3.prototype.getDistance = function(vec3) {
+		return Math.sqrt((this.getDistanceSquared(vec3)));
+	};
 	
 	MATH.Vec3.prototype.getLength = function() {
 		return Math.sqrt((this.data[0] * this.data[0]) + (this.data[1] * this.data[1]) + (this.data[2] * this.data[2]));

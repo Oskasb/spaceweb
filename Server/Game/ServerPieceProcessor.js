@@ -4,8 +4,9 @@ ServerPieceProcessor = function(broadcast) {
     
     this.calcVec = new MATH.Vec3(0, 0, 0);
     this.calcVec2 = new MATH.Vec3(0, 0, 0);
+    this.calcVec3 = new MATH.Vec3(0, 0, 0);
     this.hitPoint = new MATH.Vec3(0, 0, 0);
-    this.hitNormal = new MATH.Vec3(0, 0, 0)
+    this.hitNormal = new MATH.Vec3(0, 0, 0);
     this.callbacks = {
         broadcast:broadcast
     };
@@ -19,7 +20,6 @@ ServerPieceProcessor.prototype.checkProximity = function(players, pieces) {
         this.playerAgainstPieces(players[key], pieces);
         this.playerAgainstPlayers(players[key], players);
     }
-
 
 };
 
@@ -73,7 +73,6 @@ ServerPieceProcessor.prototype.playerAgainstPlayers = function(playerA, players)
         if (players[key] != playerA) {
             this.playerAgainstPlayer(playerA.piece, players[key].piece);
         }
-
     }
 
     this.collissions.length = 0;
@@ -82,10 +81,11 @@ ServerPieceProcessor.prototype.playerAgainstPlayers = function(playerA, players)
 
 ServerPieceProcessor.prototype.playerAgainstPlayer = function(pieceA, pieceB) {
 
-    this.calcVec.setVec(pieceA.spatial.getPosVec());
-    this.calcVec.subVec(pieceB.spatial.getPosVec());
 
-    if (this.calcVec.getLength() < 7) {
+    var hit = this.serverCollisionDetection.checkIntersection(pieceA, pieceB, this.hitPoint, this.hitNormal);
+
+    if (hit) {
+
         if (this.collissions.indexOf(pieceA) != -1 && this.collissions.indexOf(pieceB) != -1) {
             return;
         }
@@ -96,24 +96,43 @@ ServerPieceProcessor.prototype.playerAgainstPlayer = function(pieceA, pieceB) {
 
 
             if (pieceA.spatial.getVelVec().getLength() > pieceB.spatial.getVelVec().getLength()) {
-                this.collidePlayers(pieceA, pieceB)
+                this.collidePlayers(pieceA, pieceB, this.hitNormal)
             } else {
-                this.collidePlayers(pieceB, pieceA)
+                this.collidePlayers(pieceB, pieceA, this.hitNormal)
             }
 
+
+        pieceA.networkDirty = true;
+        pieceB.networkDirty = true;
 
         this.callbacks.broadcast(pieceA);
         this.callbacks.broadcast(pieceB);
 
         }
-
 };
 
-ServerPieceProcessor.prototype.collidePlayers = function(fastPiece, slowPiece) {
+ServerPieceProcessor.prototype.collidePlayers = function(fastPiece, slowPiece, hitNormal) {
+
     this.calcVec.setVec(fastPiece.spatial.getPosVec());
     this.calcVec.subVec(slowPiece.spatial.getPosVec());
-    fastPiece.spatial.getVelVec().addVec(this.calcVec);
 
-    this.calcVec.scale(-1);
-    slowPiece.spatial.getVelVec().addVec(this.calcVec);
+
+    this.calcVec2.setVec(fastPiece.spatial.getVelVec());
+    this.calcVec3.setVec(slowPiece.spatial.getVelVec());
+
+   // this.calcVec2.addVec(hitNormal);
+   // this.calcVec3.subVec(hitNormal);
+
+    this.calcVec.scale(1/this.calcVec.getLength());
+
+    this.calcVec2.subVec(this.calcVec);
+  //  this.calcVec2.scale(0.5);
+
+
+    this.calcVec3.addVec(this.calcVec);
+  //  this.calcVec3.scale(0.5);
+
+
+    fastPiece.spatial.getVelVec().setVec(this.calcVec3);
+    slowPiece.spatial.getVelVec().setVec(this.calcVec2);
 };

@@ -1,5 +1,5 @@
 [{
-  "id":"MODULE_DATA",
+  "dataType":"MODULE_DATA",
   "modules":{
 
     "hull":{
@@ -135,7 +135,6 @@
         "threshold":0.2,
         "message":"wroom"
       }
-
     },
     "inputControls":{
       "id":"inputControls",
@@ -161,60 +160,6 @@
         "message":"Name On"
       }
 
-    },
-    "bullet_shell":{
-      "id":"bullet_shell",
-
-      "source":"initiate",
-      "initState": true,
-      "applies":{
-        "type":"string",
-        "state":true,
-        "action":"applyAppearance",
-        "style":"cannon_bullet",
-        "message":"Load Bullet",
-        "game_effect":"bullet_trail",
-        "spawn_effect":"muzzle_flash_cannon",
-        "remove_effect":"shell_detonate"
-      }
-    },
-    "lazer_beam":{
-      "id":"lazer_beam",
-
-      "source":"initiate",
-      "initState": true,
-      "applies":{
-        "type":"string",
-        "state":true,
-        "action":"applyAppearance",
-        "game_effect":"lazer_bullet_effect",
-        "spawn_effect":"muzzle_flash_cannon",
-        "remove_effect":"shell_detonate"
-      }
-    },
-    "plasma_bullet":{
-      "id":"plasma_bullet",
-
-      "source":"initiate",
-      "initState": true,
-      "applies":{
-        "type":"string",
-        "state":true,
-        "action":"applyAppearance",
-        "game_effect":"plasma_bullet_effect",
-        "effect_data":{
-          "intensity":1,
-          "color":[0.4,1,0.4, 1],
-          "size":5,
-          "growth":[-200, -200],
-          "lifespan": [0.05, 0.5],
-          "strength":250,
-          "acceleration":0.4
-        },
-        "emit_effect":"plasma_green_splatter",
-        "spawn_effect":"muzzle_flash_cannon",
-        "remove_effect":"shell_detonate"
-      }
     }
 
 

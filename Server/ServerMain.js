@@ -24,7 +24,7 @@ ServerMain = function() {
 
 
 	function gameData(config) {
-		console.log("---- >Data Handler moduleData", config.id);
+		console.log("---- >Data Handler moduleData", config.dataType);
 		_this.dataHub.setConfig(config)
 		_this.serverGameMain.applyGameConfigs(_this.dataHub.getConfigs());
 	}
@@ -97,10 +97,10 @@ ServerMain.prototype.shutdownServerMain = function() {
 
 ServerMain.prototype.applyConfigData = function(updatedData) {
 
-	if (this.dataHandlers[updatedData.id]) {
-		this.dataHandlers[updatedData.id](updatedData)
+	if (this.dataHandlers[updatedData.dataType]) {
+		this.dataHandlers[updatedData.dataType](updatedData)
 	} else {
-		console.log("No handler fo config key: ", updatedData.id)
+		console.log("No handler fo config key: ", updatedData.dataType)
 	}
 };
 

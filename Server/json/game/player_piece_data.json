@@ -1,5 +1,5 @@
 [{
-  "id":"PIECE_DATA",
+  "dataType":"PIECE_DATA",
   "pieces":{
     "player_ship":{
       "controls":{
@@ -42,51 +42,6 @@
         {"name":"Point G", "module":"engine",       "transform":{ "rot":[0, 1, 0], "pos":[0, 2.8, 0]}},
         {"name":"Point H", "module":"inputControls"   },
         {"name":"Point I", "module":"nameplate"       }
-      ]
-    },
-    "cannon_bullet":{
-      "controls":{
-        "actions": {
-          "applyForward":1,
-          "timeoutEvent": "EXPLODE"
-        },
-        "constants":{
-          "velocityDrag":0,
-          "radialDrag":1
-        }
-      },
-      "attachment_points":[
-        {"name":"Warhead" , "module":"bullet_shell",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
-      ]
-    },
-    "lazer_beam_bullet":{
-      "controls":{
-        "actions": {
-          "applyForward":1,
-          "timeoutEvent": "EXPLODE"
-        },
-        "constants":{
-          "velocityDrag":0,
-          "radialDrag":1
-        }
-      },
-      "attachment_points":[
-        {"name":"Warhead" , "module":"lazer_beam",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
-      ]
-    },
-    "plasma_bullet":{
-      "controls":{
-        "actions": {
-          "applyForward":1,
-          "timeoutEvent": "EXPLODE"
-        },
-        "constants":{
-          "velocityDrag":0,
-          "radialDrag":1
-        }
-      },
-      "attachment_points":[
-        {"name":"Warhead" , "module":"plasma_bullet",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
       ]
     }
   }

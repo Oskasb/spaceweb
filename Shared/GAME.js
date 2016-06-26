@@ -321,15 +321,18 @@ if(typeof(GAME) == "undefined"){
         return this.moduleIndex[moduleId];
     };
 
-    GAME.Piece.prototype.getCollisionShape = function() {
+    GAME.Piece.prototype.getCollisionShape = function(store) {
         var hullData = this.getModuleById('hull');
-        if (!hullData) {
-            console.log("No hull for shape physics", this.id);
-			return {size:20}
-        } else {
-			return hullData.data;
-		}
 
+        store.size = 1;
+
+		for (var key in this.moduleIndex) {
+            if (this.getModuleById(key).data.size) {
+                if (this.getModuleById(key).data.size > store.size) {
+                    store.size = this.getModuleById(key).data.size;
+                }
+            }
+        }
     };
 
     GAME.Piece.prototype.getModuleStates = function() {

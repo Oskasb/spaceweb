@@ -33,14 +33,14 @@ DataHub.prototype.setConfig = function(config) {
 	// var config = JSON.parse(jsonConfig);
 	
 		for (var key in config) {
-			if (!this.configs[config.id]) {
-				this.configs[config.id] = {};
-				console.log("set config key", config.id)
+			if (!this.configs[config.dataType]) {
+				this.configs[config.dataType] = {};
+				console.log("set config key", config.dataType)
 			}
 
 			if (typeof(config[key]) != 'string') {
 				for (var dataType in config[key]) {
-					this.configs[config.id][dataType] = config[key][dataType];
+					this.configs[config.dataType][dataType] = config[key][dataType];
 				}
 			}
 		}

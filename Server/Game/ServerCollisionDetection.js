@@ -6,6 +6,11 @@ ServerCollisionDetection = function() {
     this.calcVec4 = new MATH.Vec3(0, 0, 0);
     this.calcVec5 = new MATH.Vec3(0, 0, 0);
     this.calcVec6 = new MATH.Vec3(0, 0, 0);
+    
+    this.shapeStore1 = {size:0};
+    this.shapeStore2 = {size:0};
+    
+    
 };
 
 ServerCollisionDetection.prototype.checkIntersection = function(pieceA, pieceB, storePos, storeNorm) {
@@ -26,40 +31,43 @@ ServerCollisionDetection.prototype.fastPieceAgainstSlowPiece = function(fastPiec
 
     this.calcVec.scale(fastPiece.temporal.stepTime);
 
-    var r = slowPiece.getCollisionShape().size;
+    slowPiece.getCollisionShape(this.shapeStore1);
+    fastPiece.getCollisionShape(this.shapeStore2);
 
-    if (this.calcVec2.getDistanceSquared(this.calcVec3) > this.calcVec.getLengthSquared() + r*r*5) {
+    var r = this.shapeStore1.size;
+    var r2 = this.shapeStore2.size;
+    
+    if (this.calcVec2.getDistance(this.calcVec3) > this.calcVec.getLength()*2 + 2*r + 2*r2) {
         // too far apart to intersect this frame;
         return;
     }
 
 
-
-    var steps = Math.ceil(this.calcVec.getLength() / r)*20;
+    var steps = Math.ceil(this.calcVec.getLength() / (r+r2))*20;
     this.calcVec.scale(1/steps);
 
-    var distSquared = 0;
+    var dist = 0;
     var lastDist = Number.MAX_VALUE;
 
     for (var i = 0; i < steps*2; i++) {
 
         this.calcVec2.addVec(this.calcVec);
 
-        distSquared = this.calcVec2.getDistanceSquared(this.calcVec3);
+        dist = this.calcVec2.getDistance(this.calcVec3);
 
-        if (lastDist < distSquared) {
+        if (lastDist < dist) {
             return false;
         }
 
-        if (Math.sqrt(distSquared) < r) {
-            console.log("Hit distance: ", Math.round(Math.sqrt(distSquared)*10)*0.1, r);
+        if (dist < (r+r2)) {
             storePos.setVec(this.calcVec2);
-            fastPiece.spatial.getForwardVector(storeNorm);
-
+            storeNorm.setVec(this.calcVec3);
+            storeNorm.subVec(storePos);
+            storeNorm.scale(1/(storeNorm.getDistance(storePos)));
             return true;
         }
 
-        lastDist = distSquared;
+        lastDist = dist;
     }
 
 };
