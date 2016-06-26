@@ -218,8 +218,7 @@ GridSector.prototype.configsUpdated = function(sectorConfigs) {
             selection -= data[i].weight;
         }
     }
-
-    console.log(useData.id);
+    
 
     this.sectorConfig = useData;
     this.sectorData.sectorConfig = this.sectorConfig;

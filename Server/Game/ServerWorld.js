@@ -122,7 +122,7 @@ ServerWorld.prototype.updateSectorStatus = function(player) {
     var sector = player.notifyCurrentGridSector(this.sectorGrid.getGridSectorForSpatial(player.piece.spatial));
 
     if (sector) {
-        console.log("Sector change", sector.row, sector.column);
+    //    console.log("Sector change", sector.row, sector.column);
     }
 
 };

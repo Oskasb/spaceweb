@@ -202,7 +202,7 @@ ServerPlayer.prototype.notifyCurrentGridSector = function(gridSector) {
 
         this.client.setVisiblePlayers(visiblePost);
 
-        console.log("Player diff APP, REM", playersAppear.length, playersRemove.length);
+ //       console.log("Player diff APP, REM", playersAppear.length, playersRemove.length);
 
 		return gridSector;
 	}
