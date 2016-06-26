@@ -192,14 +192,29 @@ define([
 
         GooModule.prototype.setupEffectData = function(effectData, factor) {
             for (var key in effectData) {
-                this.effectData.params[key] = effectData[key] / factor;
-                this.effectData.state[key] = 0;
+                if (effectData[key].length) {
+                    this.effectData.params[key] = [];
+                    this.effectData.state[key] = [];
+                    for (var i = 0; i < effectData[key].length; i++) {
+                        this.effectData.params[key][i] = effectData[key][i];
+                        this.effectData.state[key][i] = effectData[key][i];
+                    }
+                } else {
+                    this.effectData.params[key] = effectData[key] / factor;
+                    this.effectData.state[key] = 0;
+                }
             }
         };
 
         GooModule.prototype.populateEffectData = function(amplitude) {
             for (var key in this.effectData.params) {
-                this.effectData.state[key] = this.effectData.params[key] * amplitude;
+                if (this.effectData.params[key].length) {
+                    for (var i = 0; i < this.effectData.params[key].length; i++) {
+                        this.effectData.state[key][i] = this.effectData.params[key][i] * amplitude;
+                    }
+                } else {
+                    this.effectData.state[key] = this.effectData.params[key] * amplitude;
+                }
             }
         };
 

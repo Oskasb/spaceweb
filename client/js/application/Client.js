@@ -199,7 +199,9 @@ define([
         };
 
         Client.prototype.processResponseStack = function(responseStack) {
-            if (responseStack.length) {
+
+            if (responseStack.length > 2) {
+                this.handleServerMessage(responseStack.shift());
                 this.handleServerMessage(responseStack.shift());
             }
 
@@ -207,10 +209,10 @@ define([
                 this.handleServerMessage(responseStack.shift());
             }
 
-            if (responseStack.length > 3) {
-                this.handleServerMessage(responseStack.shift());
+            if (responseStack.length) {
                 this.handleServerMessage(responseStack.shift());
             }
+
 
             if (responseStack.length > 5) {
                 this.handleServerMessage(responseStack.shift());

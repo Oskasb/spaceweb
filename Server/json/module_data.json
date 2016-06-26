@@ -3,77 +3,77 @@
   "modules":{
 
     "hull":{
-        "id":"hull",
-          "source":"initiate",
-          "initState": true,
-          "size":6,
-          "applies":{
-            "type":"string",
-            "state":true,
-            "action":"applyAppearance",
-            "message":"Hull On",
-            "game_effect":"s11_piece"
-          }
+      "id":"hull",
+      "source":"initiate",
+      "initState": true,
+      "size":6,
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyAppearance",
+        "message":"Hull On",
+        "game_effect":"s11_piece"
+      }
 
-      },
+    },
 
     "shield":{
-        "id":"shield",
+      "id":"shield",
 
-          "initState": false,
-          "applies":{
-            "type":"toggle",
-            "state":true,
-            "control_constants":{
-              "sthrottleAmplitude":-10,
-              "radialDrag":-0.5,
-              "radialLerpFactor":-0.05,
-              "velocityDrag":0.5
-            },
-            "drain":2,
-            "flicker":0.4,
-            "effect_data":{
-              "intensity":0.1,
-              "strength":1.2,
-              "lifeSpan":0.15
-            },
-            "animate":{
-              "rotation":-15,
-              "spread":6,
-              "size":0.1,
-              "oscillate":0.0,
-              "speed":8,
-              "diffusion":0.3
-            },
-            "game_effect":"ship_shield"
-          }
+      "initState": false,
+      "applies":{
+        "type":"toggle",
+        "state":true,
+        "control_constants":{
+          "sthrottleAmplitude":-10,
+          "radialDrag":-0.5,
+          "radialLerpFactor":-0.05,
+          "velocityDrag":0.5
+        },
+        "drain":2,
+        "flicker":0.4,
+        "effect_data":{
+          "intensity":0.1,
+          "strength":1.2,
+          "lifeSpan":0.15
+        },
+        "animate":{
+          "rotation":-15,
+          "spread":6,
+          "size":0.1,
+          "oscillate":0.0,
+          "speed":8,
+          "diffusion":0.3
+        },
+        "game_effect":"ship_shield"
+      }
 
-      },
+    },
 
     "hyper_drive":{
-        "id":"hyper_drive",
-          "initState":false,
-          "applies":{
-            "type":"toggle",
-            "state":true,
-            "control_constants":{
-              "sthrottleAmplitude":190,
-              "radialVelocityClamp":-0.14,
-              "radialDrag":-1,
-              "velocityDrag":-0.7
-            },
-            "drain":2,
-            "flicker":0.4,
-            "effect_data":{
-              "intensity":0.3,
-              "strength":332,
-              "lifeSpan":0.15
-            },
-            "game_effect":"hyper_drive",
-            "emit_effect":"hyper_space_sparks"
-          }
+      "id":"hyper_drive",
+      "initState":false,
+      "applies":{
+        "type":"toggle",
+        "state":true,
+        "control_constants":{
+          "sthrottleAmplitude":190,
+          "radialVelocityClamp":-0.14,
+          "radialDrag":-1,
+          "velocityDrag":-0.7
+        },
+        "drain":2,
+        "flicker":0.4,
+        "effect_data":{
+          "intensity":0.3,
+          "strength":332,
+          "lifeSpan":0.15
+        },
+        "game_effect":"hyper_drive",
+        "emit_effect":"hyper_space_sparks"
+      }
 
-      },
+    },
     "auto_cannon":{
       "id":"auto_cannon",
 
@@ -81,6 +81,7 @@
       "applies":{
         "type":"string",
         "action":"fireCannon",
+        "bullet":"cannon_bullet",
         "exitVelocity":95,
         "lifeTime":0.4,
         "game_effect":"cannon_auto_module"
@@ -88,93 +89,133 @@
 
     },
     "lazer_cannon":{
-        "id":"lazer_cannon",
+      "id":"lazer_cannon",
 
-          "initState": true,
-          "applies":{
-            "type":"string",
-            "action":"fireCannon",
-            "exitVelocity":95,
-            "lifeTime":0.4,
-            "game_effect":"cannon_lazer_module"
-          }
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "action":"fireCannon",
+        "bullet":"lazer_beam_bullet",
+        "exitVelocity":340,
+        "lifeTime":0.16,
+        "game_effect":"cannon_lazer_module"
+      }
 
-      },
+    },
     "plasma_cannon":{
-        "id":"plasma_cannon",
+      "id":"plasma_cannon",
 
-          "initState": true,
-          "applies":{
-            "type":"boolean",
-            "action":"fireCannon",
-            "exitVelocity":95,
-            "lifeTime":0.4,
-            "game_effect":"cannon_plasma_module"
-          }
+      "initState": true,
+      "applies":{
+        "type":"boolean",
+        "action":"fireCannon",
+        "bullet":"plasma_bullet",
+        "exitVelocity":65,
+        "lifeTime":0.7,
+        "game_effect":"cannon_plasma_module"
+      }
 
-      },
+    },
     "engine":{
-        "id":"engine",
+      "id":"engine",
 
-          "source":"throttle",
-          "initState": 0,
-          "applies":{
-            "type":"float",
-            "state":true,
-            "action":"applyForward",
-            "state_factor":30,
-            "emit_effect":"ship_engine",
-            "effect_data":{
-              "intensity":0.3,
-              "strength":15,
-              "lifeSpan":0.4
-            },
-            "threshold":0.2,
-            "message":"wroom"
-          }
+      "source":"throttle",
+      "initState": 0,
+      "applies":{
+        "type":"float",
+        "state":true,
+        "action":"applyForward",
+        "state_factor":30,
+        "emit_effect":"ship_engine",
+        "effect_data":{
+          "intensity":0.3,
+          "strength":15,
+          "lifeSpan":0.4
+        },
+        "threshold":0.2,
+        "message":"wroom"
+      }
 
-      },
+    },
     "inputControls":{
-        "id":"inputControls",
+      "id":"inputControls",
 
-          "source":"currentState",
-          "initState": [0, 0],
-          "applies":{
-            "type":"array",
-            "state":true,
-            "action":"applyControl"
-          }
+      "source":"currentState",
+      "initState": [0, 0],
+      "applies":{
+        "type":"array",
+        "state":true,
+        "action":"applyControl"
+      }
 
-      },
+    },
     "nameplate":{
-        "id":"nameplate",
+      "id":"nameplate",
 
-          "source":"playerName",
-          "initState":"noName",
-          "applies":{
-            "type":"string",
-            "state":true,
-            "action":"applyControl",
-            "message":"Name On"
-          }
+      "source":"playerName",
+      "initState":"noName",
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyControl",
+        "message":"Name On"
+      }
 
-      },
+    },
     "bullet_shell":{
-        "id":"bullet_shell",
+      "id":"bullet_shell",
 
-          "source":"initiate",
-          "initState": true,
-          "applies":{
-            "type":"string",
-            "state":true,
-            "action":"applyAppearance",
-            "style":"cannon_bullet",
-            "message":"Load Bullet",
-            "game_effect":"bullet_trail",
-            "spawn_effect":"muzzle_flash_cannon",
-            "remove_effect":"shell_detonate"
-          }
-        }
+      "source":"initiate",
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyAppearance",
+        "style":"cannon_bullet",
+        "message":"Load Bullet",
+        "game_effect":"bullet_trail",
+        "spawn_effect":"muzzle_flash_cannon",
+        "remove_effect":"shell_detonate"
+      }
+    },
+    "lazer_beam":{
+      "id":"lazer_beam",
+
+      "source":"initiate",
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyAppearance",
+        "game_effect":"lazer_bullet_effect",
+        "spawn_effect":"muzzle_flash_cannon",
+        "remove_effect":"shell_detonate"
+      }
+    },
+    "plasma_bullet":{
+      "id":"plasma_bullet",
+
+      "source":"initiate",
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyAppearance",
+        "game_effect":"plasma_bullet_effect",
+        "effect_data":{
+          "intensity":1,
+          "color":[0.4,1,0.4, 1],
+          "size":5,
+          "growth":[-200, -200],
+          "lifespan": [0.05, 0.5],
+          "strength":250,
+          "acceleration":0.4
+        },
+        "emit_effect":"plasma_green_splatter",
+        "spawn_effect":"muzzle_flash_cannon",
+        "remove_effect":"shell_detonate"
+      }
+    }
 
 
   }

@@ -625,6 +625,87 @@
                 }
             },
             {
+                "id":"tail_red_lazer",
+                "effect_data":{
+                    "color0":[1,0.2, 0.2],
+                    "color1":[1,0.2, 0.2],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[1, 1],
+                    "alpha":"oneToZero",
+                    "size":[1, 1],
+                    "growthFactor":[1.01, 0.7],
+                    "growth":"posToNeg",
+                    "rotation":[0,7],
+                    "spin":"posToNeg",
+                    "lifespan":[2, 2],
+                    "sprite":"flaredot",
+                    "loopcount":1,
+                    "trailsprite":"sharp_trail",
+                    "trailwidth":1
+                }
+            },
+            {
+                "id":"tail_green_plasma",
+                "effect_data":{
+                    "color0":[0.3, 1, 0.1],
+                    "color1":[0.3, 1, 0.5],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[1, 1],
+                    "alpha":"oneToZero",
+
+                    "size":[1, 1],
+                    "lifespan":[2, 2],
+                    "loopcount":1,
+                    "trailsprite":"sharp_trail",
+                    "trailwidth":1
+                }
+            },
+            {
+                "id":"flare_green_plasma",
+                "effect_data":{
+                    "color0":[0.3, 1, 0.1],
+                    "color1":[0.3, 1, 0.5],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[1, 1],
+                    "alpha":"oneToZero",
+                    "size":[2, 2],
+                    "growthFactor":[1.01, 0.7],
+                    "growth":"posToNeg",
+                    "rotation":[0,7],
+                    "spin":"posToNeg",
+                    "lifespan":[2, 2],
+                    "sprite":"flaredot"
+                }
+            },
+            {
+                "id":"splatter_green_plasma",
+                "effect_data":{
+                    "color0":[0.3, 1, 0.1],
+                    "color1":[0.3, 1, 0.5],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0,
+                    "count":1,
+                    "opacity":[1, 1],
+                    "alpha":"oneToZero",
+                    "size":[0.2, 2.6],
+                    "strength":226,
+                    "spread":0.95,
+                    "acceleration":0.61,
+
+                    "lifespan":[0.16, 0.44],
+                    "loopcount":1,
+                    "sprite":"flaredot",
+                    "trailsprite":"sharp_trail",
+                    "trailwidth":1
+                }
+            },
+            {
                 "id":"dust_speck",
                 "effect_data":{
                     "color0":[1, 1, 1],
@@ -644,13 +725,13 @@
             {
                 "id":"background_star",
                 "effect_data":{
-                    "color0":[1, 0.8, 1],
-                    "color1":[1, 0.5, 0.3],
+                    "color0":[0.3, 1, 0.1],
+                    "color1":[0.3, 1, 0.5],
                     "colorCurve":[[0, 1], [1, 1]],
                     "colorRandom":0.2,
                     "count":1,
-                    "opacity":[0.7, 1],
-                    "size":[9, 229],
+                    "opacity":[0.3, 1],
+                    "size":[3, 4],
                     "gravity":0,
                     "rotation":[0,7],
                     "spinspeed":0,

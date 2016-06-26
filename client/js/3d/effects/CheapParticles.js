@@ -123,6 +123,7 @@ function(
 		var gravity = this.particleSettings.gravity;
 		var spread = this.particleSettings.spread;
 		var lifeSpan = [this.particleSettings.lifespan[0], this.particleSettings.lifespan[1]];
+        var acceleration = this.particleSettings.acceleration;
 
 		if (effectData) {
 			if (effectData.intensity) {
@@ -136,9 +137,19 @@ function(
 				alpha = effectData.opacity;
 			}
 
+            if (effectData.growth) {
+                growth[0] = effectData.growth[0];
+                growth[1] = effectData.growth[1];
+            }
+            
 			if (effectData.lifeSpan) {
 				lifeSpan[0] = effectData.lifeSpan * this.particleSettings.lifespan[0]+ this.particleSettings.lifespan[0]*0.5;
 				lifeSpan[1] = effectData.lifeSpan * this.particleSettings.lifespan[1]+ this.particleSettings.lifespan[1]*0.5;
+			}
+
+			if (effectData.lifespan) {
+				lifeSpan[0] = effectData.lifespan[0];
+				lifeSpan[1] = effectData.lifespan[1];
 			}
 
 			if (effectData.strength) {
@@ -146,8 +157,8 @@ function(
 			}
 
 			if (effectData.size) {
-				size[0] = effectData.size * size[0];
-				size[1] = effectData.size * size[1];
+				size[0] = effectData.size + effectData.size * size[0];
+				size[1] = effectData.size + effectData.size * size[1];
 			}
 
 			if (effectData.gravity) {
@@ -164,6 +175,11 @@ function(
 			if (effectData.spread) {
 				spread = effectData.spread;
 			}
+
+            if (effectData.acceleration) {
+                acceleration = effectData.acceleration;
+            }
+
 		}
 
 
@@ -189,6 +205,8 @@ function(
 				particle.gravity = gravity;
 				particle.opacity = alpha;
 				count--;
+
+                particle.acceleration = acceleration;
 
 				col[4 * i + 0] = color[0];
 				col[4 * i + 1] = color[1];
@@ -223,17 +241,17 @@ function(
 		data[4 * i + 2] += data[4 * i + 3] * tpf;
 	};
 
-	Simulator.prototype.updateParticleFrame = function(particle, tpf, acceleration, alpha) {
+	Simulator.prototype.updateParticleFrame = function(particle, tpf, alpha) {
 		
 		calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
 		particle.position.addVector(calcVec);
-		particle.velocity.mulDirect(acceleration, acceleration, acceleration);
+		particle.velocity.mulDirect(particle.acceleration, particle.acceleration, particle.acceleration);
 		particle.velocity.addDirect(0, particle.gravity * tpf, 0);
 		particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
 	};
 
 
-	Simulator.prototype.updateParticle = function(tpf, i, acceleration, pos, col, alpha, data) {
+	Simulator.prototype.updateParticle = function(tpf, i, pos, col, alpha, data) {
 
         var particle = this.particles[i];
 
@@ -248,10 +266,13 @@ function(
             return;
         }
 
-		this.updateParticleFrame(particle, tpf, acceleration, alpha);
+		this.updateParticleFrame(particle, tpf, alpha);
 		this.updateParticleBuffers(particle, tpf, i, pos, col, data);
+		frameStatus.lastAlive = i;
     };
 
+
+	var frameStatus = {lastAlive : 0};
 
 	Simulator.prototype.update = function(tpf) {
 
@@ -260,16 +281,16 @@ function(
 		var data = this.meshData.getAttributeBuffer('DATA');
 		var lastAlive = 0;
 		var alpha = this.inheritColor ? 1.0 : this.particleSettings.color[3];
-		var acceleration = this.particleSettings.acceleration;
+
 		for (var i = 0, l = this.particles.length; i < l; i++) {
 
-            this.updateParticle(tpf, i, acceleration, pos, col, alpha, data);
+            this.updateParticle(tpf, i, pos, col, alpha, data);
 
 			lastAlive = i;
 		}
 
-		this.meshData.indexLengths = [lastAlive];
-		this.meshData.indexCount = lastAlive;
+		this.meshData.indexLengths = [frameStatus.lastAlive];
+		this.meshData.indexCount = frameStatus.lastAlive;
 
 		this.meshData.setVertexDataUpdated();
 	};

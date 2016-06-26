@@ -24,7 +24,7 @@ define({
 					"type": "number"
 				},
 				"updateSpeed": {
-					"value": 4,
+					"value": 8,
 					"type": "number"
 				}
 			}

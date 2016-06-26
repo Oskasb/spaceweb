@@ -92,12 +92,14 @@ ServerWorld.prototype.attachModules = function(conf, gameConfigs) {
 };
 
 
-ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, bulletConfig, gameConfigs) {
-    var _this = this;
+ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, pieceData, gameConfigs) {
+    this.pieceCount++;
 
 	var apply = cannonModuleData.applies;
-	this.pieceCount++;
-	var bullet = new GAME.Piece('cannon_bullet', 'bullet_'+this.pieceCount, now, apply.lifeTime);
+    var bulletConfig = pieceData[apply.bullet];
+
+
+	var bullet = new GAME.Piece(apply.bullet, apply.bullet+' '+this.pieceCount, now, apply.lifeTime);
     bullet.registerParentPiece(sourcePiece);
 
     var conf = {};

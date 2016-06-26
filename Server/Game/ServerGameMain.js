@@ -65,7 +65,7 @@ ServerGameMain.prototype.initGame = function() {
 	var _this = this;
 
 	function fireCannon(piece, action, value, moduleData) {
-        _this.serverWorld.addBullet(piece, moduleData, _this.getNow(), _this.gameConfigs.PIECE_DATA.cannon_bullet, _this.gameConfigs);
+        _this.serverWorld.addBullet(piece, moduleData, _this.getNow(), _this.gameConfigs.PIECE_DATA, _this.gameConfigs);
 	}
 
     function applyControl(piece, action, value, moduleData) {
