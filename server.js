@@ -49,6 +49,7 @@ var SetupServer = function() {
 		'Server/Game/ServerWorld',
 		'Server/Game/ServerGameMain',
         'Server/Game/ServerPieceProcessor',
+		'Server/Game/ServerCollisionDetection',
 		'Server/ServerMain',
 		'Server/Game/ServerPlayer',
 		'Server/io/ConfigLoader'

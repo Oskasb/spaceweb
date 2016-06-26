@@ -86,22 +86,14 @@ ServerPlayer.prototype.attachModule = function(attachmentPoint, moduleConfigs) {
 	this.configs.modules.push(moduleConfigs[attachmentPoint.module]);
 };
 
-ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs, gameConfigs) {
+ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
     if(!this.piece) {
         console.log('Bad Server Player');
         return
     }
 
-	for (var key in pieceTypeConfigs) {
-		this.configs[key] = pieceTypeConfigs[key];
-	}
-
-	this.configs.modules = [];
-
-	for (var i = 0; i < this.configs.attachment_points.length; i++) {
-		this.attachModule(this.configs.attachment_points[i], gameConfigs.MODULE_DATA);
-	}
-
+	this.configs = pieceTypeConfigs;
+    
 	this.piece.applyConfig(this.configs);
 };
 

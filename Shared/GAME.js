@@ -321,7 +321,16 @@ if(typeof(GAME) == "undefined"){
         return this.moduleIndex[moduleId];
     };
 
+    GAME.Piece.prototype.getCollisionShape = function() {
+        var hullData = this.getModuleById('hull');
+        if (!hullData) {
+            console.log("No hull for shape physics", this.id);
+			return {size:20}
+        } else {
+			return hullData.data;
+		}
 
+    };
 
     GAME.Piece.prototype.getModuleStates = function() {
 		return this.moduleStates;

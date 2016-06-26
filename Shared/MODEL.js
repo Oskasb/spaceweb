@@ -23,7 +23,7 @@ if(typeof(MODEL) == "undefined"){
 			rot:[0],
 			rotVel:[0]
 		};
-		this.pos = new MATH.Vec3(0, 0, 0.1);
+		this.pos = new MATH.Vec3(0, 0, 0);
 		this.vel = new MATH.Vec3(0, 0, 0);
 		this.rot = [0];
 		this.rotVel = [0];

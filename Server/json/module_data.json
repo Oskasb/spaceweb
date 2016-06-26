@@ -6,15 +6,12 @@
         "id":"hull",
           "source":"initiate",
           "initState": true,
+          "size":6,
           "applies":{
             "type":"string",
             "state":true,
             "action":"applyAppearance",
             "message":"Hull On",
-            "transform":{
-              "rot":[0, 0, 0],
-              "pos":[0, 0.1, 0]
-            },
             "game_effect":"s11_piece"
           }
 
@@ -39,10 +36,6 @@
               "intensity":0.1,
               "strength":1.2,
               "lifeSpan":0.15
-            },
-            "transform":{
-              "rot":[0, 3.14, 0],
-              "pos":[0, -0.1, 3]
             },
             "animate":{
               "rotation":-15,
@@ -76,15 +69,24 @@
               "strength":332,
               "lifeSpan":0.15
             },
-            "transform":{
-              "rot":[0, 1, 0],
-              "pos":[0, -0.6, 0 ]
-            },
             "game_effect":"hyper_drive",
             "emit_effect":"hyper_space_sparks"
           }
 
       },
+    "auto_cannon":{
+      "id":"auto_cannon",
+
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "action":"fireCannon",
+        "exitVelocity":95,
+        "lifeTime":0.4,
+        "game_effect":"cannon_auto_module"
+      }
+
+    },
     "lazer_cannon":{
         "id":"lazer_cannon",
 
@@ -94,12 +96,6 @@
             "action":"fireCannon",
             "exitVelocity":95,
             "lifeTime":0.4,
-
-            "transform":{
-              "rot":[0, 0, 0],
-              "pos":[2.2, -1.7, 1]
-            },
-
             "game_effect":"cannon_lazer_module"
           }
 
@@ -113,10 +109,6 @@
             "action":"fireCannon",
             "exitVelocity":95,
             "lifeTime":0.4,
-            "transform":{
-              "rot":[0, 0, 0],
-              "pos":[-2.2, -1.7, 1]
-            },
             "game_effect":"cannon_plasma_module"
           }
 
@@ -136,10 +128,6 @@
               "intensity":0.3,
               "strength":15,
               "lifeSpan":0.4
-            },
-            "transform":{
-              "rot":[0, 1, 0],
-              "pos":[0, 2.8, 0]
             },
             "threshold":0.2,
             "message":"wroom"

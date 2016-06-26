@@ -12,7 +12,7 @@ define([
         evt
     ) {
 
-        var GooModule = function(module, piece, gooParent) {
+        var GooModule = function(module, piece, gooParent, attachmentPoint) {
             
             this.tempSpatial = {
                 pos:new MATH.Vec3(0, 0, 0),
@@ -21,6 +21,8 @@ define([
 
             var _this = this;
     //        console.log(module.data)
+
+            this.transform = attachmentPoint.data.transform;
 
             this.particles = [];
             this.piece = piece;
@@ -74,7 +76,7 @@ define([
 
                 var getPosition = function() {
 
-                    if  (_this.applies.transform) {
+                    if  (_this.transform) {
                         // _this.readWorldTransform(_this.applies.transform.pos, _this.applies.transform.rot);
                         return _this.tempSpatial.pos.data;
                     } else {
@@ -148,8 +150,8 @@ define([
             }
 
 
-            if (this.applies.transform) {
-                this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot)
+            if (this.transform) {
+                this.readWorldTransform(this.transform.pos, this.transform.rot)
             }
 
             if (this.applies.spawn_effect) {
@@ -237,8 +239,8 @@ define([
 
             if (this.applies) {
 
-                if (this.applies.transform) {
-                    this.readWorldTransform(this.applies.transform.pos, this.applies.transform.rot,  this.piece.spatial.rotVel[0]);
+                if (this.transform) {
+                    this.readWorldTransform(this.transform.pos, this.transform.rot,  this.piece.spatial.rotVel[0]);
                 } else {
                     this.tempSpatial.pos.setVec(this.piece.spatial.pos);
                     this.tempSpatial.rot.setXYZ(0, 0, this.piece.spatial.rot);

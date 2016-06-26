@@ -11,11 +11,19 @@ define([
         PipelineObject
     ) {
 
-        var ClientModule = function(clientPiece, moduleId, serverState) {
+        var ClientModule = function(clientPiece, attachmentPoint, serverState) {
 
             this.clientPiece = clientPiece;
-            this.id = moduleId;
-            this.state = serverState[0];
+            this.id = attachmentPoint.data.module;
+
+
+            if (serverState) {
+                this.state = serverState[0];
+            } else {
+                this.state = {value:false};
+                console.log("Server state missing for module", this);
+            }
+
             this.on = false;
             this.lastValue = null;
             
@@ -28,7 +36,7 @@ define([
                     return;
                 }
 
-                this.gooModule = clientPiece.gooPiece.attachModule(this);
+                this.gooModule = clientPiece.gooPiece.attachModule(this, attachmentPoint);
                 this.gooModule.activateGooModule();
                 clientPiece.registerModule(this);
                 this.on = true;
@@ -42,6 +50,11 @@ define([
 
 
         ClientModule.prototype.applyModuleServerState = function (serverState) {
+
+            if (!serverState[this.id]) {
+                console.log("No server state for", this.id);
+                return;
+            }
 
             if (this.state.value != serverState[this.id][0].value) {
         //        console.log("update state", this.id);

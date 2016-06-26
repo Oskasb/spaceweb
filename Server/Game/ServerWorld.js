@@ -21,23 +21,36 @@ ServerWorld.prototype.initWorld = function(clients) {
 	this.spawnStars();
 };
 
-ServerWorld.prototype.notifyConfigsUpdated = function(config) {
-    console.log("Module data updated...", config)
+ServerWorld.prototype.buildPieceData = function(pieceType, gameConfigs) {
+
+    var config = {};
+
+    for (var key in gameConfigs.PIECE_DATA[pieceType]) {
+        config[key] = gameConfigs.PIECE_DATA[pieceType][key];
+    }
+
+    config.modules = [];
+
+    this.attachModules(config, gameConfigs);
+
+    return config;
+};
+
+
+ServerWorld.prototype.notifyConfigsUpdated = function(gameConfigs) {
+    console.log("Module data updated...", gameConfigs.PIECE_DATA);
 
     for (var key in this.players) {
-    //    this.players[key].applyPieceConfig(config[this.players[key].piece.type]);
-        this.players[key].client.sendToClient({id:'updateGameData', data:{clientId:this.players[key].client.id, gameData:config}});
+
+        if (gameConfigs.PIECE_DATA) {
+            this.players[key].applyPieceConfig(this.buildPieceData(this.players[key].piece.type, gameConfigs));
+        }
+
+        console.log("Notify player...", key)
+        this.players[key].client.sendToClient({id:'updateGameData', data:{clientId:this.players[key].client.id, gameData:gameConfigs}});
         this.players[key].client.notifyDataFrame();
     }
 
-};
-
-ServerWorld.prototype.pieceConfigsUpdated = function(config) {
-	for (var key in this.players) {
-		this.players[key].applyPieceConfig(config[this.players[key].piece.type]);
-	//	this.players[key].client.sendToClient({id:'clientConnected', data:{clientId:this.players[key].client.id, pieceData:config}});
-		this.players[key].client.notifyDataFrame();
-	}
 };
 
 
@@ -61,7 +74,19 @@ ServerWorld.prototype.applyControlModule = function(sourcePiece, moduleData, act
 ServerWorld.prototype.attachModules = function(conf, gameConfigs) {
 
     for (var i = 0; i < conf.attachment_points.length; i++) {
-        conf.modules.push(gameConfigs.MODULE_DATA[conf.attachment_points[i].module])
+        var module = {};
+        var ap = conf.attachment_points[i];
+        var config = gameConfigs.MODULE_DATA[ap.module];
+
+        for (var key in config) {
+            module[key] = config[key];
+        }
+
+        for (key in ap) {
+            module[key] = ap[key];
+        }
+
+        conf.modules.push(module);
     }
 
 };
@@ -93,7 +118,7 @@ ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, b
 
     bullet.spatial.pos.addVec(this.calcVec);
 
-	this.calcVec.setArray(apply.transform.pos);
+	this.calcVec.setArray(cannonModuleData.transform.pos);
 
 	this.calcVec.rotateZ(sourcePiece.spatial.rot[0]);
 

@@ -21,12 +21,7 @@ ServerMain = function() {
 		_this.configLoader.applyFileConfigs(config);
 	}
 
-	function pieceData(config) {
 
-        _this.dataHub.setConfig(config)
-    //    console.log("---- >Data Handler pieceData", _this.dataHub.getConfig(config.id));
-		_this.serverGameMain.applyPieceConfigs(_this.dataHub.getConfig(config.id));
-	}
 
 	function gameData(config) {
 		console.log("---- >Data Handler moduleData", config.id);
@@ -39,7 +34,7 @@ ServerMain = function() {
 	this.dataHandlers = {
 		server_setup:serverSetup,
 		config_files:configFiles,
-        PIECE_DATA:pieceData,
+        PIECE_DATA:gameData,
         MODULE_DATA:gameData
 	};
 

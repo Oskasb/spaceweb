@@ -53,7 +53,7 @@ define([
             var applyPieceData = function(src, data) {
        //         console.log("Attach pieceData", src, data)
                 _this.pieceData = data;
-                _this.addAttachmentPoints(data.attachment_points)
+                _this.addAttachmentPoints(data.attachment_points);
                 //       _this.attachModules(data.modules);
             };
             
@@ -62,11 +62,14 @@ define([
 		};
 
         ClientPiece.prototype.addAttachmentPoints = function(attachmentPoints) {
-            console.log("Attachments", attachmentPoints);
+
+            this.detachModules();
+            this.attachmentPoints.length = 0;
+
             for (var i = 0; i < attachmentPoints.length; i++) {
                 var ap = new AttachmentPoint(attachmentPoints[i]);
                 if (ap.data.module) {
-                    this.attachModule(ap.data.module);
+                    this.attachModule(ap);
                 }
                 this.attachmentPoints.push(ap)
             }
@@ -76,11 +79,10 @@ define([
             this.clientModules.push(module);
         };
 
-        ClientPiece.prototype.attachModule = function(moduleId) {
+        ClientPiece.prototype.attachModule = function(attachmentPoint) {
             var serverState = this.piece.serverState;
-            new ClientModule(this, moduleId, serverState.modules[moduleId]);
+            new ClientModule(this, attachmentPoint, serverState.modules[attachmentPoint.data.module]);
         };
-        
 
 
 		ClientPiece.prototype.detachModules = function() {
@@ -88,6 +90,7 @@ define([
             for (var i= 0; i < this.clientModules.length; i++) {
                 this.clientModules[i].removeClientModule()
             }
+            this.clientModules.length = 0;
 		};
 
 		ClientPiece.prototype.getPieceId = function() {

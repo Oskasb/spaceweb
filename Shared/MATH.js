@@ -190,12 +190,9 @@ if(typeof(MATH) == "undefined"){
 	MATH.Vec3.prototype.rotateZ = function(angZ) {
 		var cs = Math.cos(angZ);
 		var sn = Math.sin(angZ);
-		this.setXYZ(this.data[0] * cs - this.data[1] * sn, this.data[0] * sn + this.data[1] * cs);
+		this.setXYZ(this.data[0] * cs - this.data[1] * sn, this.data[0] * sn + this.data[1] * cs, 0);
 		return this;		
 	};
-	
-	
-
 
 
 	MATH.Vec3.prototype.radialLerp = function(start, end, frac) {
@@ -212,6 +209,31 @@ if(typeof(MATH) == "undefined"){
 		return this;
 	};
 
+    MATH.Vec3.prototype.dotVec = function(vec3) {
+        return this.data[0] * vec3.data[0] + this.data[1] * vec3.data[1] + this.data[2] * vec3.data[2];
+    };
+
+    MATH.Vec3.prototype.mulVec = function(vec3) {
+        this.data[0] *= vec3.data[0];
+        this.data[1] *= vec3.data[1];
+        this.data[2] *= vec3.data[2];
+
+        return this;
+    };
+    
+    MATH.Vec3.prototype.getLengthSquared = function() {
+        return this.dotVec(this);
+    };
+
+	MATH.Vec3.prototype.getDistanceSquared = function(vec3) {
+		var x = this.data[0] - vec3.data[0],
+			y = this.data[1] - vec3.data[1],
+			z = this.data[2] - vec3.data[2];
+		return x * x + y * y + z * z;
+	};
+
+
+	
 	MATH.Vec3.prototype.getLength = function() {
 		return Math.sqrt((this.data[0] * this.data[0]) + (this.data[1] * this.data[1]) + (this.data[2] * this.data[2]));
 	};

@@ -1,6 +1,11 @@
 ServerPieceProcessor = function(broadcast) {
+    
+    this.serverCollisionDetection = new ServerCollisionDetection();
+    
     this.calcVec = new MATH.Vec3(0, 0, 0);
     this.calcVec2 = new MATH.Vec3(0, 0, 0);
+    this.hitPoint = new MATH.Vec3(0, 0, 0);
+    this.hitNormal = new MATH.Vec3(0, 0, 0)
     this.callbacks = {
         broadcast:broadcast
     };
@@ -28,26 +33,38 @@ ServerPieceProcessor.prototype.playerAgainstPieces = function(player, pieces) {
 
 ServerPieceProcessor.prototype.playerAgainstPiece = function(playerPiece, piece) {
 
-    this.calcVec.setVec(playerPiece.spatial.getPosVec());
-    this.calcVec.subVec(piece.spatial.getPosVec());
+    if (piece.parentPiece == playerPiece) {
+        return;
+    }
+    
+    var hit = this.serverCollisionDetection.checkIntersection(playerPiece, piece, this.hitPoint, this.hitNormal);
+    
+    if (hit) {
+        
+    //    console.log("hit: ", this.hitNormal.data[0], this.hitNormal.data[1], this.hitNormal.data[2]);
 
-    if (this.calcVec.getLength() < 7) {
-        if (piece.parentPiece != playerPiece) {
+
             piece.setState(GAME.ENUMS.PieceStates.BURST);
             piece.setState(GAME.ENUMS.PieceStates.EXPLODE);
 
-            this.calcVec.setVec(piece.spatial.getPosVec());
-            this.calcVec.subVec(playerPiece.spatial.getPosVec());
+            piece.spatial.pos.setVec(this.hitPoint);
+            piece.spatial.vel.setXYZ(0, 0, 0);
+
+            this.calcVec.setVec(this.hitNormal);
+
+        //    this.calcVec.subVec(playerPiece.spatial.getPosVec());
         //    fastPiece.spatial.getVelVec().addVec(this.calcVec);
 
-            this.calcVec.scale(-0.6);
+        //    this.calcVec.scale(-0.6);
             playerPiece.spatial.getVelVec().scale(0.5);
             playerPiece.spatial.getVelVec().addVec(this.calcVec);
 
+            piece.networkDirty = true;
+            playerPiece.networkDirty = true;
 
             this.callbacks.broadcast(piece);
             this.callbacks.broadcast(playerPiece);
-        }
+
     }
 };
 
