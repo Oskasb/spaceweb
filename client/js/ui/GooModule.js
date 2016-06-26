@@ -215,6 +215,25 @@ define([
                 } else {
                     this.effectData.state[key] = this.effectData.params[key] * amplitude;
                 }
+
+
+                var check = function(value, key) {
+                    if (typeof(value) != 'number') {
+                        console.log("Bad Value", key, effectData[key])
+                    }
+                };
+
+                var effectData = this.effectData.state;
+
+                for (var key in effectData) {
+                    if (effectData[key].length) {
+                        for (var i = 0; i < effectData[key].length; i++) {
+                            check(effectData[key][i], key)
+                        }
+                    } else {
+                        check(effectData[key], key)
+                    }
+                }
             }
         };
 

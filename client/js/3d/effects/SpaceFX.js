@@ -232,7 +232,7 @@ define([
 
 
                 } else {
-                    console.log("No SpaceFX for ", args.id);
+                    console.log("No SpaceFX for ", args.id, configs);
                 }
 
                 if (backgrounds[effectIndex[args.id]]) {

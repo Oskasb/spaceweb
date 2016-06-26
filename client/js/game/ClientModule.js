@@ -57,7 +57,7 @@ define([
             }
 
             if (this.state.value != serverState[this.id][0].value) {
-        //        console.log("update state", this.id);
+                console.log("update state", this.id);
             //    this.lastValue = this.state.value;
             }
 

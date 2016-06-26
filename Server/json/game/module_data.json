@@ -33,9 +33,7 @@
         "drain":2,
         "flicker":0.4,
         "effect_data":{
-          "intensity":0.1,
-          "strength":1.2,
-          "lifeSpan":0.15
+          "intensity":1
         },
         "animate":{
           "rotation":-15,

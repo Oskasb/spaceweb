@@ -7,7 +7,7 @@ GridSector = function(minX, minY, maxX, maxY, row, column, gridIndex) {
         maxX : maxX,
         minY : minY,
         maxY : maxY,
-        config:this.sectorConfig;
+        config:this.sectorConfig
     };
 
     this.row = row;
