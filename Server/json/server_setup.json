@@ -10,11 +10,12 @@
   "dataType":"config_files",
   "watchFiles":true,
   "loadFiles":[
-    "game/piece_data",
-    "game/bullet_piece_data",
-    "game/player_piece_data",
-    "game/module_data",
-    "game/bullet_module_data",
+    "piece_data",
+    "space_piece_module_data",
+    "bullet_piece_data",
+    "player_piece_data",
+    "module_data",
+    "bullet_module_data",
     "world/grid_sector_data",
     "world/world_data"
   ]

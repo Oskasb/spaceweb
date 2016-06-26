@@ -516,5 +516,9 @@ if(typeof(GAME) == "undefined"){
 		}
     };
 
-
+    GAME.Piece.prototype.setRemoved = function() {
+        this.removed = true
+    };
+    
+    
 })(GAME);

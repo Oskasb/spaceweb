@@ -3,7 +3,11 @@ var SIMULATION_LOOP;
 var NETWORK_LOOP;
 
 ServerGameMain = function(clients, serverWorld) {
+	
+    this.pieceSpawner = new PieceSpawner(serverWorld);
+    
 	this.serverWorld = serverWorld;
+    this.serverWorld.setPieceSpawner(this.pieceSpawner);
 	this.startTime = process.hrtime();
 	this.processTime = process.hrtime();
 	this.currentTime = 0;
@@ -19,7 +23,7 @@ ServerGameMain = function(clients, serverWorld) {
 
 ServerGameMain.prototype.applyGameConfigs = function(gameConfigs) {
 	this.gameConfigs = gameConfigs;
-	this.serverWorld.notifyConfigsUpdated(this.gameConfigs);
+	this.pieceSpawner.notifyConfigsUpdated(this.gameConfigs, this.serverWorld.players);
 };
 
 
@@ -65,7 +69,8 @@ ServerGameMain.prototype.initGame = function() {
 	var _this = this;
 
 	function fireCannon(piece, action, value, moduleData) {
-        _this.serverWorld.addBullet(piece, moduleData, _this.getNow(), _this.gameConfigs.PIECE_DATA, _this.gameConfigs);
+        var bulletPiece = _this.pieceSpawner.spawnBullet(piece, moduleData, _this.getNow(), _this.gameConfigs.PIECE_DATA, _this.gameConfigs)
+        _this.serverWorld.addWorldPiece(bulletPiece);
 	}
 
     function applyControl(piece, action, value, moduleData) {
@@ -81,16 +86,6 @@ ServerGameMain.prototype.initGame = function() {
 	this.serverWorld.initWorld(this.clients);
 };
 
-
-ServerGameMain.prototype.addPlayer = function(player) {
-
-
-
-    var config = this.serverWorld.buildPieceData(player.piece.type, this.gameConfigs);
-    
-	player.applyPieceConfig(config);
-	this.serverWorld.addPlayer(player);
-};
 
 ServerGameMain.prototype.playerDiconected = function(clientId) {
 	var player = this.serverWorld.getPlayer(clientId);
@@ -113,31 +108,16 @@ ServerGameMain.prototype.playerInput = function(data, clientId) {
 ServerGameMain.prototype.registerPlayer = function(data) {
 
 	var client = this.clients.getClientById(data.clientId);
-	if (client) {
-		console.log("Client present, state:", client.getState());
-		if (client.getState() == client.clientStates.CONNECTED) {
+    if (!client) {
+        console.log("Somethingm broken, no client...");
+        return;
+    }
+    var player = this.pieceSpawner.spawnPlayerPiece(client, data, this.clients, this.simulationTime, this.gameConfigs);
 
-			var player = this.serverWorld.getPlayer(data.clientId);
-			if (player) {
-				console.log("Player already registered", data.clientId);
-			} else {
-				player = new ServerPlayer('player_ship', data.clientId, this.clients.getClientById(data.clientId), this.simulationTime);
-			}
-			player.piece.setName(data.name);
-			
-			this.addPlayer(player);
-			client.broadcastToVisible(player.makePacket());
-		} else {
-			console.log("ERR - suspect client state:", client.getState(), data.clientId);
-			return;
-		}
-	} else {
-		console.log("ERR - No client for request:", data.clientId)
-		return;
-	}
-	
-//	console.log("register player", JSON.stringify(data));
-	
+    this.serverWorld.addPlayer(player);
+    client.broadcastToVisible(player.makePacket());
+
+
 };
 
 ServerGameMain.prototype.getNow = function() {

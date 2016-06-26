@@ -1,12 +1,13 @@
-GridSector = function(minX, minY, maxX, maxY, row, column, gridIndex) {
+GridSector = function(minX, minY, size, row, column, gridIndex, serverWorld) {
+
+    this.serverWorld = serverWorld;
 
     this.sectorConfig = null;
 
     this.sectorData = {
         minX : minX,
-        maxX : maxX,
         minY : minY,
-        maxY : maxY,
+        size : size,
         config:this.sectorConfig,
         presentPlayers:0
     };
@@ -21,6 +22,48 @@ GridSector = function(minX, minY, maxX, maxY, row, column, gridIndex) {
 
     this.visiblePlayers = [];
 
+    this.activeSectorPieces = [];
+
+
+
+};
+
+
+GridSector.prototype.makeAppearPacket = function(piece) {
+    var iAppearPacket = piece.makePacket();
+    iAppearPacket.data.state = GAME.ENUMS.PieceStates.APPEAR;
+    return iAppearPacket;
+};
+
+GridSector.prototype.makeHidePacket = function(piece) {
+    var iHidePacket = piece.makePacket();
+    iHidePacket.data.state = GAME.ENUMS.PieceStates.HIDE;
+    return iHidePacket;
+
+};
+
+GridSector.prototype.activateSector = function() {
+
+    for (var i = 0; i < 5; i++) {
+        var posx = this.sectorData.minX + Math.random() * this.sectorData.size;
+        var posy = this.sectorData.minY + Math.random() * this.sectorData.size;
+        var piece = this.serverWorld.createWorldPiece('plasma_blob_piece', posx, posy);
+        this.activeSectorPieces.push(piece)
+    }
+
+};
+
+GridSector.prototype.deactivateSector = function() {
+
+    for (var i = 0; i < this.activeSectorPieces.length; i++) {
+        var piece = this.activeSectorPieces[i];
+        if (piece) {
+            piece.setState(GAME.ENUMS.PieceStates.TIME_OUT)
+        }
+    }
+
+    this.activeSectorPieces.length = 0;
+
 };
 
 GridSector.prototype.addNeighborSector = function(neightborSector) {
@@ -30,9 +73,26 @@ GridSector.prototype.addNeighborSector = function(neightborSector) {
 
 
 GridSector.prototype.notifyPlayerLeave = function(player) {
-    
+
+
+
     this.activeSectorPlayers.splice(this.activeSectorPlayers.indexOf(player), 1);
     this.sectorData.presentPlayers = this.activeSectorPlayers.length;
+
+    for (var i = 0; i < this.activeSectorPieces.length; i++) {
+        player.client.sendToClient(this.makeHidePacket(this.activeSectorPieces[i]));
+    }
+
+    this.visiblePlayers.length = 0;
+
+    this.getVisiblePlayers(this.visiblePlayers);
+
+    if (this.visiblePlayers.length == 0) {
+        this.deactivateSector()
+    }
+
+    this.notifyNeighborSectors();
+
 };
 
 GridSector.prototype.getVisiblePlayers = function(store) {
@@ -51,13 +111,66 @@ GridSector.prototype.getVisiblePlayers = function(store) {
             store.push(this.activeSectorPlayers[j]);
         }
     }
-    
 };
 
-GridSector.prototype.notifyPlayerEnter = function(player) {
-    
+GridSector.prototype.neighborActive = function() {
+
+    this.visiblePlayers.length = 0;
+
+    this.getVisiblePlayers(this.visiblePlayers);
+
+
+    if (this.visiblePlayers.length == 0) {
+
+        this.deactivateSector();
+
+    } else {
+
+        if (!this.activeSectorPieces.length) {
+            this.activateSector();
+        }
+
+        for (var i = 0; i < this.visiblePlayers.length; i++) {
+            this.playerSeeSectorPieces(this.visiblePlayers[i]);
+        }
+    }
+
+};
+
+GridSector.prototype.notifyNeighborSectors = function() {
+
+    for (var i = 0; i < this.neighborSectors.length; i++) {
+        this.neighborSectors[i].neighborActive();
+    }
+
+};
+
+GridSector.prototype.playerSeeSectorPieces = function(player) {
+
+    for (var i = 0; i < this.activeSectorPieces.length; i++) {
+        if (!this.activeSectorPieces[i].removed) {
+            player.client.sendToClient(this.makeAppearPacket(this.activeSectorPieces[i]));
+        }
+    }
+
+};
+
+GridSector.prototype.addPlayerToSector = function(player) {
     this.activeSectorPlayers.push(player);
+};
+
+
+GridSector.prototype.notifyPlayerEnter = function(player) {
+
+    if (this.activeSectorPieces.length == 0) {
+        this.activateSector()
+    }
+
+    
+    this.notifyNeighborSectors();
+
     this.sectorData.presentPlayers = this.activeSectorPlayers.length;
+    this.playerSeeSectorPieces(player);
 };
 
 

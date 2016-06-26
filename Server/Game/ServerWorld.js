@@ -1,5 +1,6 @@
 ServerWorld = function(sectorGrid) {
     this.sectorGrid = sectorGrid;
+    sectorGrid.setServerWorld(this);
 	this.players = {};
 	this.playerCount = 0;
 	this.pieces = [];
@@ -17,129 +18,33 @@ ServerWorld = function(sectorGrid) {
     this.serverPieceProcessor = new ServerPieceProcessor(broadcast);
 };
 
+ServerWorld.prototype.setPieceSpawner = function(pieceSpawner) {
+	this.pieceSpawner = pieceSpawner;
+};
+
 ServerWorld.prototype.initWorld = function(clients) {
 	this.clients = clients;
-	this.spawnStars();
 };
 
-ServerWorld.prototype.buildPieceData = function(pieceType, gameConfigs) {
-
-    var config = {};
-
-    for (var key in gameConfigs.PIECE_DATA[pieceType]) {
-        config[key] = gameConfigs.PIECE_DATA[pieceType][key];
-    }
-
-    config.modules = [];
-
-    this.attachModules(config, gameConfigs);
-
-    return config;
-};
-
-
-ServerWorld.prototype.notifyConfigsUpdated = function(gameConfigs) {
- //   console.log("Module data updated...", gameConfigs.PIECE_DATA);
-
-    for (var key in this.players) {
-
-        if (gameConfigs.PIECE_DATA) {
-            this.players[key].applyPieceConfig(this.buildPieceData(this.players[key].piece.type, gameConfigs));
-        }
-
-        console.log("Notify player...", key)
-        this.players[key].client.sendToClient({id:'updateGameData', data:{clientId:this.players[key].client.id, gameData:gameConfigs}});
-        this.players[key].client.notifyDataFrame();
-    }
-
-};
-
-
-ServerWorld.prototype.spawnStars = function() {
-	var Star = function(x, y, z) {
-		this.pos = [x, y, z];
-	};
-
-	for (var i = 0; i < 20; i++) {
-		this.stars.push(new Star(800 * (Math.random()-0.5), (Math.random()-0.5) * 800, Math.random() * -1500))
-	}
-};
 
 
 ServerWorld.prototype.applyControlModule = function(sourcePiece, moduleData, action, value) {
     sourcePiece.pieceControls.setControlState(moduleData, action, value);
     sourcePiece.networkDirty = true;
-
 };
 
-ServerWorld.prototype.attachModules = function(conf, gameConfigs) {
-
-    for (var i = 0; i < conf.attachment_points.length; i++) {
-        var module = {};
-        var ap = conf.attachment_points[i];
-        var config = gameConfigs.MODULE_DATA[ap.module];
-
-        for (var key in config) {
-            module[key] = config[key];
-        }
-
-        for (key in ap) {
-            module[key] = ap[key];
-        }
-
-        conf.modules.push(module);
-    }
-
+ServerWorld.prototype.createWorldPiece = function(pieceType, posx, posy) {
+    
+    piece = this.pieceSpawner.spawnWorldPiece(pieceType, posx, posy)
+    this.addWorldPiece(piece);
+    return piece;
 };
 
-
-ServerWorld.prototype.addBullet = function(sourcePiece, cannonModuleData, now, pieceData, gameConfigs) {
-    this.pieceCount++;
-
-	var apply = cannonModuleData.applies;
-    var bulletConfig = pieceData[apply.bullet];
-
-
-	var bullet = new GAME.Piece(apply.bullet, apply.bullet+' '+this.pieceCount, now, apply.lifeTime);
-    bullet.registerParentPiece(sourcePiece);
-
-    var conf = {};
-
-    for (var key in bulletConfig) {
-        conf[key] = bulletConfig[key];
-    }
-    conf.modules = [];
-
-    this.attachModules(conf, gameConfigs);
-
-	bullet.applyConfig(conf);
-//	bullet.temporal.timeDelta = dt;
-    bullet.spatial.setSpatial(sourcePiece.spatial);
-
-    this.calcVec.setVec(sourcePiece.spatial.vel);
-    this.calcVec.scale(sourcePiece.temporal.stepTime * 3);
-
-    bullet.spatial.pos.addVec(this.calcVec);
-
-	this.calcVec.setArray(cannonModuleData.transform.pos);
-
-	this.calcVec.rotateZ(sourcePiece.spatial.rot[0]);
-
-	bullet.spatial.pos.addVec(this.calcVec);
-
-    bullet.setState(GAME.ENUMS.PieceStates.SPAWN);
-
-    bullet.spatial.rotVel[0] = 0;
-    bullet.spatial.rot[0] += sourcePiece.spatial.rotVel[0] * sourcePiece.temporal.stepTime * 3;
-
-    bullet.pieceControls.actions.applyForward = apply.exitVelocity;
-    bullet.applyForwardControl(MODEL.ReferenceTime);
-    this.broadcastPieceState(bullet);
-
-    bullet.setState(GAME.ENUMS.PieceStates.MOVING);
-  //  bullet.spatial.vel.addVec(sourcePiece.spatial.vel);
-
-	this.pieces.push(bullet);
+ServerWorld.prototype.addWorldPiece = function(piece) {
+    
+    this.broadcastPieceState(piece);
+    piece.setState(GAME.ENUMS.PieceStates.MOVING);
+	this.pieces.push(piece);
 };
 
 ServerWorld.prototype.getPlayer = function(playerId) {
@@ -158,6 +63,7 @@ ServerWorld.prototype.removePlayer = function(playerId) {
 ServerWorld.prototype.removePiece = function(piece) {
 	this.pieces.splice(this.pieces.indexOf(piece), 1);
 	this.broadcastPieceState(piece);
+    piece.setRemoved()
 };
 
 ServerWorld.prototype.fetch = function(data) {

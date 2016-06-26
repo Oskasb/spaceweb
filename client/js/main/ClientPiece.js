@@ -246,7 +246,7 @@ define([
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
 				textStyle.posy = this.piece.spatial.pos.getY()+5;
 
-				evt.fire(evt.list().PARTICLE_TEXT, {text:'HIDE', textStyle:textStyle});
+		//		evt.fire(evt.list().PARTICLE_TEXT, {text:'HIDE', textStyle:textStyle});
 
 				this.playerRemove();
 				return;
@@ -256,7 +256,7 @@ define([
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
 				textStyle.posy = this.piece.spatial.pos.getY()+5;
 
-				evt.fire(evt.list().PARTICLE_TEXT, {text:'APPEAR', textStyle:textStyle});
+			//	evt.fire(evt.list().PARTICLE_TEXT, {text:'APPEAR', textStyle:textStyle});
 
 				this.gooPiece.updateGooPiece();
 				return;
@@ -269,7 +269,7 @@ define([
 				textStyle.posx = this.piece.spatial.pos.getX()-5;
 				textStyle.posy = this.piece.spatial.pos.getY()+5;
 
-				evt.fire(evt.list().PARTICLE_TEXT, {text:'POP', textStyle:textStyle});
+		//		evt.fire(evt.list().PARTICLE_TEXT, {text:'POP', textStyle:textStyle});
 
 				this.gooPiece.updateGooPiece();
 			//	evt.fire(evt.list().GAME_EFFECT, {effect:"spawn_pulse", pos:this.piece.spatial.pos, vel:this.piece.spatial.vel});

@@ -27,7 +27,6 @@
         "state":true,
         "action":"applyAppearance",
         "game_effect":"lazer_bullet_effect",
-        "spawn_effect":"muzzle_flash_cannon",
         "remove_effect":"shell_detonate"
       }
     },
@@ -42,7 +41,7 @@
         "action":"applyAppearance",
         "game_effect":"plasma_bullet_effect",
         "effect_data":{
-          "intensity":1,
+          "intensity":0.9,
           "color":[0.4,1,0.4, 1],
           "size":5,
           "growth":[-200, -200],

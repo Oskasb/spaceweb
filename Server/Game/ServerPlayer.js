@@ -162,11 +162,13 @@ ServerPlayer.prototype.notifyCurrentGridSector = function(gridSector) {
 	}
 
 	if (this.currentGridSector != gridSector) {
+        gridSector.addPlayerToSector(this);
+
         if (this.currentGridSector) {
             this.currentGridSector.notifyPlayerLeave(this);
             this.currentGridSector.getVisiblePlayers(visiblePre);
         }
-        
+
 		this.currentGridSector = gridSector;
         this.currentGridSector.getVisiblePlayers(visiblePost);
         this.currentGridSector.notifyPlayerEnter(this);
@@ -179,7 +181,9 @@ ServerPlayer.prototype.notifyCurrentGridSector = function(gridSector) {
 
         for (var i = 0; i < visiblePost.length; i++) {
             if (visiblePre.indexOf(visiblePost[i]) == -1) {
-                playersAppear.push(visiblePost[i]);
+                if (visiblePost[i] != this) {
+                    playersAppear.push(visiblePost[i]);
+                }
             }
         }
         

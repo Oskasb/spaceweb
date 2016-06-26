@@ -21,6 +21,20 @@ ServerPieceProcessor.prototype.checkProximity = function(players, pieces) {
         this.playerAgainstPlayers(players[key], players);
     }
 
+    for (var i = 0; i < pieces.length; i++) {
+        this.pieceAgainstPieces(pieces[i], pieces);
+    }
+
+};
+
+ServerPieceProcessor.prototype.pieceAgainstPieces = function(piece, pieces) {
+
+    for (var i = 0; i < pieces.length; i++) {
+        if (piece != pieces[i]) {
+            this.pieceAgainstPiece(piece, pieces[i]);
+        }
+    }
+
 };
 
 ServerPieceProcessor.prototype.playerAgainstPieces = function(player, pieces) {
@@ -71,7 +85,7 @@ ServerPieceProcessor.prototype.playerAgainstPiece = function(playerPiece, piece)
 ServerPieceProcessor.prototype.playerAgainstPlayers = function(playerA, players) {
     for (var key in players) {
         if (players[key] != playerA) {
-            this.playerAgainstPlayer(playerA.piece, players[key].piece);
+            this.pieceAgainstPiece(playerA.piece, players[key].piece);
         }
     }
 
@@ -79,7 +93,7 @@ ServerPieceProcessor.prototype.playerAgainstPlayers = function(playerA, players)
 
 };
 
-ServerPieceProcessor.prototype.playerAgainstPlayer = function(pieceA, pieceB) {
+ServerPieceProcessor.prototype.pieceAgainstPiece = function(pieceA, pieceB) {
 
 
     var hit = this.serverCollisionDetection.checkIntersection(pieceA, pieceB, this.hitPoint, this.hitNormal);
@@ -96,9 +110,9 @@ ServerPieceProcessor.prototype.playerAgainstPlayer = function(pieceA, pieceB) {
 
 
             if (pieceA.spatial.getVelVec().getLength() > pieceB.spatial.getVelVec().getLength()) {
-                this.collidePlayers(pieceA, pieceB, this.hitNormal)
+                this.collidePieces(pieceA, pieceB, this.hitNormal)
             } else {
-                this.collidePlayers(pieceB, pieceA, this.hitNormal)
+                this.collidePieces(pieceB, pieceA, this.hitNormal)
             }
 
 
@@ -111,7 +125,7 @@ ServerPieceProcessor.prototype.playerAgainstPlayer = function(pieceA, pieceB) {
         }
 };
 
-ServerPieceProcessor.prototype.collidePlayers = function(fastPiece, slowPiece, hitNormal) {
+ServerPieceProcessor.prototype.collidePieces = function(fastPiece, slowPiece, hitNormal) {
 
     this.calcVec.setVec(fastPiece.spatial.getPosVec());
     this.calcVec.subVec(slowPiece.spatial.getPosVec());

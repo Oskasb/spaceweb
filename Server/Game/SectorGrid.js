@@ -38,6 +38,12 @@ SectorGrid = function() {
     }
 };
 
+SectorGrid.prototype.setServerWorld = function(serverWorld) {
+    this.serverWorld = serverWorld;
+
+};
+
+
 SectorGrid.prototype.applyWorldConfig = function(config, dataType) {
 
     this.dataHandlers[dataType](config[dataType]);
@@ -72,7 +78,7 @@ SectorGrid.prototype.createSectorGrid = function() {
             var minY = this.minY + j * size;
             var maxY = this.minY + minY + size;
             
-            var gridSector = new GridSector(minX, minY, maxX, maxY, i, j, this.gridSectors.length)
+            var gridSector = new GridSector(minX, minY, size, i, j, this.gridSectors.length, this.serverWorld);
             
             this.gridSectors.push(gridSector);
             this.rows[i][j] = gridSector;
@@ -113,7 +119,13 @@ SectorGrid.prototype.updateSectorNeighbors = function() {
 
 
 SectorGrid.prototype.broadcastToGridSector = function(spatial, packet, recipients) {
-    this.getGridSectorForSpatial(spatial).sectorBasedBroadcast(packet, recipients);
+    var sector = this.getGridSectorForSpatial(spatial);
+    if (sector) {
+        sector.sectorBasedBroadcast(packet, recipients);
+    } else {
+        console.log("Sector out of bounds", packet, recipients);
+    }
+
 };
 
 

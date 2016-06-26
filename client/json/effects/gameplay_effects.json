@@ -250,11 +250,6 @@
                     "effect":"tail_red_lazer",
                     "simulator":"FastAdditiveTrail",
                     "density":1
-                },{
-                    "effect":"dust_speck",
-                    "simulator":"AdditiveParticle",
-                    "density":1
-
                 }]
 
             },
@@ -272,6 +267,17 @@
             }]
 
           },
+
+            {
+                "id":"plasma_blob_effect",
+                "effect_data":[{
+                    "effect":"flare_green_plasma",
+                    "simulator":"AdditiveParticle",
+                    "density":1
+
+                }]
+            },
+
           {
             "id":"plasma_green_splatter",
             "effect_data":[{
