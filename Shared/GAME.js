@@ -439,20 +439,21 @@ if(typeof(GAME) == "undefined"){
 		}
 	};
 
-	GAME.Piece.prototype.checkBounds = function() {
-		return this.spatial.isWithin(-200, 300, -200, 300);
-	};
 	
 	GAME.Piece.prototype.processSpatialState = function(tickDelta) {
 
 		this.updateServerSpatial(tickDelta);
 		this.setState(GAME.ENUMS.PieceStates.MOVING);
-		if (this.checkBounds()) {
-			this.teleportRandom();
-			this.broadcast(this.makePacket());
-		}
+
 	};
 
+    GAME.Piece.prototype.requestTeleport = function() {
+
+        this.teleportRandom();
+        this.broadcast(this.makePacket());
+    };
+    
+    
 	GAME.Piece.prototype.processServerState = function(currentTime) {
 		this.temporal.stepTime = MODEL.SimulationTime;
 		this.temporal.networkTime = MODEL.NetworkTime;

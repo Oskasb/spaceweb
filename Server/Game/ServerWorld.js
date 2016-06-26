@@ -1,4 +1,5 @@
-ServerWorld = function() {
+ServerWorld = function(sectorGrid) {
+    this.sectorGrid = sectorGrid;
 	this.players = {};
 	this.playerCount = 0;
 	this.pieces = [];
@@ -38,7 +39,7 @@ ServerWorld.prototype.buildPieceData = function(pieceType, gameConfigs) {
 
 
 ServerWorld.prototype.notifyConfigsUpdated = function(gameConfigs) {
-    console.log("Module data updated...", gameConfigs.PIECE_DATA);
+ //   console.log("Module data updated...", gameConfigs.PIECE_DATA);
 
     for (var key in this.players) {
 
@@ -202,10 +203,23 @@ ServerWorld.prototype.updatePieces = function(currentTime) {
 	}
 };
 
+
+ServerWorld.prototype.updateSectorStatus = function(player) {
+    var sector = player.notifyCurrentGridSector(this.sectorGrid.getGridSectorForSpatial(player.piece.spatial));
+
+    if (sector) {
+        console.log("Sector change", sector.row, sector.column);
+    }
+
+};
+
 ServerWorld.prototype.updatePlayers = function(currentTime) {
 	this.playerCount = 0;
 	for (var key in this.players) {
 		this.players[key].piece.processServerState(currentTime);
+
+        this.updateSectorStatus(this.players[key]);
+
 		this.players[key].client.notifyDataFrame();
 		this.playerCount++;
 	}
@@ -224,17 +238,14 @@ ServerWorld.prototype.tickSimulationWorld = function(currentTime) {
 ServerWorld.prototype.tickNetworkWorld = function() {
 
     for (var key in this.players) {
-        if (this.players[key].piece.spatial.vel.getLength() + Math.abs(this.players[key].piece.spatial.rotVel) > 0.4) {
+    //    if (this.players[key].piece.spatial.vel.getLength() + Math.abs(this.players[key].piece.spatial.rotVel) > 0.01) {
 			this.players[key].piece.networkDirty = true;
-    //        this.broadcastPieceState(this.players[key].piece);
-        }
-
+    //    }
     }
 
     for (var i = 0; i < this.pieces.length; i++) {
         if (this.pieces[i].spatial.vel.getLength() + Math.abs(this.pieces[i].spatial.rotVel) > 0.1) {
 
-   //        this.broadcastPieceState(this.pieces[i]);
         }
     }
 

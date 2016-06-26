@@ -5,6 +5,8 @@ ServerPlayer = function(pieceType, clientId, client, simTime) {
 		return;
 	}
 
+	this.currentGridSector = null;
+	
 	this.id = clientId;
 	this.client = client;
 	this.clientId = clientId;
@@ -95,6 +97,27 @@ ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
 	this.configs = pieceTypeConfigs;
     
 	this.piece.applyConfig(this.configs);
+};
+
+ServerPlayer.prototype.notifyCurrentGridSector = function(gridSector) {
+
+	
+	if (!gridSector) {
+		this.piece.requestTeleport();
+        return;
+	}
+
+	if (this.currentGridSector != gridSector) {
+        if (this.currentGridSector) {
+            this.currentGridSector.notifyPlayerLeave(this);
+        }
+        
+		this.currentGridSector = gridSector;
+        gridSector.notifyPlayerEnter(this);
+		return gridSector;
+	}
+    
+	
 };
 
 ServerPlayer.prototype.makePacket = function() {

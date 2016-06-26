@@ -6,7 +6,9 @@ ServerMain = function() {
 
 	this.configLoader;
 	this.serverConnection = new ServerConnection();
-	this.serverWorld = new ServerWorld();
+    this.sectorGrid = new SectorGrid();
+    
+    this.serverWorld = new ServerWorld(this.sectorGrid);
 	this.clients = new Clients();
 	this.serverGameMain = new ServerGameMain(this.clients, this.serverWorld);
 
@@ -24,18 +26,24 @@ ServerMain = function() {
 
 
 	function gameData(config) {
-		console.log("---- >Data Handler moduleData", config.dataType);
+//		console.log("---- >Data Handler moduleData", config.dataType);
 		_this.dataHub.setConfig(config)
 		_this.serverGameMain.applyGameConfigs(_this.dataHub.getConfigs());
 	}
 
-
+	function worldData(config) {
+		console.log("---- >Data Handler worldData", config.dataType);
+		_this.dataHub.setConfig(config)
+		_this.sectorGrid.applyWorldConfig(_this.dataHub.getConfigs(), config.dataType);
+	}
 
 	this.dataHandlers = {
 		server_setup:serverSetup,
 		config_files:configFiles,
         PIECE_DATA:gameData,
-        MODULE_DATA:gameData
+        MODULE_DATA:gameData,
+		WORLD_GRID:worldData,
+		GRID_SECTORS:worldData
 	};
 
 

@@ -23,7 +23,7 @@ ConfigLoader.prototype.applyFileConfigs = function(configs, devMode) {
 ConfigLoader.prototype.registerConfigUrl = function(configUrl, devMode) {
 
     this.devMode = devMode;
-    console.log("Reg Config Url: "+ configUrl+' ' +devMode);
+ //   console.log("Reg Config Url: "+ configUrl+' ' +devMode);
     var dataUpdated = this.updateCallback;
     var path = this.path;
     var data;
@@ -34,7 +34,7 @@ ConfigLoader.prototype.registerConfigUrl = function(configUrl, devMode) {
             data = JSON.parse(fs.readFileSync(path+configUrl+'.json', 'utf8'));
             for (var i = 0; i < data.length; i++) {
                 _this.configs[data[i].id] = data[i];
-                console.log("Config Updated:", data[i].id);
+           //     console.log("Config Updated:", data[i].dataType);
                 dataUpdated(data[i]);
             }
 

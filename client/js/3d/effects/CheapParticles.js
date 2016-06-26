@@ -180,6 +180,24 @@ function(
                 acceleration = effectData.acceleration;
             }
 
+
+            var check = function(value, key) {
+                if (!value) {
+                    console.log("Bad Value", key, effectData)
+                }
+            };
+
+            for (var key in effectData) {
+                if (effectData[key].length) {
+                    for (var i = 0; i < effectData[key].length; i++) {
+                        check(effectData[key][i], key)
+                    }
+                } else {
+                    check(effectData[key], key)
+                }
+
+            }
+
 		}
 
 
@@ -283,15 +301,12 @@ function(
 		var alpha = this.inheritColor ? 1.0 : this.particleSettings.color[3];
 
 		for (var i = 0, l = this.particles.length; i < l; i++) {
-
             this.updateParticle(tpf, i, pos, col, alpha, data);
-
-			lastAlive = i;
 		}
 
 		this.meshData.indexLengths = [frameStatus.lastAlive];
 		this.meshData.indexCount = frameStatus.lastAlive;
-
+        lastAlive = frameStatus.lastAlive;
 		this.meshData.setVertexDataUpdated();
 	};
 

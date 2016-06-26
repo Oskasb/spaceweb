@@ -1,6 +1,10 @@
 [{
   "dataType":"GRID_SECTORS",
   "sectors":{
+    "data":[
+      {"id":"default" ,"spawn":{"min":1, "max":5}},
+      {"id":"crowded" ,"spawn":{"min":5, "max":25}}
+    ]
 
   }
 }]
