@@ -241,6 +241,28 @@ define([
                 evt.fire(evt.list().MESSAGE_UI, {channel:'server_message', message:this.piece.id+' - Teleport' });
 			}
 
+
+			if (serverState.state == GAME.ENUMS.PieceStates.HIDE) {
+				textStyle.posx = this.piece.spatial.pos.getX()-5;
+				textStyle.posy = this.piece.spatial.pos.getY()+5;
+
+				evt.fire(evt.list().PARTICLE_TEXT, {text:'HIDE', textStyle:textStyle});
+
+				this.playerRemove();
+				return;
+			}
+
+			if (serverState.state == GAME.ENUMS.PieceStates.APPEAR) {
+				textStyle.posx = this.piece.spatial.pos.getX()-5;
+				textStyle.posy = this.piece.spatial.pos.getY()+5;
+
+				evt.fire(evt.list().PARTICLE_TEXT, {text:'APPEAR', textStyle:textStyle});
+
+				this.gooPiece.updateGooPiece();
+				return;
+			}
+			
+			
 			if (serverState.state == GAME.ENUMS.PieceStates.SPAWN) {
 				//	this.piece.notifyTrigger(true);
 

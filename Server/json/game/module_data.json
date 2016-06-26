@@ -25,7 +25,7 @@
         "type":"toggle",
         "state":true,
         "control_constants":{
-          "sthrottleAmplitude":-10,
+          "throttleAmplitude":-10,
           "radialDrag":-0.5,
           "radialLerpFactor":-0.05,
           "velocityDrag":0.5
@@ -55,7 +55,7 @@
         "type":"toggle",
         "state":true,
         "control_constants":{
-          "sthrottleAmplitude":190,
+          "throttleAmplitude":10,
           "radialVelocityClamp":-0.14,
           "radialDrag":-1,
           "velocityDrag":-0.7
@@ -68,6 +68,30 @@
           "lifeSpan":0.15
         },
         "game_effect":"hyper_drive",
+        "emit_effect":"hyper_space_sparks"
+      }
+
+    },
+    "warp_drive":{
+      "id":"warp_drive",
+      "initState":false,
+      "applies":{
+        "type":"toggle",
+        "state":true,
+        "trigger":{
+          "attackTime":2,
+          "action":"teleport"
+        },
+        "drain":2,
+        "flicker":0.4,
+        "effect_data":{
+          "intensity":1,
+          "strength":582,
+          "growth":[-300, -200],
+          "size":10,
+          "color":[1, 0.1, 0.4, 1],
+          "lifespan":[0.35, 0.9]
+        },
         "emit_effect":"hyper_space_sparks"
       }
 

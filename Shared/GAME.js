@@ -27,7 +27,9 @@ if(typeof(GAME) == "undefined"){
 		KILLED:'KILLED',
 		BURST:'BURST',
 		EXPLODE:'EXPLODE',
-		REMOVED:'REMOVED'
+		REMOVED:'REMOVED',
+        APPEAR:'APPEAR',
+        HIDE:'HIDE'
 	};
 
 
@@ -300,7 +302,7 @@ if(typeof(GAME) == "undefined"){
 
     GAME.Piece.prototype.setModuleState = function(moduleId, value) {
         if (this.getModuleById(moduleId)) {
-            console.log("Set Mod State: ", moduleId, value)
+        //    console.log("Set Mod State: ", moduleId, value)
             this.getModuleById(moduleId).setModuleState(value);
         } else {
             console.log("No module gotten ", moduleId, this.moduleIndex)
@@ -322,8 +324,6 @@ if(typeof(GAME) == "undefined"){
     };
 
     GAME.Piece.prototype.getCollisionShape = function(store) {
-        var hullData = this.getModuleById('hull');
-
         store.size = 1;
 
 		for (var key in this.moduleIndex) {
@@ -451,6 +451,7 @@ if(typeof(GAME) == "undefined"){
 
         this.teleportRandom();
         this.broadcast(this.makePacket());
+		this.networkDirty = true;
     };
     
     
@@ -490,7 +491,7 @@ if(typeof(GAME) == "undefined"){
         this.networkDirty = false;
         this.temporal.setSendTemporal(networkState.temporal);
 
-        if (networkState.state == GAME.ENUMS.PieceStates.TELEPORT || networkState.state == GAME.ENUMS.PieceStates.SPAWN) {
+        if (networkState.state == GAME.ENUMS.PieceStates.TELEPORT || networkState.state == GAME.ENUMS.PieceStates.SPAWN || networkState.state == GAME.ENUMS.PieceStates.APPEAR) {
             this.spatial.setSendData(networkState.spatial);
             this.serverSpatial.setSendData(networkState.spatial);
             this.frameCurrentSpatial.setSendData(networkState.spatial);

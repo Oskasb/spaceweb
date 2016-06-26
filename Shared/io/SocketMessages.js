@@ -10,6 +10,8 @@
 
             playerUpdate:{source:'', method:'', target:'gameMain', reflect:false},
 
+            sectorUpdate:{source:'', method:'', target:'gameMain', reflect:false},
+            
             clientConnected:{source:'Clients', method:'registerConnection', target:'clientRegistry', reflect:true},
             updateGameData:{source:'', method:'', target:'clientRegistry', reflect:false},
 

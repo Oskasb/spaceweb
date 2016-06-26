@@ -5,6 +5,8 @@ Client = function(seed, socket, clients) {
 	socket.clientId = this.id;
     this.dataBuffer = [];
 
+    this.visiblePlayers = [];
+    
     this.player;
     
     this.clientStates = {
@@ -14,7 +16,6 @@ Client = function(seed, socket, clients) {
         PLAYING:'PLAYING'
     };
     this.setState(this.clientStates.CONSTRUCTED);
-
 };
 
 Client.prototype.setPlayerName = function(name) {
@@ -34,6 +35,14 @@ Client.prototype.attachPlayer = function(serverPlayer) {
     this.player = serverPlayer;
 };
 
+
+Client.prototype.setVisiblePlayers = function(visiblePlayers) {
+    this.visiblePlayers.length = 0;
+    for (var i = 0; i < visiblePlayers.length; i++) {
+        this.visiblePlayers.push(visiblePlayers[i]);
+    }
+    
+};
 
 
 
@@ -55,6 +64,14 @@ Client.prototype.sendToClient = function(data) {
         return;
     }
     this.dataBuffer.push(data);
+};
+
+
+Client.prototype.broadcastToVisible = function(data) {
+    for (var i = 0; i < this.visiblePlayers.length; i++) {
+        this.visiblePlayers[i].client.sendToClient(data);
+    }
+    this.sendToClient(data);
 };
 
 

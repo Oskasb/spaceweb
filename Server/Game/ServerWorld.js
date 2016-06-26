@@ -151,6 +151,7 @@ ServerWorld.prototype.addPlayer = function(player) {
 };
 
 ServerWorld.prototype.removePlayer = function(playerId) {
+    this.players[playerId].currentGridSector.notifyPlayerLeave(this.players[playerId]);
 	delete this.players[playerId];
 };
 
@@ -166,7 +167,14 @@ ServerWorld.prototype.fetch = function(data) {
 ServerWorld.prototype.broadcastPieceState = function(piece) {
 	var packet = piece.makePacket();
 	if (!packet) console.log("Bad Packet?", piece);
-	this.clients.broadcastToAllClients(packet);
+
+    if (!piece.recipients) {
+        piece.recipients = [];
+    }
+    
+    this.sectorGrid.broadcastToGridSector(piece.spatial, packet, piece.recipients);
+
+//	this.clients.broadcastToAllClients(packet);
 
     if (piece.getState() == GAME.ENUMS.PieceStates.EXPLODE) {
         piece.setState(GAME.ENUMS.PieceStates.TIME_OUT);

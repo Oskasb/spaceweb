@@ -20,15 +20,20 @@ define([
             evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{hyper_drive:data}})
         };
 
+        var requestTeleport = function(src, data) {
+            evt.fire(evt.list().SEND_SERVER_REQUEST, {id:'InputVector', data:{warp_drive:data}})
+        };
 
         var handlers = {
             TOGGLE_SHIELD:requestShields,
-            TOGGLE_HYPER:requestHyperDrive
+            TOGGLE_HYPER:requestHyperDrive,
+            TOGGLE_TELEPORT:requestTeleport
         };
 
         var modules = {
             hyper_drive:'TOGGLE_HYPER',
-            shield:'TOGGLE_SHIELD'
+            shield:'TOGGLE_SHIELD',
+            warp_drive:'TOGGLE_TELEPORT'
         };
         
         var ControlStateDispatcher = function() {

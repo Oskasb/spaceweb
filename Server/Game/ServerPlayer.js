@@ -20,7 +20,7 @@ ServerPlayer = function(pieceType, clientId, client, simTime) {
 			console.log("Bad Client!", piece.id, piecePacket);
 			return;
 		}
-		client.broadcastToAll(piecePacket);
+		client.broadcastToVisible(piecePacket);
 	};
 	
 	piece = new GAME.Piece(pieceType, this.id, simTime, Number.MAX_VALUE, broadcast);
@@ -30,6 +30,9 @@ ServerPlayer = function(pieceType, clientId, client, simTime) {
 	this.piece.networkDirty = true;
 	this.piece.setName(clientId);
 	client.attachPlayer(this);
+
+    this.actionTimeout;
+
 };
 
 
@@ -51,10 +54,17 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 	}
 
 
+
+
 	if (data.vector) {
 		this.setInputVector(data.vector.state);
 		this.piece.networkDirty = true;
 	}
+
+
+    clearTimeout(this.actionTimeout);
+    this.piece.setModuleState('warp_drive', false);
+
 
     for (var key in data) {
         if (key == 'shield') {
@@ -78,6 +88,33 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 			this.piece.processModuleStates();
             this.piece.networkDirty = true;
         }
+
+        if (key == 'warp_drive') {
+            console.log("Apply warp_drive", data.warp_drive);
+            this.piece.setModuleState(key, data[key]);
+            if (data[key] != true) {
+
+                clearTimeout(this.actionTimeout);
+
+            } else {
+                this.piece.setModuleState('hyper_drive', false);
+                this.piece.setModuleState('shield', false);
+                var piece = this.piece;
+
+                this.actionTimeout = setTimeout(function () {
+
+
+                piece.requestTeleport();
+                piece.setModuleState('warp_drive', false);
+
+                }, 2000);// Get data from module here
+
+            }
+            this.piece.processModuleStates();
+            this.piece.networkDirty = true;
+
+        }
+        
     }
 
 
@@ -99,9 +136,26 @@ ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
 	this.piece.applyConfig(this.configs);
 };
 
-ServerPlayer.prototype.notifyCurrentGridSector = function(gridSector) {
+ServerPlayer.prototype.makeAppearPacket = function() {
+    var iAppearPacket = this.piece.makePacket();
+    iAppearPacket.data.state = GAME.ENUMS.PieceStates.APPEAR;
+    return iAppearPacket;
+};
 
-	
+ServerPlayer.prototype.makeHidePacket = function() {
+    var iHidePacket = this.piece.makePacket();
+    iHidePacket.data.state = GAME.ENUMS.PieceStates.HIDE;
+    return iHidePacket;
+
+};
+
+ServerPlayer.prototype.notifyCurrentGridSector = function(gridSector) {
+    var visiblePre = [];
+    var visiblePost = [];
+
+    var playersAppear = [];
+    var playersRemove = [];
+
 	if (!gridSector) {
 		this.piece.requestTeleport();
         return;
@@ -110,14 +164,45 @@ ServerPlayer.prototype.notifyCurrentGridSector = function(gridSector) {
 	if (this.currentGridSector != gridSector) {
         if (this.currentGridSector) {
             this.currentGridSector.notifyPlayerLeave(this);
+            this.currentGridSector.getVisiblePlayers(visiblePre);
         }
         
 		this.currentGridSector = gridSector;
-        gridSector.notifyPlayerEnter(this);
+        this.currentGridSector.getVisiblePlayers(visiblePost);
+        this.currentGridSector.notifyPlayerEnter(this);
+
+        for (var i = 0; i < visiblePre.length; i++) {
+            if (visiblePost.indexOf(visiblePre[i]) == -1) {
+                playersRemove.push(visiblePre[i]);
+            }
+        }
+
+        for (var i = 0; i < visiblePost.length; i++) {
+            if (visiblePre.indexOf(visiblePost[i]) == -1) {
+                playersAppear.push(visiblePost[i]);
+            }
+        }
+        
+        var iHidePacket = this.makeHidePacket();
+        var iAppearPacket = this.makeHidePacket();
+
+        for (var i = 0; i < playersRemove.length; i++) {
+            playersRemove[i].client.sendToClient(iHidePacket);
+            this.client.sendToClient(playersRemove[i].makeHidePacket());
+        }
+
+        for (var i = 0; i < playersAppear.length; i++) {
+            playersAppear[i].client.sendToClient(iAppearPacket);
+            this.client.sendToClient(playersAppear[i].makeAppearPacket());
+        }
+
+        this.client.setVisiblePlayers(visiblePost);
+
+        console.log("Player diff APP, REM", playersAppear.length, playersRemove.length);
+
 		return gridSector;
 	}
     
-	
 };
 
 ServerPlayer.prototype.makePacket = function() {

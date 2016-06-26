@@ -36,6 +36,7 @@
         {"name":"Point A", "module":"hull",         "transform":{ "rot":[0, 0, 0], "pos":[0, 0.1, 0]}},
         {"name":"Point B", "module":"shield",       "transform":{ "rot":[0, 0, 0], "pos":[0, 0.1, 0]}},
         {"name":"Point C", "module":"hyper_drive",  "transform":{ "rot":[0, 1, 0], "pos":[0, -0.6, 0 ]}},
+        {"name":"Point D", "module":"warp_drive",   "transform":{ "rot":[0, 1, 0], "pos":[0, -0.6, 0 ]}},
         {"name":"Point E", "module":"lazer_cannon", "transform":{ "rot":[0, 0, 0], "pos":[2.2, -1.7, 1]}},
         {"name":"Point F", "module":"plasma_cannon","transform":{ "rot":[0, 0, 0], "pos":[-2.2, -1.7, 1]}},
         {"name":"Point G", "module":"engine",       "transform":{ "rot":[0, 1, 0], "pos":[0, 2.8, 0]}},

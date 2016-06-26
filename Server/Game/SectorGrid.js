@@ -79,8 +79,41 @@ SectorGrid.prototype.createSectorGrid = function() {
         }
     }
     
+    
     this.maxX = maxX;
     this.maxY = maxY;
+    this.updateSectorNeighbors();
+};
+
+SectorGrid.prototype.updateSectorNeighbors = function() {
+
+
+    function findNeighbors(myArray, i, j, sector) {
+        var rowLimit = myArray.length-1;
+        var columnLimit = myArray[0].length-1;
+
+        for(var x = Math.max(0, i-1); x <= Math.min(i+1, rowLimit); x++) {
+            for(var y = Math.max(0, j-1); y <= Math.min(j+1, columnLimit); y++) {
+                if(x !== i || y !== j) {
+                    sector.addNeighborSector(myArray[x][y]);
+                }
+            }
+        }
+    }
+    
+    
+    for (var i = 0; i < this.gridSectors.length; i++) {
+
+        var sector = this.gridSectors[i];
+        
+        findNeighbors(this.rows, sector.row, sector.column, sector)
+
+    }
+};
+
+
+SectorGrid.prototype.broadcastToGridSector = function(spatial, packet, recipients) {
+    this.getGridSectorForSpatial(spatial).sectorBasedBroadcast(packet, recipients);
 };
 
 

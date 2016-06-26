@@ -72,6 +72,15 @@ define([
 			this.pieces[msg.data.playerId].setServerState(msg.data);
 		};
 
+		GameMain.prototype.sectorUpdate = function(data) {
+			if (this.pieces[data.playerId]) {
+
+				console.log("Sector Update", data);
+			} else {
+				//	console.log("Register New Player from update", data.playerId, this.pieces);
+			}
+		};
+
 		GameMain.prototype.playerUpdate = function(data) {
 			if (this.pieces[data.playerId]) {
 

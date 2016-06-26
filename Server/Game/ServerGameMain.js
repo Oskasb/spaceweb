@@ -126,7 +126,7 @@ ServerGameMain.prototype.registerPlayer = function(data) {
 			player.piece.setName(data.name);
 			
 			this.addPlayer(player);
-			client.broadcastToAll(player.makePacket());
+			client.broadcastToVisible(player.makePacket());
 		} else {
 			console.log("ERR - suspect client state:", client.getState(), data.clientId);
 			return;

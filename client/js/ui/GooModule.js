@@ -210,7 +210,11 @@ define([
             for (var key in this.effectData.params) {
                 if (this.effectData.params[key].length) {
                     for (var i = 0; i < this.effectData.params[key].length; i++) {
-                        this.effectData.state[key][i] = this.effectData.params[key][i] * amplitude;
+                        if (key == 'color') {
+                            this.effectData.state[key][i] = this.effectData.params[key][i] * MATH.clamp(amplitude, 0, 1);
+                        } else {
+                            this.effectData.state[key][i] = this.effectData.params[key][i] * amplitude;
+                        }
                     }
                 } else {
                     this.effectData.state[key] = this.effectData.params[key] * amplitude;
