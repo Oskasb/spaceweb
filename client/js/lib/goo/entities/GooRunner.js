@@ -192,7 +192,7 @@ define([
 				this._stopGameLoop();
 			} else {
 				if (!this.manuallyPaused) {
-					this._startGameLoop();
+					this._startGameLoop(this.clientTickCallback);
 				}
 			}
 		}.bind(this));
@@ -745,8 +745,10 @@ define([
 
 		var _this = this;
 
+		this.clientTickCallback = clientTickCallback;
+
 		function tick(time) {
-            clientTickCallback((time - _this.start) / 1000.0);
+			_this.clientTickCallback((time - _this.start) / 1000.0);
 			_this._updateFrame(time);
 			_this.animationId = window.requestAnimationFrame(tick)
 		}

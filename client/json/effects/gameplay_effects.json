@@ -266,6 +266,16 @@
                 }]
             },
             {
+                "id":"plasma_green_splatter",
+                "effect_data":[{
+                    "effect":"space_sparks",
+                    "simulator":"CheapParticles"
+                },{
+                    "effect":"no_blend_star",
+                    "simulator":"CheapParticles"
+                }]
+            },
+            {
                 "id":"clay_blob_effect",
                 "effect_data":[{
                     "effect":"clay_blob_steady_particles",
@@ -284,13 +294,7 @@
                 }]
             },
 
-          {
-            "id":"plasma_green_splatter",
-            "effect_data":[{
-              "effect":"space_sparks",
-              "simulator":"CheapParticles"
-            }]
-          },
+
             {
                 "id":"hyper_drive",
                 "effect_data":[{

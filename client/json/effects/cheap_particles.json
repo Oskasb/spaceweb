@@ -16,8 +16,8 @@
           "gravity": 0,
           "count": 1,
           "spread": 1,
-          "strength": 1,
-          "acceleration": 0.99,
+          "strength": 0.3,
+          "acceleration": 0.9,
           "lifespan": [6,9],
           "poolCount": 120
         }
