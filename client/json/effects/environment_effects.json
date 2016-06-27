@@ -35,7 +35,7 @@
         "id":"hyper_space",
         "effect_data":[{
           "game_effect":"blue_star_effect",
-          "volume":[6, 6, 255],
+          "volume":[3, 3, 255],
           "distance": 495,
           "speed":[10.5, 10.5, 10.5],
           "colorMin":[0.8, 0.5, 1],
@@ -60,8 +60,8 @@
         "id":"sparks",
         "effect_data":[{
           "game_effect":"blue_star_effect",
-          "volume":[4, 4, 225],
-          "distance": 695,
+          "volume":[3, 3, 225],
+          "distance": 595,
           "speed":[4, 4, 55],
           "colorMin":[0.2, 0.7, 1],
           "colorMax":[1, 0.5, 1],
@@ -73,12 +73,12 @@
         "id":"blue_star",
         "effect_data":[{
           "game_effect":"blue_star_effect",
-          "volume":[4, 4, 600],
-          "distance": 1130,
+          "volume":[1.9,1.9, 1000],
+          "distance": 1230,
           "speed":[0, 0, 0],
           "colorMin":[0.9, 0.9, 0.96],
           "colorMax":[1, 1, 1],
-          "frequency":0.03
+          "frequency":0.2
         }]
 
       }

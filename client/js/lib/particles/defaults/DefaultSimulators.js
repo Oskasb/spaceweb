@@ -29,7 +29,7 @@ define({
 			"renderers": [
 				"ParticleRenderer"
 			],
-			"poolCount": 300,
+			"poolCount": 500,
 			"blending": {
 				"value": "AdditiveBlending",
 				"type": "option",

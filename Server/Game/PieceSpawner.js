@@ -80,7 +80,7 @@ PieceSpawner.prototype.spawnPlayerPiece = function(client, data, clients, simula
 };
 
 
-PieceSpawner.prototype.spawnWorldPiece = function(pieceType, posx, posy) {
+PieceSpawner.prototype.spawnWorldPiece = function(pieceType, posx, posy, rot, rotVel) {
     this.pieceCount++;
     
     var piece = new GAME.Piece(pieceType, pieceType+' '+this.pieceCount, new Date().getTime(), Number.MAX_VALUE);
@@ -89,6 +89,8 @@ PieceSpawner.prototype.spawnWorldPiece = function(pieceType, posx, posy) {
     piece.applyConfig(config);
     piece.setState(GAME.ENUMS.PieceStates.SPAWN);
     piece.spatial.pos.setXYZ(posx, posy, 0);
+    piece.spatial.rot[0] = rot;
+    piece.spatial.rotVel[0] = rotVel;
     return piece;
     
 };

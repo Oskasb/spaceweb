@@ -65,14 +65,6 @@
 
             },
             {
-                "id":"dim_star",
-                "effect_data":[{
-                    "effect":"dust_speck",
-                    "simulator":"AdditiveParticle"
-                }]
-
-            },
-            {
                 "id":"hyper_space_sparks",
                 "effect_data":[{
                     "effect":"space_sparks",
@@ -147,36 +139,35 @@
             },
             {
                 "id":"teleport",
-                "effect_data":[{
-                    "effect":"firework_red",
-                    "simulator":"AdditiveParticle",
-                    "density":100
-                }]
+              "effect_data":[{
+                "effect":"shockwave",
+                "simulator":"AdditiveParticle",
+                "density":1
+              }]
 
             },
             {
                 "id":"burst",
                 "effect_data":[{
-                    "effect":"firework_blue",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                  "effect":"explosion_fire",
+                  "simulator":"CheapParticles"
+                },{
+                  "effect":"explosion_sparks",
+                  "simulator":"CheapParticles"
                 }]
 
             },
             {
                 "id":"collide",
                 "effect_data":[{
-                    "effect":"shell_shrapnel",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                  "effect":"shockwave",
+                  "simulator":"CheapParticles"
                 },{
-                    "effect":"shockwave",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                  "effect":"explosion_fire",
+                  "simulator":"CheapParticles"
                 },{
-                    "effect":"sparks",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                  "effect":"explosion_sparks",
+                  "simulator":"CheapParticles"
                 }]
 
             },
@@ -202,19 +193,9 @@
             {
                 "id":"time_out",
                 "effect_data":[{
-                    "effect":"firework_green",
-                    "simulator":"AdditiveParticle",
+                    "effect":"shockwave",
+                    "simulator":"CheapParticles",
                     "density":1
-                }]
-
-            },
-            {
-                "id":"fire_cannon",
-                "effect_data":[{
-                    "effect":"firework_blue",
-                    "simulator":"AdditiveParticle",
-                    "density":1
-
                 }]
 
             },
@@ -304,27 +285,16 @@
                 },
                     {
                         "effect":"fast_tail_hyper",
-                        "simulator":"FastAdditiveTrail",
-                        "density":1
+                        "simulator":"FastAdditiveTrail"
                     },
                     {
                         "effect":"hyper_flare",
-                        "simulator":"AdditiveParticle",
-                        "density":1
+                        "simulator":"AdditiveParticle"
 
                     }]
 
             },
-            {
-                "id":"hyper_sparks",
-                "effect_data":[{
-                    "effect":"firework_blue",
-                    "simulator":"AdditiveParticle",
-                    "density":1
 
-                }]
-
-            },
             {
                 "id":"muzzle_flash_cannon",
                 "effect_data":[{

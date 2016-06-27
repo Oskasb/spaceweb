@@ -123,7 +123,7 @@ SectorGrid.prototype.broadcastToGridSector = function(spatial, packet, recipient
     if (sector) {
         sector.sectorBasedBroadcast(packet, recipients);
     } else {
-        console.log("Sector out of bounds", packet);
+    //    console.log("Sector out of bounds", packet);
     }
 
 };

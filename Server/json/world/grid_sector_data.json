@@ -5,41 +5,39 @@
       {"id":"sparse",
         "weight":0.4,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":0, "max":1},
-          {"pieceType":"clay_blob_piece", "min":0, "max":1}
+          {"pieceType":"clay_blob_piece", "min":0, "max":3}
       ]},
 
       {"id":"average",
         "weight":0.3,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":0, "max":3},
-          {"pieceType":"clay_blob_piece", "min":0, "max":3}
+          {"pieceType":"clay_blob_piece", "min":2, "max":4}
         ]},
 
       {"id":"dense",
         "weight":0.3,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":2, "max":5},
-          {"pieceType":"clay_blob_piece", "min":2, "max":5}
+          {"pieceType":"plasma_blob_piece", "min":1, "max":2},
+          {"pieceType":"clay_blob_piece", "min":1, "max":3}
         ]},
 
       {"id":"crowded",
         "weight":0.1,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":5, "max":8},
-          {"pieceType":"clay_blob_piece", "min":5, "max":8}
+          {"pieceType":"plasma_blob_piece", "min":1, "max":3},
+          {"pieceType":"clay_blob_piece", "min":9, "max":52}
       ]},
       {"id":"plasmatic",
         "weight":0.1,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":7, "max":15},
+          {"pieceType":"plasma_blob_piece", "min":7, "max":9},
           {"pieceType":"clay_blob_piece", "min":0, "max":1}
         ]},
       {"id":"rockness",
         "weight":0.1,
         "spawn":[
           {"pieceType":"plasma_blob_piece", "min":0, "max":1},
-          {"pieceType":"clay_blob_piece", "min":8, "max":15}
+          {"pieceType":"clay_blob_piece", "min":25, "max":55}
         ]}
     ]
 
