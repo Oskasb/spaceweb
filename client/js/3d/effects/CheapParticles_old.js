@@ -38,7 +38,7 @@ function(
 		this.dead = true;
 	};
 
-    var calcVec = new Vector3();
+
 
 
 
@@ -123,7 +123,6 @@ function(
 		var gravity = this.particleSettings.gravity;
 		var spread = this.particleSettings.spread;
 		var lifeSpan = [this.particleSettings.lifespan[0], this.particleSettings.lifespan[1]];
-        var acceleration = this.particleSettings.acceleration;
 
 		if (effectData) {
 			if (effectData.intensity) {
@@ -137,19 +136,9 @@ function(
 				alpha = effectData.opacity;
 			}
 
-            if (effectData.growth) {
-                growth[0] = effectData.growth[0];
-                growth[1] = effectData.growth[1];
-            }
-
 			if (effectData.lifeSpan) {
 				lifeSpan[0] = effectData.lifeSpan * this.particleSettings.lifespan[0]+ this.particleSettings.lifespan[0]*0.5;
 				lifeSpan[1] = effectData.lifeSpan * this.particleSettings.lifespan[1]+ this.particleSettings.lifespan[1]*0.5;
-			}
-
-			if (effectData.lifespan) {
-				lifeSpan[0] = effectData.lifespan[0];
-				lifeSpan[1] = effectData.lifespan[1];
 			}
 
 			if (effectData.strength) {
@@ -157,8 +146,8 @@ function(
 			}
 
 			if (effectData.size) {
-				size[0] = effectData.size + effectData.size * size[0];
-				size[1] = effectData.size + effectData.size * size[1];
+				size[0] = effectData.size * size[0];
+				size[1] = effectData.size * size[1];
 			}
 
 			if (effectData.gravity) {
@@ -175,29 +164,6 @@ function(
 			if (effectData.spread) {
 				spread = effectData.spread;
 			}
-
-            if (effectData.acceleration) {
-                acceleration = effectData.acceleration;
-            }
-
-
-            var check = function(value, key) {
-                if (!value) {
-                    console.log("Bad Value", key, effectData)
-                }
-            };
-
-            for (var key in effectData) {
-                if (effectData[key].length) {
-                    for (var i = 0; i < effectData[key].length; i++) {
-                        check(effectData[key][i], key)
-                    }
-                } else {
-                    check(effectData[key], key)
-                }
-
-            }
-
 		}
 
 
@@ -224,8 +190,6 @@ function(
 				particle.opacity = alpha;
 				count--;
 
-                particle.acceleration = acceleration;
-
 				col[4 * i + 0] = color[0];
 				col[4 * i + 1] = color[1];
 				col[4 * i + 2] = color[2];
@@ -238,75 +202,54 @@ function(
 		}
 	};
 
-    Simulator.prototype.resetParticle = function(particle, pos, i) {
-        particle.dead = true;
-        particle.position.setDirect(0, 0, 0);
-        pos[3 * i    ] = 0;
-        pos[3 * i + 1] = -1000;
-        pos[3 * i + 2] = 0;
-        this.aliveParticles--;
-    };
-
-	Simulator.prototype.updateParticleBuffers = function(particle, tpf, i, pos, col, data) {
-
-		pos[3 * i    ] = particle.position.data[0];
-		pos[3 * i + 1] = particle.position.data[1];
-		pos[3 * i + 2] = particle.position.data[2];
-
-		col[4 * i + 3] = particle.alpha;
-
-		data[4 * i    ] += data[4 * i + 1] * tpf;
-		data[4 * i + 2] += data[4 * i + 3] * tpf;
-	};
-
-	Simulator.prototype.updateParticleFrame = function(particle, tpf, alpha) {
-		
-		calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
-		particle.position.addVector(calcVec);
-		particle.velocity.mulDirect(particle.acceleration, particle.acceleration, particle.acceleration);
-		particle.velocity.addDirect(0, particle.gravity * tpf, 0);
-		particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
-	};
-
-
-	Simulator.prototype.updateParticle = function(tpf, i, pos, col, alpha, data) {
-
-        var particle = this.particles[i];
-
-        if (particle.dead) {
-            return;
-        }
-
-        particle.lifeSpan -= tpf;
-
-        if (particle.lifeSpan <= 0) {
-            this.resetParticle(particle, pos, i);
-            return;
-        }
-
-		this.updateParticleFrame(particle, tpf, alpha);
-		this.updateParticleBuffers(particle, tpf, i, pos, col, data);
-		frameStatus.lastAlive = i;
-    };
-
-
-	var frameStatus = {lastAlive : 0};
-
 	Simulator.prototype.update = function(tpf) {
-		frameStatus.lastAlive = 0;
+		var calcVec = new Vector3();
 		var pos = this.meshData.getAttributeBuffer(MeshData.POSITION);
 		var col = this.meshData.getAttributeBuffer(MeshData.COLOR);
 		var data = this.meshData.getAttributeBuffer('DATA');
-
+		var lastAlive = 0;
 		var alpha = this.inheritColor ? 1.0 : this.particleSettings.color[3];
-
+		var acceleration = this.particleSettings.acceleration;
 		for (var i = 0, l = this.particles.length; i < l; i++) {
-            this.updateParticle(tpf, i, pos, col, alpha, data);
+			var particle = this.particles[i];
+
+			if (particle.dead) {
+				continue;
+			}
+
+			particle.lifeSpan -= tpf;
+			if (particle.lifeSpan <= 0) {
+				particle.dead = true;
+				particle.position.setDirect(0, 0, 0);
+				pos[3 * i + 0] = 0;
+				pos[3 * i + 1] = -1000;
+				pos[3 * i + 2] = 0;
+				this.aliveParticles--;
+				continue;
+			}
+
+			calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
+			particle.position.addVector(calcVec);
+		//	var damping = 0.999;
+			particle.velocity.mulDirect(acceleration, acceleration, acceleration);
+			particle.velocity.addDirect(0, particle.gravity * tpf, 0);
+			particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
+
+			pos[3 * i + 0] = particle.position.data[0];
+			pos[3 * i + 1] = particle.position.data[1];
+			pos[3 * i + 2] = particle.position.data[2];
+
+			col[4 * i + 3] = particle.alpha;
+
+			data[4 * i + 0] += data[4 * i + 1] * tpf;
+			data[4 * i + 2] += data[4 * i + 3] * tpf;
+
+			lastAlive = i;
 		}
 
-		this.meshData.indexLengths = [frameStatus.lastAlive];
-		this.meshData.indexCount = frameStatus.lastAlive;
-        lastAlive = frameStatus.lastAlive;
+		this.meshData.indexLengths = [lastAlive];
+		this.meshData.indexCount = lastAlive;
+
 		this.meshData.setVertexDataUpdated();
 	};
 
@@ -383,8 +326,8 @@ function(
 			if (simulator.meshData.indexCount > 0) {
 				this.enableSimulator(simulator);
 				this.totalCount += simulator.meshData.indexCount;
-				this.simCount++;
-				this.materialCount++;
+				this.simCount += 1;
+				this.materialCount += 1;
 			} else {
 				this.disableSimulator(simulator);
 			}
