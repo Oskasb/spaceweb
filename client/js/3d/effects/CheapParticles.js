@@ -73,16 +73,23 @@ function(
 		this.meshData = meshData;
 
 		var material = new Material('ParticleMaterial', particleShader);
+
 		material.setTexture('PARTICLE_MAP', texture);
 		if ( particleSettings.blending === 'additive') {
 			material.blendState.blending = 'AdditiveBlending';
-		} else {
+            
+		} else if (particleSettings.blending === 'NoBlending') {
+			material.blendState.blending = 'NoBlending';
+            
+		} else  {
 			material.blendState.blending = 'CustomBlending';
+            
 		}
 
+		material.uniforms.alphakill = particleSettings.alphakill || 0.001;
 
 		material.depthState.write = false;
-		material.renderQueue = 3010;
+		material.renderQueue = particleSettings.renderqueue || 2000;
 		var entity = goo.world.createEntity(meshData, material);
 		entity.name = 'Simulator';
 		entity.meshRendererComponent.cullMode = 'Never';
@@ -178,24 +185,6 @@ function(
 
             if (effectData.acceleration) {
                 acceleration = effectData.acceleration;
-            }
-
-
-            var check = function(value, key) {
-                if (!value) {
-                    console.log("Bad Value", key, effectData)
-                }
-            };
-
-            for (var key in effectData) {
-                if (effectData[key].length) {
-                    for (var i = 0; i < effectData[key].length; i++) {
-                        check(effectData[key][i], key)
-                    }
-                } else {
-                    check(effectData[key], key)
-                }
-
             }
 
 		}
@@ -401,7 +390,8 @@ function(
 			viewProjectionMatrix: Shader.VIEW_PROJECTION_MATRIX,
 			worldMatrix: Shader.WORLD_MATRIX,
 			particleMap: 'PARTICLE_MAP',
-			resolution: Shader.RESOLUTION
+			resolution: Shader.RESOLUTION,
+			alphakill: 0.001
 		},
 		vshader: [
 			'attribute vec3 vertexPosition;',
@@ -424,7 +414,7 @@ function(
 		].join('\n'),
 		fshader: [
 			'uniform sampler2D particleMap;',
-
+			'uniform float alphakill;',
 			'varying vec4 color;',
 			'varying mat3 spinMatrix;',
 
@@ -432,7 +422,7 @@ function(
 			'{',
 				'vec2 coords = ((spinMatrix * vec3(gl_PointCoord, 1.0)).xy - 0.5) * 1.4142 + 0.5;',
 				'vec4 col = color * texture2D(particleMap, coords);',
-				'if (col.a <= 0.0) discard;',
+				'if (col.a <= alphakill) discard;',
 				'gl_FragColor = col;',
 			'}'
 		].join('\n')

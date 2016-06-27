@@ -47,14 +47,15 @@ define(function() {
 	};
 
 
-	SimulationParameters.prototype.configureData = function(simParams, effectData, particleDensity) {
+	SimulationParameters.prototype.configureData = function(simParams, effectData) {
 		var data = {};
 
 		for (var i = 0; i < simParams.length; i++) {
 			this.addSimParam(data, simParams[i], effectData)
 		}
 
-		data.effectCount = Math.ceil(data.count * particleDensity);
+
+		data.effectCount = data.count;
 		return data;
 	};
 

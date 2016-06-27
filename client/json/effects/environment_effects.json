@@ -34,37 +34,37 @@
       {
         "id":"hyper_space",
         "effect_data":[{
-          "game_effect":"hyper_space_sparks",
-          "volume":[6, 6, 155],
-          "distance": 95,
+          "game_effect":"blue_star_effect",
+          "volume":[6, 6, 255],
+          "distance": 495,
           "speed":[10.5, 10.5, 10.5],
-          "colorMin":[0.8, 0.0, 1],
-          "colorMax":[1, 0.8, 1],
-          "frequency":0
+          "colorMin":[0.8, 0.5, 1],
+          "colorMax":[1, 0.7, 1],
+          "frequency":0.02
         }]
       },
 
       {
-        "id":"stars",
+        "id":"env_space_rocks",
         "effect_data":[{
-          "game_effect":"space_dust",
-          "volume":[10, 10, 2],
-          "distance": 15,
-          "speed":[1, 1, 0],
-          "colorMin":[0.2, 0.2, 0.3],
-          "colorMax":[0.4, 0.6, 1],
-          "frequency":0.04
+          "game_effect":"cheap_rock_effect",
+          "volume":[2, 2, 82],
+          "distance": 105,
+          "speed":[0.1, 0.1, 0],
+          "colorMin":[0.4, 0.2, 0.5],
+          "colorMax":[0.5, 0.6, 0.6],
+          "frequency":0.02
         }]
       },
       {
         "id":"sparks",
         "effect_data":[{
-          "game_effect":"space_spark",
-          "volume":[8, 8, 35],
-          "distance": 95,
-          "speed":[0, 0, 0],
-          "colorMin":[0.9, 0.7, 0.8],
-          "colorMax":[1, 1, 1],
+          "game_effect":"blue_star_effect",
+          "volume":[2, 2, 225],
+          "distance": 695,
+          "speed":[4, 4, 55],
+          "colorMin":[0.2, 0.7, 1],
+          "colorMax":[1, 0.5, 1],
           "frequency":0.02
         }]
 
@@ -72,11 +72,11 @@
       {
         "id":"blue_star",
         "effect_data":[{
-          "game_effect":"space_cloud",
-          "volume":[8, 8, 610],
-          "distance": 530,
+          "game_effect":"blue_star_effect",
+          "volume":[4, 4, 600],
+          "distance": 1130,
           "speed":[0, 0, 0],
-          "colorMin":[0.6, 0.6, 0.7],
+          "colorMin":[0.9, 0.9, 0.96],
           "colorMax":[1, 1, 1],
           "frequency":0.03
         }]

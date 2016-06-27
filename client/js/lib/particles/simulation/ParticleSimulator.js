@@ -73,7 +73,7 @@ function (
 		return sim;
 	};
 
-	ParticleSimulator.prototype.addEffectSimulation = function(position, normal, effectData, callbacks, particleDensity) {
+	ParticleSimulator.prototype.addEffectSimulation = function(position, normal, effectData, callbacks) {
 
 		var sim = this.getAvailableSimulation();
 
@@ -82,7 +82,7 @@ function (
 			return;
 		}
 
-		sim.initSimulation(position, normal, this.settings.simulation_params, effectData, particleDensity);
+		sim.initSimulation(position, normal, this.settings.simulation_params, effectData);
 		this.includeSimulation(sim, callbacks);
 	};
 

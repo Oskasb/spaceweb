@@ -124,9 +124,9 @@ define([
 			}
 		};
 
-		SimpleParticles.prototype.spawn = function(simulatorId, position, normal, effectData, callbacks, particleDensity) {
+		SimpleParticles.prototype.spawn = function(simulatorId, position, normal, effectData, callbacks) {
 			if (!this.ready) return;
-				this.particlesAPI.spawnParticles(simulatorId, position, normal, effectData, callbacks, particleDensity);
+				this.particlesAPI.spawnParticles(simulatorId, position, normal, effectData, callbacks);
 		};
 
 		SimpleParticles.prototype.spawnCheap = function(simulatorId, position, normal, effectData) {

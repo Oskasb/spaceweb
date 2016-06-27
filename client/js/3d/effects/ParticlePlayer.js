@@ -183,8 +183,7 @@ define([
                         particleData.pos,
                         particleData.vel,
                         this.setupParticleData(i, args.effect, args.params),
-                        args.callbacks,
-                        this.getEffectData(args.effect, i).density
+                        args.callbacks
                     );
                 }
             }

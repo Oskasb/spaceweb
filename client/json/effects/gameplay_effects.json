@@ -46,24 +46,21 @@
                 "id":"ship_shield",
                 "effect_data":[{
                     "effect":"ship_shield",
-                    "simulator":"AdditiveParticle",
-                    "density":2
+                    "simulator":"AdditiveParticle"
 
                 },{
                     "effect":"ship_shield_flare",
-                    "simulator":"AdditiveParticle",
-                    "density":2
+                    "simulator":"AdditiveParticle"
 
                 }]
 
             },
 
             {
-                "id":"blue_star",
+                "id":"blue_star_effect",
                 "effect_data":[{
-                    "effect":"background_star",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "effect":"no_blend_star",
+                    "simulator":"CheapParticles"
                 }]
 
             },
@@ -71,8 +68,7 @@
                 "id":"dim_star",
                 "effect_data":[{
                     "effect":"dust_speck",
-                    "simulator":"AdditiveParticle",
-                    "density":1
+                    "simulator":"AdditiveParticle"
                 }]
 
             },
@@ -101,17 +97,9 @@
 
             },
             {
-                "id":"space_dust",
+                "id":"cheap_rock_effect",
                 "effect_data":[{
-                    "effect":"space_dust",
-                    "simulator":"CheapParticles"
-                }]
-
-            },
-            {
-                "id":"yellow_star",
-                "effect_data":[{
-                    "effect":"space_dust",
+                    "effect":"no_blend_space_rock",
                     "simulator":"CheapParticles"
                 }]
 

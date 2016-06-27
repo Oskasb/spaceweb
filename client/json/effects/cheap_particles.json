@@ -2,6 +2,49 @@
   "effects":{
     "cheap_particles":[
       {
+        "id": "no_blend_star",
+        "effect_data":{
+          "renderqueue":1000,
+          "alphakill":0.2,
+          "texture": "block_star.png",
+          "color": [1, 1,1,1],
+          "blending": "NoBlending",
+          "size": [1,15],
+          "growth": [ 12,24],
+          "rotation": [ 0, 360 ],
+          "spin": [0, 0],
+          "gravity": 0,
+          "count": 1,
+          "spread": 1,
+          "strength": 1,
+          "acceleration": 0.99,
+          "lifespan": [6,9],
+          "poolCount": 120
+        }
+
+      },
+      {
+        "id": "no_blend_space_rock",
+        "effect_data":{
+          "texture": "rock.png",
+          "color": [  0.6,   0.8,  0.9, 1 ],
+          "blending": "NoBlending",
+          "alphakill":0.5,
+          "size": [ 10, 20 ],
+          "growth": [12, 14],
+          "rotation": [0, 360 ],
+          "spin": [ -150,150 ],
+          "gravity": 0,
+          "count": 1,
+          "spread": 1,
+          "strength": 2,
+          "acceleration": 1.001,
+          "lifespan": [1.5,2.6],
+          "poolCount": 110
+        }
+
+      },
+      {
         "id": "space_sparks",
         "effect_data":{
           "texture":"star.png",
@@ -113,46 +156,9 @@
         }
 
       },
-      {
-        "id": "space_dust",
-        "effect_data":{
-          "texture": "energybullet.png",
-          "color": [  0.6,   0.8,  0.9, 1 ],
-          "blending": "additive",
-          "size": [ 0, 0 ],
-          "growth": [22, 66],
-          "rotation": [0, 360 ],
-          "spin": [ -150,150 ],
-          "gravity": 0,
-          "count": 1,
-          "spread": 1,
-          "strength": 4,
-          "acceleration": 1.02,
-          "lifespan": [0.2,0.6],
-          "poolCount": 110
-        }
 
-      },
 
-      {
-        "id": "space_cloud",
-        "effect_data":{
-          "texture": "star.png",
-          "color": [1, 1,1,1],
-          "size": [1,15],
-          "growth": [ 29,44],
-          "rotation": [ 0, 360 ],
-          "spin": [0, 0],
-          "gravity": 0,
-          "count": 1,
-          "spread": 1,
-          "strength": 1,
-          "acceleration": 0.99,
-          "lifespan": [3,7],
-          "poolCount": 120
-        }
 
-      },
       {
         "id": "explosion_smoke",
         "effect_data":{
