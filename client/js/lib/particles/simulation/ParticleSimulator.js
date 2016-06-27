@@ -117,8 +117,19 @@ function (
 		this.visible = visible;
 	};
 
+    ParticleSimulator.prototype.getAvailablePoolFraction = function () {
 
+        return (this.availableParticles.length + 1) / (this.totalPool + 1)
+    };
 
+    ParticleSimulator.prototype.adaptCountToPool = function (count) {
+
+        if (this.availableParticles.length < 20) {
+            return 1;
+        } else {
+            return Math.ceil(count * this.getAvailablePoolFraction());
+        }
+    };
 
 	ParticleSimulator.prototype.includeSimulation = function(sim, callbacks) {
 
@@ -133,7 +144,8 @@ function (
 		}
 
 		var simD = sim.params.data;
-		var count = Math.ceil(simD.count * (this.availableParticles.length-1) / this.totalPool);
+
+		var count = this.adaptCountToPool(simD.count);
 	//	count = Math.min(count, this.availableParticles.length-1);
 	//	console.log("counts: ", count, this.availableParticles.length, this.totalPool);
 
@@ -178,12 +190,12 @@ function (
 
 
 	ParticleSimulator.prototype.update = function (tpf) {
+        this.materialsCount = 0;
+        this.activeSimulations = 0;
+
 		if (!this.visible) {
 			return;
 		}
-
-		this.materialsCount = 0;
-		this.activeSimulations = 0;
 
 		for (i = 0; i < this.simulations.length; i++) {
 			this.updateSimulation(tpf, this.simulations[i]);
@@ -195,7 +207,7 @@ function (
 				this.renderers[i].updateMeshdata();
 
                 if (!this.renderers[i].entity.hidden) {
-                    this.materialsCount += 1;
+                    this.materialsCount++;
                 }
 		//	} else {
          //       console.log("Renderer not a function?")

@@ -148,7 +148,19 @@ define([
             return this.getParticleData(this.getEffectData(effect, idx).effect);
         };
 
+
+        var calledParams = {};
+
         ParticlePlayer.prototype.playGameEffect = function(args) {
+
+            /*
+            for (var key in args.params) {
+                calledParams[key] = args.params[key]
+            }
+
+            if (Math.random() < 0.01) console.log("Called params: ", calledParams);
+*/
+
             particleData.pos.data[0] = args.pos.data[0];
             particleData.pos.data[1] = args.pos.data[1];
             particleData.pos.data[2] = args.pos.data[2];

@@ -383,8 +383,8 @@ function(
 			if (simulator.meshData.indexCount > 0) {
 				this.enableSimulator(simulator);
 				this.totalCount += simulator.meshData.indexCount;
-				this.simCount += 1;
-				this.materialCount += 1;
+				this.simCount++;
+				this.materialCount++;
 			} else {
 				this.disableSimulator(simulator);
 			}

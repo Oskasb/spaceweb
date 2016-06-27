@@ -11,7 +11,7 @@ function (
 
 	var defaultColorCurve = [[0, 1], [1, 0]];
     var defaultAlphaCurve = [[0, 1], [1, 0]];
-    var defaultGrowthCurve = [[0, 1], [1, 1]];
+    var defaultGrowthCurve =[[0, 1], [1, 1]];
     var defaultSpinCurve =  [[0, 0], [1, 0]];
 
 	function Particle(idx) {
