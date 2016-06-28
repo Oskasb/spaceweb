@@ -160,7 +160,9 @@ define([
                     setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
 
                     connectionReady();
-                    evt.on(evt.list().CURSOR_PRESS, requestPlayer);
+                    requestPlayer();
+                    // evt.on(evt.list().CURSOR_PRESS, requestPlayer);
+
                 //    evt.fire(evt.list().MESSAGE_POPUP, {configId:"select_name", callback:requestPlayer});
                 }
             };

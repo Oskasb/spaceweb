@@ -10,6 +10,8 @@ define([
 		DomUtils
 	) {
 
+        var bailTimeout;
+
 		var DomLoadScreen = function() {
 			this.root = DomUtils.createDivElement(document.body, 'load_screen', '', 'point');
             this.buildElements();
@@ -112,7 +114,7 @@ define([
                 color: 'rgb(255, 255, 195)'
             };
 
-            this.progCounter = DomUtils.createDivElement(this.progContainer, 'pcounter', 'Reload to wake Server', 'point');
+            this.progCounter = DomUtils.createDivElement(this.progContainer, 'pcounter', 'Prepping Loaders...', 'point');
 
             DomUtils.applyElementStyleParams(this.progCounter, countStyle);
 
@@ -150,10 +152,18 @@ define([
             DomUtils.applyElementStyleParams(this.pipeMessage, pipeStyle);
 
             this.setProgress(0);
+
+            var _this = this;
+
+            bailTimeout = setTimeout(function() {
+                _this.progCounter.innerHTML = "Loading fishy... reload to retry";
+            }, 2000);
+
         };
 
 
 		DomLoadScreen.prototype.setProgress = function(fraction) {
+            clearTimeout(bailTimeout);
             this.progCounter.innerHTML = Math.round(fraction*100)+'%';
 			// this.progress.element.style.width = 100 * fraction + '%';
             var style = {

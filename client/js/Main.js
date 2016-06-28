@@ -44,11 +44,7 @@ require([
     'application/Client',
     'application/StatusMonitor',
     'ui/GameScreen',
-    'io/PointerCursor',
-    'Events',
-    'PipelineAPI',
-    'ui/dom/DomMessage',
-    'ui/dom/DomProgress'
+    'io/PointerCursor'
 ], function(
     SceneController,
     DataLoader,
@@ -59,11 +55,7 @@ require([
     Client,
     StatusMonitor,
     GameScreen,
-    PointerCursor,
-    evt,
-    PipelineAPI,
-    DomMessage,
-    DomProgress
+    PointerCursor
 ) {
 
     new StatusMonitor();
@@ -76,50 +68,12 @@ require([
     
     var sceneController = new SceneController();
     var dataLoader = new DataLoader();
-    var client;
 
     console.log(window.location.href);
 
-    var initClient = function() {
-        if (client) {
-            console.log("Multi Inits requested, bailing");
-            return;
-        }
-        client = new Client(new PointerCursor());
-
-        client.setupSimulation(sceneController);
-        
-    };
-
-    function connectionReady() {
-        dataLoader.notifyCompleted();
-    }
 
 
-    function connectClient() {
-        client.initiateClient(new SocketMessages(), connectionReady);
-    }
-
-
-
-
-    var loadStateChange = function(state) {
-        console.log('loadStateChange', state)
-        if (state == dataLoader.getStates().IMAGES) {
-            initClient();
-            dataLoader.preloadImages();
-        }
-
-        if (state == dataLoader.getStates().COMPLETED) {
-            connectClient();
-
-        }
-
-    };
-
-    dataLoader.setupPipelineCallback(loadStateChange);
-
-    dataLoader.loadData();
+    dataLoader.loadData(Client, PointerCursor, sceneController);
 
 
 
