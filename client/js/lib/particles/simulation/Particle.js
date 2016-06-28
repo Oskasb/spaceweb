@@ -157,7 +157,13 @@ function (
 		this.opacity = randomBetween(simD.opacity[0], simD.opacity[1]);
 		this.alpha = simD.alpha;
 
-		this.size = randomBetween(simD.size[0], simD.size[1]);
+		if (simD.size.length) {
+			this.size = randomBetween(simD.size[0], simD.size[1]);
+		} else {
+			this.size = simD.size;
+		}
+
+
 		this.growthFactor = randomBetween(simD.growthFactor[0], simD.growthFactor[1]);
 		this.growth = simD.growth;
 

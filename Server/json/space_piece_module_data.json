@@ -24,18 +24,55 @@
         "remove_effect":"shell_detonate"
       }
     },
-    "clay_blob_module":{
-      "id":"clay_blob_module",
-      "size":5,
+    "big_space_rock_module":{
+      "id":"big_space_rock_module",
+      "size":8,
       "source":"initiate",
       "initState": true,
       "applies":{
         "type":"string",
         "state":true,
         "action":"applyAppearance",
-        "game_effect":"clay_blob_effect",
+        "game_effect":"big_space_rock_effect",
         "effect_data":{
-          "intensity":0.2
+          "intensity":1
+        },
+        "remove_effect":"shell_detonate"
+      }
+    },
+    "small_space_rock_module":{
+      "id":"small_space_rock_module",
+      "size":3,
+      "source":"initiate",
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyAppearance",
+        "game_effect":"space_rock_effect",
+        "effect_data":{
+          "intensity":1
+        },
+        "remove_effect":"shell_detonate"
+      }
+    },
+    "clay_blob_module":{
+      "id":"clay_blob_module",
+      "size":4,
+      "source":"initiate",
+      "initState": true,
+      "applies":{
+        "type":"string",
+        "state":true,
+        "action":"applyAppearance",
+        "emit_effect":"cheap_rock_effect",
+        "effect_data":{
+          "intensity":1,
+          "size": 5,
+          "lifeSpan":0.4,
+          "strength":20,
+          "acceleration":0.5,
+          "growth": [330, 1500]
         },
         "remove_effect":"shell_detonate"
       }

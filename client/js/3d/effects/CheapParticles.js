@@ -6,7 +6,9 @@ define([
 	'goo/renderer/Material',
 	'goo/renderer/TextureCreator',
 	'PipelineAPI',
-    'PipelineTexture'
+    'PipelineTexture',
+        'goo/renderer/Camera',
+        'goo/renderer/bounds/BoundingSphere'
 ],
 function(
 	Vector3,
@@ -16,8 +18,13 @@ function(
 	Material,
 	TextureCreator,
 	PipelineAPI,
-    PipelineTexture
+    PipelineTexture,
+    Camera,
+    BoundingSphere
 ) {
+
+
+
 
 	var path = "./client/assets/images/effects/";
 	
@@ -26,6 +33,7 @@ function(
 		this.simulators = {};
 		this.materialCount = 0;
 	}
+
 
 	function Particle() {
 		this.position = new Vector3();
@@ -325,7 +333,22 @@ function(
         prepTexture(id, particleSettings, txReady)
 	};
 
+    var testBound = new BoundingSphere(new Vector3(0, 0, 0), 20);
+
+
 	CheapParticles.prototype.spawn = function(id, position, normal, effectData) {
+
+        this.camera = this.goo.renderSystem.camera;
+
+        if (!this.camera) return;
+
+        testBound.center.setVector(position);
+
+
+        if (this.camera.contains(testBound) === Camera.Outside) {
+            return;
+        }
+
 		var simulator = this.simulators[id];
 		if (simulator.ready) {
 			simulator.spawn(position, normal, effectData);

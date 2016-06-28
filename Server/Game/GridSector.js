@@ -205,19 +205,25 @@ GridSector.prototype.configsUpdated = function(sectorConfigs) {
 
     var data = sectorConfigs.data;
 
-    var selection = Math.random();
+
 
     var useData = data[0];
 
-
+    var weightsum = 0;
 
     for (var i = 0; i < data.length; i++) {
+        weightsum += data[i].weight;
+    }
 
-        if (data[i].weight > selection) {
+    var selection = Math.random()*weightsum;
+    
+    for (var i = 0; i < data.length; i++) {
+
+        if (data[i].weight < selection) {
             useData = data[i];
             i = data.length+1;
         } else {
-            selection -= data[i].weight;
+            selection += data[i].weight;
         }
     }
     

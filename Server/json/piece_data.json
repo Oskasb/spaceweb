@@ -1,36 +1,71 @@
-[{
-  "dataType":"PIECE_DATA",
-  "pieces":{
-    "plasma_blob_piece":{
-      "size":5,
-      "controls":{
-        "actions": {
-          "applyForward":1,
-          "timeoutEvent": "EXPLODE"
+[
+  {
+    "dataType":"PIECE_DATA",
+    "pieces":{
+      "plasma_blob_piece":{
+        "size":5,
+        "controls":{
+          "actions": {
+            "applyForward":1,
+            "timeoutEvent": "EXPLODE"
+          },
+          "constants":{
+            "velocityDrag":0.98,
+            "radialDrag":1
+          }
         },
-        "constants":{
-          "velocityDrag":0.98,
-          "radialDrag":1
-        }
+        "attachment_points":[
+          {"name":"Plasma Blob" , "module":"plasma_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+        ]
       },
-      "attachment_points":[
-        {"name":"Plasma Blob" , "module":"plasma_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
-      ]
-    },
-  "clay_blob_piece":{
-    "size":5,
-    "controls":{
-      "actions": {
-        "applyForward":1,
-        "timeoutEvent": "EXPLODE"
+      "clay_blob_piece":{
+        "size":5,
+        "controls":{
+          "actions": {
+            "applyForward":1,
+            "timeoutEvent": "EXPLODE"
+          },
+          "constants":{
+            "velocityDrag":0.5,
+            "radialDrag":1
+          }
+        },
+        "attachment_points":[
+          {"name":"Clay Blob" , "module":"clay_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+        ]
       },
-      "constants":{
-        "velocityDrag":0.5,
-        "radialDrag":1
+      "big_space_rock_piece":{
+        "size":5,
+        "controls":{
+          "actions": {
+            "applyForward":1,
+            "timeoutEvent": "EXPLODE"
+          },
+          "constants":{
+            "velocityDrag":0.5,
+            "radialDrag":1
+          }
+        },
+        "attachment_points":[
+          {"name":"Space Rock" , "module":"big_space_rock_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+        ]
+      },
+      "small_space_rock_piece":{
+        "size":5,
+        "controls":{
+          "actions": {
+            "applyForward":1,
+            "timeoutEvent": "EXPLODE"
+          },
+          "constants":{
+            "velocityDrag":0.5,
+            "radialDrag":1
+          }
+        },
+        "attachment_points":[
+          {"name":"Space Rock" , "module":"small_space_rock_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+        ]
       }
-    },
-    "attachment_points":[
-      {"name":"Clay Blob" , "module":"clay_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
-    ]
-  }}
-}]
+    }
+  }
+]

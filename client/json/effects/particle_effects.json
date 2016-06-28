@@ -542,14 +542,14 @@
             {
                 "id":"fast_tail_hyper",
                 "effect_data":{
-                    "color0":[0.3,0.5, 0.9],
-                    "color1":[0.7,0.3, 0.9],
+                    "color0":[0.3,0.5, 1],
+                    "color1":[0.7,0.5, 1],
                     "colorCurve":[[0, 1], [1, 1]],
                     "colorRandom":0.4,
-                    "count":3,
-                    "opacity":[0.3, 0.8],
+                    "count":1,
+                    "opacity":[0.9, 0.9],
                     "alpha":"oneToZero",
-                    "size":[3,4],
+                    "size":[5,5],
                     "growthFactor":[1.01, 0.7],
                     "growth":"posToNeg",
                     "rotation":[0,7],
@@ -557,7 +557,7 @@
                     "lifespan":[2, 2],
                     "sprite":"spin_wave",
                     "loopcount":1,
-                    "trailsprite":"shine_trail",
+                    "trailsprite":"dot",
                     "trailwidth":1
                 }
             },
@@ -705,7 +705,25 @@
                     "trailwidth":1
                 }
             },
-
+            {
+                "id":"space_rock_steady_particles",
+                "effect_data":{
+                    "color0":[0.7, 0.6, 0.6],
+                    "color1":[0.98, 0.9, 0.9],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0.2,
+                    "count":1,
+                    "opacity":[1, 1],
+                    "alpha":"oneToZero",
+                    "size":[3, 3],
+                    "growthFactor":[1.01, 0.7],
+                    "growth":"posToNeg",
+                    "rotation":[0,7],
+                    "spin":"posToNeg",
+                    "lifespan":[2, 2],
+                    "sprite":"space_rock"
+                }
+            },
             {
                 "id":"clay_blob_steady_particles",
                 "effect_data":{
@@ -716,7 +734,26 @@
                     "count":1,
                     "opacity":[1, 1],
                     "alpha":"oneToZero",
-                    "size":[1, 5],
+                    "size":[3, 3],
+                    "growthFactor":[1.01, 0.7],
+                    "growth":"posToNeg",
+                    "rotation":[0,7],
+                    "spin":"posToNeg",
+                    "lifespan":[2, 2],
+                    "sprite":"space_rock"
+                }
+            },
+            {
+                "id":"space_rock_big_particles",
+                "effect_data":{
+                    "color0":[0.7, 0.6, 0.6],
+                    "color1":[0.98, 0.9, 0.9],
+                    "colorCurve":[[0, 1], [1, 1]],
+                    "colorRandom":0.2,
+                    "count":1,
+                    "opacity":[1, 1],
+                    "alpha":"oneToZero",
+                    "size":[8, 8],
                     "growthFactor":[1.01, 0.7],
                     "growth":"posToNeg",
                     "rotation":[0,7],

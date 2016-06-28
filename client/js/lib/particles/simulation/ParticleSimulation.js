@@ -3,12 +3,16 @@
 define([
 	'goo/math/Vector3',
 	'particle_system/simulation/SimulationParameters',
-	'particle_system/defaults/DefaultSimulationParams'
+	'particle_system/defaults/DefaultSimulationParams',
+    'goo/renderer/Camera',
+    'goo/renderer/bounds/BoundingSphere'
 
 ], function(
 	Vector3,
 	SimulationParameters,
-    DefaultSimulationParams
+    DefaultSimulationParams,
+    Camera,
+    BoundingSphere
 	) {
 
 	var ParticleSimulation = function() {
@@ -84,7 +88,9 @@ define([
 		
 	};
 
-	ParticleSimulation.prototype.updateParticle = function(particle, tpf) {
+    var testBound = new BoundingSphere(new Vector3(0, 0, 0), 30);
+
+	ParticleSimulation.prototype.updateParticle = function(particle, goo, tpf) {
 
 		if (particle.dead) {
 			return;
@@ -109,10 +115,23 @@ define([
 			return;
 		}
 
-		this.renderParticle(tpf, particle);
+
+        var camera = goo.renderSystem.camera;
+
+        if (!camera) return;
+
+        testBound.center.setVector(particle.position);
+
+
+        if (camera.contains(testBound) != Camera.Outside) {
+            this.renderParticle(tpf, particle);
+        }
+
 	};
 
-	ParticleSimulation.prototype.updateSimParticles = function(tpf) {
+
+
+	ParticleSimulation.prototype.updateSimParticles = function(goo, tpf) {
 
         if (this.callbacks.onUpdate) {
 			this.callbacks.onUpdate(this);
@@ -120,7 +139,7 @@ define([
 
 
 		for (var i = 0; i < this.particles.length; i++) {
-			this.updateParticle(this.particles[i], tpf)
+			this.updateParticle(this.particles[i], goo, tpf)
 		}
 
 	};

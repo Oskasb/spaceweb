@@ -24,9 +24,9 @@ define([
         var path = './../../..';
 
         var loadUrls = [
+            './../../../Shared/MATH.js',
             './../../../Shared/io/Message.js',
             './../../../Shared/io/SocketMessages.js',
-            './../../../Shared/MATH.js',
             './../../../Shared/MODEL.js',
             './../../../Shared/GAME.js'
         ];
@@ -231,28 +231,28 @@ define([
 
 
             var filesLoaded = function() {
-                count++;
-                console.log("Pipeline Ready State:", count, loadUrls.length, PipelineAPI.checkReadyState());
-                if (count == loadUrls.length) {
-                    //    count = 0;
+
                     setTimeout(function() {
                         sharedLoaded();
                     }, 20)
-
-                }
+                
             };
 
 
 
 
-            var loadJS = function(url, implementationCode, location){
+            var loadJS = function(url, location){
 
                 var scriptTag = document.createElement('script');
                 scriptTag.src = url;
 
                 var scriptLoaded = function(e) {
-                    console.log(e);
-                    implementationCode();
+                    if (loadUrls.length != 0) {
+                        loadJS(loadUrls.shift(), document.body);
+                    } else {
+                        console.log(e);
+                        filesLoaded();
+                    }
                 };
 
 
@@ -263,11 +263,7 @@ define([
             var count = 0;
 
             var pipelineReady = function() {
-
-                evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:"Pipeline Ready"});
-                for (var i = 0; i < loadUrls.length; i++) {
-                    loadJS(loadUrls[i], filesLoaded, document.body);
-                }
+                loadJS(loadUrls.shift(), document.body);
             };
 
 

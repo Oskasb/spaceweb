@@ -179,7 +179,7 @@ function (
 	ParticleSimulator.prototype.updateSimulation = function (tpf, sim) {
 		if (!sim.active) return;
 
-		sim.updateSimParticles(tpf);
+		sim.updateSimParticles(this.goo, tpf);
 
 		if (sim.particles.length == sim.recover.length) {
 			this.recoverSimulation(sim);

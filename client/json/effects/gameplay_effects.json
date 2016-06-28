@@ -257,14 +257,23 @@
                 }]
             },
             {
-                "id":"clay_blob_effect",
+                "id":"space_rock_effect",
                 "effect_data":[{
-                    "effect":"clay_blob_steady_particles",
+                    "effect":"space_rock_steady_particles",
                     "simulator":"OpaqueParticle",
                     "density":1
 
                 }]
             },
+          {
+            "id":"big_space_rock_effect",
+            "effect_data":[{
+              "effect":"space_rock_big_particles",
+              "simulator":"OpaqueParticle",
+              "density":1
+
+            }]
+          },
             {
                 "id":"clay_blob_splatter",
                 "effect_data":[{

@@ -38,7 +38,8 @@ define([
             serverTime[0][0] = resData.idle + resData.busy;
             serverPieces[0][0] = resData.pieces;
             serverPlayers[0][0] = resData.players;
-
+            evt.fire(evt.list().MONITOR_STATUS, {SERVER_PIECES:resData.pieces});
+            evt.fire(evt.list().MONITOR_STATUS, {SERVER_PLAYERS:resData.players});
         };
 
         var handleServerMessage = function(e) {

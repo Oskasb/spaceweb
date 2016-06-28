@@ -58,7 +58,7 @@ ServerPieceProcessor.prototype.playerAgainstPiece = function(playerPiece, piece)
     //    console.log("hit: ", this.hitNormal.data[0], this.hitNormal.data[1], this.hitNormal.data[2]);
 
 
-            piece.setState(GAME.ENUMS.PieceStates.BURST);
+            playerPiece.setState(GAME.ENUMS.PieceStates.BURST);
             piece.setState(GAME.ENUMS.PieceStates.EXPLODE);
 
             piece.spatial.pos.setVec(this.hitPoint);
@@ -78,7 +78,8 @@ ServerPieceProcessor.prototype.playerAgainstPiece = function(playerPiece, piece)
 
             this.callbacks.broadcast(piece);
             this.callbacks.broadcast(playerPiece);
-
+            playerPiece.setState(GAME.ENUMS.PieceStates.MOVING);
+            piece.setState(GAME.ENUMS.PieceStates.TIME_OUT);
     }
 };
 
@@ -121,7 +122,8 @@ ServerPieceProcessor.prototype.pieceAgainstPiece = function(pieceA, pieceB) {
 
         this.callbacks.broadcast(pieceA);
         this.callbacks.broadcast(pieceB);
-
+        pieceA.setState(GAME.ENUMS.PieceStates.TIME_OUT);
+        pieceB.setState(GAME.ENUMS.PieceStates.TIME_OUT);
         }
 };
 

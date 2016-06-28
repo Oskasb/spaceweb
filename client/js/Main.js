@@ -71,10 +71,6 @@ require([
 
     console.log(window.location.href);
 
-
-
     dataLoader.loadData(Client, PointerCursor, sceneController);
-
-
 
 });

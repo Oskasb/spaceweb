@@ -5,12 +5,12 @@
         "id": "no_blend_star",
         "effect_data":{
           "renderqueue":1000,
-          "alphakill":0.2,
+          "alphakill":0.5,
           "texture": "block_star.png",
           "color": [1, 1,1,1],
           "blending": "NoBlending",
-          "size": [1,15],
-          "growth": [ 12,24],
+          "size": [5,11],
+          "growth": [ 12,14],
           "rotation": [ 0, 360 ],
           "spin": [0, 0],
           "gravity": 0,
@@ -18,8 +18,8 @@
           "spread": 1,
           "strength": 0.3,
           "acceleration": 0.9,
-          "lifespan": [6,9],
-          "poolCount": 120
+          "lifespan": [2,5],
+          "poolCount": 420
         }
 
       },
@@ -30,8 +30,8 @@
           "color": [  0.6,   0.8,  0.9, 1 ],
           "blending": "NoBlending",
           "alphakill":0.5,
-          "size": [ 10, 20 ],
-          "growth": [12, 14],
+          "size": [ 10, 15 ],
+          "growth": [12, 54],
           "rotation": [0, 360 ],
           "spin": [ -150,150 ],
           "gravity": 0,
@@ -39,8 +39,8 @@
           "spread": 1,
           "strength": 2,
           "acceleration": 1.001,
-          "lifespan": [1.5,2.6],
-          "poolCount": 110
+          "lifespan": [0.3,1.1],
+          "poolCount": 300
         }
 
       },

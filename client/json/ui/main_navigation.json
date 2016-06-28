@@ -373,7 +373,7 @@
           "parentId": "monitorContainer3",
           "style": ["data_list_container"],
           "dataField":{
-            "dataKeys":["FANCY_PARTICLES","FANCY_SIMULATIONS", "CHEAP_PARTICLES","CHEAP_SIMULATORS", "MATERIALS", "CLIENT_PIECES"],
+            "dataKeys":["FANCY_PARTICLES","FANCY_SIMULATIONS", "CHEAP_PARTICLES","CHEAP_SIMULATORS", "MATERIALS", "CLIENT_PIECES", "SERVER_PIECES", "SERVER_PLAYERS"],
             "dataCategory":"STATUS"
           }
         }

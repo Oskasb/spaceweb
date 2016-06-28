@@ -52,11 +52,13 @@ define([
 		};
 
         Client.prototype.handleServerMessage = function(res) {
+            evt.fire(evt.list().SERVER_MESSAGE, res);
             var message = this.socketMessages.getMessageById(res.id);
             if (message) {
                 this.handlers[message.target][res.id](res.data);
             } else {
                 if (res.id == 'server_status') {
+
                 } else {
                     evt.fire(evt.list().MESSAGE_UI, {channel:'receive_error', message:'Unhandled message '+res.id});
                     console.log("unhandled message response:", res);
@@ -76,11 +78,7 @@ define([
 
 			var ClientState = GAME.ENUMS.ClientStates.LOADING;
 
-			var handleServerMessage = function(e) {
-				var res = evt.args(e);
-                _this.handleServerMessage(res);
-			};
-			
+
 
 
 			var connectedCallback = function() {
@@ -118,8 +116,6 @@ define([
 			};
 
 			evt.on(evt.list().SEND_SERVER_REQUEST, handleSendRequest);
-			
-			evt.on(evt.list().SERVER_MESSAGE, handleServerMessage);
 
 			var count = 0;
 

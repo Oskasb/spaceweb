@@ -3,41 +3,54 @@
   "sectors":{
     "data":[
       {"id":"sparse",
-        "weight":0.4,
+        "weight":4,
         "spawn":[
-          {"pieceType":"clay_blob_piece", "min":0, "max":3}
+          {"pieceType":"small_space_rock_piece", "min":2, "max":5},
+          {"pieceType":"big_space_rock_piece", "min":0, "max":3},
+          {"pieceType":"plasma_blob_piece", "min":0, "max":1},
+          {"pieceType":"clay_blob_piece", "min":0, "max":1}
       ]},
 
       {"id":"average",
-        "weight":0.3,
+        "weight":3,
         "spawn":[
-          {"pieceType":"clay_blob_piece", "min":2, "max":4}
+          {"pieceType":"small_space_rock_piece", "min":2, "max":5},
+          {"pieceType":"big_space_rock_piece", "min":1, "max":6},
+          {"pieceType":"plasma_blob_piece", "min":1, "max":1},
+          {"pieceType":"clay_blob_piece", "min":0, "max":1}
         ]},
 
       {"id":"dense",
-        "weight":0.3,
+        "weight":3,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":1, "max":2},
-          {"pieceType":"clay_blob_piece", "min":1, "max":3}
+          {"pieceType":"small_space_rock_piece", "min":4, "max":18},
+          {"pieceType":"big_space_rock_piece", "min":1, "max":16},
+          {"pieceType":"plasma_blob_piece", "min":1, "max":6},
+          {"pieceType":"clay_blob_piece", "min":0, "max":5}
         ]},
 
       {"id":"crowded",
-        "weight":0.1,
+        "weight":2,
         "spawn":[
           {"pieceType":"plasma_blob_piece", "min":1, "max":3},
-          {"pieceType":"clay_blob_piece", "min":9, "max":52}
+          {"pieceType":"small_space_rock_piece", "min":4, "max":28},
+          {"pieceType":"big_space_rock_piece", "min":1, "max":22},
+          {"pieceType":"clay_blob_piece", "min":1, "max":4}
       ]},
       {"id":"plasmatic",
-        "weight":0.1,
+        "weight":1,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":7, "max":9},
-          {"pieceType":"clay_blob_piece", "min":0, "max":1}
+          {"pieceType":"plasma_blob_piece", "min":12, "max":25},
+          {"pieceType":"small_space_rock_piece", "min":2, "max":5},
+          {"pieceType":"big_space_rock_piece", "min":1, "max":2}
         ]},
       {"id":"rockness",
-        "weight":0.1,
+        "weight":1,
         "spawn":[
-          {"pieceType":"plasma_blob_piece", "min":0, "max":1},
-          {"pieceType":"clay_blob_piece", "min":25, "max":55}
+          {"pieceType":"plasma_blob_piece", "min":2, "max":7},
+          {"pieceType":"clay_blob_piece", "min":2, "max":5},
+          {"pieceType":"small_space_rock_piece", "min":2, "max":5},
+          {"pieceType":"big_space_rock_piece", "min":1, "max":2}
         ]}
     ]
 
