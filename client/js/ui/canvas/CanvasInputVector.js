@@ -242,12 +242,12 @@ define([
             size = confData.size;
 
 
-            drawRaster(ctx, confData.raster);
+        //    drawRaster(ctx, confData.raster);
 
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
 
-            drawElementBorders(ctx, confData.elementBorder);
+        //    drawElementBorders(ctx, confData.elementBorder);
         //    drawWorldBorders(ctx, confData.worldSection);
         //    drawRaster(ctx, confData.raster);
 

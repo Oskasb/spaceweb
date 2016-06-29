@@ -111,9 +111,9 @@ define([
 
     var monkeypatchCustomEngine = function() {
 
-        //	Vector = function(size) {
-        //		this.data = new Float64Array(size);
-        //	};
+        	Vector = function(size) {
+        		this.data = new Float64Array(size);
+        	};
         DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
 
         var width = window.innerWidth;

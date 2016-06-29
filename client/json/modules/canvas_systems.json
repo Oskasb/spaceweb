@@ -27,12 +27,12 @@
 
       "serverRadial":{
         "on":true,
-        "color":[0.7,0.3,0.0,0.4],
-        "clockRadius":48,
-        "timeColor":[0.5, 0.6, 1, 1],
-        "timeSize":0.09,
-        "timeWidth":8,
-        "width":3,
+        "color":[0.9,0.3,0.0,0.4],
+        "clockRadius":120,
+        "timeColor":[0.5, 0.4, 1, 1],
+        "timeSize":0.03,
+        "timeWidth":22,
+        "width":2,
         "range":0.27,
         "flicker":0.2
       },
@@ -140,7 +140,7 @@
           "resolution":256,
           "attenuation":[0, 0.2, 0.1, 0.17],
           "size":{"height":256, "width":256},
-          "zoom":200,
+          "zoom":1000,
           "pos":{"top":0, "left":0},
           "worldSection":{"probability":0.8, "color":[0.05,0.15,0.4,0.1], "borderColor":[0.2,0.55,0.7,0.2], "flicker":0.3,  "width":4},
           "elementBorder":{"probability":0.95, "color":[0.3,0.2,0.5,0.24], "flicker":0.1, "margin":1, "width":2},

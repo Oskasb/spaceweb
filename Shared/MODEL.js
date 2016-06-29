@@ -191,7 +191,7 @@ if(typeof(MODEL) == "undefined"){
     MODEL.Temporal.prototype.setSendTemporal = function(sendData) {
         this.lifeTime =       sendData.lifeTime;
         this.creationTime =   sendData.creationTime;
-        this.currentTime =    0;
+        this.currentTime =    sendData.currentTime;
         this.lastUpdate =     sendData.lastUpdate;
         this.stepTime =       sendData.stepTime;
         this.networkTime =    sendData.networkTime;

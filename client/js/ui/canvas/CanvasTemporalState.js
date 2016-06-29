@@ -242,14 +242,14 @@ define([
             size = confData.size;
 
 
-            drawRadialRaster(ctx, confData.raster);
+        //    drawRadialRaster(ctx, confData.raster);
 
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
 
-            drawElementBorders(ctx, confData.elementBorder);
+       //     drawElementBorders(ctx, confData.elementBorder);
         //    drawWorldBorders(ctx, confData.worldSection);
-        //    drawRaster(ctx, confData.raster);
+            drawRaster(ctx, confData.raster);
 
             var curveCount = 0;
                         
@@ -306,6 +306,7 @@ define([
                 
                 var idealTimeSlice = tmp.getIdealTimeSlice();
                 var timeProgress = tmp.getPacketTimeFraction();
+                var totalTime = tmp.getAge();
                 var overdue = tmp.getOverdue();
                 
                 var top  = vectorToCanvasX(calcVec);
@@ -313,7 +314,7 @@ define([
 
 
                     tempRect.left 	= left -1;
-                    tempRect.top 	= top -1;
+                    tempRect.top 	= size.height +1;
                     tempRect.width 	= 2;
                     tempRect.height = 2;
 
@@ -322,25 +323,47 @@ define([
                         for (var i = 0; i < controls.length; i++) {
 
 
+                            var green = 0;
+                            if (timeProgress > idealTimeSlice) {
+                                green =1;
+                            }
 
-                            tmpColor[0] = overdue; // confData.serverRadial.timeColor[0];
-                            tmpColor[1] = widgetConfigs.serverRadial.timeColor[1] * (1-timeProgress);
-                            tmpColor[2] = widgetConfigs.serverRadial.timeColor[2]; // * 1/(1+timeProgress);
-                            tmpColor[3] = Math.floor(timeProgress) + widgetConfigs.serverRadial.timeColor[3] * 1/(1+timeProgress);
+
+                            tmpColor[0] = overdue + 0.2*green; // confData.serverRadial.timeColor[0];
+                            tmpColor[1] = widgetConfigs.serverRadial.timeColor[1] * (1-overdue);
+                            tmpColor[2] = widgetConfigs.serverRadial.timeColor[2] * (0.5-overdue); // * 1/(1+timeProgress);
+                            tmpColor[3] = widgetConfigs.serverRadial.timeColor[3];
 
 
                             var timeAngle = - Math.PI * 0.5 + (timeProgress) * MATH.TWO_PI;
 
-                            var radius = widgetConfigs.serverRadial.clockRadius;
+                            var timeAngle = - Math.PI * 0.5 + (totalTime) * MATH.TWO_PI;
 
-                            radius -= Math.sqrt(overdue*radius*0.2);
+                            timeAngle = 0.5*Math.sin(timeAngle) - Math.PI * 0.5;
 
-                            drawControlVectorArc(ctx,  timeAngle, timeAngle + widgetConfigs.serverRadial.timeSize * idealTimeSlice, radius, tmpColor, widgetConfigs.serverRadial.timeWidth);
+                            var radius = widgetConfigs.serverRadial.clockRadius ;
+
+                            var w = widgetConfigs.serverRadial.timeWidth; // - widgetConfigs.serverRadial.timeWidth*(timeProgress*timeProgress);
+
+                            w += overdue*radius*0.05;
+
+                            drawControlVectorArc(ctx,  timeAngle, timeAngle + widgetConfigs.serverRadial.timeSize * idealTimeSlice, radius, tmpColor, w);
 
 
                         }
-            
-                    
+            tmpColor[0] = 0.6*timeProgress;
+            tmpColor[1] = 0.1*timeProgress;
+            tmpColor[2] = 1-timeProgress;
+            tmpColor[3] *= (1-timeProgress);
+            ctx.strokeStyle = randomizedColor(tmpColor, widgetConfigs.serverRadial.flicker);
+
+            ctx.lineWidth = widgetConfigs.inputRadial.width;
+
+            ctx.beginPath();
+            CustomGraphCallbacks.addPointToGraph(ctx, - 2 + (size.width-2) * (1-timeProgress) ,  size.height - 4 );
+            CustomGraphCallbacks.addPointToGraph(ctx, 2 + (size.width-2) * timeProgress, size.height - 4);
+            ctx.stroke();
+
             
 
 
