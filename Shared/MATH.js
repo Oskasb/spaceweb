@@ -102,7 +102,7 @@ if(typeof(MATH) == "undefined"){
     };
 
 	MATH.Vec3 = function(x,y,z){
-		this.data = new Float64Array([x,y,z]);
+		this.data = new Float32Array([x,y,z]);
 	};
 
 	MATH.Vec3.prototype.setXYZ = function(x, y, z) {

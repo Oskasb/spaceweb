@@ -19,7 +19,7 @@
           "strength": 0.3,
           "acceleration": 0.9,
           "lifespan": [2,5],
-          "poolCount": 420
+          "poolCount": 150
         }
 
       },
@@ -40,7 +40,7 @@
           "strength": 2,
           "acceleration": 1.001,
           "lifespan": [0.3,1.1],
-          "poolCount": 300
+          "poolCount": 100
         }
 
       },
@@ -57,7 +57,7 @@
           "spread": 0.9,
           "strength": 0.5,
           "lifespan": [0.2, 1.2],
-          "poolCount": 400,
+          "poolCount": 100,
           "growth": [62, 124],
           "spin": [0,0 ],
           "acceleration": 0.75
@@ -78,7 +78,7 @@
           "strength": 3,
           "acceleration": 1.15,
           "lifespan": [ 0.04,   0.2],
-          "poolCount": 200
+          "poolCount": 100
         }
       },{
         "id": "engine_jet_blue",
@@ -96,7 +96,7 @@
           "strength": 3,
           "acceleration": 1.2,
           "lifespan": [0.02, 0.15],
-          "poolCount": 200
+          "poolCount": 100
         }
       },{
         "id": "explosion_big",

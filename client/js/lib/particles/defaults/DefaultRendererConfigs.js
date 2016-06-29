@@ -33,7 +33,7 @@ define({
 			"id":"TrailRenderer",
 			"script":"TrailRenderer",
 			"settings": {
-				"segmentCount": 12,
+				"segmentCount": 8,
 				"width": {
 					"value": 1,
 					"type": "number"

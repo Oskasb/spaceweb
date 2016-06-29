@@ -136,6 +136,13 @@ define([
             }
 
 
+            var particlesReady = function() {
+                particles = true;
+
+            //    evt.removeListener(evt.list().PARTICLES_READY, particlesReady);
+            };
+
+
             function connectClient() {
                 console.log('connectClient')
                 client.initiateClient(new SocketMessages(), connectionReady);
@@ -157,12 +164,25 @@ define([
 
                 if (state == _this.getStates().COMPLETED) {
 
-                    connectClient();
+                    if (particles) {
+                        connectClient();
+                    } else {
+                        console.log("Particles not yet ready...")
+                        var particlesRetry = function() {
+                            particles = true;
+                            connectClient();
+                         //   evt.removeListener(evt.list().PARTICLES_READY, particlesRetry);
+                        };
+                        evt.once(evt.list().PARTICLES_READY, particlesRetry);
+                    }
+
                 }
 
             };
 
             evt.fire(evt.list().MESSAGE_UI, {channel:'pipeline_message', message:window.location.href});
+
+
 
 
 
@@ -266,10 +286,12 @@ define([
                 loadJS(loadUrls.shift(), document.body);
             };
 
+            var particles = false;
 
 
 
 
+            evt.once(evt.list().PARTICLES_READY, particlesReady);
 
             PipelineAPI.addReadyCallback(pipelineReady);
 

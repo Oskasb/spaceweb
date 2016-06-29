@@ -156,6 +156,7 @@ define([
                     setClientState(GAME.ENUMS.ClientStates.CLIENT_REQUESTED);
 
                     connectionReady();
+                    
                     requestPlayer();
                     // evt.on(evt.list().CURSOR_PRESS, requestPlayer);
 
