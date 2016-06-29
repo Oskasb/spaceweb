@@ -7,7 +7,7 @@
         "data": {
           "renderModel": "canvas2d",
           "config":{
-            "callbacks":["radarMap", "tpfMonitor"]
+            "callbacks":["temporalState", "tpfMonitor", "inputVector"]
           }
         }
       }
@@ -20,7 +20,7 @@
         "data": {
           "renderModel": "canvas3d",
           "config":{
-            "callbacks":["inputVector"],
+            "callbacks":["inputDebug", "radarMap", "tpfMonitor"],
             "element":{
               "pos":[42, 40],
               "size":[25, 25],

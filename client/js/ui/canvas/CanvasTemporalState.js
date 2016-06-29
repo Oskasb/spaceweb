@@ -27,7 +27,7 @@ define([
             return 'rgba('+r+', '+g+', '+b+', '+a+')';
         };
 
-        var CanvasInputVector = function() {
+        var CanvasTemporalState = function() {
 
         };
 
@@ -234,7 +234,7 @@ define([
 
         };
 7
-        CanvasInputVector.drawInputVectors = function(gamePiece, ctx, camera, confData, widgetConfigs) {
+        CanvasTemporalState.drawTemporal = function(gamePiece, ctx, camera, confData, widgetConfigs) {
 
             calcVec.setVector(camera.transformComponent.transform.translation);
             
@@ -242,7 +242,7 @@ define([
             size = confData.size;
 
 
-            drawRaster(ctx, confData.raster);
+            drawRadialRaster(ctx, confData.raster);
 
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
@@ -317,63 +317,37 @@ define([
                     tempRect.width 	= 2;
                     tempRect.height = 2;
 
-
                         var controls = gamePiece.piece.readServerModuleState('inputControls');
 
                         for (var i = 0; i < controls.length; i++) {
 
-                            ctx.fillStyle = randomizedColor(widgetConfigs.inputRadial.thrColor, widgetConfigs.inputRadial.flicker);
 
-                            ctx.font = widgetConfigs.inputRadial.font;
-                            ctx.textAlign = "center";
-                            ctx.fillText(
-                                'Thr:'+controls[i].value[1],
-                                size.width * widgetConfigs.inputRadial.left,
-                                size.height * widgetConfigs.inputRadial.top
-                            );
 
-                            ctx.lineWidth = widgetConfigs.serverRadial.width;
+                            tmpColor[0] = overdue; // confData.serverRadial.timeColor[0];
+                            tmpColor[1] = widgetConfigs.serverRadial.timeColor[1] * (1-timeProgress);
+                            tmpColor[2] = widgetConfigs.serverRadial.timeColor[2]; // * 1/(1+timeProgress);
+                            tmpColor[3] = Math.floor(timeProgress) + widgetConfigs.serverRadial.timeColor[3] * 1/(1+timeProgress);
 
-                            ctx.strokeStyle = randomizedColor(widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.flicker);
 
-                            var angle = MATH.TWO_PI / gamePiece.inputSegmentRadial.configs.radialSegments;
-                            var radius = widgetConfigs.serverRadial.range * (controls[i].value[1] + 1)* size.width / gamePiece.inputSegmentRadial.configs.distanceSegments;
-                            var addx = radius * Math.cos(angle*controls[i].value[0]  + 0.5*Math.PI);
-                            var addy = radius * Math.sin(angle*controls[i].value[0]  + 0.5*Math.PI);
+                            var timeAngle = - Math.PI * 0.5 + (timeProgress) * MATH.TWO_PI;
 
-                            ctx.beginPath();
-                            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
-                            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
-                            ctx.stroke();
+                            var radius = widgetConfigs.serverRadial.clockRadius;
 
-                         //   angle -= Math.PI*0.5;
+                            radius -= Math.sqrt(overdue*radius*0.2);
 
-                            drawControlVectorArc(ctx,  -angle*controls[i].value[0]  -0.1, -angle*controls[i].value[0]  +0.1 , radius, widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.width);
+                            drawControlVectorArc(ctx,  timeAngle, timeAngle + widgetConfigs.serverRadial.timeSize * idealTimeSlice, radius, tmpColor, widgetConfigs.serverRadial.timeWidth);
 
 
                         }
-
-            ctx.strokeStyle = randomizedColor(widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.flicker);
-            angle = -gamePiece.inputSegmentRadial.line.zrot + Math.PI;
-            radius = Math.sqrt(5 * gamePiece.inputSegmentRadial.line.w);
-            addx = radius * Math.sin(angle);
-            addy = radius * Math.cos(angle);
-
-            ctx.lineWidth = widgetConfigs.inputRadial.width;
-
-            ctx.beginPath();
-            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
-            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
-            ctx.stroke();
-
-            drawControlVectorArc(ctx,  angle -0.1, angle +0.1 , radius, widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.width);
-
+            
+                    
+            
 
 
         };
 
 
-        return CanvasInputVector
+        return CanvasTemporalState
 
     });
 

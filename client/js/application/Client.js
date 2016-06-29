@@ -198,6 +198,12 @@ define([
 
         Client.prototype.processResponseStack = function(responseStack) {
 
+            if (responseStack.length > 4) {
+                this.handleServerMessage(responseStack.shift());
+                this.handleServerMessage(responseStack.shift());
+                this.handleServerMessage(responseStack.shift());
+            }
+            
             if (responseStack.length > 2) {
                 this.handleServerMessage(responseStack.shift());
                 this.handleServerMessage(responseStack.shift());

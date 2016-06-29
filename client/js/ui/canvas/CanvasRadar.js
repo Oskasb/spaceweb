@@ -160,7 +160,7 @@ define([
         };
 
 
-        CanvasRadar.drawRadarContent = function(gamePieces, ctx, camera, confData) {
+        CanvasRadar.drawRadarContent = function(gamePieces, ctx, camera, confData, widgetConfigs) {
 
             pos = confData.pos;
             size = confData.size;
@@ -276,19 +276,19 @@ define([
                 var seed = (Math.random()+1)*0.8;
 
                 if (gamePieces[index].piece.type == 'player_ship') {
-                    tempRect.left 	= left - confData.playerBlips.size*seed;
-                    tempRect.top 	= top - confData.playerBlips.size*seed;
-                    tempRect.width 	= 2*seed*confData.playerBlips.size;
-                    tempRect.height = 2*seed*confData.playerBlips.size;
+                    tempRect.left 	= left - widgetConfigs.playerBlips.size*seed;
+                    tempRect.top 	= top - widgetConfigs.playerBlips.size*seed;
+                    tempRect.width 	= 2*seed*widgetConfigs.playerBlips.size;
+                    tempRect.height = 2*seed*widgetConfigs.playerBlips.size;
 
-                    ctx.fillStyle = randomizedColor(confData.playerBlips.colorSelf, 0.3);
+                    ctx.fillStyle = randomizedColor(widgetConfigs.playerBlips.colorSelf, 0.3);
 
-                    if (confData.playerNames.on && !gamePieces[index].isOwnPlayer) {
+                    if (widgetConfigs.playerNames.on && !gamePieces[index].isOwnPlayer) {
               //          ctx.strokeStyle = toRgba(confData.playerNames.color);
 
-                        ctx.fillStyle = randomizedColor(confData.playerNames.color, 0.3);
+                        ctx.fillStyle = randomizedColor(widgetConfigs.playerNames.color, 0.3);
 
-                        ctx.font = confData.playerNames.font;
+                        ctx.font = widgetConfigs.playerNames.font;
                         ctx.textAlign = "center";
                         ctx.fillText(
                             gamePieces[index].name,
@@ -296,7 +296,7 @@ define([
                             tempRect.top - 4
                         );
 
-                        ctx.fillStyle = randomizedColor(confData.playerBlips.colorOther, 0.3);
+                        ctx.fillStyle = randomizedColor(widgetConfigs.playerBlips.colorOther, 0.3);
 
                     }
                     

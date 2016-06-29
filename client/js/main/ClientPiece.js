@@ -146,6 +146,7 @@ define([
 			evt.fire(evt.list().MESSAGE_UI, {channel:'server_message', message:'Player Ready'});
 			this.isOwnPlayer = bool;
 			this.attachRadialControl();
+			PipelineAPI.setCategoryKeyValue('GAME_DATA', 'OWN_PLAYER', {piece:this})
 		};
 
 		ClientPiece.prototype.attachRadialControl = function() {

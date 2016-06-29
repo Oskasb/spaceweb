@@ -27,7 +27,7 @@ define([
             return 'rgba('+r+', '+g+', '+b+', '+a+')';
         };
 
-        var CanvasInputVector = function() {
+        var CanvasInputDebug = function() {
 
         };
 
@@ -234,7 +234,7 @@ define([
 
         };
 7
-        CanvasInputVector.drawInputVectors = function(gamePiece, ctx, camera, confData, widgetConfigs) {
+        CanvasInputDebug.drawInputVectors = function(gamePiece, ctx, camera, confData, widgetConfigs) {
 
             calcVec.setVector(camera.transformComponent.transform.translation);
             
@@ -242,7 +242,7 @@ define([
             size = confData.size;
 
 
-            drawRaster(ctx, confData.raster);
+            drawRadialRaster(ctx, confData.raster);
 
             ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
@@ -303,10 +303,7 @@ define([
                 var spat = gamePiece.piece.spatial;
                 var target = gamePiece.piece.frameCurrentSpatial;
                 var extrap = gamePiece.piece.frameNextSpatial;
-                
-                var idealTimeSlice = tmp.getIdealTimeSlice();
-                var timeProgress = tmp.getPacketTimeFraction();
-                var overdue = tmp.getOverdue();
+            
                 
                 var top  = vectorToCanvasX(calcVec);
                 var left = vectorToCanvasY(calcVec);
@@ -316,64 +313,71 @@ define([
                     tempRect.top 	= top -1;
                     tempRect.width 	= 2;
                     tempRect.height = 2;
+            
+
+                    //    if (data.color) ctx.strokeStyle = toRgba(data.color);
+                        var angle = gamePiece.inputSegmentRadial.line.zrot;
+
+                        var radius = widgetConfigs.inputRadial.range * gamePiece.inputSegmentRadial.line.w * size.width * 0.01;
+
+                        tempRect.top 	= vectorToCanvasX(spat.pos);
+                        tempRect.left   = vectorToCanvasY(spat.pos);
 
 
-                        var controls = gamePiece.piece.readServerModuleState('inputControls');
-
-                        for (var i = 0; i < controls.length; i++) {
-
-                            ctx.fillStyle = randomizedColor(widgetConfigs.inputRadial.thrColor, widgetConfigs.inputRadial.flicker);
-
-                            ctx.font = widgetConfigs.inputRadial.font;
-                            ctx.textAlign = "center";
-                            ctx.fillText(
-                                'Thr:'+controls[i].value[1],
-                                size.width * widgetConfigs.inputRadial.left,
-                                size.height * widgetConfigs.inputRadial.top
-                            );
-
-                            ctx.lineWidth = widgetConfigs.serverRadial.width;
-
-                            ctx.strokeStyle = randomizedColor(widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.flicker);
-
-                            var angle = MATH.TWO_PI / gamePiece.inputSegmentRadial.configs.radialSegments;
-                            var radius = widgetConfigs.serverRadial.range * (controls[i].value[1] + 1)* size.width / gamePiece.inputSegmentRadial.configs.distanceSegments;
-                            var addx = radius * Math.cos(angle*controls[i].value[0]  + 0.5*Math.PI);
-                            var addy = radius * Math.sin(angle*controls[i].value[0]  + 0.5*Math.PI);
-
-                            ctx.beginPath();
-                            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
-                            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
-                            ctx.stroke();
-
-                         //   angle -= Math.PI*0.5;
-
-                            drawControlVectorArc(ctx,  -angle*controls[i].value[0]  -0.1, -angle*controls[i].value[0]  +0.1 , radius, widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.width);
+                        angle = spat.rot[0]+Math.PI*0.5;
 
 
-                        }
+                        plotRotationState(ctx, angle, spat.rotVel[0], Math.sqrt(radius*20)*1.4, widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.spatialWidth);
 
-            ctx.strokeStyle = randomizedColor(widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.flicker);
-            angle = -gamePiece.inputSegmentRadial.line.zrot + Math.PI;
-            radius = Math.sqrt(5 * gamePiece.inputSegmentRadial.line.w);
-            addx = radius * Math.sin(angle);
-            addy = radius * Math.cos(angle);
+                        ctx.fillStyle = toRgba(widgetConfigs.inputRadial.spatialColor);
 
-            ctx.lineWidth = widgetConfigs.inputRadial.width;
+                        ctx.fillRect(
+                            tempRect.left-2,
+                            tempRect.top-2,
+                            tempRect.height*2,
+                            tempRect.width*2
+                        );
 
-            ctx.beginPath();
-            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
-            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
-            ctx.stroke();
 
-            drawControlVectorArc(ctx,  angle -0.1, angle +0.1 , radius, widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.width);
+                        tempRect.top 	= vectorToCanvasX(target.pos);
+                        tempRect.left 	= vectorToCanvasY(target.pos);
+
+
+                        angle = target.rot[0]+Math.PI*0.5;;
+
+                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 1.2, widgetConfigs.inputRadial.targetColor, widgetConfigs.inputRadial.targetWidth);
+                        ctx.fillStyle = toRgba(widgetConfigs.inputRadial.targetColor);
+
+                        ctx.fillRect(
+                            tempRect.left-2,
+                            tempRect.top-2,
+                            tempRect.height*2,
+                            tempRect.width*2
+                        );
+
+
+                        tempRect.top 	= vectorToCanvasX(extrap.pos);
+                        tempRect.left 	= vectorToCanvasY(extrap.pos);
+
+                        angle = extrap.rot[0]+Math.PI*0.5;;
+
+                        plotRotationState(ctx, angle, target.rotVel[0], Math.sqrt(radius*20) * 1.0, widgetConfigs.inputRadial.extrapColor, widgetConfigs.inputRadial.targetWidth);
+                        ctx.fillStyle = toRgba(widgetConfigs.inputRadial.extrapColor);
+
+                        ctx.fillRect(
+                            tempRect.left-2,
+                            tempRect.top-2,
+                            tempRect.height*2,
+                            tempRect.width*2
+                        );
+
 
 
 
         };
 
 
-        return CanvasInputVector
+        return CanvasInputDebug
 
     });
 
