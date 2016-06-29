@@ -132,7 +132,7 @@
           "worldSection":{"probability":0.8, "color":[0.5,0.4,0.1,0.2], "borderColor":[0.9,0.55,0.2,0.4], "flicker":0.3,  "width":4},
           "elementBorder":{"probability":0.95, "color":[0.9,0.6,0.2,0.4], "flicker":0.1, "margin":1, "width":2},
           "raster":{"probability":0.01, "color":[0.9,0.7,0.8,0.1], "flicker":0.9, "width":15},
-          "tpf":0.005
+          "tpf":0.03
         }
       },{
         "id":"canvas_radar_3d",

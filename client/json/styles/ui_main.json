@@ -105,7 +105,8 @@
       "height": "100%",
       "textAlign": "center",
       "position": "absolute",
-      "display": "block"
+      "display": "block",
+      "transform": "translate3d(0px, 0px, 1px)"
     },
 
     "main_button_container_multi":{

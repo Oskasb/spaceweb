@@ -59,21 +59,20 @@ div.game_window {
     right: 0em;
     bottom: 0em;
     position: absolute;
-    border: 2em solid rgba(95, 255, 95, 0.6);
 }
 
 div.game_window_landscape {
     top: 0em;
-    left: 101em;
-    right: 101em;
+    left: 122em;
+    right: 122em;
     bottom: 0em;
     position: absolute;
 }
 
 div.game_window_portrait {
-    top: 121em;
+    top: 122em;
     left: 0em;
     right: 0em;
-    bottom: 121em;
+    bottom: 122em;
     position: absolute;
 }
