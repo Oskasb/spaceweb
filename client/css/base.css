@@ -26,7 +26,6 @@ canvas {
 
 div.point {
     position: absolute;
-
 }
 
 canvas {
@@ -51,6 +50,7 @@ body {
     -webkit-user-select: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     overflow: hidden;
+    transform: translate3d(0px, 0px, 0px);
 }
 
 div.game_window {
@@ -58,7 +58,8 @@ div.game_window {
     left: 0em;
     right: 0em;
     bottom: 0em;
-    position: absolute;
+    position: fixed;
+    transform: translate3d(0px, 0px, 0px);
 }
 
 div.game_window_landscape {

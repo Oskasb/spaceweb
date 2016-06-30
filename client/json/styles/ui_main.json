@@ -6,7 +6,7 @@
       "left": "2em",
       "right": "2em",
       "bottom": "2em",
-      "position": "absolute",
+      "position": "fixed",
       "transform": "translate3d(0px, 0px, 0)"
     },
 
@@ -15,8 +15,7 @@
       "width": "116em",
       "height": "116em",
       "textAlign": "center",
-      "position": "relative",
-      "display": "inline-block",
+      "position": "fixed",
       "borderRadius":"5em"
     },
     "main_monitor_text":{
@@ -34,7 +33,7 @@
       "bottom": "0em",
       "right": "0em",
       "textAlign": "right",
-      "position": "absolute",
+      "position": "fixed",
       "zIndex":"200"
     },
 
@@ -50,13 +49,13 @@
 
     "dev_panel_left":{
       "pointerEvents": "auto",
-      "top": "5em",
-      "left": "145em",
+      "top": "2em",
+      "left": "15em",
       "width": "110em",
-      "bottom": "5em",
+      "bottom": "2em",
       "paddingBottom": "4em",
       "textAlign": "left",
-      "position": "fixed",
+      "position": "absolute",
       "display": "block",
       "zIndex":"200"
     },
@@ -66,7 +65,7 @@
       "top": "0em",
       "left": "0em",
       "textAlign": "left",
-      "position": "absolute",
+      "position": "fixed",
       "zIndex":"200"
     },
 

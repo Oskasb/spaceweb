@@ -43,6 +43,7 @@ require([
     'application/ControlStateDispatcher',
     'application/Client',
     'application/StatusMonitor',
+    'application/AnalyticsWrapper',
     'ui/GameScreen',
     'io/PointerCursor'
 ], function(
@@ -54,6 +55,7 @@ require([
     ControlStateDispatcher,
     Client,
     StatusMonitor,
+    AnalyticsWrapper,
     GameScreen,
     PointerCursor
 ) {

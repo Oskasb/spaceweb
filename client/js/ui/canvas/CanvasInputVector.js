@@ -2,10 +2,12 @@
 
 define([
         'gui/functions/CustomGraphCallbacks',
-    'goo/math/Vector3'
+        'ui/canvas/CanvasDraw',
+        'goo/math/Vector3'
     ],
     function(
         CustomGraphCallbacks,
+        CanvasDraw,
         Vector3
     ) {
 
@@ -17,15 +19,6 @@ define([
         var centerY;
 
         var calcVec = new Vector3(0, 0, 0);
-        var calcVec2 = new Vector3(0, 0, 0);
-        
-        var toRgba = function(color) {
-            var r = ""+Math.floor(color[0]*255);
-            var g = ""+Math.floor(color[1]*255);
-            var b = ""+Math.floor(color[2]*255);
-            var a = ""+color[3];
-            return 'rgba('+r+', '+g+', '+b+', '+a+')';
-        };
 
         var CanvasInputVector = function() {
 
@@ -38,12 +31,6 @@ define([
             height:0
         };
 
-        var path = [];
-        var wait = false;
-        var zLine = zLine;
-        var tmpColor = [0, 0, 0, 0];
-        
-
         var pos = {
             top: 0,
             left: 0
@@ -53,208 +40,21 @@ define([
             width: 64
         };
 
-        var pathVec = {
-            data:[0, 0]
-        };
 
-        var startVec = {
-            data: [0, 0]
-        };
-
-        var sizeVec = {
-            data: [100, 100]
-        };
-
-
-        var vectorToX = function(vec) {
-            return size.height - vec.data[1] * size.height*0.01;
-        };
-
-        var vectorToY = function(vec) {
-            return vec.data[0] * size.height*0.01;
-        };
-
-        var vectorToCanvasX = function(vec) {
-            return (((vectorToX(vec) - centerX)*size.height/rangeX)  +  pos.top  + size.height* 0.5) ;
-        };
-
-        var vectorToCanvasY = function(vec) {
-            return (((vectorToY(vec) - centerY)*size.width/rangeY)  +  pos.left + size.width * 0.5);
-        };
-
-        var randomizedColor = function(color, flicker) {
-            return toRgba([
-                color[0]*(1-flicker + Math.random()*flicker),
-                color[1]*(1-flicker + Math.random()*flicker),
-                color[2]*(1-flicker + Math.random()*flicker),
-                color[3]*(1-flicker + Math.random()*flicker)
-            ]);
-        };
-
-
-        var drawWorldBorders = function(ctx, worldSection) {
-
-            if (Math.random() < worldSection.probability) {
-                ctx.lineWidth = 2;
-
-                ctx.strokeStyle = randomizedColor(worldSection.borderColor, worldSection.flicker);
-
-                tempRect.left 	= vectorToCanvasY(startVec);
-                tempRect.top 	= vectorToCanvasX(startVec);
-                tempRect.width 	= vectorToCanvasY(sizeVec);
-                tempRect.height = vectorToCanvasX(sizeVec);
-
-                ctx.beginPath();
-                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left  ,tempRect.top );
-                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.width ,tempRect.top );
-                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.width ,tempRect.height);
-                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left  ,tempRect.height);
-                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left  ,tempRect.top );
-                ctx.stroke();
-
-                ctx.fillStyle = randomizedColor(worldSection.color, worldSection.flicker);
-                ctx.fillRect(
-                    tempRect.left+1 ,
-                    tempRect.top-1  ,
-                    tempRect.width - tempRect.left -1,
-                    tempRect.height - tempRect.top +1
-                );
-            }
-
-        };
-
-        var drawElementBorders = function(ctx, elementBorder) {
-            if (Math.random() > elementBorder.probability) {
-                return;
-            }
-
-            ctx.lineWidth = elementBorder.width*(1-elementBorder.flicker + Math.random()*elementBorder.flicker);
-
-            ctx.strokeStyle = randomizedColor(elementBorder.color, elementBorder.flicker);
-
-            ctx.beginPath();
-            CustomGraphCallbacks.addPointToGraph(ctx, elementBorder.margin , elementBorder.margin );
-            CustomGraphCallbacks.addPointToGraph(ctx, size.width - elementBorder.margin  ,elementBorder.margin);
-            CustomGraphCallbacks.addPointToGraph(ctx, size.width - elementBorder.margin  ,size.height - elementBorder.margin );
-            CustomGraphCallbacks.addPointToGraph(ctx,  elementBorder.margin , size.height - elementBorder.margin  );
-            CustomGraphCallbacks.addPointToGraph(ctx,  elementBorder.margin , elementBorder.margin );
-            ctx.stroke();
-
-        };
-
-
-        var drawRaster = function(ctx, raster) {
-            
-            ctx.strokeStyle = randomizedColor(raster.color, raster.flicker);
-
-            for (var i = 0; i < size.height/2; i++) {
-
-                if (Math.random() < raster.probability) {
-
-                    ctx.lineWidth = raster.width * Math.random();
-
-                    CustomGraphCallbacks.startGraph(ctx, 0, i*2);
-
-                    pathVec.data[0] = path[i]+centerX;
-                    pathVec.data[1] = path[i]+centerY;
-
-                    CustomGraphCallbacks.addPointToGraph(ctx, size.width, i*2);
-                    ctx.stroke();
-                    i++
-                }
-            }
-        };
-
-
-        var drawRadialRaster = function(ctx, raster) {
-
-            ctx.strokeStyle = randomizedColor(raster.color, raster.flicker);
-
-            for (var i = 0; i < size.height/2; i++) {
-
-                if (Math.random() < raster.probability) {
-
-                    ctx.lineWidth = 6;
-                    ctx.beginPath();
-                    ctx.arc(
-                        size.width*0.5,
-                        size.height*0.5,
-                        Math.sqrt(raster.width*i)+i * 1.2,
-                        Math.PI*Math.random() + Math.PI * 0.6 * Math.random(),
-                        Math.random() * Math.PI + 0.6 * Math.random()
-                    );
-                    ctx.stroke();
-                    i++
-                }
-            }
-        };
-
-
-        var drawControlVectorArc = function(ctx, direction, angle, radius, color, width) {
-
-            ctx.lineWidth = width;
-            ctx.strokeStyle = toRgba(color);
-
-            ctx.beginPath();
-            ctx.arc(
-                tempRect.left,
-                tempRect.top,
-                radius,
-                direction,
-                angle
-            );
-            ctx.stroke();
-
-        };
-
-
-        var plotRotationState = function(ctx, direction, angle, radius, color, width) {
-
-            ctx.lineWidth = width;
-            ctx.strokeStyle = randomizedColor(color, 0.5);
-
-            direction -= Math.PI*0.5;
-
-            var addx = radius * Math.cos(direction);
-            var addy = radius * Math.sin(direction);
-
-            ctx.beginPath();
-            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
-            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
-            ctx.stroke();
-
-            var ang1 = -angle + Math.PI * 0.4;
-            var ang2 = Math.PI-angle - Math.PI * 0.4;
-
-            var ang1 = direction - Math.PI*0.5 + Math.max(angle , 0);
-
-            var ang2 = direction - Math.PI*0.5 + Math.min(angle , 0);
-
-            drawControlVectorArc(ctx, -ang1, -ang2, radius, color, width);
-
-        };
-7
         CanvasInputVector.drawInputVectors = function(gamePiece, ctx, camera, confData, widgetConfigs) {
 
             calcVec.setVector(camera.transformComponent.transform.translation);
-            
+
             pos = confData.pos;
             size = confData.size;
 
 
-        //    drawRaster(ctx, confData.raster);
-
-            ctx.strokeStyle = toRgba([0.6,0.7,0.9, 1]);
+            ctx.strokeStyle = CanvasDraw.toRgba([0.6,0.7,0.9, 1]);
             ctx.lineWidth = 1;
 
-        //    drawElementBorders(ctx, confData.elementBorder);
-        //    drawWorldBorders(ctx, confData.worldSection);
-        //    drawRaster(ctx, confData.raster);
 
-            var curveCount = 0;
-                        
-            centerX = vectorToX(calcVec);
-            centerY = vectorToY(calcVec);
+            centerX = CanvasDraw.vectorToX(calcVec, size);
+            centerY = CanvasDraw.vectorToY(calcVec, size);
 
 
 
@@ -263,97 +63,65 @@ define([
             var yMax = centerY+confData.zoom;
             var yMin = centerY-confData.zoom;
 
-            /*256
-             for (var index in gamePieces) {
-             curveCount += 1;
-             if (gamePieces[index].spatial.pos.data[0] > xMin)  {
-             xMin = gamePieces[index].spatial.pos.data[0];
-             }
 
-             if (gamePieces[index].spatial.pos.data[0] < xMax)  {
-             xMax = gamePieces[index].spatial.pos.data[0];
-             }
-
-             if (gamePieces[index].spatial.pos.data[1] > xMin)  {
-             xMin = gamePieces[index].spatial.pos.data[1];
-             }
-
-             if (gamePieces[index].spatial.pos.data[1] < xMax)  {
-             xMax = gamePieces[index].spatial.pos.data[1];
-             }
-             }
-
-             yMax = xMax;
-             yMin = xMin;
-             */
             rangeX = xMax - xMin;
             rangeY = yMax - yMin;
 
-            var playerX = pos.top + size.height*0.5;
-            var playerY = pos.left + size.width*0.5;
 
 
-            
-            var entCount = 0;
-
-                entCount += 1;
-
-                var tmp = gamePiece.piece.temporal
-                
-                var spat = gamePiece.piece.spatial;
-                var target = gamePiece.piece.frameCurrentSpatial;
-                var extrap = gamePiece.piece.frameNextSpatial;
-                
-                var idealTimeSlice = tmp.getIdealTimeSlice();
-                var timeProgress = tmp.getPacketTimeFraction();
-                var overdue = tmp.getOverdue();
-                
-                var top  = vectorToCanvasX(calcVec);
-                var left = vectorToCanvasY(calcVec);
+            var top  = CanvasDraw.vectorToCanvasX(calcVec, pos, size, centerX, rangeX);
+            var left = CanvasDraw.vectorToCanvasY(calcVec, pos, size, centerY, rangeY);
 
 
-                    tempRect.left 	= left -1;
-                    tempRect.top 	= top -1;
-                    tempRect.width 	= 2;
-                    tempRect.height = 2;
+            tempRect.left 	= left -1;
+            tempRect.top 	= top -1;
+            tempRect.width 	= 2;
+            tempRect.height = 2;
+
+            CanvasDraw.drawElementBorders(ctx, confData.elementBorder, size);
+
+            var controls = gamePiece.piece.readServerModuleState('inputControls');
+
+            for (var i = 0; i < controls.length; i++) {
+
+        //        ctx.fillStyle = CanvasDraw.randomizedColor(widgetConfigs.inputRadial.thrColor, widgetConfigs.inputRadial.flicker);
+                ctx.strokeStyle = CanvasDraw.randomizedColor(widgetConfigs.inputRadial.thrColor, widgetConfigs.inputRadial.flicker);
+
+        //        ctx.font = widgetConfigs.inputRadial.font;
+        //        ctx.textAlign = "center";
+
+                ctx.lineWidth = widgetConfigs.serverRadial.width;
+/*
+                ctx.fillText(
+                    'Thr:'+controls[i].value[1],
+                     size.width * widgetConfigs.inputRadial.left,
+                     size.height * widgetConfigs.inputRadial.top
+                );
+*/
+                ctx.beginPath();
+                CustomGraphCallbacks.addPointToGraph(ctx, size.width - 8 , size.height - 8);
+                CustomGraphCallbacks.addPointToGraph(ctx, size.width - 8 , size.height - 12 - 35*controls[i].value[1]);
+                ctx.stroke();
+
+                ctx.strokeStyle = CanvasDraw.randomizedColor(widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.flicker);
+
+                var angle = MATH.TWO_PI / gamePiece.inputSegmentRadial.configs.radialSegments;
+                var radius = widgetConfigs.serverRadial.range * (controls[i].value[1] + 1)* size.width / gamePiece.inputSegmentRadial.configs.distanceSegments;
+                var addx = radius * Math.cos(angle*controls[i].value[0]  + 0.5*Math.PI);
+                var addy = radius * Math.sin(angle*controls[i].value[0]  + 0.5*Math.PI);
+
+                ctx.beginPath();
+                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
+                CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
+                ctx.stroke();
 
 
-                        var controls = gamePiece.piece.readServerModuleState('inputControls');
-
-                        for (var i = 0; i < controls.length; i++) {
-
-                            ctx.fillStyle = randomizedColor(widgetConfigs.inputRadial.thrColor, widgetConfigs.inputRadial.flicker);
-
-                            ctx.font = widgetConfigs.inputRadial.font;
-                            ctx.textAlign = "center";
-                            ctx.fillText(
-                                'Thr:'+controls[i].value[1],
-                                size.width * widgetConfigs.inputRadial.left,
-                                size.height * widgetConfigs.inputRadial.top
-                            );
-
-                            ctx.lineWidth = widgetConfigs.serverRadial.width;
-
-                            ctx.strokeStyle = randomizedColor(widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.flicker);
-
-                            var angle = MATH.TWO_PI / gamePiece.inputSegmentRadial.configs.radialSegments;
-                            var radius = widgetConfigs.serverRadial.range * (controls[i].value[1] + 1)* size.width / gamePiece.inputSegmentRadial.configs.distanceSegments;
-                            var addx = radius * Math.cos(angle*controls[i].value[0]  + 0.5*Math.PI);
-                            var addy = radius * Math.sin(angle*controls[i].value[0]  + 0.5*Math.PI);
-
-                            ctx.beginPath();
-                            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left ,  tempRect.top );
-                            CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
-                            ctx.stroke();
-
-                         //   angle -= Math.PI*0.5;
-
-                            drawControlVectorArc(ctx,  -angle*controls[i].value[0]  -0.1, -angle*controls[i].value[0]  +0.1 , radius, widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.width);
+                CanvasDraw.drawControlVectorArc(ctx, tempRect,  -angle*controls[i].value[0]  -0.1, -angle*controls[i].value[0]  +0.1 , radius, widgetConfigs.serverRadial.color, widgetConfigs.serverRadial.width);
 
 
-                        }
+            }
 
-            ctx.strokeStyle = randomizedColor(widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.flicker);
+            ctx.strokeStyle = CanvasDraw.randomizedColor(widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.flicker);
             angle = -gamePiece.inputSegmentRadial.line.zrot + Math.PI;
             radius = Math.sqrt(5 * gamePiece.inputSegmentRadial.line.w);
             addx = radius * Math.sin(angle);
@@ -366,7 +134,7 @@ define([
             CustomGraphCallbacks.addPointToGraph(ctx, tempRect.left + addy  , tempRect.top + addx);
             ctx.stroke();
 
-            drawControlVectorArc(ctx,  angle -0.1, angle +0.1 , radius, widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.width);
+            CanvasDraw.drawControlVectorArc(ctx, tempRect,  angle -0.1, angle +0.1 , radius, widgetConfigs.inputRadial.spatialColor, widgetConfigs.inputRadial.width);
 
 
 

@@ -7,7 +7,7 @@
         "data": {
           "renderModel": "canvas2d",
           "config":{
-            "callbacks":["temporalState", "tpfMonitor", "inputVector"]
+            "callbacks":[]
           }
         }
       }
@@ -16,13 +16,27 @@
   "canvas3d": {
     "elements":[
       {
+        "id": "canvas_input_monitor_3d",
+        "data": {
+          "renderModel": "canvas3d",
+          "config":{
+            "callbacks":["temporalState", "tpfMonitor", "inputVector"],
+            "element":{
+              "pos":[60, 60],
+              "size":[12, 12],
+              "blendMode":"add_color"
+            }
+          }
+        }
+      },
+      {
         "id": "canvas_controls",
         "data": {
           "renderModel": "canvas3d",
           "config":{
             "callbacks":["inputDebug", "radarMap", "tpfMonitor"],
             "element":{
-              "pos":[42, 40],
+              "pos":[-82, 40],
               "size":[25, 25],
               "blendMode":"add_color"
             }
@@ -37,8 +51,8 @@
               "radarMap"
             ],
             "element": {
-              "pos": [42,-90],
-              "size": [25, 25],
+              "pos": [25,-90],
+              "size": [35, 35],
               "blendMode": "add_color"
             }
           }

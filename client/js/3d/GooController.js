@@ -114,7 +114,15 @@ define([
         //	Vector = function(size) {
         //		this.data = new Float64Array(size);
         //	};
-        DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
+    //    DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
+
+        document.getElementById('game_window').style.left = '122em';
+        document.getElementById('game_window').style.right = '122em';
+        document.getElementById('game_window').style.top = '0em';
+        document.getElementById('game_window').style.bottom = '0em';
+        document.getElementById('game_window').style.width = 'auto';
+        document.getElementById('game_window').style.height = 'auto';
+        document.getElementById('game_window').style.position = 'fixed';
 
         var width = window.innerWidth;
         var height = window.innerHeight;
@@ -126,15 +134,21 @@ define([
             
 
             if (width > height) {
-                DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
-                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_portrait');
+                document.getElementById('game_window').style.left = '122em';
+                document.getElementById('game_window').style.right = '122em';
+                document.getElementById('game_window').style.top = '0em';
+                document.getElementById('game_window').style.bottom = '0em';
+
                 GameScreen.setLandscape(true);
                 landscape = true;
                 evt.fire(evt.list().SCREEN_CONFIG, {landscape:true})
-
             } else {
-                DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_portrait');
-                DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_landscape');
+                document.getElementById('game_window').style.left = '0em';
+                document.getElementById('game_window').style.right = '0em';
+                document.getElementById('game_window').style.top = '122em';
+                document.getElementById('game_window').style.bottom = '122em';
+
+
                 GameScreen.setLandscape(false);
                 landscape = false;
                 evt.fire(evt.list().SCREEN_CONFIG, {landscape:false})
@@ -146,6 +160,8 @@ define([
             PipelineAPI.setCategoryData('SETUP', {SCREEN:[width, height], LANDSCAPE:landscape});
             
         };
+
+        evt.once(evt.list().PARTICLES_READY, handleResize);
 
         window.addEventListener('resize', handleResize);
 

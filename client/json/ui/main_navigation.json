@@ -78,8 +78,8 @@
         "data":{
           "parentId":"rightRoot",
           "style":["main_button_container", "coloring_dark"],
-          "canvas": {
-            "configId": "canvas_radar_2d"
+          "canvas3d": {
+            "configId": "canvas_input_monitor_3d"
           }
         }
       },{

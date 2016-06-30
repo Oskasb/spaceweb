@@ -5,6 +5,7 @@ define([
 	'gui/layout/LayoutEnums',
 	'gui/layout/ElementLayout',
 	'gui/functions/UiCallbacks',
+		'ui/canvas/CanvasDraw',
 	'gui/elements/UiParent'
 ],
 	function(
@@ -12,6 +13,7 @@ define([
 		LayoutEnums,
 		ElementLayout,
 		UiCallbacks,
+		CanvasDraw,
 		UiParent
 		) {
 
@@ -71,11 +73,7 @@ define([
 		};
 
 		CanvasCalls2d.prototype.toRgba = function(color) {
-			var r = ""+Math.floor(color[0]*255);
-			var g = ""+Math.floor(color[1]*255);
-			var b = ""+Math.floor(color[2]*255);
-			var a = ""+color[3];
-			return 'rgba('+r+', '+g+', '+b+', '+a+')';
+			return CanvasDraw.toRgba(color);
 		};
 
 		CanvasCalls2d.prototype.pxToPercentX = function(px) {

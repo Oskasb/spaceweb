@@ -3,6 +3,7 @@
 define(function() {
     var func = function(){};
     return {
+		ANALYTICS_EVENT:{type:'ANALYTICS_EVENT', args:{}},
 		SETTING_CONTROL_EVENT:{type:'SETTING_CONTROL_EVENT', args:{}},
 		SCREEN_CONFIG:{type:'SCREEN_CONFIG', args:{}},
 
