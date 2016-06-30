@@ -77,8 +77,10 @@
         "id":"mapContainer",
         "data":{
           "parentId":"rightRoot",
-          "style":["main_button_container", "coloring_dark"]
-
+          "style":["main_button_container", "coloring_dark"],
+          "canvas": {
+            "configId": "canvas_radar_2d"
+          }
         }
       },{
         "id":"radar",
@@ -87,15 +89,6 @@
           "canvas3d":{
             "configId": "canvas_controls",
             "enableOnEvent":{"category":"HUD_STATUS", "key":"CANVAS_TOP_RIGHT", "type":"toggle"}
-          }
-        }
-      }, {
-        "id": "radar_2d",
-        "data": {
-          "parentId": "mapContainer",
-          "style":["full_size_container", "coloring_dark"],
-          "canvas": {
-            "configId": "canvas_radar_2d"
           }
         }
       },{

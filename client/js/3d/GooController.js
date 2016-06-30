@@ -118,7 +118,8 @@ define([
 
         var width = window.innerWidth;
         var height = window.innerHeight;
-
+        var landscape = false;
+        
         var handleResize = function() {
             width = window.innerWidth;
             height = window.innerHeight;
@@ -128,19 +129,21 @@ define([
                 DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_landscape');
                 DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_portrait');
                 GameScreen.setLandscape(true);
+                landscape = true;
                 evt.fire(evt.list().SCREEN_CONFIG, {landscape:true})
 
             } else {
                 DomUtils.addElementClass(document.getElementById('game_window'), 'game_window_portrait');
                 DomUtils.removeElementClass(document.getElementById('game_window'), 'game_window_landscape');
                 GameScreen.setLandscape(false);
+                landscape = false;
                 evt.fire(evt.list().SCREEN_CONFIG, {landscape:false})
             }
 
             width = document.getElementById('game_window').offsetWidth;
             height = document.getElementById('game_window').offsetHeight;
             GameScreen.notifyResize();
-            PipelineAPI.setCategoryData('SETUP', {SCREEN:[width, height]});
+            PipelineAPI.setCategoryData('SETUP', {SCREEN:[width, height], LANDSCAPE:landscape});
             
         };
 

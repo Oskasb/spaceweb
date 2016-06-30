@@ -29,6 +29,10 @@ define([
             this.ready = false;
             var _this = this;
 
+            this.adaptiveLayout=adaptiveLayout;
+
+            this.panelId = panelId;
+
             var parent = {
                 element:parentElem
             };
@@ -36,12 +40,14 @@ define([
             this.config = {};
 
             this.uiSystems = [];
+
+            this.gridElements = [];
             
             var callback = function(key, data) {
                 _this.config = data;
                 if (_this.active) {
                     _this.applyConfigs(parent, data);
-                                    }
+                }
             };
 
             this.elements = {};
@@ -56,8 +62,20 @@ define([
 
                 PipelineAPI.subscribeToCategoryKey('styles', 'panel_portrait', orientationStyle);
                 PipelineAPI.subscribeToCategoryKey('styles', 'panel_landscape', orientationStyle);
+
+
+                var landscapeCallback = function(src, data) {
+                    _this.updateLayout();
+                };
+
+                PipelineAPI.subscribeToCategoryKey('SETUP', 'LANDSCAPE', landscapeCallback);
             }
-            
+
+            var updateLayout = function(src, data) {
+                _this.updateLayout(data);
+            };
+
+            PipelineAPI.subscribeToCategoryKey('SETUP', 'SCREEN', updateLayout);
 
         };
 
@@ -149,16 +167,23 @@ define([
 
             for (var i = 0; i < config.length; i++) {
                 var conf = config[i];
-                if (conf.data.parentId) parent = this.elements[conf.data.parentId];
+                if (conf.data.parentId) {
+                    parent = this.elements[conf.data.parentId];
+
+                }
 
                 
                 if (conf.data.style) {
                     var elem = new DomElement(parent.element, conf.data.style, conf.data.input);
+                    if (conf.data.parentId == this.config[0].id) {
+                        console.log("Add grid...")
+                        this.gridElements.push(elem);
+                    }
                 }else {
                     elem = parent;
                 }
-                
 
+                
                 if (conf.data.data_sample) {
                     dataSample = elem;
                     elem.setText(this.selection);
@@ -217,15 +242,56 @@ define([
             this.ready = true;
         };
 
-        DomPanel.prototype.setLandscape = function() {
+        DomPanel.prototype.setLandscape = function(landscape) {
 
             if (!this.ready) return;
 
-            if (GameScreen.getLandscape()) {
+            if (landscape) {
                 this.elements[this.config[0].id].applyStyleParams(styles.panel_landscape);
             } else {
                 this.elements[this.config[0].id].applyStyleParams(styles.panel_portrait);
             }
+
+        //    this.updateLayout();
+
+
+        };
+
+        DomPanel.prototype.updateLayout = function() {
+
+            if (this.adaptiveLayout) {
+                this.setLandscape(PipelineAPI.readCachedConfigKey('SETUP', 'LANDSCAPE'));
+            } else {
+                this.setLandscape(true)
+            }
+
+
+            var w = this.elements[this.config[0].id].element.offsetWidth;
+            var h = this.elements[this.config[0].id].element.offsetHeight;
+
+            var step = [0, 1];
+
+            var lastX = 0;
+            var lastY = 0;
+
+            if (this.adaptiveLayout && w > h) {
+                step = [1, 0];
+            }
+
+            for (var i = 0; i < this.gridElements.length; i++) {
+
+                var stepW = this.gridElements[i].element.offsetWidth;
+                var stepH = this.gridElements[i].element.offsetHeight;
+
+                var x = step[0] * stepW + step[0] * 2 + lastX;
+                var y = step[1] * stepH + step[1] * 2 + lastY ;
+
+                this.gridElements[i].translateXYZ(x - stepW*step[0], y - stepH*step[1], 1);
+
+                lastX = x;
+                lastY = y;
+            }
+
 
         };
 

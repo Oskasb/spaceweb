@@ -21,15 +21,6 @@ define([
             var parent = document.body;
             rightPanel = new DomPanel(parent, 'right_panel', true);
             leftPanel = new DomPanel(parent, 'left_panel', true);
-
-            function screenConfigUpdate() {
-
-                    rightPanel.setLandscape();
-                    leftPanel.setLandscape();
-
-            }
-
-            evt.on(evt.list().SCREEN_CONFIG, screenConfigUpdate)
         };
 
         GuiSetup.prototype.removeMainGui = function() {

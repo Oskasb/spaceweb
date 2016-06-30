@@ -77,6 +77,7 @@ define([
             }.bind(this);
 
             if (typeof(styleId) == 'string') {
+            //    console.log("String style", styleId);
                 PipelineAPI.subscribeToCategoryKey('styles', styleId, styleCallback)
             } else {
                 for (var i = 0; i < styleId.length; i++) {

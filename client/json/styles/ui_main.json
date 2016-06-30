@@ -51,12 +51,12 @@
     "dev_panel_left":{
       "pointerEvents": "auto",
       "top": "5em",
-      "left": "35em",
+      "left": "145em",
       "width": "110em",
-      "height": "auto",
+      "bottom": "5em",
       "paddingBottom": "4em",
       "textAlign": "left",
-      "position": "absolute",
+      "position": "fixed",
       "display": "block",
       "zIndex":"200"
     },
@@ -72,23 +72,25 @@
 
     "dev_monitor_container":{
       "margin":"2em",
-      "width": "106em",
+      "left": "1em",
+      "right": "1em",
+      "width": "auto",
       "height": "auto",
       "textAlign": "center",
-      "position": "relative",
-      "display": "inline-block"
+      "position": "absolute",
+      "display": "block"
     },
 
     "dev_button_container":{
-      "margin":"2em",
+      "margin":"1em",
+      "width": "auto",
       "top": "1em",
-      "width": "102em",
-      "right": "2em",
-      "left": "2em",
-      "height": "40em",
+      "right": "5em",
+      "left": "5em",
+      "height": "34em",
       "textAlign": "center",
-      "position": "relative",
-      "display": "inline-block"
+      "position": "absolute",
+      "display": "block"
     },
 
     "main_button_container":{
@@ -96,15 +98,14 @@
       "padding": "0em",
       "width": "116em",
       "height": "116em",
-      "position": "relative",
-      "display": "inline-block"
+      "position": "fixed"
     },
 
     "full_size_container":{
       "width": "100%",
       "height": "100%",
       "textAlign": "center",
-      "position": "absolute",
+      "position": "fixed",
       "display": "block",
       "transform": "translate3d(0px, 0px, 1px)"
     },
@@ -116,8 +117,7 @@
       "width": "116em",
       "height": "58em",
       "textAlign": "center",
-      "position": "relative",
-      "display": "inline-block"
+      "position": "relative"
     },
 
 
@@ -174,7 +174,7 @@
       "width": "auto",
       "fontSize": "24em",
       "textAlign": "center",
-      "position": "absolute",
+      "position": "fixed",
       "display": "block",
       "paddingTop":"1.6em"
     },
@@ -196,15 +196,15 @@
     },
 
     "dev_panel_button":{
-      "top": "0.1em",
-      "left": "0.1em",
-      "right": "0.1em",
+      "top": "0.2em",
+      "left": "0.2em",
+      "right": "0.2em",
       "height": "auto",
       "width": "auto",
-      "bottom": "0.1em",
+      "bottom": "0.2em",
       "fontSize": "14em",
       "textAlign": "center",
-      "position": "absolute",
+      "position": "fixed",
       "display": "inline-block",
       "padding":"0.7em",
       "paddingLeft": "0.2em",
