@@ -339,12 +339,20 @@ function(
         if (!this.camera) return;
 
 		if (isNaN(position.x)) {
+			console.log("non Vector...")
 			testBound.center.setDirect(position.data[0], position.data[1], position.data[2]);
 		} else {
+
 			testBound.center.set(position);
 		}
 
+        if (isNaN(normal.x)) {
+            console.log("non normal Vector...")
+        //    testBound.center.setDirect(position.data[0], position.data[1], position.data[2]);
+        } else {
 
+        //    testBound.center.set(position);
+        }
 
 
         if (this.camera.contains(testBound) === Camera.Outside) {

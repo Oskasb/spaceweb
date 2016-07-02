@@ -131,6 +131,11 @@ define([
 		};
 
 		SimpleParticles.prototype.spawnCheap = function(simulatorId, position, normal, effectData) {
+
+			if (isNaN(normal.y)) {
+				console.log("Non normal", simulatorId)
+			}
+
 			this.cheapParticles.spawn(simulatorId, position, normal, effectData)
 		};
 

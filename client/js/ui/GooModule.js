@@ -256,28 +256,15 @@ define([
         };
 
 
-        GooModule.prototype.readWorldTransform = function(pos, rot, rotVel) {
+        GooModule.prototype.readWorldTransform = function(pos) {
 
             this.entity.transformComponent.updateWorldTransform();
 
-
             this.entity.transformComponent.worldTransform.rotation.toAngles(calcVec);
-
-            this.tempSpatial.rot.setXYZ(calcVec.x, calcVec.y, calcVec.z);
-
-            calcVec2.setDirect(rot[0], rot[1], rot[2]);
-            calcVec.applyPost(calcVec2);
-
-        //    this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
-
 
             calcVec3.setDirect(pos[0], pos[1], pos[2]);
 
-
-
-        //    this.tempSpatial.pos.data[0] *= (1-Math.abs(MATH.clamp(rotVel, -0.6, 0.6)*0.2));
-
-            this.entity.transformComponent.worldTransform.rotation.applyPost(calcVec3);
+            calcVec3.applyPost(this.entity.transformComponent.worldTransform.rotation);
             this.tempSpatial.pos.setXYZ(calcVec3.x, calcVec3.y, calcVec3.z);
 
 
@@ -285,8 +272,6 @@ define([
             this.tempSpatial.pos.data[1] += this.entity.transformComponent.worldTransform.translation.y;
             this.tempSpatial.pos.data[2] += this.entity.transformComponent.worldTransform.translation.z;
 
-            //
-    //        evt.fire(evt.list().DRAW_POINT_AT, {pos:this.entity.transformComponent.worldTransform.translation, color:"YELLOW"})
         };
 
 
@@ -295,10 +280,12 @@ define([
             if (this.applies) {
 
                 if (this.transform) {
-                    this.readWorldTransform(this.transform.pos, this.transform.rot,  this.piece.spatial.rotVel[0]);
+                    this.readWorldTransform(this.transform.pos);
+                    this.tempSpatial.rot.setXYZ(this.transform.rot[0], this.transform.rot[1], this.transform.rot[2]);
+                    this.tempSpatial.rot.rotateZ(this.piece.spatial.rot);
                 } else {
                     this.tempSpatial.pos.setVec(this.piece.spatial.pos);
-                    this.tempSpatial.rot.setXYZ(0, 0, this.piece.spatial.rot);
+                    this.tempSpatial.rot.setZ(this.piece.spatial.rot);
                 }
                 
                    if (this.module.on) {
@@ -316,7 +303,8 @@ define([
                                 var intensity = this.applies.effect_data.intensity || 0.5;
                                 this.populateEffectData(Math.random()*intensity);
                             }
-                            
+
+
                             evt.fire(evt.list().GAME_EFFECT, {effect:this.applies.emit_effect, pos:this.tempSpatial.pos, vel:this.tempSpatial.rot, params:this.effectData.state});
                         }
                         

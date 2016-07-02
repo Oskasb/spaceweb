@@ -45,7 +45,7 @@ define(['Events'
 
 			var sendMessage = function(msg, args) {
 
-				console.log("SEND message", msg, args);
+			//	console.log("SEND message", msg, args);
 				if (!msg) {
 					console.log("SEND REQUEST missing", msg, args);
 				//	return;
