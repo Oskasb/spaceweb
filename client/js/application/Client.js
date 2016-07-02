@@ -259,7 +259,7 @@ define([
             evt.fire(evt.list().CLIENT_TICK, tickEvent);
 
             this.gameMain.tickClientGame(tpf);
-        //    evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
+            evt.fire(evt.list().CAMERA_TICK, {frame:frame, tpf:tpf});
 		};
 
 		return Client;

@@ -68,6 +68,14 @@ define(['Events'
         forVec = new MATH.Vec3(0, 0, 0);
         evt.on(evt.list().CLIENT_TICK, updateCamera);
 
+        var camTick = function() {
+            cameraEntity.transformComponent.updateTransform();
+            cameraComponent.updateCamera(cameraEntity.transformComponent.transform);
+        };
+        
+        
+        evt.on(evt.list().CAMERA_TICK, camTick);
+        
     };
 
 

@@ -74,10 +74,6 @@ define([
             camTpf:0
         };
         
-        var cameraTickEvent = function(tpf) {
-            camEvt.camTpf = tpf;
-            evt.fire(evt.list().CAMERA_TICK, camEvt);
-        };
         
         this.registerGooUpdateCallback(clientTickCallback);
         //	this.cameraController.setCameraPosition(0, 0, 0);
@@ -85,7 +81,7 @@ define([
         var notifyRezize = function() {
             setTimeout(function() {
                 g00.renderer.checkResize(g00.renderer.mainCamera);
-            }, 100);
+            }, 10);
 
         };
 
@@ -162,7 +158,7 @@ define([
         window.addEventListener('load', function() {
             handleResize()
         });
-
+/*
         Renderer.prototype.checkResize = function (camera) {
 
             var devicePixelRatio = this.devicePixelRatio = this._useDevicePixelRatio && window.devicePixelRatio ? window.devicePixelRatio / this.svg.currentScale : 1;
@@ -190,10 +186,10 @@ define([
                 camera.onFrameChange();
             }
         };
-
+*/
         setTimeout(function() {
             handleResize();
-        }, 1000);
+        }, 100);
 
     };
 
