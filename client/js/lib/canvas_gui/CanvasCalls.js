@@ -5,7 +5,7 @@ define([
 	'gui/layout/LayoutEnums',
 	'gui/layout/ElementLayout',
 	'gui/functions/UiCallbacks',
-        'ui/canvas/CanvasDraw',
+    'ui/canvas/CanvasDraw',
 	'gui/elements/UiParent'
 ],
 	function(

@@ -8,7 +8,6 @@ var SYSTEM_SETUP = {
 
 require.config({
     paths: {
-        goo:'./lib/goo',
         shared:'./../../../Shared',
         PipelineAPI:'./lib/data_pipeline/src/PipelineAPI',
         gui:'./lib/canvas_gui/',

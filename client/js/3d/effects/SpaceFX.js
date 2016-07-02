@@ -2,19 +2,18 @@
 
 define([
     'Events',
-    'goo/math/Vector3',
     'PipelineAPI',
     'PipelineObject'
 
 ], function(
     evt,
-    Vector3,
     PipelineAPI,
     PipelineObject
 ) {
-
+    
+    var Vector3 = goo.Vector3;
     var camera;
-    var goo;
+    var g00;
     var backgrounds = {};
     var configs = {};
     var modulationSpatial;
@@ -50,7 +49,7 @@ define([
         };
 
         var engineReady = function(e) {
-            goo = evt.args(e).goo;
+            g00 = evt.args(e).goo;
             modulationSpatial = new MODEL.Spatial();
             this.enableSpaceFx();
         //    evt.removeListener(evt.list().ENGINE_READY, engineReady);
@@ -106,24 +105,27 @@ define([
     SpaceFX.prototype.spawnConfigureSpaceFX = function(conf, time) {
 
 
+        if (!this.camPos.x) {
+            console.log("no cam pos")
+            return;
+        }
 
 
-
-        this.posVec.setVector(this.camPos);
+        this.posVec.set(this.camPos);
     //
-        this.posVec.data[2] -= conf.distance;
+        this.posVec.z -= conf.distance;
 
         this.applyVolumeVector(conf.volume, this.posVec);
 
 
-        this.calcVec.setVector(modulationSpatial.vel);
+        this.calcVec.setDirect(modulationSpatial.vel.getX(), modulationSpatial.vel.getY(), modulationSpatial.vel.getZ());
 
 
-        var distFactor = (this.camPos.data[2]-this.posVec.data[2]) * 0.006;
+        var distFactor = (this.camPos.z-this.posVec.z) * 0.006;
 
         this.calcVec.mulDirect(distFactor, distFactor, 0);
 
-        this.posVec.addVector(this.calcVec);
+        this.posVec.add(this.calcVec);
 
 
         this.applyFXVector(conf.speed, this.velVec);
@@ -165,7 +167,7 @@ define([
             MATH.blendArray(this.flashColor, this.baseColor, frac, this.currentColor);
         }
 
-        goo.renderer.setClearColor(
+        g00.renderer.setClearColor(
             this.currentColor[0],
             this.currentColor[1],
             this.currentColor[2],
@@ -191,7 +193,7 @@ define([
 
     SpaceFX.prototype.updateSpaceFX = function(time, tpf) {
 
-        this.camPos.setVector(camera.transformComponent.transform.translation);
+        this.camPos.set(camera.transformComponent.transform.translation);
 
         for (var key in configs) {
             this.processConfFX(configs[key], time, tpf);

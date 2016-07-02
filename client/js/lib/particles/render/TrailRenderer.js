@@ -1,22 +1,20 @@
 define([
-		'goo/renderer/MeshData',
-		'goo/renderer/Shader',
-		'goo/renderer/Material',
-		'goo/math/Vector3',
-		'goo/entities/components/MeshRendererComponent',
-		'goo/renderer/Renderer'
+
 	],
 
 	function(
-		MeshData,
-		Shader,
-		Material,
-		Vector3,
-		MeshRendererComponent,
-		Renderer
+
 	) {
 		"use strict";
 
+		var MeshData = goo.MeshData;
+		var Shader = goo.Shader;
+		var Material = goo.Material;
+		var Vector3 = goo.Vector3;
+		var MeshRendererComponent = goo.MeshRendererComponent;
+		var Renderer = goo.Renderer;
+		
+		
 		function TrailRenderer() {
 			this.settings = null;
 			this.entity = null;
@@ -141,7 +139,7 @@ define([
 			if (trailData.isReset) {
 				for (var i = 0; i < this.segmentCount; i++) {
 					var trailSegmentData = trailData.trailSegmentDatas[i];
-					trailSegmentData.position.setVector(position);
+					trailSegmentData.position.set(position);
 				}
 
 				trailData.isReset = false;
@@ -160,9 +158,9 @@ define([
 			}
 
 			// Always update the front section
-			trail.position.setVector(position);
+			trail.position.set(position);
 			if (tangent != null) {
-				trail.tangent.setVector(tangent);
+				trail.tangent.set(tangent);
 			}
 			trailData.invalid = true;
 		};
@@ -181,22 +179,30 @@ define([
 
 		TrailRenderer.prototype.updateBillboard = function(i, trailSegmentData, trailSegmentDatas, trailVector, camPos, w) {
 			if (i === 0) {
-				trailDirection.setVector(trailSegmentDatas[i + 1].interpolatedPosition).subVector(trailVector);
+				trailDirection.set(trailSegmentDatas[i + 1].interpolatedPosition).subVector(trailVector);
 			} else if (i === this.segmentCount - 1) {
-				trailDirection.setVector(trailVector).subVector(trailSegmentDatas[i - 1].interpolatedPosition);
+				trailDirection.set(trailVector).subVector(trailSegmentDatas[i - 1].interpolatedPosition);
 			} else {
-				trailDirection.setVector(trailSegmentDatas[i + 1].interpolatedPosition)
+				trailDirection.set(trailSegmentDatas[i + 1].interpolatedPosition)
 					.subVector(trailSegmentDatas[i - 1].interpolatedPosition);
 			}
 
-			trailCamVec.setVector(trailVector).subVector(camPos);
+			trailCamVec.set(trailVector).subVector(camPos);
 
 			// trailDirection.cross(trailCamVec);
-			var ldata = trailDirection.data;
-			var rdata = trailCamVec.data;
-			var x = rdata[2] * ldata[1] - rdata[1] * ldata[2];
-			var y = rdata[0] * ldata[2] - rdata[2] * ldata[0];
-			var z = rdata[1] * ldata[0] - rdata[0] * ldata[1];
+			
+			var lx = trailDirection.x;
+			var ly = trailDirection.y;
+			var lz = trailDirection.z;
+						
+			var rx = trailCamVec.x;
+			var ry = trailCamVec.y;
+			var rz = trailCamVec.z;
+			
+			
+			var x = rz * ly - ry * lz;
+			var y = rx * lz - rz * lx;
+			var z = ry * lx - rx * ly;
 
 			// trailDirection.normalize().muld(w, w, w);
 			var l = Math.sqrt(x * x + y * y + z * z); //this.length();
@@ -212,16 +218,16 @@ define([
 				z *= l * w;
 			}
 
-			trailDirection.data[0] = x;
-			trailDirection.data[1] = y;
-			trailDirection.data[2] = z;
+			trailDirection.x = x;
+			trailDirection.y = y;
+			trailDirection.z = z;
 		};
 
 		TrailRenderer.prototype.updateTrailDirection = function(i, trailSegmentData, trailSegmentDatas, trailVector, camPos, w) {
 			if (this.facingMode == 'Billboard') {
 				this.updateBillboard(i, trailSegmentData, trailSegmentDatas, trailVector, camPos, w)
 			} else if (trailSegmentData.tangent !== null) {
-				trailDirection.setVector(trailSegmentData.tangent).mulDirect(w, w, w);
+				trailDirection.set(trailSegmentData.tangent).mulDirect(w, w, w);
 			} else {
 				trailDirection.setDirect(w, 0, 0);
 			}
@@ -233,7 +239,7 @@ define([
 			var trailSegmentData = trailSegmentDatas[i];
 			var interpolationVector = trailSegmentData.interpolatedPosition;
 
-			interpolationVector.setVector(trailSegmentData.position);
+			interpolationVector.set(trailSegmentData.position);
 
 			if (i > 0) {
 				interpolationVector.lerp(trailSegmentDatas[i - 1].position, trailData.throttle);
@@ -248,17 +254,17 @@ define([
 			tile[(index * this.segmentCount * 8) + i * 8 + 4] = particle.trailOffsetX; //offset u
 			tile[(index * this.segmentCount * 8) + i * 8 + 5] = particle.trailOffsetY; //offset w
 			tile[(index * this.segmentCount * 8) + i * 8 + 6] = this.scaleX; //scale u
-			tile[(index * this.segmentCount * 8) + i * 8 + 7] = this.scaleY; //scale w
+			tile[(index * this.segmentCount * 8) + i * 8 + 7] = this.scaleY; //scale wx
 		};
 
 		TrailRenderer.prototype.updatePosBuffer = function(index, i, pos, trailVector) {
-			pos[(index * this.segmentCount * 6) + 6 * i    ] = trailVector.data[0] - trailDirection.data[0];
-			pos[(index * this.segmentCount * 6) + 6 * i + 1] = trailVector.data[1] - trailDirection.data[1];
-			pos[(index * this.segmentCount * 6) + 6 * i + 2] = trailVector.data[2] - trailDirection.data[2];
+			pos[(index * this.segmentCount * 6) + 6 * i    ] = trailVector.x - trailDirection.x;
+			pos[(index * this.segmentCount * 6) + 6 * i + 1] = trailVector.y - trailDirection.y;
+			pos[(index * this.segmentCount * 6) + 6 * i + 2] = trailVector.z - trailDirection.z;
 
-			pos[(index * this.segmentCount * 6) + 6 * i + 3] = trailVector.data[0] + trailDirection.data[0];
-			pos[(index * this.segmentCount * 6) + 6 * i + 4] = trailVector.data[1] + trailDirection.data[1];
-			pos[(index * this.segmentCount * 6) + 6 * i + 5] = trailVector.data[2] + trailDirection.data[2];
+			pos[(index * this.segmentCount * 6) + 6 * i + 3] = trailVector.x + trailDirection.x;
+			pos[(index * this.segmentCount * 6) + 6 * i + 4] = trailVector.y + trailDirection.y;
+			pos[(index * this.segmentCount * 6) + 6 * i + 5] = trailVector.z + trailDirection.z;
 		};
 
 		TrailRenderer.prototype.updateColBuffer = function(index, i, col, coldata) {
@@ -271,7 +277,7 @@ define([
 		};
 
         TrailRenderer.prototype.updateColAlpha = function(index, i, col, particle) {
-            var alpha = particle.color.data[3] * (this.segmentCount - i) / this.segmentCount; //   i === 0 || i === this.segmentCount - 1 ? 0 : particle.color.data[3];
+            var alpha = particle.color.w * (this.segmentCount - i) / this.segmentCount; //   i === 0 || i === this.segmentCount - 1 ? 0 : particle.color.data[3];
             col[(index * this.segmentCount * 8) + 8 * i + 3] = alpha;
             col[(index * this.segmentCount * 8) + 8 * i + 7] = alpha;
         };

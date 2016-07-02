@@ -2,16 +2,14 @@
 
 define([
         'gui/functions/CustomGraphCallbacks',
-        'ui/canvas/CanvasDraw',
-    'goo/math/Vector3'
+        'ui/canvas/CanvasDraw'
     ],
     function(
         CustomGraphCallbacks,
-        CanvasDraw,
-        Vector3
+        CanvasDraw
     ) {
 
-
+        var Vector3 = goo.Vector3;
         var rangeX;
         var rangeY;
 
@@ -35,7 +33,7 @@ define([
 
         CanvasTemporalState.drawTemporal = function(gamePiece, ctx, camera, confData, widgetConfigs) {
 
-            calcVec.setVector(camera.transformComponent.transform.translation);
+            calcVec.set(camera.transformComponent.transform.translation);
             
             var pos = confData.pos;
             var size = confData.size;

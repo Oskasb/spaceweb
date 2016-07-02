@@ -1,13 +1,11 @@
 "use strict";
 
-define([
-	'goo/entities/SystemBus'
-],
+define([],
 
-	function(
-		SystemBus
-		) {
+	function() {
 
+		var SystemBus = goo.SystemBus;
+		
 		var GuiBusSends = function(data) {
 			this.data = data;
 			this.range = this.data.max - this.data.min;

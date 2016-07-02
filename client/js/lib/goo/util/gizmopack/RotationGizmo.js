@@ -82,7 +82,7 @@ define([
 				1,1,
 				ray
 			);
-			pickedPoint.setVector(ray.origin).subVector(worldCenter);
+			pickedPoint.setVector(ray.origin).sub(worldCenter);
 			var d = pickedPoint.length() * 0.9;
 			pickedPoint.setVector(ray.direction).scale(d).addVector(ray.origin);
 

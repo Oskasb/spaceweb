@@ -3,16 +3,15 @@
 
 define([
         '3d/GooEntityFactory',
-        'goo/math/Vector3',
         'Events'
     ],
     function(
         GooEntityFactory,
-        Vector3,
         evt
     ) {
 
-
+        var Vector3  = goo.Vector3;
+        
         var playerSpatial;
 
         var effectIndex  = {
@@ -31,9 +30,9 @@ define([
 
             var camReady = function(e) {
                 this.camera = evt.args(e).camera;
-                this.cameraDefault.setVector(this.camera.transformComponent.transform.translation);
+                this.cameraDefault.set(this.camera.transformComponent.transform.translation);
                 this.camera.transformComponent.transform.rotation.toAngles(this.defaultCamAngle);
-                this.defaultCamAngleZ = this.defaultCamAngles.data[2];
+                this.defaultCamAngleZ = this.defaultCamAngles.z;
         //        console.log("Cam to angles", this.defaultRotZ);
                 this.setupCameraEffects();
             }.bind(this);
@@ -74,13 +73,13 @@ define([
         };
 
         GooCameraEffects.prototype.addEffectVector = function(vector) {
-            this.effectVector.setVector(this.cameraDefault);
-            this.effectVector.addVector(vector);
+            this.effectVector.set(this.cameraDefault);
+            this.effectVector.add(vector);
         };
 
         GooCameraEffects.prototype.setEffectVector = function(vector, rotFactor) {
             this.fxRotFactor = rotFactor;
-            this.effectVector.setVector(vector);
+            this.effectVector.set(vector);
         };
 
         GooCameraEffects.prototype.tickCameraEffects = function(tpf) {
@@ -95,12 +94,12 @@ define([
 
        //     this.camera.transformComponent.transform.rotation.fromAngles(0, 0, camZ);
 
-            this.calcVec.setVector(this.effectVector);
-            this.calcVec.subVector(this.camera.transformComponent.transform.translation);
+            this.calcVec.set(this.effectVector);
+            this.calcVec.sub(this.camera.transformComponent.transform.translation);
 
             this.calcVec.mulDirect(1, 1, 1*tpf);
 
-            this.camera.transformComponent.transform.translation.addVector(this.calcVec);
+            this.camera.transformComponent.transform.translation.add(this.calcVec);
 
             this.camera.transformComponent.setUpdated()
 

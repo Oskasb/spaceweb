@@ -240,7 +240,6 @@ define([
 		};
 
 		GooEntityCache.prototype.cacheLoadedEntities = function(gooRunner, bundleConf, loaderData, loader, success, fail, notifyLoaderProgress) {
-			goo = gooRunner;
 
 			var progressUpdate = function(handled, refCount) {
 				notifyLoaderProgress(handled, refCount);

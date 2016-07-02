@@ -142,12 +142,12 @@ define([
 			calcVect.setVector(waterPlane.normal).mulDirect(planeDistance, planeDistance, planeDistance);
 			camReflectPos.setVector(camLocation.subVector(calcVect));
 
-			camLocation.setVector(camera.translation).addVector(camera._direction);
+			camLocation.setVector(camera.translation).add(camera._direction);
 			planeDistance = waterPlane.pseudoDistance(camLocation) * 2.0;
 			calcVect.setVector(waterPlane.normal).mulDirect(planeDistance, planeDistance, planeDistance);
 			camReflectDir.setVector(camLocation.subVector(calcVect)).subVector(camReflectPos).normalize();
 
-			camLocation.setVector(camera.translation).addVector(camera._up);
+			camLocation.setVector(camera.translation).add(camera._up);
 			planeDistance = waterPlane.pseudoDistance(camLocation) * 2.0;
 			calcVect.setVector(waterPlane.normal).mulDirect(planeDistance, planeDistance, planeDistance);
 			camReflectUp.setVector(camLocation.subVector(calcVect)).subVector(camReflectPos).normalize();
@@ -208,7 +208,7 @@ define([
 		if (aboveWater && this.skybox && this.followCam) {
 			var source = camera.translation;
 			var target = this.skybox.transformComponent.worldTransform;
-			target.translation.setVector(source).addVector(this.offset);
+			target.translation.setVector(source).add(this.offset);
 			target.update();
 			this.waterCamera._updatePMatrix = true;
 		}

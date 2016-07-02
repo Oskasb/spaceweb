@@ -1,7 +1,6 @@
 "use strict";
 
 define([
-	'goo/entities/SystemBus',
 	'gui/CanvasGuiWidget',
 	'data_pipeline/data/ConfigCache',
 	'data_pipeline/PipelineAPI',
@@ -9,14 +8,13 @@ define([
 
 ],
 	function(
-		SystemBus,
-
 		CanvasGuiWidget,
 		ConfigCache,
 		PipelineAPI,
 		GameDataPipeline
 		) {
 
+		var SystemBus = goo.SystemBus;
 
 		var CanvasGuiState = function(canvasCalls, cursor) {
 			this.uiParent = canvasCalls.uiParent;

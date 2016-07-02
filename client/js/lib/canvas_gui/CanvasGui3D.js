@@ -1,28 +1,19 @@
 "use strict";
 
 define([
-		'goo/math/MathUtils',
-	'goo/renderer/Texture',
-	'goo/renderer/Material',
-	'goo/entities/components/MeshRendererComponent',
-	'goo/shapes/Quad',
-	'goo/renderer/shaders/ShaderLib',
-	'goo/renderer/pass/FullscreenUtil',
 	'data_pipeline/PipelineAPI'
-
 ],
 	function(
-		MathUtils,
-		Texture,
-		Material,
-		MeshRendererComponent,
-		Quad,
-		ShaderLib,
-		FullscreenUtil,
 		PipelineAPI
 		) {
 
-
+		var MathUtils = goo.MathUtils;
+		var Texture	= goo.Texture;
+		var Material = goo.Material;
+		var MeshRendererComponent = goo.MeshRendererComponent;
+		var Quad = goo.Quad;
+		var ShaderLib = goo.ShaderLib;
+		var FullscreenUtil = goo.FullscreenUtil;
 
         var CanvasGui3D = function(cameraEntity, resolution, canvasGuiConfig) {
 			//		console.log(cameraEntity)

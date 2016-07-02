@@ -1,13 +1,12 @@
 define([
-        'PipelineAPI',
-        'goo/renderer/TextureCreator',
-        'goo/renderer/Texture'
+        'PipelineAPI'
     ],
     function(
-        PipelineAPI,
-        TextureCreator,
-        Texture
+        PipelineAPI
     ) {
+
+    var TextureCreator = goo.TextureCreator;
+    var Texture = goo.Texture;
 
         var PipelineTexture = function(srcUrl, txLoaded) {
             this.srcUrl = srcUrl;
@@ -35,7 +34,7 @@ define([
 
            //     return;
 
-                new TextureCreator().loadTexture2D(src, settings, function(texture) {
+                new TextureCreator().loadTexture2D(src, settings).then(function(texture) {
                     txLoaded(texture);
                 });
             };

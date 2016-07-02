@@ -174,12 +174,12 @@ define([
 			planeIntersection.normalize();
 			planeIntersection.scale(Math.abs(projectorCamera.translation.y));
 		} else if (length < MathUtils.EPSILON) {
-			planeIntersection.addVector(projectorCamera._up);
+			planeIntersection.add(projectorCamera._up);
 			planeIntersection.y = 0.0;
 			planeIntersection.normalize();
 			planeIntersection.scale(0.1); // TODO: magic number
 		}
-		planeIntersection.addVector(projectorCamera.translation);
+		planeIntersection.add(projectorCamera.translation);
 		planeIntersection.y = 0.0;
 
 		// point projector at the new intersection point
@@ -256,7 +256,7 @@ define([
 		var t = (planeHeight - origin.y) / (direction.y);
 
 		direction.scale(t);
-		origin.addVector(direction);
+		origin.add(direction);
 
 		return t >= 0.0 && t <= 1.0;
 	};

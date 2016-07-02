@@ -1,7 +1,6 @@
 "use strict";
 
 define([
-	'goo/entities/SystemBus',
 	'gui/layout/CanvasLayoutInterpreter',
 	'gui/layout/ElementLayout',
 	'gui/functions/InteractiveSurface',
@@ -9,13 +8,14 @@ define([
 
 ],
 	function(
-		SystemBus,
 		CanvasLayoutInterpreter,
 		ElementLayout,
 		InteractiveSurface,
 		GuiConstants
 		) {
 
+		var SystemBus = goo.SystemBus;
+		
 		var guiStates = {
 			hidden:'hidden',
 			passive:'passive',

@@ -8,9 +8,9 @@ define([
 		) {
 		'use strict';
 
-		function HeightMapEditor(goo, terrainEditorApi) {
-			this.goo = goo;
-			this.terrainBrush = new TerrainBrush(goo);
+		function HeightMapEditor(g00, terrainEditorApi) {
+			this.goo = g00;
+			this.terrainBrush = new TerrainBrush(g00);
 			this.terrainEditorApi = terrainEditorApi;
 			this.hidden = false;
 			this.store = new Vector3();

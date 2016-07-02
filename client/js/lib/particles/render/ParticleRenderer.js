@@ -1,18 +1,18 @@
 define([
-	'goo/renderer/MeshData',
-	'goo/renderer/Shader',
-	'goo/renderer/Material',
-	'goo/entities/components/MeshRendererComponent'
+
 ],
 
 function (
-	MeshData,
-	Shader,
-	Material,
-	MeshRendererComponent
+
 ) {
 	"use strict";
 
+	var MeshData = goo.MeshData;
+	var Shader = goo.Shader;
+	var Material = goo.Material;
+	var MeshRendererComponent = goo.MeshRendererComponent;
+	
+	
 	function ParticleRenderer() {
 		this.settings = null;
 		this.entity = null;
@@ -174,21 +174,21 @@ function (
 	};
 
 	ParticleRenderer.prototype.updateParticleColorBuffer = function (particle) {
-        var coldata = particle.color.data;
+        var coldata = particle.color;
 		for (j = 0; j < 4; j++) {
-            this.col[(4 * 4 * i    ) + 4 * j] = coldata[0];
-            this.col[(4 * 4 * i + 1) + 4 * j] = coldata[1];
-            this.col[(4 * 4 * i + 2) + 4 * j] = coldata[2];
-            this.col[(4 * 4 * i + 3) + 4 * j] = coldata[3];
+            this.col[(4 * 4 * i    ) + 4 * j] = coldata.x;
+            this.col[(4 * 4 * i + 1) + 4 * j] = coldata.y;
+            this.col[(4 * 4 * i + 2) + 4 * j] = coldata.z;
+            this.col[(4 * 4 * i + 3) + 4 * j] = coldata.w;
 		}
 	};
 
     ParticleRenderer.prototype.updateParticlePositionBuffer = function (particle) {
-        var posdata = particle.position.data;
+        var posdata = particle.position;
         for (j = 0; j < 4; j++) {
-            this.pos[(4 * 3 * i    ) + 3 * j] = posdata[0];
-            this.pos[(4 * 3 * i + 1) + 3 * j] = posdata[1];
-            this.pos[(4 * 3 * i + 2) + 3 * j] = posdata[2];
+            this.pos[(4 * 3 * i    ) + 3 * j] = posdata.x;
+            this.pos[(4 * 3 * i + 1) + 3 * j] = posdata.y;
+            this.pos[(4 * 3 * i + 2) + 3 * j] = posdata.z;
         }
     };
 

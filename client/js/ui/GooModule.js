@@ -264,9 +264,9 @@ define([
 
             this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.pos);
 
-            this.tempSpatial.pos.data[0] += this.entity.transformComponent.worldTransform.translation.data[0];
-            this.tempSpatial.pos.data[1] += this.entity.transformComponent.worldTransform.translation.data[1];
-            this.tempSpatial.pos.data[2] += this.entity.transformComponent.worldTransform.translation.data[2];
+            this.tempSpatial.pos.data[0] += this.entity.transformComponent.worldTransform.translation.x;
+            this.tempSpatial.pos.data[1] += this.entity.transformComponent.worldTransform.translation.y;
+            this.tempSpatial.pos.data[2] += this.entity.transformComponent.worldTransform.translation.z;
 
             //
     //        evt.fire(evt.list().DRAW_POINT_AT, {pos:this.entity.transformComponent.worldTransform.translation, color:"YELLOW"})

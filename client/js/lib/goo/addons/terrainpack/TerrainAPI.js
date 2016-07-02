@@ -16,8 +16,8 @@ define([
 
 	var version = 0.1;
 
-	var TerrainAPI = function(goo, worldLoader) {
-		this.goo = goo;
+	var TerrainAPI = function(g00, worldLoader) {
+		this.goo = g00;
 		this.worldLoader = worldLoader;
 		this.configurations = [];
 		this.includeEditor(version);

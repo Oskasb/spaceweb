@@ -4,15 +4,15 @@
 define([
         'Events',
         'PipelineAPI',
-        'PipelineObject',
-        'goo/math/Vector3'
+        'PipelineObject'
     ],
     function(
         evt,
         PipelineAPI,
-        PipelineObject,
-        Vector3
+        PipelineObject
     ) {
+
+        var Vector3 = goo.Vector3;
 
         var particleConfigs = {};
         var textConfig = {};

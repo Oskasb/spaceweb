@@ -2,15 +2,15 @@
 
 define([
 	'data_pipeline/PipelineAPI',
-	"Events",
-	"goo/entities/SystemBus"
+	"Events"
 ],
 	function(
 		PipelineAPI,
-		event,
-		SystemBus
+		event
 		) {
 
+	var SystemBus = goo.SystemBus;		
+		
 		var curves = {
 			"zeroToOne":    [[0, 0], [1, 1]],
 			"oneToZero":    [[0, 1], [1, 0]],

@@ -8,10 +8,10 @@ define([
 
 		var loaders = {};
 
-		function loadFromUrl(goo, refFile, fileName, success, fail) {
+		function loadFromUrl(g00, refFile, fileName, success, fail) {
 
 			var loader = new DynamicLoader({
-				world: goo.world,
+				world: g00.world,
 				//    preloadBinaries: true,
 				rootPath: refFile,
 				beforeAdd:function(){return false} // return false to prevent auto-add to world
@@ -24,8 +24,8 @@ define([
 			});
 		}
 
-		function loadBundleData(goo, url, fileName, success, fail) {
-			loadFromUrl(goo, url, fileName, success, fail)
+		function loadBundleData(g00, url, fileName, success, fail) {
+			loadFromUrl(g00, url, fileName, success, fail)
 		}
 
 		return {

@@ -7,7 +7,6 @@ define([
 		'particle_system/defaults/FontRendererConfigs',
 		'particle_system/defaults/FontSimulators',
 		'3d/effects/CheapParticles',
-		'goo/renderer/TextureCreator',
 	'PipelineAPI'
 	],
 	function(
@@ -19,17 +18,17 @@ define([
 		FontRendererConfigs,
 		FontSimulators,
 		CheapParticles,
-		TextureCreator,
 		PipelineAPI
 	) {
+
 
 		var particlesAPI;
 		var cheapParticles;
 
-		function SimpleParticles(goo) {
-			this.goo = goo;
-			this.particlesAPI = new ParticlesAPI(goo);
-			this.cheapParticles = new CheapParticles(goo);
+		function SimpleParticles(g00) {
+			this.goo = g00;
+			this.particlesAPI = new ParticlesAPI(g00);
+			this.cheapParticles = new CheapParticles(g00);
 			cheapParticles = this.cheapParticles;
 			particlesAPI = this.particlesAPI;
 			this.ready = false;
@@ -54,41 +53,43 @@ define([
 			}.bind(this);
 
 			var fontTxLoaded = function(fontTexture) {
+				console.log("Font TX Loaded", fontTexture)
 				this.particlesAPI.createParticleSystems(FontSimulators, FontRendererConfigs, DefaultSpriteAtlas.atlases[1], fontTexture);
 				fontsRdy = true;
 				checkReady();
 			}.bind(this);
 
 			var txLoaded = function(texture) {
+				console.log("TX Loaded", texture)
 				this.particlesAPI.createParticleSystems(DefaultSimulators, DefaultRendererConfigs, DefaultSpriteAtlas.atlases[0], texture);
 				spritesRdy = true;
 				checkReady();
 			}.bind(this);
 
-			var textureCreator = new TextureCreator();
+		//	var textureCreator = new goo.TextureCreator();
 
 			var pipelineError = function(src, err) {
 				console.log("FX texture error", src, err);
 			};
 
 			var pipedSprites = function(src, data) {
-	//			console.log("pipedSprites", src, data);
-				textureCreator.loadTexture2D(src, {
+				console.log("pipedSprites", src, data);
+				new goo.TextureCreator().loadTexture2D(src, {
 					minFilter:"NearestNeighborNoMipMaps",
 					wrapS: 'EdgeClamp',
 					wrapT: 'EdgeClamp'
-				}, function(texture) {
+				}).then(function(texture) {
 					txLoaded(texture);
 				});
 			};
 
 			var pipedFontTx = function(src, data) {
-	//			console.log("pipedFontTx", src, data);
-				textureCreator.loadTexture2D(src, {
+				console.log("pipedFontTx", src, data);
+				new goo.TextureCreator().loadTexture2D(src, {
 					minFilter:"NearestNeighborNoMipMaps",
 					wrapS: 'EdgeClamp',
 					wrapT: 'EdgeClamp'
-				}, function(fontTexture) {
+				}).then(function(fontTexture) {
 					fontTxLoaded(fontTexture);
 				});
 			};
@@ -110,7 +111,7 @@ define([
                 loadIds.splice(loadIds.indexOf(id), 1);
 
                 loadCount++;
-        //        console.log("Load cheap", startCount, loadCount, id, loadIds);
+                console.log("Load cheap", startCount, loadCount, id, loadIds);
                 if (loadIds.length == 0) {
                     allLoaded(loadCount);
                 }

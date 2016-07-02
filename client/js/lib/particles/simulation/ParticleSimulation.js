@@ -1,20 +1,17 @@
 "use strict";
 
 define([
-	'goo/math/Vector3',
 	'particle_system/simulation/SimulationParameters',
-	'particle_system/defaults/DefaultSimulationParams',
-    'goo/renderer/Camera',
-    'goo/renderer/bounds/BoundingSphere'
-
+	'particle_system/defaults/DefaultSimulationParams'
 ], function(
-	Vector3,
 	SimulationParameters,
-    DefaultSimulationParams,
-    Camera,
-    BoundingSphere
+    DefaultSimulationParams
 	) {
 
+	var Vector3 = goo.Vector3;
+	var Camera = goo.Camera;
+	var BoundingSphere = goo.BoundingSphere;
+	
 	var ParticleSimulation = function() {
 		this.resetSimulation();
 	};
@@ -33,7 +30,23 @@ define([
 
 	ParticleSimulation.prototype.initSimulation = function(posVec, normVec, defaultSettings, effectData) {
 		this.resetSimulation();
-		this.params = new SimulationParameters(new Vector3(posVec), new Vector3(normVec), DefaultSimulationParams.particle_params, effectData);
+
+		var pos = new Vector3();
+		var norm = new Vector3();
+
+		if (isNaN(posVec.x)) {
+			pos.setDirect(posVec.data[0], posVec.data[1], posVec.data[2])
+		} else {
+			pos.set(posVec);
+		}
+
+		if (isNaN(normVec.x)) {
+			norm.setDirect(normVec.data[0], normVec.data[1], normVec.data[2])
+		} else {
+			norm.set(normVec);
+		}
+
+		this.params = new SimulationParameters(pos, norm, DefaultSimulationParams.particle_params, effectData);
 		this.active = true;
 	};
 
@@ -120,7 +133,12 @@ define([
 
         if (!camera) return;
 
-        testBound.center.setVector(particle.position);
+
+		if (isNaN(particle.position.x)) {
+			testBound.center.setDirect(particle.position.data[0], particle.position.data[1], particle.position.data[2]);
+		} else {
+			testBound.center.set(particle.position);
+		}
 
 
         if (camera.contains(testBound) != Camera.Outside) {

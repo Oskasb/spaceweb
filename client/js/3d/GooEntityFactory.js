@@ -2,30 +2,23 @@
 
 
 define([
-	'goo/shapes/Sphere',
-	'goo/shapes/Box',
-	'Events',
-	'goo/renderer/Material',
-	'goo/entities/components/MeshDataComponent',
-	'goo/entities/components/MeshRendererComponent',
-	'goo/renderer/shaders/ShaderLib'
+
 ], function(
-		Sphere,
-		Box,
-    event,
-	Material,
-	MeshDataComponent,
-	MeshRendererComponent,
-	ShaderLib
+
     ) {
-
-    var world;
-    var goo;
+    var Sphere = goo.Sphere;
+    var Box = goo.Box;
+    var Material = goo.Material;
+    var MeshDataComponent = goo.MeshDataComponent;
+    var MeshRendererComponent = goo.MeshRendererComponent;
+    var ShaderLib = goo.ShaderLib;
     
-
+    var world;
+    var g00;
+    
     var setGoo = function(goo0) {
-        goo = goo0;
-        world = goo.world;
+        g00 = goo0;
+        world = g00.world;
     };
 
 
@@ -58,13 +51,13 @@ define([
 
         switch (shape) {
             case "Box":
-                var meshData = new Box(size.data[0], size.data[1], size.data[2]);
+                var meshData = new Box(size.x, size.y, size.z);
             break;
             case "Sphere":
-                var meshData = new Sphere(8, 8, size.data[0]);
+                var meshData = new Sphere(8, 8, size.x);
             break;
             case "Cylinder":
-                var meshData = new Box(size.data[0], size.data[1], size.data[2]);
+                var meshData = new Box(size.x, size.y, size.z);
             break;
         }
 

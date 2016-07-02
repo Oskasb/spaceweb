@@ -22,14 +22,23 @@ define([
             rgbaData[3] = color[3];
             return 'rgba('+rgbaData+')';
         };
-        
 
         CanvasDraw.vectorToX = function(vec, size) {
-            return size.height - vec.data[1] * size.height*0.01;
+
+            if (vec.y) {
+                return size.height - vec.y * size.height*0.01;
+            } else {
+                return size.height - vec.data[1] * size.height*0.01;
+            }
         };
 
         CanvasDraw.vectorToY = function(vec, size) {
-            return vec.data[0] * size.height*0.01;
+
+            if (vec.x) {
+                return size.width - vec.x * size.width*0.01;
+            } else {
+                return size.width - vec.data[1] * size.width*0.01;
+            }
         };
 
         CanvasDraw.vectorToCanvasX = function(vec, pos, size, centerX, rangeX) {

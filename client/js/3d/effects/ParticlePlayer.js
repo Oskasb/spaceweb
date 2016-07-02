@@ -4,8 +4,7 @@ define([
     '3d/effects/SimpleParticles',
     'ui/particle/ParticleText',
     'PipelineAPI',
-        'PipelineObject',
-        'goo/math/Vector3'
+        'PipelineObject'
     ],
     function(
         evt,
@@ -13,10 +12,12 @@ define([
         SimpleParticles,
         ParticleText,
         PipelineAPI,
-        PipelineObject,
-        Vector3
+        PipelineObject
     ) {
 
+        
+        var Vector3 = goo.Vector3;
+        
         var particleData =	{
             pos:new Vector3(0, 0, 0),
             vel:new Vector3(0, 0, 0)
@@ -49,7 +50,7 @@ define([
 
             function checkReady() {
                 if (allRdy) return;
-       //         console.log("particles ready? ", sysRdy, confRdy, cheapRdy, fxRdy);
+                console.log("particles ready? ", sysRdy, confRdy, cheapRdy, fxRdy);
                 if (sysRdy && confRdy && cheapRdy && fxRdy) {
                     particlesReady();
                     allRdy = true;
@@ -57,7 +58,7 @@ define([
             }
 
             function cheapParticlesReady(count) {
-        //        console.log("Cheap Ready", count);
+                console.log("Cheap Ready", count);
                 cheapRdy = true;
                 checkReady()
             }
@@ -75,7 +76,7 @@ define([
 
             function particlesReady() {
                 evt.fire(evt.list().PARTICLES_READY, {});
-                evt.on(evt.list().GAME_EFFECT, playGameEffect);
+                evt.on(evt.list().GAME_EFFECT, playGameEffect);data[0]
                 evt.on(evt.list().PLAY_PARTICLE, playParticle);
             }
             
@@ -125,13 +126,12 @@ define([
         };
 
         ParticlePlayer.prototype.playParticleEffect = function(args) {
-            particleData.pos.data[0] = args.pos.data[0];
-            particleData.pos.data[1] = args.pos.data[1];
-            particleData.pos.data[2] = args.pos.data[2];
-
-            particleData.vel.data[0] = args.vel.data[0];
-            particleData.vel.data[1] = args.vel.data[1];
-            particleData.vel.data[2] = args.vel.data[2];
+            particleData.pos.x = args.pos.data[0];
+            particleData.pos.y = args.pos.data[1];
+            particleData.pos.z = args.pos.data[2];
+            particleData.vel.x = args.vel.data[0];
+            particleData.vel.y = args.vel.data[1];
+            particleData.vel.z = args.vel.data[2];
 
             this.simpleParticles.spawn(args.simulator, particleData.pos, particleData.vel, this.getParticleData(args.effect), args.callbacks, args.density);
             
@@ -161,13 +161,12 @@ define([
             if (Math.random() < 0.01) console.log("Called params: ", calledParams);
 */
 
-            particleData.pos.data[0] = args.pos.data[0];
-            particleData.pos.data[1] = args.pos.data[1];
-            particleData.pos.data[2] = args.pos.data[2];
-
-            particleData.vel.data[0] = args.vel.data[0];
-            particleData.vel.data[1] = args.vel.data[1];
-            particleData.vel.data[2] = args.vel.data[2];
+            particleData.pos.x = args.pos.data[0];
+            particleData.pos.y = args.pos.data[1];
+            particleData.pos.z = args.pos.data[2];
+            particleData.vel.x = args.vel.data[0];
+            particleData.vel.y = args.vel.data[1];
+            particleData.vel.z = args.vel.data[2];
 
             for (var i = 0; i < effectConfigs[args.effect].length; i++) {
 

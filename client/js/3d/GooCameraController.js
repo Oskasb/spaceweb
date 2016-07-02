@@ -1,25 +1,22 @@
 "use strict";
 
 
-define(['Events',
-    'goo/renderer/Camera',
-    'goo/entities/components/CameraComponent',
-    'goo/entities/EntityUtils',
-    'goo/math/Vector3',
-    'goo/math/Matrix3x3'
+define(['Events'
 ], function(
-    evt,
-    Camera,
-    CameraComponent,
-    EntityUtils,
-    Vector3,
-    Matrix3x3
+    evt
+
     ) {
 
+    var Camera = goo.Camera;
+    var CameraComponen = goo.CameraComponent;
+    var EntityUtils = goo.EntityUtils;
+    var Vector3 = goo.Vector3;
+    var Matrix3x3 = goo.Matrix3x3;
+    
     var camScript;
     var cameraEntity;
     var playerPiece;
-    var goo;
+    var g00;
     var camera;
     var forVec;
     var calcVec = new Vector3();
@@ -54,11 +51,11 @@ define(['Events',
 
 
     var setupGooCamera = function(e) {
-        goo = evt.args(e).goo;
+        g00 = evt.args(e).goo;
 
         camera = new Camera(45, 1, 0.25, 45000);
-        cameraEntity = goo.world.createEntity('ViewCameraEntity');
-        var cameraComponent = new CameraComponent(camera);
+        cameraEntity = g00.world.createEntity('ViewCameraEntity');
+        var cameraComponent = new goo.CameraComponent(camera);
         cameraEntity.setComponent(cameraComponent);
         cameraEntity.addToWorld();
 
@@ -82,22 +79,22 @@ define(['Events',
 
         playerPiece.spatial.getForwardVector(forVec);
 
-        calcVec.setVector(playerPiece.spatial.vel);
+        calcVec.setDirect(playerPiece.spatial.vel.getX(), playerPiece.spatial.vel.getY(), playerPiece.spatial.vel.getZ());
 
     //    calcVec.subVector(lastPos);
         forVec.scale(3);
 
     //    calcVec.mulDirect(40, 40, 0);
-        calcVec.addVector(forVec);
-        calcVec.addVector(playerPiece.spatial.pos);
+        calcVec.addDirect(forVec.data[0], forVec.data[1], forVec.data[2]);
+        calcVec.addDirect(playerPiece.spatial.pos.getX(), playerPiece.spatial.pos.getY(), playerPiece.spatial.pos.getZ());
     //    lastPos.addVec(playerPiece.spatial.pos);
 
     //    lastPos.interpolateFromTo(lastPos, calcVec, 0.02);
 
     //    calcVec.addVector(playerPiece.spatial.pos);
 
-        cameraEntity.transformComponent.transform.translation.data[0] = calcVec.data[0];
-        cameraEntity.transformComponent.transform.translation.data[1] = calcVec.data[1];
+        cameraEntity.transformComponent.transform.translation.x = calcVec.x;
+        cameraEntity.transformComponent.transform.translation.y = calcVec.y;
         cameraEntity.transformComponent.setUpdated();
     //    lastPos.setVec(playerPiece.spatial.pos);
 	};

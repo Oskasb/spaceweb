@@ -5,33 +5,27 @@ define([
     'PipelineAPI',
     'application/Settings',
     'Events',
-    'goo/entities/GooRunner',
-    'goo/renderer/Renderer',
-    'goo/math/Vector3',
-    'goo/renderer/Texture',
-    'goo/math/Vector',
     '3d/GooCameraController',
     'ui/GooMonitor',
     'ui/dom/DomUtils',
     'ui/GameScreen'
-
-
-
 ], function(
     PipelineAPI,
     Settings,
     evt,
-    GooRunner,
-    Renderer,
-    Vector3,
-    Texture,
-    Vector,
     GooCameraController,
     GooMonitor,
     DomUtils,
     GameScreen
 ) {
 
+    var GooRunner = goo.GooRunner;
+    var Renderer = goo.Renderer;
+    var Vector3 = goo.Vector3;
+    var Texture = goo.Texture;
+    var Vector = goo.Vector;
+    
+    
     var GooController = function() {
         this.cameraController = new GooCameraController();
         this.gooMonitor = new GooMonitor();
@@ -44,7 +38,7 @@ define([
         var downscale = PipelineAPI.readCachedConfigKey('SETUP', 'PX_SCALE');
         
 
-        var goo = new GooRunner({
+        var g00 = new GooRunner({
             showStats:false,
             antialias:antialias,
             debug:false,
@@ -58,20 +52,20 @@ define([
         //	goo.renderer.downScale = downscale;
 
         var adjustPxScale = function(value) {
-            console.log("Adjust Px Scale: ", value)
-            goo.renderer.downScale = value;
+            console.log("Adjust Px Scale: ", value);
+            g00.renderer.downScale = value;
         };
 
         Settings.addOnChangeCallback('display_pixel_scale', adjustPxScale);
 
-        this.goo = goo;
-        goo.renderer.setClearColor(0.05, 0.0, 0.09, 0.21);
+        this.goo = g00;
+        g00.renderer.setClearColor(0.05, 0.0, 0.09, 0.21);
 
-        document.getElementById('game_window').appendChild(goo.renderer.domElement);
-        goo.startGameLoop(clientTickCallback);
+        document.getElementById('game_window').appendChild(g00.renderer.domElement);
+        g00.startGameLoop();
 
         var setupGooScene = function() {
-            evt.fire(evt.list().ENGINE_READY, {goo:goo});
+            evt.fire(evt.list().ENGINE_READY, {goo:g00});
         };
 
         setupGooScene();
@@ -85,12 +79,12 @@ define([
             evt.fire(evt.list().CAMERA_TICK, camEvt);
         };
         
-    //    this.registerGooUpdateCallback(cameraTickEvent);
+        this.registerGooUpdateCallback(clientTickCallback);
         //	this.cameraController.setCameraPosition(0, 0, 0);
 
         var notifyRezize = function() {
             setTimeout(function() {
-                goo.renderer.checkResize(goo.renderer.mainCamera);
+                g00.renderer.checkResize(g00.renderer.mainCamera);
             }, 100);
 
         };

@@ -37,12 +37,17 @@ define([
 		GooPiece.prototype.sampleSpatial = function(spatial) {
 
 			spatial.getVelArray(this.vel);
-			spatial.getPosArray(this.pos);
+			spatial.getPosArray(this.pos); 
 			spatial.getRotArray(this.rot);
 			spatial.getRotVelArray(this.rotVel);
 			
 			
-			spatial.getPosArray(this.entity.transformComponent.transform.translation.data);
+		//	spatial.getPosArray(this.entity.transformComponent.transform.translation.data);
+
+			this.entity.transformComponent.transform.translation.x = spatial.pos.getX();
+			this.entity.transformComponent.transform.translation.y = spatial.pos.getY();
+			this.entity.transformComponent.transform.translation.z = spatial.pos.getZ();
+			
 			spatial.getRotArray(this.rot);
 			this.entity.transformComponent.transform.rotation.fromAngles(0, 0, this.rot[0]);
 		};

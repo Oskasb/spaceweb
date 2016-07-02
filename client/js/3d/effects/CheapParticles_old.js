@@ -21,8 +21,8 @@ function(
 
 	var path = "./client/assets/images/effects/";
 	
-	function CheapParticles(goo) {
-		this.goo = goo;
+	function CheapParticles(g00) {
+		this.goo = g00;
 		this.simulators = {};
 		this.materialCount = 0;
 	}
@@ -176,12 +176,12 @@ function(
 
 			if (particle.dead) {
 				particle.lifeSpanTotal = particle.lifeSpan = randomBetween(lifeSpan[0], lifeSpan[1]);
-				particle.position.setVector(position);
+				particle.position.set(position);
 
 				particle.velocity.set(
-					strength*((Math.random() -0.5) * (2*spread) + (1-spread)*normal.data[0]),
-					strength*((Math.random() -0.5) * (2*spread) + (1-spread)*normal.data[1]),
-					strength*((Math.random() -0.5) * (2*spread) + (1-spread)*normal.data[2])
+					strength*((Math.random() -0.5) * (2*spread) + (1-spread)*normal.x),
+					strength*((Math.random() -0.5) * (2*spread) + (1-spread)*normal.y),
+					strength*((Math.random() -0.5) * (2*spread) + (1-spread)*normal.z)
 				);
 
 				particle.dead = false;
@@ -228,16 +228,16 @@ function(
 				continue;
 			}
 
-			calcVec.setVector(particle.velocity).mulDirect(tpf, tpf, tpf);
-			particle.position.addVector(calcVec);
+			calcVec.set(particle.velocity).mulDirect(tpf, tpf, tpf);
+			particle.position.add(calcVec);
 		//	var damping = 0.999;
 			particle.velocity.mulDirect(acceleration, acceleration, acceleration);
 			particle.velocity.addDirect(0, particle.gravity * tpf, 0);
 			particle.alpha = particle.opacity * alpha * particle.lifeSpan / particle.lifeSpanTotal;
 
-			pos[3 * i + 0] = particle.position.data[0];
-			pos[3 * i + 1] = particle.position.data[1];
-			pos[3 * i + 2] = particle.position.data[2];
+			pos[3 * i + 0] = particle.position.x;
+			pos[3 * i + 1] = particle.position.y;
+			pos[3 * i + 2] = particle.position.z;
 
 			col[4 * i + 3] = particle.alpha;
 

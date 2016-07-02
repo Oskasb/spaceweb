@@ -5,19 +5,19 @@ define([
         'Events',
         'ui/GooFpsGraph',
         'ui/GooTrafficGraph',
-        'goo/addons/linerenderpack/LineRenderSystem',
-        'PipelineAPI',
-        'goo/math/Vector3'
+        'PipelineAPI'
     ],
     function(
         evt,
         GooFpsGraph,
         GooTrafficGraph,
-        LineRenderSystem,
-        PipelineAPI,
-        Vector3
+        PipelineAPI
     ) {
 
+
+        var LineRenderSystem;
+        var Vector3;
+        
         var lineRenderSystem;
         var world;
         var cameraEntity;
@@ -26,10 +26,10 @@ define([
 
         var calcVec9;
 
-        var calcVec = new Vector3();
-        var calcVec2 = new Vector3();
-        var calcVec3 = new Vector3();
-        var calcVec4 = new Vector3();
+        var calcVec;
+        var calcVec2;
+        var calcVec3;
+        var calcVec4;
 
         var width = 10;
         var step = 0;
@@ -40,7 +40,14 @@ define([
 
 
         var GooMonitor = function() {
-
+            //    var LineRenderSystem = goo.LineRenderSystem;
+            return
+            Vector3 = goo.Vector3;
+            LineRenderSystem = goo.LineRenderSystem;
+            calcVec = new Vector3();
+            calcVec2 = new Vector3();
+            calcVec3 = new Vector3();
+            calcVec4 = new Vector3();
 
         };
 
@@ -75,22 +82,22 @@ define([
         }
 
         function screenSpaceLine(from, to, color) {
-            calcVec.setArray(from.data);
-            calcVec2.setArray(to.data);
+            calcVec.setArray(from);
+            calcVec2.setArray(to);
 
-            calcVec.addVector(cameraEntity.transformComponent.transform.translation);
-            calcVec2.addVector(cameraEntity.transformComponent.transform.translation);
+            calcVec.add(cameraEntity.transformComponent.transform.translation);
+            calcVec2.add(cameraEntity.transformComponent.transform.translation);
 
-            calcVec.data[2] = 0;
-            calcVec2.data[2] = 0;
+            calcVec.z = 0;
+            calcVec2.z = 0;
 
             lineRenderSystem.drawLine(calcVec, calcVec2, color);
         }
 
         function drawRelativeLine(e) {
 
-            calcVec3.setArray(evt.args(e).from.data);
-            calcVec4.setArray(evt.args(e).to.data);
+            calcVec3.set(evt.args(e).from);
+            calcVec4.set(evt.args(e).to);
             if (anchors[evt.args(e).anchor]) {
                 applyAnchor(calcVec3, evt.args(e).anchor);
                 applyAnchor(calcVec4, evt.args(e).anchor);
@@ -121,9 +128,9 @@ define([
         };
 
         function applyAnchor(vec, anchorKey) {
-            vec.data[0] += anchors[anchorKey][0];
-            vec.data[1] += anchors[anchorKey][1];
-            vec.data[2] += anchors[anchorKey][2];
+            vec.x += anchors[anchorKey][0];
+            vec.y += anchors[anchorKey][1];
+            vec.z += anchors[anchorKey][2];
         }
 
         function drawRelativePosRad(e) {
@@ -226,7 +233,7 @@ define([
         };
 
 
-        var goo;
+        var g00;
         var linerendering = false;
 
 
@@ -254,7 +261,7 @@ define([
                 lineRenderSystem.passive = false
             } else {
                 if (linerendering) return;
-                goo.setRenderSystem(lineRenderSystem);
+                g00.setRenderSystem(lineRenderSystem);
             }
             linerendering = true;
         }
@@ -274,9 +281,7 @@ define([
 
             gooFpsGraph = new GooFpsGraph();
             gooTrafficGraph = new GooTrafficGraph();
-            lineRenderSystem = new LineRenderSystem(world);
-            goo = evt.args(e).goo
-
+        //    lineRenderSystem = new goo.LineRenderSystem(world);
 
             function debugLoaded(key, setupData) {
                 trackersEnable(setupData);

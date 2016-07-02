@@ -170,6 +170,7 @@ define([
 			};
 
 			var clientReady = function() {
+                console.log("Client Ready!")
 				setClientState(GAME.ENUMS.ClientStates.READY);
 				setTimeout(function() {
 					requestClient();

@@ -4,7 +4,7 @@ define([
 	'gui/GuiConfigLoader',
 	'gui/CanvasGuiState',
 	'gui/CanvasCalls',
-		'gui/CanvasCalls2d',
+	'gui/CanvasCalls2d',
 	'gui/GuiBusSends',
 	'gui/io/InputState',
 	'gui/io/PointerCursor',

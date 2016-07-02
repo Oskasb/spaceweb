@@ -1,14 +1,15 @@
 define([
-	'goo/math/Vector3',
-	'goo/math/Vector4'
+
 ],
 
 function (
-	Vector3,
-	Vector4
+
 ) {
 	"use strict";
 
+	var Vector3 = goo.Vector3; 
+	var Vector4 = goo.Vector4; 
+	
 	var defaultColorCurve = [[0, 1], [1, 0]];
     var defaultAlphaCurve = [[0, 1], [1, 0]];
     var defaultGrowthCurve =[[0, 1], [1, 1]];
@@ -106,23 +107,23 @@ function (
 
 	Particle.prototype.setParticleVectors = function (simD, simParams, ratio) {
 		this.direction.setDirect(
-			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.data[0],
-			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.data[1],
-			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.data[2]
+			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.x,
+			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.y,
+			(Math.random() -0.5) * (2*simD.spread) + (1-simD.spread)*simParams.normal.z
 		);
 
 		this.direction.normalize();
 
 		this.velocity.setDirect(
-			simD.strength*this.direction.data[0],
-			simD.strength*this.direction.data[1],
-			simD.strength*this.direction.data[2]
+			simD.strength*this.direction.x,
+			simD.strength*this.direction.y,
+			simD.strength*this.direction.z
 		);
 
 		this.position.setDirect(
-			simParams.position.data[0] + this.velocity.data[0] * simD.stretch * ratio,
-			simParams.position.data[1] + this.velocity.data[1] * simD.stretch * ratio,
-			simParams.position.data[2] + this.velocity.data[2] * simD.stretch * ratio
+			simParams.position.x + this.velocity.x * simD.stretch * ratio,
+			simParams.position.y + this.velocity.y * simD.stretch * ratio,
+			simParams.position.z + this.velocity.z * simD.stretch * ratio
 		);
 
 	};
@@ -137,9 +138,9 @@ function (
 			simD.color0[2] *(1-simD.colorRandom)+simD.colorRandom*Math.random()
 		);
 
-		this.color.data[0] = this.color0[0];
-		this.color.data[1] = this.color0[1];
-		this.color.data[2] = this.color0[2];
+		this.color.x = this.color0[0];
+		this.color.y = this.color0[1];
+		this.color.z = this.color0[2];
 	};
 
 	Particle.prototype.joinSimulation = function (simParams, ratio) {
@@ -233,12 +234,12 @@ function (
 	Particle.prototype.applyParticleCurves = function(deduct) {
 		this.size += this.growthFactor * this.valueFromCurve(this.progress, this.growth) * deduct;
 		this.rotation += this.spinspeed * this.valueFromCurve(this.progress, this.spin) * deduct;
-		this.color.data[3] = this.opacity * this.valueFromCurve(this.progress, this.alpha);
+		this.color.w = this.opacity * this.valueFromCurve(this.progress, this.alpha);
 
 		this.colorBlend = this.valueFromCurve(this.progress, this.colorCurve);
-		this.color.data[0] = this.color0.data[0]*this.colorBlend + this.color1.data[0]*(1-this.colorBlend);
-		this.color.data[1] = this.color0.data[1]*this.colorBlend + this.color1.data[1]*(1-this.colorBlend);
-		this.color.data[2] = this.color0.data[2]*this.colorBlend + this.color1.data[2]*(1-this.colorBlend);
+		this.color.x = this.color0.x *this.colorBlend + this.color1.x * (1-this.colorBlend);
+		this.color.y = this.color0.y *this.colorBlend + this.color1.y * (1-this.colorBlend);
+		this.color.z = this.color0.z *this.colorBlend + this.color1.z * (1-this.colorBlend);
 	};
 
 	Particle.prototype.defaultParticleUpdate = function(deduct) {
@@ -246,12 +247,21 @@ function (
 
 		this.applyParticleCurves(deduct);
 
+		if (isNaN(this.velocity.x)) {
+			console.log("Nan velocity");
+			this.velocity.setDirect(0, 0, 0);
+		}
+
 		this.velocity.mulDirect(this.acceleration, this.acceleration, this.acceleration);
 		this.velocity.addDirect(this.upVector.x*this.gravity*deduct, this.upVector.y*this.gravity*deduct, this.upVector.z*this.gravity*deduct);
 
-		this.calcVec.setVector(this.velocity);
+		this.calcVec.set(this.velocity);
 		this.calcVec.mulDirect(deduct, deduct, deduct);
-		this.position.addVector(this.calcVec);
+		if (isNaN(this.calcVec.x)) {
+			console.log("Nan particle");
+			return;
+		}
+		this.position.add(this.calcVec);
 	};
 
 
