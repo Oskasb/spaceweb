@@ -62,7 +62,7 @@ define(['Events'
         cameraEntity.transformComponent.transform.translation.setDirect(0, 0, 120);
         cameraEntity.transformComponent.setUpdated();
 
-        evt.fire(evt.list().CAMERA_READY, {goo:goo, camera:cameraEntity});
+        evt.fire(evt.list().CAMERA_READY, {goo:g00, camera:cameraEntity});
 
         lastPos = new MATH.Vec3(0, 0, 0);
         forVec = new MATH.Vec3(0, 0, 0);

@@ -5,17 +5,18 @@ define([
         'Events',
         'ui/GooFpsGraph',
         'ui/GooTrafficGraph',
+        'ui/lines/LineRenderSystem',
         'PipelineAPI'
     ],
     function(
         evt,
         GooFpsGraph,
         GooTrafficGraph,
+        LineRenderSystem,
         PipelineAPI
     ) {
 
 
-        var LineRenderSystem;
         var Vector3;
         
         var lineRenderSystem;
@@ -23,6 +24,9 @@ define([
         var cameraEntity;
         var gooFpsGraph;
         var gooTrafficGraph;
+
+        var g00;
+        var linerendering = false;
 
         var calcVec9;
 
@@ -40,15 +44,11 @@ define([
 
 
         var GooMonitor = function() {
-            //    var LineRenderSystem = goo.LineRenderSystem;
-            return
             Vector3 = goo.Vector3;
-            LineRenderSystem = goo.LineRenderSystem;
             calcVec = new Vector3();
             calcVec2 = new Vector3();
             calcVec3 = new Vector3();
             calcVec4 = new Vector3();
-
         };
 
 
@@ -233,15 +233,19 @@ define([
         };
 
 
-        var g00;
-        var linerendering = false;
+
 
 
         function drawLine(from, to, color) {
-            lineRenderSystem.drawLine(from, to, lineRenderSystem[color] || lineRenderSystem.WHITE);
+            calcVec.setDirect(from.data[0], from.data[1], from.data[2]);
+            calcVec2.setDirect(to.data[0], to.data[1], to.data[2]);
+            
+            lineRenderSystem.drawLine(calcVec, calcVec2, lineRenderSystem[color] || lineRenderSystem.WHITE);
         }
 
         function drawCross(vec3, color) {
+
+            calcVec.setDirect(vec3.data[0], vec3.data[1], vec3.data[2]);
             lineRenderSystem.drawCross(vec3, lineRenderSystem[color] || lineRenderSystem.WHITE, 1);
         }
 
@@ -275,13 +279,13 @@ define([
         function handleCameraReady(e) {
             //    return
             calcVec9 = new MATH.Vec3(0, 0, 0);
-
+            g00 = evt.args(e).goo;
             world = evt.args(e).goo.world;
             cameraEntity = evt.args(e).camera;
 
             gooFpsGraph = new GooFpsGraph();
             gooTrafficGraph = new GooTrafficGraph();
-        //    lineRenderSystem = new goo.LineRenderSystem(world);
+            lineRenderSystem = new LineRenderSystem(world);
 
             function debugLoaded(key, setupData) {
                 trackersEnable(setupData);
