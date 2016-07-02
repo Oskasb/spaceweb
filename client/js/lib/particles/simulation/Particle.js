@@ -138,9 +138,9 @@ function (
 			simD.color0[2] *(1-simD.colorRandom)+simD.colorRandom*Math.random()
 		);
 
-		this.color.x = this.color0[0];
-		this.color.y = this.color0[1];
-		this.color.z = this.color0[2];
+		this.color.x = this.color0.x;
+		this.color.y = this.color0.y;
+		this.color.z = this.color0.z;
 	};
 
 	Particle.prototype.joinSimulation = function (simParams, ratio) {

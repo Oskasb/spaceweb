@@ -12,6 +12,11 @@ define([
         evt
     ) {
 
+
+        var calcVec = new goo.Vector3();
+        var calcVec2 = new goo.Vector3();
+        var calcVec3 = new goo.Vector3();
+
         var GooModule = function(module, piece, gooParent, attachmentPoint) {
             
             this.tempSpatial = {
@@ -254,15 +259,27 @@ define([
         GooModule.prototype.readWorldTransform = function(pos, rot, rotVel) {
 
             this.entity.transformComponent.updateWorldTransform();
-            this.tempSpatial.rot.setArray(rot);
 
-            this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
 
-            this.tempSpatial.pos.setArray(pos);
+            this.entity.transformComponent.worldTransform.rotation.toAngles(calcVec);
 
-            this.tempSpatial.pos.data[0] *= (1-Math.abs(MATH.clamp(rotVel, -0.6, 0.6)*0.2));
+            this.tempSpatial.rot.setXYZ(calcVec.x, calcVec.y, calcVec.z);
 
-            this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.pos);
+            calcVec2.setDirect(rot[0], rot[1], rot[2]);
+            calcVec.applyPost(calcVec2);
+
+        //    this.entity.transformComponent.worldTransform.rotation.applyPost(this.tempSpatial.rot);
+
+
+            calcVec3.setDirect(pos[0], pos[1], pos[2]);
+
+
+
+        //    this.tempSpatial.pos.data[0] *= (1-Math.abs(MATH.clamp(rotVel, -0.6, 0.6)*0.2));
+
+            this.entity.transformComponent.worldTransform.rotation.applyPost(calcVec3);
+            this.tempSpatial.pos.setXYZ(calcVec3.x, calcVec3.y, calcVec3.z);
+
 
             this.tempSpatial.pos.data[0] += this.entity.transformComponent.worldTransform.translation.x;
             this.tempSpatial.pos.data[1] += this.entity.transformComponent.worldTransform.translation.y;

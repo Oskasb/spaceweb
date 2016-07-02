@@ -179,15 +179,15 @@ define([
 
 		TrailRenderer.prototype.updateBillboard = function(i, trailSegmentData, trailSegmentDatas, trailVector, camPos, w) {
 			if (i === 0) {
-				trailDirection.set(trailSegmentDatas[i + 1].interpolatedPosition).subVector(trailVector);
+				trailDirection.set(trailSegmentDatas[i + 1].interpolatedPosition).sub(trailVector);
 			} else if (i === this.segmentCount - 1) {
-				trailDirection.set(trailVector).subVector(trailSegmentDatas[i - 1].interpolatedPosition);
+				trailDirection.set(trailVector).sub(trailSegmentDatas[i - 1].interpolatedPosition);
 			} else {
 				trailDirection.set(trailSegmentDatas[i + 1].interpolatedPosition)
-					.subVector(trailSegmentDatas[i - 1].interpolatedPosition);
+					.sub(trailSegmentDatas[i - 1].interpolatedPosition);
 			}
 
-			trailCamVec.set(trailVector).subVector(camPos);
+			trailCamVec.set(trailVector).sub(camPos);
 
 			// trailDirection.cross(trailCamVec);
 			

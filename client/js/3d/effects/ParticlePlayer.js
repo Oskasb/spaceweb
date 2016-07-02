@@ -126,6 +126,10 @@ define([
         };
 
         ParticlePlayer.prototype.playParticleEffect = function(args) {
+            console.log("Use Play particle...");
+                
+
+
             particleData.pos.x = args.pos.data[0];
             particleData.pos.y = args.pos.data[1];
             particleData.pos.z = args.pos.data[2];
