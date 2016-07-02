@@ -132,8 +132,6 @@ ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
     }
 
 	this.configs = pieceTypeConfigs;
-    
-	this.piece.applyConfig(this.configs);
 };
 
 ServerPlayer.prototype.makeAppearPacket = function() {

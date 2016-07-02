@@ -42,6 +42,12 @@ PieceSpawner.prototype.buildPieceData = function(pieceType, gameConfigs) {
 };
 
 
+PieceSpawner.prototype.addModulesFromConfigs = function(piece, configs) {
+    if (configs.modules) piece.attachModules(configs.modules);
+
+};
+
+
 PieceSpawner.prototype.attachModuleConfigs = function(conf, gameConfigs) {
 
     for (var i = 0; i < conf.attachment_points.length; i++) {
@@ -76,6 +82,8 @@ PieceSpawner.prototype.spawnPlayerPiece = function(client, data, clients, simula
     var config = this.buildPieceData(player.piece.type, gameConfigs);
 
     player.applyPieceConfig(config);
+    player.piece.applyConfig(config);
+    this.addModulesFromConfigs(player.piece, config);
     return player;
 };
 
@@ -87,6 +95,7 @@ PieceSpawner.prototype.spawnWorldPiece = function(pieceType, posx, posy, rot, ro
     var config = this.buildPieceData(pieceType, this.gameConfigs);
 
     piece.applyConfig(config);
+    this.addModulesFromConfigs(piece, config);
     piece.setState(GAME.ENUMS.PieceStates.SPAWN);
     piece.spatial.pos.setXYZ(posx, posy, 0);
     piece.spatial.rot[0] = rot;
@@ -117,6 +126,8 @@ PieceSpawner.prototype.spawnBullet = function(sourcePiece, cannonModuleData, now
     this.attachModuleConfigs(conf, gameConfigs);
 
     bullet.applyConfig(conf);
+
+    this.addModulesFromConfigs(bullet, conf);
 
     bullet.spatial.setSpatial(sourcePiece.spatial);
 

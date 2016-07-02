@@ -160,23 +160,23 @@ define([
 			this.left = Math.abs(this.camera._frustumLeft);
 
             if (this.top > this.left) {
-                this.aspectMarginLeft = this.left * (this.guiConfig.element.pos[1]+this.guiConfig.element.size[1])*0.01;
-                this.aspectMarginTop = this.top * (this.guiConfig.element.pos[0]+this.guiConfig.element.size[0])*0.01;
-                this.size = this.left * this.guiConfig.element.size[1]*0.01;
-                this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*1.01);
+                this.aspectMarginLeft = this.left * (this.guiConfig.element.pos[1]+this.guiConfig.element.size[1])*1.01;
+                this.aspectMarginTop = this.top * (this.guiConfig.element.pos[0]+this.guiConfig.element.size[0])*1.01;
+                this.size = this.left * this.guiConfig.element.size[1]*1.01;
+                this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*100.01);
                 this.scalePxToX =  this.top / this.size;
             } else {
-                this.aspectMarginLeft = this.left * (this.guiConfig.element.pos[1]+this.guiConfig.element.size[1])*0.01;
-                this.aspectMarginTop = this.top * (this.guiConfig.element.pos[0]+this.guiConfig.element.size[0])*0.01;
-                this.size = this.top * this.guiConfig.element.size[0]*0.01;
-                this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*1.01);
+                this.aspectMarginLeft = this.left * (this.guiConfig.element.pos[1]+this.guiConfig.element.size[1])*1.01;
+                this.aspectMarginTop = this.top * (this.guiConfig.element.pos[0]+this.guiConfig.element.size[0])*1.01;
+                this.size = this.top * this.guiConfig.element.size[0]*1.01;
+                this.uiQuad.transformComponent.transform.translation.set(this.aspectMarginLeft, this.aspectMarginTop, -this.camera.near*100.01);
                 this.scalePxToX = this.left / this.size;
             }
 
 			this.aspect = this.left / this.top;
 
-			this.scalePercentToX = 0.01*this.canvas.width / (this.size / this.left);
-			this.scalePercentToY = 0.01*this.canvas.height / (this.size / this.top);
+			this.scalePercentToX = 1.01*this.canvas.width / (this.size / this.left);
+			this.scalePercentToY = 1.01*this.canvas.height / (this.size / this.top);
 
 		//	this.canvasCalls.frustumUpdated(this.resolution, this.scalePercentToX, this.scalePercentToY, this.scalePxToX);
 			//	this.canvas.width = this.resolution;
