@@ -35,18 +35,18 @@ define([
         CanvasDraw.vectorToY = function(vec, size) {
 
             if (vec.x) {
-                return size.width - vec.x * size.width*0.01;
+                return - size.width + vec.x * size.width*0.01;
             } else {
-                return size.width - vec.data[1] * size.width*0.01;
+                return - size.width + vec.data[0] * size.width*0.01;
             }
         };
 
         CanvasDraw.vectorToCanvasX = function(vec, pos, size, centerX, rangeX) {
-            return (((CanvasDraw.vectorToX(vec, size) - centerX)*size.height/rangeX)  +  pos.top  + size.height* 0.5) ;
+            return (((CanvasDraw.vectorToX(vec, size) - centerX)*size.width/rangeX)  +  pos.left  + size.width* 0.5) ;
         };
 
         CanvasDraw.vectorToCanvasY = function(vec, pos, size, centerY, rangeY) {
-            return (((CanvasDraw.vectorToY(vec, size) - centerY)*size.width/rangeY)  +  pos.left + size.width * 0.5);
+            return (((CanvasDraw.vectorToY(vec, size) - centerY)*size.height/rangeY)  +  pos.top + size.height * 0.5);
         };
 
         CanvasDraw.randomizedColor = function(color, flicker) {

@@ -74,10 +74,16 @@ define([
             var playerX = pos.top + size.height*0.5;
             var playerY = pos.left + size.width*0.5;
 
-            tempRect.left 	= CanvasDraw.vectorToCanvasY(startVec, pos, size,  centerX, rangeX);
-            tempRect.top 	= CanvasDraw.vectorToCanvasX(startVec, pos, size,  centerY, rangeY);
-            tempRect.width 	= CanvasDraw.vectorToCanvasY(sizeVec, pos, size, centerX, rangeX);
-            tempRect.height = CanvasDraw.vectorToCanvasX(sizeVec, pos, size, centerY, rangeY);
+            tempRect.top 	= CanvasDraw.vectorToCanvasX(startVec, pos, size,  centerX, rangeX);
+
+            tempRect.left 	= CanvasDraw.vectorToCanvasY(startVec, pos, size,  centerY, rangeY);
+
+
+            tempRect.height  = CanvasDraw.vectorToCanvasX(sizeVec, pos, size,   centerX, rangeX);
+
+            tempRect.width = CanvasDraw.vectorToCanvasY(sizeVec, pos, size,   centerY, rangeY);
+
+
 
         //    drawWorldBorders(ctx, tempRect, confData.worldSection, pos, size, startVec, sizeVec);
             
