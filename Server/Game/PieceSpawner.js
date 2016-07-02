@@ -41,29 +41,48 @@ PieceSpawner.prototype.buildPieceData = function(pieceType, gameConfigs) {
     return config;
 };
 
+PieceSpawner.prototype.attachPieceModules = function(piece, moduleConfigs) {
+
+    piece.modules = [];
+
+    for (var i = 0; i < moduleConfigs.length; i++) {
+        var module = new ServerModule(moduleConfigs[i].id, moduleConfigs[i], piece);
+        module.setModuleState(moduleConfigs[i].initState);
+        piece.modules.push(module);
+    }
+};
+
+
 
 PieceSpawner.prototype.addModulesFromConfigs = function(piece, configs) {
-    if (configs.modules) piece.attachModules(configs.modules);
+    if (configs.modules) {
+    //    piece.attachModules(configs.modules);
+        this.attachPieceModules(piece, configs.modules);
+    }
 
+};
+
+PieceSpawner.prototype.addAttachmentPoint = function(ap, conf, gameConfigs) {
+
+    var module = {};
+
+    var config = gameConfigs.MODULE_DATA[ap.module];
+
+    for (var key in config) {
+        module[key] = config[key];
+    }
+
+    for (key in ap) {
+        module[key] = ap[key];
+    }
+
+    conf.modules.push(module);
 };
 
 
 PieceSpawner.prototype.attachModuleConfigs = function(conf, gameConfigs) {
-
     for (var i = 0; i < conf.attachment_points.length; i++) {
-        var module = {};
-        var ap = conf.attachment_points[i];
-        var config = gameConfigs.MODULE_DATA[ap.module];
-
-        for (var key in config) {
-            module[key] = config[key];
-        }
-
-        for (key in ap) {
-            module[key] = ap[key];
-        }
-
-        conf.modules.push(module);
+        this.addAttachmentPoint(conf.attachment_points[i], conf, gameConfigs);
     }
 };
 

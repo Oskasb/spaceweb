@@ -5,6 +5,7 @@ ServerModule = function(moduleId, data, piece) {
     this.appliedCallback = function() {};
     this.state = {value:null};
     this.lastValue = 'noValue';
+    this.getState = [];
 };
 
 ServerModule.prototype.setModuleState = function(state) {
@@ -24,6 +25,14 @@ ServerModule.prototype.setModuleState = function(state) {
 ServerModule.prototype.setApplyCallback = function(callback) {
     this.appliedCallback = callback;
 };
+
+
+
+ServerModule.prototype.getModuleState = function() {
+    this.getState[0] = this.state;
+    return this.getState;
+};
+
 
 ServerModule.prototype.processModuleState = function(serverState) {
     this.setModuleState(serverState.value);

@@ -121,32 +121,12 @@ if(typeof(GAME) == "undefined"){
         this.serverSpatial = new MODEL.Spatial();
 
 		this.modules = [];
-		this.moduleStates = {};
-        this.moduleIndex = {};
+
 		this.serverState = {};
 		this.config = null;
 
-        this.sentState = {};
-
-		this.posDiff = 0;
-		this.rotDiff = 0;
-
 	};
 
-	GAME.Piece.prototype.attachModules = function(moduleConfigs) {
-		this.modules = [];
-		this.moduleStates = {};
-		for (var i = 0; i < moduleConfigs.length; i++) {
-			var module = new ServerModule(moduleConfigs[i].id, moduleConfigs[i], this);
-			module.setModuleState(moduleConfigs[i].initState);
-			this.modules.push(module);
-			if (!this.moduleStates[moduleConfigs[i].id]) {
-				this.moduleStates[moduleConfigs[i].id] = [];
-			}
-			this.moduleStates[moduleConfigs[i].id].push(module.state);
-            this.moduleIndex[moduleConfigs[i].id] = module;
-        }
-	};
 
 	GAME.Piece.prototype.registerParentPiece = function(piece) {
 		this.parentPiece = piece;
@@ -180,7 +160,7 @@ if(typeof(GAME) == "undefined"){
         //    console.log("Set Mod State: ", moduleId, value)
             this.getModuleById(moduleId).setModuleState(value);
         } else {
-            console.log("No module gotten ", moduleId, this.moduleIndex)
+            console.log("No module gotten ", moduleId, this.modules)
         }
     };
 
@@ -195,23 +175,35 @@ if(typeof(GAME) == "undefined"){
 
 
     GAME.Piece.prototype.getModuleById = function(moduleId) {
-        return this.moduleIndex[moduleId];
+
+        for (var i = 0; i < this.modules.length; i++) {
+            if (this.modules[i].id == moduleId) {
+                return this.modules[i];
+            }
+        }
+
+        console.log("No module by Id ", moduleId);
     };
 
     GAME.Piece.prototype.getCollisionShape = function(store) {
         store.size = 1;
 
-		for (var key in this.moduleIndex) {
-            if (this.getModuleById(key).data.size) {
-                if (this.getModuleById(key).data.size > store.size) {
-                    store.size = this.getModuleById(key).data.size;
-                }
+        for (var i = 0; i < this.modules.length; i++) {
+            if (this.modules[i].data.size > store.size) {
+                store.size = this.modules[i].data.size;
             }
         }
     };
 
     GAME.Piece.prototype.getModuleStates = function() {
-		return this.moduleStates;
+
+        var moduleStates = {};
+
+        for (var i = 0; i < this.modules.length; i++) {
+            moduleStates[this.modules[i].id] = this.modules[i].getModuleState();
+        }
+
+        return moduleStates;
 	};
 
 	GAME.Piece.prototype.getState = function() {
@@ -255,7 +247,6 @@ if(typeof(GAME) == "undefined"){
 			if (moduleStates[this.modules[i].id]) {
 				this.modules[i].processModuleState(moduleStates[this.modules[i].id][0])
 			}
-
 		}
 	};
 
