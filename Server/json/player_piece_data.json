@@ -42,6 +42,17 @@
         {"name":"Point G", "module":"engine",       "transform":{ "rot":[0, 1, 0], "pos":[0,    2.8,   0]}},
         {"name":"Point H", "module":"inputControls"   },
         {"name":"Point I", "module":"nameplate"       }
+      ],
+      "default_modules":[
+        "hull",
+        "shield",
+        "hyper_drive",
+        "warp_drive",
+        "plasma_cannon",
+        "auto_cannon",
+        "engine",
+        "inputControls",
+        "nameplate"
       ]
     }
   }

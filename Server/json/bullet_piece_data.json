@@ -15,6 +15,9 @@
       },
       "attachment_points":[
         {"name":"Warhead" , "module":"bullet_shell",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+      ],
+      "default_modules":[
+        "bullet_shell"
       ]
     },
     "lazer_beam_bullet":{
@@ -31,6 +34,9 @@
       },
       "attachment_points":[
         {"name":"Warhead" , "module":"lazer_beam",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+      ],
+      "default_modules":[
+        "lazer_beam"
       ]
     },
     "plasma_bullet":{
@@ -47,6 +53,9 @@
       },
       "attachment_points":[
         {"name":"Warhead" , "module":"plasma_bullet",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+      ],
+      "default_modules":[
+        "plasma_bullet"
       ]
     }
   }
