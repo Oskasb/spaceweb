@@ -1,5 +1,6 @@
-ServerAttachmentPoint = function(ap, conf, gameConfigs) {
+ServerAttachmentPoint = function(piece, ap, index, conf, gameConfigs) {
     this.slot = ap.slot;
+    this.index = index;
     var module = {};
 
     var config = gameConfigs.MODULE_DATA[ap.module];
@@ -12,7 +13,17 @@ ServerAttachmentPoint = function(ap, conf, gameConfigs) {
         module[key] = ap[key];
     }
 
+    this.moduleConfig = module;
+    
     conf.modules.push(module);
+
+
+    piece.attachmentPoints[index] = this;
+
+    var module = new ServerModule(this.moduleConfig.id, this.moduleConfig, piece);
+    module.setModuleState(this.moduleConfig.initState);
+    piece.modules[index] = module;
+    
 };
 
 ServerAttachmentPoint.prototype.attachModuleToAttachmentPoint = function(serverModule) {
