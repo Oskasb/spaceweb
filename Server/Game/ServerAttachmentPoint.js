@@ -3,7 +3,7 @@ ServerAttachmentPoint = function(piece, ap, index, conf, gameConfigs) {
     this.index = index;
     var module = {};
 
-    var config = gameConfigs.MODULE_DATA[ap.module];
+    var config = gameConfigs.MODULE_DATA[conf.default_modules[index]];
 
     for (var key in config) {
         module[key] = config[key];

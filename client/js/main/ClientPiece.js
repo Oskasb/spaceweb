@@ -53,7 +53,7 @@ define([
             var applyPieceData = function(src, data) {
        //         console.log("Attach pieceData", src, data)
                 _this.pieceData = data;
-                _this.addAttachmentPoints(data.attachment_points);
+                _this.addAttachmentPoints(data.attachment_points, data.default_modules);
                 //       _this.attachModules(data.modules);
             };
             
@@ -61,13 +61,13 @@ define([
             this.notifyServerState(serverState)
 		};
 
-        ClientPiece.prototype.addAttachmentPoints = function(attachmentPoints) {
+        ClientPiece.prototype.addAttachmentPoints = function(attachmentPoints, defaultModules) {
 
             this.detachModules();
             this.attachmentPoints.length = 0;
 
             for (var i = 0; i < attachmentPoints.length; i++) {
-                var ap = new AttachmentPoint(attachmentPoints[i]);
+                var ap = new AttachmentPoint(attachmentPoints[i], defaultModules[i]);
                 if (ap.data.module) {
                     this.attachModule(ap);
                 }

@@ -14,7 +14,7 @@
         }
       },
       "attachment_points":[
-        {"slot":"warhead", "module":"bullet_shell",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+        {"slot":"warhead",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
       ],
       "default_modules":[
         "bullet_shell"
@@ -33,7 +33,7 @@
         }
       },
       "attachment_points":[
-        {"slot":"warhead", "module":"lazer_beam",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+        {"slot":"warhead",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
       ],
       "default_modules":[
         "lazer_beam"
@@ -52,7 +52,7 @@
         }
       },
       "attachment_points":[
-        {"slot":"warhead", "module":"plasma_bullet",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+        {"slot":"warhead",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
       ],
       "default_modules":[
         "plasma_bullet"

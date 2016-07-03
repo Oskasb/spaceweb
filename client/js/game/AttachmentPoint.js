@@ -9,10 +9,10 @@ define([
         evt
     ) {
 
-        var AttachmentPoint = function(apData) {
-            this.name = apData.name;
+        var AttachmentPoint = function(apData, defaultModule) {
+            this.slot = apData.slot;
             this.transform = apData.transform;
-            this.data = apData;
+            this.data = {module:defaultModule};
         };
 
         AttachmentPoint.prototype.attachModule = function () {

@@ -33,15 +33,15 @@
         }
       },
       "attachment_points":[
-        {"slot":"hull",     "module":"hull",         "transform":{ "rot":[0, 0, 0], "pos":[0,    0.1,   0]}},
-        {"slot":"shield",   "module":"shield",       "transform":{ "rot":[0, 0, 0], "pos":[0,    0.1,   0]}},
-        {"slot":"drive",    "module":"hyper_drive",  "transform":{ "rot":[0, 1, 0], "pos":[0,   -0.6,   0]}},
-        {"slot":"drive",    "module":"warp_drive",   "transform":{ "rot":[0, 1, 0], "pos":[0,   -0.6,   0]}},
-        {"slot":"weapon",   "module":"plasma_cannon","transform":{ "rot":[0, 0, 0], "pos":[2.2, -1.7,   1]}},
-        {"slot":"weapon",   "module":"auto_cannon",  "transform":{ "rot":[0, 0, 0], "pos":[-2.2,-1.7,   1]}},
-        {"slot":"engine",   "module":"engine",       "transform":{ "rot":[0, 1, 0], "pos":[0,    2.8,   0]}},
-        {"slot":"control",  "module":"inputControls"   },
-        {"slot":"name",     "module":"nameplate"       }
+        {"slot":"hull",    "transform":{ "rot":[0, 0, 0], "pos":[0,    0.1,   0]}},
+        {"slot":"shield",  "transform":{ "rot":[0, 0, 0], "pos":[0,    0.1,   0]}},
+        {"slot":"drive",   "transform":{ "rot":[0, 1, 0], "pos":[0,   -0.6,   0]}},
+        {"slot":"drive",   "transform":{ "rot":[0, 1, 0], "pos":[0,   -0.6,   0]}},
+        {"slot":"weapon",  "transform":{ "rot":[0, 0, 0], "pos":[2.2, -1.7,   1]}},
+        {"slot":"weapon",  "transform":{ "rot":[0, 0, 0], "pos":[-2.2,-1.7,   1]}},
+        {"slot":"engine",  "transform":{ "rot":[0, 1, 0], "pos":[0,    2.8,   0]}},
+        {"slot":"control"  },
+        {"slot":"name"     }
       ],
       "default_modules":[
         "hull",
