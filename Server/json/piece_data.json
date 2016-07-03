@@ -15,7 +15,7 @@
           }
         },
         "attachment_points":[
-          {"name":"Plasma Blob" , "module":"plasma_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+          {"slot":"hull" , "module":"plasma_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
         ],
         "default_modules":[
           "plasma_blob_module"
@@ -34,7 +34,7 @@
           }
         },
         "attachment_points":[
-          {"name":"Clay Blob" , "module":"clay_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+          {"slot":"hull" , "module":"clay_blob_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
         ],
         "default_modules":[
           "clay_blob_module"
@@ -53,7 +53,7 @@
           }
         },
         "attachment_points":[
-          {"name":"Space Rock" , "module":"big_space_rock_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+          {"slot":"hull" , "module":"big_space_rock_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
         ],
         "default_modules":[
           "big_space_rock_module"
@@ -72,7 +72,7 @@
           }
         },
         "attachment_points":[
-          {"name":"Space Rock" , "module":"small_space_rock_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
+          {"slot":"hull" , "module":"small_space_rock_module",   "transform":{"rot":[0, 0, 0], "pos":[0, 0, 0]}}
         ],
         "default_modules":[
           "small_space_rock_module"

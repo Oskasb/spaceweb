@@ -3,7 +3,7 @@
   "modules":{
         "bullet_shell":{
       "id":"bullet_shell",
-
+      "type":"warhead",
       "source":"initiate",
       "initState": true,
       "applies":{
@@ -19,7 +19,7 @@
     },
     "lazer_beam":{
       "id":"lazer_beam",
-
+      "type":"warhead",
       "source":"initiate",
       "initState": true,
       "applies":{
@@ -32,7 +32,7 @@
     },
     "plasma_bullet":{
       "id":"plasma_bullet",
-
+      "type":"warhead",
       "source":"initiate",
       "initState": true,
       "applies":{

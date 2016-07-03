@@ -1,4 +1,5 @@
 ServerAttachmentPoint = function(ap, conf, gameConfigs) {
+    this.slot = ap.slot;
     var module = {};
 
     var config = gameConfigs.MODULE_DATA[ap.module];

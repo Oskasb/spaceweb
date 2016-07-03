@@ -3,6 +3,7 @@
   "modules":{
     "plasma_blob_module":{
       "id":"plasma_blob_module",
+      "type":"hull",
       "size":3,
       "source":"initiate",
       "initState": true,
@@ -26,6 +27,7 @@
     },
     "big_space_rock_module":{
       "id":"big_space_rock_module",
+      "type":"hull",
       "size":8,
       "source":"initiate",
       "initState": true,
@@ -42,6 +44,7 @@
     },
     "small_space_rock_module":{
       "id":"small_space_rock_module",
+      "type":"hull",
       "size":3,
       "source":"initiate",
       "initState": true,
@@ -58,6 +61,7 @@
     },
     "clay_blob_module":{
       "id":"clay_blob_module",
+      "type":"hull",
       "size":4,
       "source":"initiate",
       "initState": true,

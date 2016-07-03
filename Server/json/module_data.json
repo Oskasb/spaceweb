@@ -3,6 +3,7 @@
   "modules":{
 
     "hull":{
+      "type":"hull",
       "id":"hull",
       "source":"initiate",
       "initState": true,
@@ -14,10 +15,10 @@
         "message":"Hull On",
         "game_effect":"s11_piece"
       }
-
     },
 
     "shield":{
+      "type":"shield",
       "id":"shield",
 
       "initState": false,
@@ -45,10 +46,10 @@
         },
         "game_effect":"ship_shield"
       }
-
     },
 
     "hyper_drive":{
+      "type":"drive",
       "id":"hyper_drive",
       "initState":false,
       "applies":{
@@ -70,9 +71,10 @@
         "game_effect":"hyper_drive",
         "emit_effect":"hyper_space_sparks"
       }
-
     },
+
     "warp_drive":{
+      "type":"drive",
       "id":"warp_drive",
       "initState":false,
       "applies":{
@@ -94,9 +96,10 @@
         },
         "emit_effect":"hyper_space_sparks"
       }
-
     },
+
     "auto_cannon":{
+      "type":"weapon",
       "id":"auto_cannon",
 
       "initState": true,
@@ -108,9 +111,10 @@
         "lifeTime":0.4,
         "game_effect":"cannon_auto_module"
       }
-
     },
+
     "lazer_cannon":{
+      "type":"weapon",
       "id":"lazer_cannon",
 
       "initState": true,
@@ -122,9 +126,10 @@
         "lifeTime":0.16,
         "game_effect":"cannon_lazer_module"
       }
-
     },
+
     "plasma_cannon":{
+      "type":"weapon",
       "id":"plasma_cannon",
 
       "initState": true,
@@ -136,9 +141,10 @@
         "lifeTime":0.7,
         "game_effect":"cannon_plasma_module"
       }
-
     },
+
     "engine":{
+      "type":"engine",
       "id":"engine",
 
       "source":"throttle",
@@ -158,7 +164,9 @@
         "message":"wroom"
       }
     },
+
     "inputControls":{
+      "type":"control",
       "id":"inputControls",
 
       "source":"currentState",
@@ -168,9 +176,10 @@
         "state":true,
         "action":"applyControl"
       }
-
     },
+
     "nameplate":{
+      "type":"name",
       "id":"nameplate",
 
       "source":"playerName",
@@ -181,9 +190,7 @@
         "action":"applyControl",
         "message":"Name On"
       }
-
     }
-
 
   }
 }]
