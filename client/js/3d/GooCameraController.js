@@ -90,9 +90,9 @@ define(['Events'
         calcVec.setDirect(playerPiece.spatial.vel.getX(), playerPiece.spatial.vel.getY(), playerPiece.spatial.vel.getZ());
 
     //    calcVec.subVector(lastPos);
-        forVec.scale(3);
+        forVec.scale(1);
 
-    //    calcVec.mulDirect(40, 40, 0);
+        calcVec.mulDirect(0.5, 0.5, 0.5);
         calcVec.addDirect(forVec.data[0], forVec.data[1], forVec.data[2]);
         calcVec.addDirect(playerPiece.spatial.pos.getX(), playerPiece.spatial.pos.getY(), playerPiece.spatial.pos.getZ());
     //    lastPos.addVec(playerPiece.spatial.pos);

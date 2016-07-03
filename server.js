@@ -46,6 +46,7 @@ var SetupServer = function() {
 		'Server/io/Client',
 		'Server/io/Clients',
 		'Server/DataHub',
+		'Server/Game/ServerAttachmentPoint',
 		'Server/Game/ServerModule',
 		'Server/Game/GridSector',
 		'Server/Game/PieceSpawner',

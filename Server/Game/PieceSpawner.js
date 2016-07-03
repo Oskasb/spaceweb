@@ -63,20 +63,8 @@ PieceSpawner.prototype.addModulesFromConfigs = function(piece, configs) {
 };
 
 PieceSpawner.prototype.addAttachmentPoint = function(ap, conf, gameConfigs) {
+    new ServerAttachmentPoint(ap, conf, gameConfigs)
 
-    var module = {};
-
-    var config = gameConfigs.MODULE_DATA[ap.module];
-
-    for (var key in config) {
-        module[key] = config[key];
-    }
-
-    for (key in ap) {
-        module[key] = ap[key];
-    }
-
-    conf.modules.push(module);
 };
 
 
@@ -102,7 +90,9 @@ PieceSpawner.prototype.spawnPlayerPiece = function(client, data, clients, simula
 
     player.applyPieceConfig(config);
     player.piece.applyConfig(config);
+
     this.addModulesFromConfigs(player.piece, config);
+
     return player;
 };
 

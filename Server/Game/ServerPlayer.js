@@ -121,9 +121,6 @@ ServerPlayer.prototype.processPlayerInputUpdate = function(data, actionHandlers)
 //	console.log("handlers: ", JSON.stringify(actionHandlers))
 };
 
-ServerPlayer.prototype.attachModule = function(attachmentPoint, moduleConfigs) {
-	this.configs.modules.push(moduleConfigs[attachmentPoint.module]);
-};
 
 ServerPlayer.prototype.applyPieceConfig = function(pieceTypeConfigs) {
     if(!this.piece) {

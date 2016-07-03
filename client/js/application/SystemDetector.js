@@ -65,8 +65,14 @@ define([
             if (os == 'Android') {
                 renderScale = 0.5;
                 antialias = false;
-                
             }
+
+            if (os == 'IOS') {
+                renderScale = 0.5;
+                antialias = false;
+            }
+
+
 
             PipelineAPI.setCategoryData('SETUP', {ANTIALIAS:antialias});
             PipelineAPI.setCategoryData('SETUP', {PX_SCALE:renderScale});

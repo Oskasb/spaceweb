@@ -122,6 +122,7 @@ if(typeof(GAME) == "undefined"){
 
 		this.modules = [];
 
+		this.attachmentPoints = [];
 		this.serverState = {};
 		this.config = null;
 

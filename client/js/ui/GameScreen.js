@@ -6,7 +6,7 @@ define([
 	function(
 		) {
 
-		var gameScreen;
+		var gameScreen = document.body;;
 		var landscape;
 		var width;
 		var height;

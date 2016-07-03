@@ -79,9 +79,9 @@ define([
             tempRect.left 	= CanvasDraw.vectorToCanvasY(startVec, pos, size,  centerY, rangeY);
 
 
-            tempRect.height  = CanvasDraw.vectorToCanvasX(sizeVec, pos, size,   centerX, rangeX);
+            tempRect.height = CanvasDraw.vectorToCanvasX(sizeVec, pos, size,   centerX, rangeX);
 
-            tempRect.width = CanvasDraw.vectorToCanvasY(sizeVec, pos, size,   centerY, rangeY);
+            tempRect.width  = CanvasDraw.vectorToCanvasY(sizeVec, pos, size,   centerY, rangeY);
 
 
 
