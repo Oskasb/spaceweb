@@ -27,7 +27,7 @@ define([
             var _this = this;
     //        console.log(module.data)
 
-            this.transform = attachmentPoint.data.transform;
+            this.transform = attachmentPoint.transform;
 
             this.particles = [];
             this.piece = piece;
